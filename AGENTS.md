@@ -33,7 +33,7 @@ or closed.
    `scripts/ci_active.sh <agent-id> <your branches>`.
 7. **Never change `lakefile.toml`, `lake-manifest.json` or `lean-toolchain`.** The node-cap registry pins their
    hashes; any change makes every proof check ask for a rebuild of all node caps (§13). Work that is not part of the
-   `Grothe` target goes in its own Lake package, like `sign/` (§15).
+   `Grothe` target goes in its own Lake package in its own directory (§13).
 
 ## 1. Work items live in GitHub Issues
 
@@ -184,7 +184,8 @@ especially a re-push after a CI failure, a review or a conflict):
    - sorted one-entry-per-line lists (`scratch/Axioms.lean`, `data/axioms/*.txt`, `data/root-imports-exclude.txt`)
      are union-merged by git (`.gitattributes`); keep them sorted and duplicate-free (CI checks);
    - shared scripts: take master's version and re-apply only your intended change;
-   - `README.md` is frozen (§7, step 4): a PR that still touches it drops its README change in the merge.
+   - `README.md` is frozen (§7, step 4) except for the places that state the bounds: a PR that touches anything else
+     there drops that change in the merge; if both sides changed a bound, the README states the merged `main_bounds`.
 5. **Quick local checks only (seconds to minutes):** `python3 tools/gen_root_imports.py --check`, the script tests
    (`python3 scripts/test_*.py`) if you touched scripts, the document checks (`python3 scripts/check_constants.py`
    and `python3 scripts/check_md_links.py`) if you touched documents or a bound, and the Lean modules you are
@@ -214,8 +215,13 @@ without a PR (`RFC`/`WIP` labels for early feedback).
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
 4. **Documentation:** **do not write in `README.md` for now** (user, 3 November 2026): every concurrent PR used to
    add its paragraph there and they conflicted on every merge. The PR description and its comments carry the
-   context of a change. `README.md` was revised in one pass on 15 November 2026 (#374); the freeze still holds for
-   every other PR. Never write counts of the axiom report or of native facts into documents (they conflict with
+   context of a change. `README.md` was revised in one pass on 15 November 2026 (#374) and again with the single
+   main theorem on 25 November 2026 (#638); the freeze still holds for every other PR, **with one exception: a PR
+   that changes a bound of `main_bounds` updates the places of `README.md` that state it** (the headline, the table
+   of constants, the row of this repository in the history table, the theorem names and exact values in "What is
+   proved", and the sentences that describe the proof it replaces), and nothing else there. The user asked on
+   25 November 2026 that the README always state the current bounds; `scripts/check_constants.py` refuses a README
+   that does not, and lists the lines. Never write counts of the axiom report or of native facts into documents (they conflict with
    every concurrent PR; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a bound, a
    hypothesis or the axiom report changed, update
    `docs/CONSTANTS.md` (the page that states every constant exactly), `docs/overview.tex` and
@@ -519,7 +525,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   (hours, and nothing lands meanwhile). This happened on 14 November 2026 when a second library was added to
   `lakefile.toml` (#371). So:
   - do not add a library, an executable, a dependency or an option to the root lake files. A target that `Grothe` does
-    not import belongs in a separate Lake package in its own directory (§15);
+    not import belongs in a separate Lake package in its own directory;
   - if you touched any file of the closure, run `python3 scripts/caps_stamp.py --digest` before pushing (about 40
     seconds); it must print a `sha256` line;
   - a real change of the lake files (a new Mathlib version, a new toolchain) is a planned operation: agree it with the
@@ -555,31 +561,3 @@ the user.
 
 **Check periodically:** `AGENT_ID=<your id> scripts/sync_master.sh` (the branch audit), `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
 `df -h`. Leave the machines at least as clean as you found them.
-
-## 15. The separate package `sign/` (GrotheSign)
-
-`sign/` is a Lake package of its own: Lean proofs about the signs of the coefficients of inverse kernel series (the
-beta-preservation argument; issues #362, #363). It is **separate work**. It is not part of the `Grothe` target, of
-`scratch/Axioms.lean` or of the proof check, and no bound of this repository depends on it. `sign/README.md` is the
-entry point; the points an agent needs are these.
-
-- **Where things go.** Modules under `sign/GrotheSign/`, imported by `sign/GrotheSign.lean`; the axiom report of the
-  package is `sign/scratch/SignAxioms.lean` (one `#print axioms` line per headline theorem). Nothing of it goes into
-  `Grothe/`, `Grothe.lean`, `scratch/Axioms.lean`, `data/axioms/` or the root lake files (§13), and `Grothe` never
-  imports it. If a result of this package is ever needed by the main proof, that is a decision for the user: the
-  modules would then move into `Grothe/` through an ordinary PR, without a new library in `lakefile.toml`.
-- **Building.** Run `lake exe cache get` once in the repository root (or use a worktree with the shared packages
-  linked, §5); then `cd sign && lake build`, and `lake env lean scratch/SignAxioms.lean` for the axiom report. The
-  package takes Mathlib by path from the root's `.lake/packages`, so the build compiles only its own modules. The
-  first build clones the small packages Mathlib depends on into `sign/.lake/packages` (about 400 MB, one to two
-  minutes). This build is light and may run on the laptop; rule 3 concerns the `Grothe` target.
-- **CI does not check it.** The `sorry` scan, the roots check and the axiom report cover the `Grothe*` trees only, and
-  a change under `sign/` alone is routed as "no proof change" (the status then says so; it is not a proof check). So
-  the author's local build is the check: paste the output of `lake build` and of the axiom report in the PR, and a
-  reviewer rebuilds the package before approving. The rules of §13 apply unchanged: no `sorry`, no new axiom, no
-  `implemented_by`/`extern`/`unsafe`, warning-free.
-- **Process.** Everything else is as for any other work: a task issue, your own branch and worktree, a PR, review,
-  landing (§1, §3, §7). Pushes that touch only `sign/` may carry `[skip ci]`.
-- **After a change of the Mathlib version in the root** (a planned operation, §13): run `lake update` in `sign/` and
-  commit `sign/lake-manifest.json` and `sign/lean-toolchain`, which must equal the root toolchain file.
-

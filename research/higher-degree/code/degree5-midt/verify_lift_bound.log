@@ -1,0 +1,51 @@
+pi bracket: 333/106 < pi < 355/113 (Machin series)
+Lean mass fact: epsh = 25/31, c = 2141/3906 = 0.548131, S = 0.165606335315
+the mass fact beats K >= A for A >= S/(epsh - c) = 0.641089
+(A) rho0 = 2287/2500: V <= 0.475129 t^2 + 0.665459 < 500/701 for t <= 0.3172 (slack 2.497e-06); fails at t = 0.3173
+(A) rho0 = 4571/5000: V <= 0.475129 t^2 + 0.664688 < 500/701 for t <= 0.3197 (slack 1.646e-05); fails at t = 0.3198
+(B) rho0 = 2287/2500: V <= 0.498501 t^2 + 0.658272 < 500/701 for t <= 0.3321 (slack 1.533e-05); fails at t = 0.3322
+(B) rho0 = 4571/5000: V <= 0.498501 t^2 + 0.657541 < 500/701 for t <= 0.3343 (slack 1.469e-05); fails at t = 0.3344
+Codex pairs of 4.40 on [1/4, 5/12]: (2/pi) t^2 + A < 0.2304 < 0.8368 < rho0^2;  t^2 + A < 0.2935 < pi/4
+exact intervals (upper bracket below 500/701 at the endpoint, lower bracket above it one step further):
+  (A) 2/pi, rho0 = 2287/2500                                 t <= 0.3172 holds; fails at 0.3173
+  (A) 2/pi, rho0 = 4571/5000                                 t <= 0.3197 holds; fails at 0.3198
+  (B) 2/pi, rho0 = 2287/2500                                 t <= 0.3321 holds; fails at 0.3322
+  (B) 2/pi, rho0 = 4571/5000                                 t <= 0.3343 holds; fails at 0.3344
+the same with constants that are NOT proved here (each line: IF the constant holds THEN the interval):
+  (A) 2/pi, rho0^2 = pi/4 (conjectured radius)               t <= 0.4203 holds; fails at 0.4204
+  (B) 2/pi, rho0^2 = pi/4 (conjectured radius)               t <= 0.423 holds; fails at 0.4231
+  (A) c0 = 43/50 (section 3, N), rho0 = 2287/2500            t <= 0.3445 holds; fails at 0.3446
+  (B) c0 = 43/50 (section 3, N), rho0 = 2287/2500            t <= 0.3576 holds; fails at 0.3577
+  (A) c0 = 43/50 (section 3, N), rho0 = 4571/5000            t <= 0.3472 holds; fails at 0.3473
+  (B) c0 = 43/50 (section 3, N), rho0 = 4571/5000            t <= 0.36 holds; fails at 0.3601
+  (B) c0^2 = pi/4 (limit of Gaussian lifts), 2287/2500       t <= 0.371 holds; fails at 0.3711
+  (4.1): rho_s <= 2287/2500 (problem P7)                     t <= 0.4661 holds; fails at 0.4662
+  (4.1): rho_s <= 2287/2500, eight decimals                  t <= 0.46616437 holds; fails at 0.46616438
+  (4.1): rho_s = sqrt(pi)/2 (conjecture)                     t <= 0.6176 holds; fails at 0.6177
+(4.1) at t holds if rho_s <= r1 and fails for rho_s = r1 + 1/10000:
+  t = 0.2528  r1 = 0.9407
+  t = 0.3     r1 = 0.9363
+  t = 0.3321  r1 = 0.9329
+  t = 0.4     r1 = 0.9245
+  t = 0.5     r1 = 0.9091
+  t = 0.55    r1 = 0.9
+  t = 0.6     r1 = 0.89
+  (4.1) with r1^2 = 9 pi/32 (unsymmetrised lower bound)      t <= 0.2612 holds; fails at 0.2613
+  0.93998 < sqrt(9 pi/32) < 0.93999
+  4.18(a) formula with rho0^2 = pi/4: t <= 0.3263 holds; fails at 0.3264
+  hat bounds of section 6.3: 0.6626, 0.6643, 0.6685, 0.6737, 0.6766 at t = 0.35, 0.4, 0.5, 0.6, 0.65 (rounded downward)
+  margins of section 7 (rounded downward): checked
+reach of V <= (1-eta) t^2 + eta + (eps-eta) A [A] and of the mass-fact variant [B], A <= r^2 - c0^2 t^2
+(floating point, truncated to four decimals; a survey, the exact intervals are those above):
+  c0^2 = 2/pi (Theorem A)               r = 2287/2500  A: t <= 0.3172; B: t <= 0.3321
+  c0^2 = 2/pi (Theorem A)               r = 4571/5000  A: t <= 0.3197; B: t <= 0.3343
+  c0^2 = 2/pi (Theorem A)               r = sqrt(pi)/2 A: t <= 0.4203; B: t <= 0.4230
+  c0^2 = (43/50)^2 (elliptic lift, N)   r = 2287/2500  A: t <= 0.3445; B: t <= 0.3576
+  c0^2 = (43/50)^2 (elliptic lift, N)   r = 4571/5000  A: t <= 0.3472; B: t <= 0.3600
+  c0^2 = (43/50)^2 (elliptic lift, N)   r = sqrt(pi)/2 A: t <= 0.4564; B: t <= 0.4555
+  c0^2 = 1 (problem P7)                 r = 2287/2500  A: t <= 0.4661; B: t <= 0.4628
+  c0^2 = 1 (problem P7)                 r = 4571/5000  A: t <= 0.4699; B: t <= 0.4659
+  c0^2 = 1 (problem P7)                 r = sqrt(pi)/2 A: t <= 0.6176; B: t <= 0.5895
+thresholds for problem P7: V < 500/701 at t needs rho_s^2 <= (500/701 - eta - (1-eps) t^2)/(eps - eta):
+  t = 0.2528: rho_s <= 0.9407, t = 0.3000: rho_s <= 0.9363, t = 0.3321: rho_s <= 0.9329, t = 0.4000: rho_s <= 0.9245, t = 0.4500: rho_s <= 0.9173, t = 0.5000: rho_s <= 0.9091, t = 0.5500: rho_s <= 0.9000, t = 0.6000: rho_s <= 0.8900  (float, truncated)
+ALL CHECKS PASSED

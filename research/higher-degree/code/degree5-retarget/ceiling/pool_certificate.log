@@ -1,0 +1,8 @@
+degree 5, no tail, every game: eps_profile_K2.json rows [190, 277, 329] (W3, W3, Z2), weights 0.156304, 0.714676, 0.129019
+   model norm >= 0.7124304398 (digits rounded down); no such game certifies more than 1.403645808 (rounded up; six decimals: 1.403646)
+degree 5, identity tail, every game: eps_profile_K2.json rows [350, 460, 510, 530] (W3, W3, W3, W3), weights 0.832016, 0.012491, 0.137815, 0.017678
+   model norm >= 0.7123823506 (digits rounded down); no such game certifies more than 1.403740561 (rounded up; six decimals: 1.403741)
+degree 7, no tail, every game with eps <= cap: eps_profile_K3.json rows [140, 279, 366] (W3, W3, W3), weights 0.438139, 0.406302, 0.155559
+   model norm >= 0.7123933909 (digits rounded down) with cap = 0.8517066086...; no such game certifies more than 1.403718806 (rounded up; six decimals: 1.403719)
+degree 7, identity tail, every game with eps <= cap: eps_profile_K3.json rows [139, 279, 348, 366] (W3, W3, W3, W3), weights 0.139663, 0.199921, 0.193282, 0.467133
+   model norm >= 0.7123931399 (digits rounded down) with cap = 0.8517066086...; no such game certifies more than 1.403719301 (rounded up; six decimals: 1.403720)

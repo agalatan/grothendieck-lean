@@ -12,12 +12,14 @@ version plus what the rulebook does not say.
 
 `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`), without hypotheses:
 
-    1.40191 < K_G^ℂ ≤ 1.40455741 < 1/γ† = 1.40457593…
+    1.4020221627 < K_G^ℂ ≤ 1.404556392 < 1/γ† = 1.40457593…
 
-- Lower bound: `140191 / 100000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
+- Lower bound: `14020221627 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
   (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
-- Upper bound: `140455741 / 100000000`, weak (≤). Six Gaussian rounding channels, `Grothe/UpperSix/`
-  (`Grothe.UpperSix.bound`, `constant_le`, `constant_lt_inv_gammaDagger` in `Grothe/UpperResult.lean`).
+  The bound is the exact endpoint `sparse_stein_endpoint` rounded strictly downward.
+- Upper bound: `1404556392 / 1000000000`, weak (≤). Seven Gaussian rounding channels. The selector is in `Grothe/UpperSelector/`, on the six certified channels in `Grothe/UpperSix/` and `Grothe/UpperSixExact/`. `Grothe/UpperResult.lean` has exactly three theorems:
+  `Grothe.UpperSeven.bound` (the exact value, for every finite matrix), `constant_le` (rounded up) and
+  `constant_lt_inv_gammaDagger`.
 - `1/γ†` is Haagerup's proposed value; K is strictly below it.
 - An older, independent single-channel upper proof (`Grothe/UpperTightFinal.lean`, K < 1.404599395362) is still built.
 
@@ -40,11 +42,12 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 
 | path | what |
 |---|---|
-| `Grothe/Statement.lean` | definitions only (imports only Mathlib): `scalarOpt`, `vectorOpt`, `IsBound`, `complexGrothendieckConstant`, `UpperBelow`, `LowerAbove` |
-| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean`, `Grothe/LowerTarget.lean` | the theorems |
+| `Grothe/Statement.lean` | definitions only (imports only Mathlib): `scalarOpt`, `vectorOpt`, `IsBound`, `complexGrothendieckConstant`, `UpperBelow` |
+| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorems |
 | `Grothe/Lower/` | lower certificate: exact rational checker, rows, Stein cuts, mass row, envelope, transfer to matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis for the lower bound; the node caps (`Cap*.lean`, `CapRowKK`, `CapPieces/`, `CapNodes`) |
-| `Grothe/UpperSix/` | the six-channel upper proof; `haagerup-article/anc/` is a byte copy with its own CI job |
+| `Grothe/UpperSelector/` | the angular selector, seven-channel mixed head and transfer |
+| `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six-channel upper proof: the library, and the certificate of the bound |
 | `Grothe/Upper/`, `Grothe/UpperChaos/`, `Grothe/UpperQuad/`, `Grothe/UpperTight*.lean` | the older single-channel upper proof |
 | `GrotheKernel/`, `GrotheCapsKernel/`, `GrotheQuadKernel/`, `GrotheQuadExtKernel/` | Mathlib-free checker programs, precompiled libraries |
 | `Grothe.lean`, `Grothe*Kernel.lean` | generated roots (`python3 tools/gen_root_imports.py`); never edit by hand |
@@ -52,8 +55,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | `tools/` | generators and replay scripts; `scripts/` CI helpers and checks |
 | `docs/` | `CONSTANTS.md`, `LEAN_DETAILS.md` (module inventory), `overview.tex` (source of `OVERVIEW.pdf`), notes |
 | `research/` | ledgers of open problems (Conjecture K, higher-degree games, identity tail); nothing built; rules in `research/README.md` |
-| `haagerup-article/` | the article and its Lean package, **frozen**: it never quotes the repository's current bounds |
-| `sign/` | separate Lake package GrotheSign; not part of `Grothe` or of CI |
+| `haagerup-article/` | the article, **frozen**, with its own Lean package under `anc/`: it never quotes the repository's current bounds |
 | `handoff/` (git-ignored), `miscellaneous/`, `abandonware/` | archives; never built or imported |
 
 ## Building
@@ -61,8 +63,8 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 - **Never `lake build` or `lake build Grothe` on the laptop.** The root includes the node caps (hundreds of
   CPU-hours cold). Build only your modules: `lake build Grothe.X.Y`.
 - **Before every local build, check the import closure**: if the module imports `Grothe.LowerAnalytic.CapNodes`
-  (directly or through `Grothe.MainResult`), do not build it locally. `Grothe/Statement.lean`,
-  `Grothe/LowerTarget.lean` and `Grothe/MainResult.lean` are edited without a local build of `MainResult`.
+  (directly or through `Grothe.MainResult`), do not build it locally. `Grothe/MainResult.lean` is edited without
+  a local build.
 - The upper bound alone builds locally: `lake build Grothe.UpperResult`, then
   `lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six`.
 - Where: `ssh yo` (8 vCPUs) if its load is at most 4, else the laptop; in your own folder `~/<id>-<topic>` with
@@ -76,7 +78,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 ## Never touch
 
 - `lakefile.toml`, `lake-manifest.json`, `lean-toolchain`: pinned by the node-cap registry; any change asks for a
-  rebuild of all node caps. A new target goes in its own Lake package (like `sign/`).
+  rebuild of all node caps. A new target goes in its own Lake package.
 - The caps closure (`python3 scripts/caps_stamp.py --list`) unless that is the task; after touching it,
   `python3 scripts/caps_stamp.py --digest` must print a `sha256` line.
 - `GrotheCapsKernel/` and `GrotheQuadKernel/`: frozen precompiled libraries; a change recompiles everything that

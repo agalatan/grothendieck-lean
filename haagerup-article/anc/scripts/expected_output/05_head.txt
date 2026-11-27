@@ -1,0 +1,57 @@
+05  The head of the mixture, k = 0..250
+=======================================
+
+Inputs
+------
+  mu_n of the reflected pair: 251 intervals, largest width 8730 / 2^128
+  E(d1, d2) of the smoothed map: 21168 intervals, largest width 126 / 2^128
+  [ok] (interval) the energies of the table sum to at most 1 (upper bound 0.998795520243)
+
+Per channel, at the midpoints of the intervals (exact arithmetic on the midpoints)
+----------------------------------------------------------------------------------
+  p   h_0                      sum_{k=1..250}|h_k|       D_250 = h_0 - sum       1/D_250
+  0     0.711857145815987340     0.001377724581995184     0.710479421233     1.407500
+  1     0.711138823771773427     0.002732803925146771     0.708406019846     1.411619
+  2     0.072246572725742341     0.832726930856250008    -0.760480358130    -1.314958
+  3     0.755183821744181018     0.117007246296455107     0.638176575447     1.566964
+  4     0.716847647442600948     0.025280243704043150     0.691567403738     1.445990
+  5     0.692306218485362810     0.037056656802996181     0.655249561682     1.526136
+  (channel 2 alone has D_250 < 0; its weight is 1.562e-04.)
+
+The mixture H_k = sum_p w_p h_k^(p), interval arithmetic with exact endpoints
+-----------------------------------------------------------------------------
+  largest width of an H_k interval: 1.931e-25
+  H_0 in [0.711974258589983158243587851631,
+          0.711974258589983158243587887559]
+  c                              = 0.711974258589
+  |H_0 - c|                     <= 9.831582435879e-13
+  sum_{k=1..250} |H_k|          in [6.1578477290589133e-06, 6.1578477290589134e-06]
+  |H_0 - c| + sum |H_k|         <= 6.1578487122171570e-06
+  head cap                       = 6.157850e-06
+  head cap - (|H_0 - c| + sum)  >= 1.287782e-12
+  [ok] (interval) |H_0 - c| + sum_{k=1}^{250} |H_k| <= head cap
+
+The same at the midpoints
+-------------------------
+  H_0                   = 0.711974258589983158243587861128
+  H_0 - c               = 9.831582435878e-13
+  sum_{k=1..250} |H_k| = 6.1578477290589133e-06
+  [ok] (exact) the midpoint values lie inside the interval enclosures
+  the ten largest |H_k|, k >= 1:
+    k =  10   H_k = 2.0117960057e-06
+    k =   1   H_k = 1.2513577584e-06
+    k =  12   H_k = -8.5460366755e-07
+    k =  15   H_k = -5.7431932666e-07
+    k =  13   H_k = -2.6796278430e-07
+    k =   7   H_k = -2.1024159288e-07
+    k =  19   H_k = 1.8347307904e-07
+    k =  14   H_k = 1.5706692738e-07
+    k =  17   H_k = -1.1454105866e-07
+    k =  23   H_k = -1.0824412507e-07
+  sum of |H_k| for k = 1..10: 3.49823500e-06
+  sum of |H_k| for k = 11..50: 2.65257395e-06
+  sum of |H_k| for k = 51..150: 7.03861490e-09
+  sum of |H_k| for k = 151..250: 1.55859332e-13
+  signs of H_1..H_250: 117 positive, 133 negative
+
+RESULT: all 3 checks passed

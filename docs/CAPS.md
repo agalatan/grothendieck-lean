@@ -29,8 +29,9 @@ these are theorems. The node caps are the remaining finite information:
 * `TailNodeCaps ν` (`Grothe/LowerAnalytic/RowGaussian.lean`): for every row `k` of `rowData` and every node `(s, c)` of its
   cap table, `Ψ_k(s) − capPad ≤ c`, with `capPad = 10⁻¹¹`;
 * `tailNodeCaps_cert : TailNodeCaps (nuHat (47/2000))` (`Grothe/LowerAnalytic/CapNodes.lean`) proves it for the 14 rows;
-* `lower_target` (`Grothe/MainResult.lean`) is `lowerTarget_of_tailNodeCaps tailNodeCaps_cert`. The hypothesis enters
-  through `lower_bound_of_tailNodeCaps`, `witnessCap_cert` and the shared reduction `reductionHyp_of_nodeCaps`.
+* `sparse_stein_endpoint` in `Grothe/MainResult.lean` applies `sparseSteinEndpoint_le_of_tailNodeCaps`
+  to `tailNodeCaps_cert` and the six-channel bound. The node-cap hypothesis enters through
+  `SparseStein.lower_of_nodeCaps`, `witnessCap_of_circular_profile` and `circularReductionHyp_of_nodeCaps`.
 
 The mass row uses the explicit quadratic and affine branches of its potential. Lean checks the spectral
 majorant on each branch, then checks the chords between certified scales throughout the fourth-moment

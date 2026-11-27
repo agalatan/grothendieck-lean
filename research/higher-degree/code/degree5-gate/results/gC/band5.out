@@ -1,0 +1,8 @@
+game gC (lambda_1 0.78, gamma 0.0779): N 0.7128672 margin 3.995e-04 (peak t 0.8484)
+  t=0.800: piece [0.7950, 0.8050] room 1.684e-03 | mu 0.1887 -> tilt 0.3674 (at |q| 0.00) | u* 0.08787 cap 1.100 u* | quintic share 0.111 | kappa_AB 0.869: band minimum 0.495 at 0.925 u* (chi 36); at 0.85 / 0.90 / 1.0 u*: 0.578 (chi 42) / 0.516 (chi 42) / 0.553 (chi 12)
+  t=0.820: piece [0.8150, 0.8250] room 7.461e-04 | mu 0.2231 -> tilt 0.3997 (at |q| 0.00) | u* 0.06825 cap 1.108 u* | quintic share 0.121 | kappa_AB 0.859: band minimum 0.785 at 1.000 u* (chi 16); at 0.85 / 0.90 / 1.0 u*: 1.025 (chi 24) / 0.914 (chi 24) / 0.785 (chi 16)
+  t=0.840: piece [0.8350, 0.8425] room 4.003e-04 | mu 0.2566 -> tilt 0.4308 (at |q| 0.00) | u* 0.04816 cap 1.132 u* | quintic share 0.133 | kappa_AB 0.847: band minimum 1.499 at 1.050 u* (chi 14); at 0.85 / 0.90 / 1.0 u*: 2.296 (chi 14) / 2.030 (chi 14) / 1.641 (chi 16)
+  t=0.845: piece [0.8425, 0.8475] room 3.742e-04 | mu 0.2649 -> tilt 0.4385 (at |q| 0.00) | u* 0.04306 cap 1.084 u* | quintic share 0.136 | kappa_AB 0.844: band minimum 2.117 at 1.025 u* (chi 8); at 0.85 / 0.90 / 1.0 u*: 3.064 (chi 12) / 2.676 (chi 12) / 2.141 (chi 12)
+  t=0.850: piece [0.8475, 0.8525] room 3.742e-04 | mu 0.2731 -> tilt 0.4460 (at |q| 0.00) | u* 0.03794 cap 1.091 u* | quintic share 0.139 | kappa_AB 0.841: band minimum 2.812 at 1.025 u* (chi 12); at 0.85 / 0.90 / 1.0 u*: 4.310 (chi 10) / 3.727 (chi 10) / 2.939 (chi 10)
+  t=0.855: piece [0.8525, 0.8575] room 3.863e-04 | mu 0.2812 -> tilt 0.4535 (at |q| 0.00) | u* 0.03279 cap 1.103 u* | quintic share 0.143 | kappa_AB 0.837: band minimum 3.995 at 1.050 u* (chi 8); at 0.85 / 0.90 / 1.0 u*: 6.760 (chi 8) / 5.732 (chi 8) / 4.438 (chi 10)
+game gC done in 2480 s

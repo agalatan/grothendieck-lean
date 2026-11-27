@@ -1,0 +1,24 @@
+compose(p2, phase grades) vs master's six_2 head: sum |diff| = 8.96e-17
+eps=0.01: sum|d mu| = 1.023e-03, |d mu| over the last 20 degrees = 2.72e-05, column slope (no allowance) -0.760060 (phase column -0.760480)
+eps=0.02: sum|d mu| = 3.714e-03, |d mu| over the last 20 degrees = 8.08e-05, column slope (no allowance) -0.758838 (phase column -0.760480)
+eps=0.05: sum|d mu| = 1.851e-02, |d mu| over the last 20 degrees = 3.22e-04, column slope (no allowance) -0.751254 (phase column -0.760480)
+eps=0.1: sum|d mu| = 5.735e-02, |d mu| over the last 20 degrees = 7.74e-04, column slope (no allowance) -0.729808 (phase column -0.760480)
+eps=0.15: sum|d mu| = 1.059e-01, |d mu| over the last 20 degrees = 9.00e-04, column slope (no allowance) -0.701454 (phase column -0.760480)
+eps=0.2: sum|d mu| = 1.591e-01, |d mu| over the last 20 degrees = 7.46e-04, column slope (no allowance) -0.668322 (phase column -0.760480)
+eps=0.3: sum|d mu| = 2.726e-01, |d mu| over the last 20 degrees = 8.21e-04, column slope (no allowance) -0.593600 (phase column -0.760480)
+seven + reflected cubic eps=0.01: float D = 0.7119685658149 (without: 0.7119685658149; gain -1.11e-16), its weight 0.000e+00, phase weight 1.562e-04
+seven + reflected cubic eps=0.02: float D = 0.7119685658149 (without: 0.7119685658149; gain +1.11e-16), its weight 0.000e+00, phase weight 1.562e-04
+seven + reflected cubic eps=0.05: float D = 0.7119685658149 (without: 0.7119685658149; gain +1.11e-16), its weight 0.000e+00, phase weight 1.562e-04
+seven + reflected cubic eps=0.1: float D = 0.7119685658149 (without: 0.7119685658149; gain +0.00e+00), its weight 0.000e+00, phase weight 1.562e-04
+seven + reflected cubic eps=0.15: float D = 0.7119685658149 (without: 0.7119685658149; gain +0.00e+00), its weight 0.000e+00, phase weight 1.562e-04
+seven + reflected cubic eps=0.2: float D = 0.7119685658149 (without: 0.7119685658149; gain -1.11e-16), its weight 0.000e+00, phase weight 1.562e-04
+seven + reflected cubic eps=0.3: float D = 0.7119685658149 (without: 0.7119685658149; gain -2.22e-16), its weight 0.000e+00, phase weight 1.562e-04
+seven + all reflected columns: float D = 0.7119685658149, gain +0.00e+00, 1/D = 1.404556391974
+seven + copy 23277/25000 + reflected cubic eps=0.01: float D = 0.7119745484003 (without: 0.7119745484003; gain +0.00e+00), its weight 0.000e+00, phase weight 1.558e-04
+seven + copy 23277/25000 + reflected cubic eps=0.02: float D = 0.7119745484003 (without: 0.7119745484003; gain +0.00e+00), its weight 0.000e+00, phase weight 1.558e-04
+seven + copy 23277/25000 + reflected cubic eps=0.05: float D = 0.7119745484003 (without: 0.7119745484003; gain +1.11e-16), its weight 0.000e+00, phase weight 1.558e-04
+seven + copy 23277/25000 + reflected cubic eps=0.1: float D = 0.7119745484003 (without: 0.7119745484003; gain +0.00e+00), its weight 0.000e+00, phase weight 1.558e-04
+seven + copy 23277/25000 + reflected cubic eps=0.15: float D = 0.7119745484003 (without: 0.7119745484003; gain +1.11e-16), its weight 0.000e+00, phase weight 1.558e-04
+seven + copy 23277/25000 + reflected cubic eps=0.2: float D = 0.7119745484003 (without: 0.7119745484003; gain +0.00e+00), its weight 0.000e+00, phase weight 1.558e-04
+seven + copy 23277/25000 + reflected cubic eps=0.3: float D = 0.7119745484003 (without: 0.7119745484003; gain +1.11e-16), its weight 0.000e+00, phase weight 1.558e-04
+seven + copy 23277/25000 + all reflected columns: float D = 0.7119745484003, gain +1.11e-16, 1/D = 1.404544589757

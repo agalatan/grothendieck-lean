@@ -224,3 +224,125 @@ All files of `KSPH` (STATUS 4.30) are committed in the repository, with no exter
 - Not in the repository: the certificate pipeline that P4 asks to replay,
   `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/claude-research-2026-11-15/degree5-cert/cert2b/`
   (P4 embeds its 29 rows and says what a replay must reproduce).
+
+## The recomputed design of 25 November 2026 (STATUS 4.41–4.45, tag DSGN)
+
+- `sources/degree5-design-2026-11-25/DESIGN.md` was written for the repository from the design worker's script
+  outputs and its note `ASSEMBLY.md` (the assembly theorem and its proof); it is not a verbatim copy of a working
+  file.
+- `code/degree5-design/design-2026-11-25/`: the design worker's scripts, the cover pipeline, the certified row
+  constants, the exact envelopes, the margin scans, the tables and `RESULTS.txt`, copied unedited from the working
+  folder; `checks/` and `README.md` there were written when the computation was recorded. `RESULTS.txt` and the logs
+  under `A_reproduce/`, `certB_const/out/`, `certB_lin/out/` and `smallt/` are kept because the note cites them as its
+  record (the exception of [`../README.md`](../README.md)); the folder holds 2.0 MB of text in files of at most 152 KB.
+- The working folder is `/Users/alingalatan/workspaces/grothe/handoff/degree5-attack-2026-11-25/design/` (45 MB). Not
+  in the repository:
+  - the 52 cover files `certB_const/out/cover_<row>.json` and `certB_lin/out/cover_<row>.json` (31,936,823 B in all;
+    one line each with SHA-256 and size in `code/degree5-design/design-2026-11-25/COVERS.sha256`), and the per-row
+    logs `certB_*/out/logs/`;
+  - `work/`: the per-case outputs of the conic programs and searches (`g078/`, 7.9 MB; `g078lap/`, 1.2 MB; `g077/`,
+    0.9 MB; `g078hi/`), their command files and logs, and the JSON forms of the tables of §3.3 of the note;
+  - `margins/`: the logs of the scans and the two re-scans `m078hi_t0.86.json`, `m078hi_t0.865.json`;
+  - the node caps of the 29 rows (those of the stage-2b certificate, `degree5-cert/cert2b/` of the working folder of
+    15–17 November, as for STATUS 4.17) and the tools that the allowance and re-evaluation programs import
+    (`thresholds/` of the degree-5 worker's folder named in the section on 17 November above).
+- `/Users/alingalatan/workspaces/grothe/handoff/degree5-attack-2026-11-25/mega-design-raw.tar.gz`: the raw outputs as
+  copied from the droplet (`design/work/`, `design/certB_*/out/`, the scan logs, and the logs of the replay of
+  STATUS 4.17 under `runA/`).
+
+- The repairs of DSGN §5.6 (STATUS 4.44) were run by the recording worker on the droplet in a folder that was removed
+  afterwards. In the repository: the generators and the summary script under `checks/`, and under
+  `tables/funded/` and `tables/nu_matched/` the outputs that the tables use (the factor tables of `final_table.py`,
+  the margin scans and the allowance outputs of the ν-matched rows). Not kept anywhere: the per-run logs, the
+  allowance outputs of the 33 funded and control runs other than through the factor tables, and the eleven profile
+  archives of the ν-matched rows (they are reproduced by `prof2.py` of the working folder's `thresholds/` from
+  `tables/nu_matched/rows5.lines`). The profile archives `prof_t0p<row>.npz` of the design run that these runs used
+  are in `mega-design-raw.tar.gz` under `design/work/g078/out/`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `degree5-attack-2026-11-25/mega-design-raw.tar.gz` | 51,993,411 B | `3961b48d3dd97911f769f2b4001c02fa57b36bc56d16f9f7f5c61303a14c378b` |
+| `degree5-attack-2026-11-25/design/ASSEMBLY.md` (the source of §5 of the note) | 16,966 B | `9d15595b0492f331609290ea78556e7f39e5b7b27415eae8122d8dd0553f17ef` |
+| `degree5-attack-2026-11-25/design/RESULTS.txt` (copied) | 66,963 B | `613a6133ce919afda9f00ed4b4ef97add4ca929107cda3d89a4202b989dd1bb5` |
+| `degree5-attack-2026-11-25/design/work/table_g078.json` | 508,211 B | `532624de6304efba9a3c12091330cb6f59c4620787f358756005ed1704c9d7c1` |
+| `degree5-attack-2026-11-25/design/work/table_g078pub.json` | 274,585 B | `471add239caad7113425986a864cd739922674a3ef3a94f0764f3372ce3270b8` |
+| `degree5-attack-2026-11-25/design/work/table_g078lap.json` | 112,751 B | `d6983a57437494d3f1becaa5bf46d583a6a843ca2ea242e44fe602a909d5f928` |
+| `degree5-attack-2026-11-25/design/work/table_g077.json` | 63,528 B | `0ce52fc524a54432d44b1a357f743f4f7e87fc2b8d4c53f960b3b557867e7689` |
+| `degree5-attack-2026-11-25/design/work/finL.cases.json` (the candidates of pieces 1–8) | 19,962 B | `399fe514b0c176424f09ea28f7ea1e46880ff55d4f442ec0e8c5730cf45675d0` |
+| `degree5-attack-2026-11-25/design/work/finU.cases.json` (pieces 9–21) | 14,424 B | `0f57cbe7c014e08d3d45ecfdc7e7886f336b347866e323c14160a72e5cb80099` |
+| `degree5-attack-2026-11-25/design/work/finT.cases.json` (the tilt (3/10, 1/10)) | 2,985 B | `90d8b083cefb0bb78194e35668971b6e1a322d9d7f6a4fb791e5c10dbcacb5f2` |
+
+## Certified pure-cost constants for the odd and quintic sectors (gemini-21d5, 25 November 2026, #627; STATUS 4.16b, tag PCOST)
+
+All files of `PCOST` are committed in the repository, with zero external working-folder artefacts or third-party dependencies:
+- [`sources/degree5-pure-cost-2026-11-25-gemini-21d5/PROOF.md`](sources/degree5-pure-cost-2026-11-25-gemini-21d5/PROOF.md): complete proofs, outward-rounded 19-row summary table, $E_{\max}(s)$ profile summary, negative-control inventory, and replay instructions.
+- [`code/degree5-pure-cost-gemini-21d5/`](code/degree5-pure-cost-gemini-21d5/):
+  - `python3 -IB research/higher-degree/code/degree5-pure-cost-gemini-21d5/verify_pure_cost.py` (and `python3 -IB -O ...`): zero-dependency Python 3 stdlib verifier (< 2 s) checking exact denominator-$10^6$ row rationalisation against `rows5.lines` and `band_row_0.70.json`, exact rational positivity/root-uniqueness premises, zero-float `Fraction` boundary proof $Z(0.80) > 1 > Z(0.81)$, exact `Fraction` Sturm chains for all 280 rational quartic elliptic secant ladder rungs, dyadic hexfloat receipt audit of `result.json`, and 11 adversarial negative/corruption controls (`--replay-cpp` recompiles `certify_pure_cost.cpp` and verifies bit-exact equality against `result.json`, ~21 min wall on 8 threads).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/degree5-pure-cost-2026-11-25-gemini-21d5/PROOF.md` | 52,049 B | `d7613c80579fba6cbc8c919c89e6868a2b5c9c139351624af4af1c2fccde250f` |
+| `code/degree5-pure-cost-gemini-21d5/certify_pure_cost.cpp` | 114,283 B | `7c8df15e632c6d667b924fd25f9d8846e91a0008c3dc5f283a348319bf024f79` |
+| `code/degree5-pure-cost-gemini-21d5/verify_pure_cost.py` | 27,802 B | `bbfe36382f883947979c7f625df280fe9bf61d8a39c53bda4abc45951933b977` |
+| `code/degree5-pure-cost-gemini-21d5/result.json` | 52,138 B | `bab7b3ba411bbef8d93dd8ed0f89cfc00d8047a4d83335fb768ae910f076eafc` |
+
+## The retarget note of 25 November 2026 (STATUS 1.11, 1.12, 4.50–4.52, tag RETG)
+
+- `sources/degree5-retarget-2026-11-25/RETARGET.md` was written for the repository; it is not a copy of a working file.
+- `code/degree5-retarget/`: the scripts and their result files (0.5 MB of text, files of at most 221 KB). The
+  floating-point runs were made on the droplet in `~/claude-b9ee-retarget`, removed afterwards; nothing of them is
+  kept outside the repository. The per-run outputs of the allowance program (93 files) and the per-iteration logs
+  were not kept: `theta/thetas.json` and `ceiling/eps_profile_K*.json` hold what the tables use.
+- Inputs outside the repository, read by `theta/gen_theta_job.py` and `theta/extract_cells.py`: the band files, the
+  command file `fin_all.txt` and the ratio files of the design run (`design/work/` of the working folder named in
+  the previous section), the profile archives `design/work/g078/out/prof_t0p<row>.npz` (in
+  `mega-design-raw.tar.gz` there) and the tools `thresholds/*.py` of the degree-5 worker's folder.
+
+## Unconditional symmetrised spiked cubic radius and angle-dependent envelope (gemini-4c4c, 25 November 2026, #628; STATUS 4.48, tag SSPK)
+
+All files of `SSPK` are committed in the repository, with zero external working-folder artefacts:
+- [`sources/spiked-cubic-radius-gemini-4c4c/PROOF.md`](sources/spiked-cubic-radius-gemini-4c4c/PROOF.md): complete proofs, dependency inventory, 11-ray Pythagorean half-plane table, sector-free capped degree-5 cutoff derivation (`t ≤ 9190839/25000000 = 0.36763356`), and negative-control inventory.
+- [`code/spiked-cubic-radius-gemini-4c4c/`](code/spiked-cubic-radius-gemini-4c4c/):
+  - `python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/verify.py` (and `python3 -IB -O ...`; `--radius-only` for the narrower Theorem 1 radius result): zero-float Python 3 stdlib verifier (**C**) requiring positive radii ($r_1 > 0$, $R_j > 0$), checking Machin π brackets, `4.18g` Stieltjes-Laguerre ellipsoids and radial envelopes, `4.18e` left closure on `[0, 7/20]`, all 56 Sturm-certified third-order spiked Stein rows across 7 interior rays and 4 right-analytical `4.18g` rays, convex-quadratic slab cover (`sup √(t² + s²) ≤ 0.9389788947 < 939/1000 < √(9π/32)`), and binding Theorem 2(2) coverage through `t ≤ 9190839/25000000 = 0.36763356` (where this 11-ray + Lean-mass upper envelope crosses `500/701` at `0.36763357`).
+  - `python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/check_identities_exact.py`: zero-float Python 3 stdlib polynomial checker verifying spiked Stein identities `(I′)`–`(IV′)`, `∂̄_m a(G) = W_m` (including on `G = z₁² z̄₂` where `∂₁F₂ ≠ ∂₂F₁`), zero-mean `±G` symmetrisation, pointwise cones and split Young inequality, `z₁` integration-by-parts Hölder `(4/3, 4)` + 4-term AM-GM sixth-moment bounds, and `5 × 5` cofactor determinants against Leibniz determinants over `ℚ` (~36 s).
+  - `python3 -IB research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/test_controls.py`: zero-float Python 3 stdlib AST audit and adversarial negative/corruption control suite (`r₁ = 22/25 = 0.88`, one-field negative `claim = "-939/1000"` and negative `R_0`, exact `Fraction` proof `E|F|/‖F‖₂ > 0.9430 > √(9π/32)` on unsymmetrised `F = z₁(1 − (|z₁|² − 2)/4)`, `r₁ = 47/50 = 0.94`, disabling `q_sym = 0`, truncated `s_G`, tail `φ₄[K] ≠ 0`, Sturm knot corruption, `t_right < √π/2`, `+10⁻⁷` mid-`t` cutoff inflation, missing `degree5_midt.lean_mass` / `degree5_midt` keys, and lowered `lean_mass.t_cutoff`).
+  - `make_cert.py`: standalone Clarabel + HiGHS rational certificate generator reproducing `cert_spiked.json` from scratch.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/spiked-cubic-radius-gemini-4c4c/PROOF.md` | 49,828 B | `1010c252c7c9871fbcdfcd2c244d6eace9d1356924cb9a68b810fddef2d98b3b` |
+| `code/spiked-cubic-radius-gemini-4c4c/cert_spiked.json` | 261,727 B | `85ee61e46e4a4d3cc54a1ea4fa2b043c8e1f79ae25ff3fa7cdbf3778b55fb960` |
+| `code/spiked-cubic-radius-gemini-4c4c/verify.py` | 38,440 B | `a482e177d55c7749a8b898e5f0382b271efb69147a31801f0a87945d36468fc4` |
+| `code/spiked-cubic-radius-gemini-4c4c/check_identities_exact.py` | 28,384 B | `e646e1edf97ae1bc7ab0258d76d3523a1d2afd7665b58f915eef76c037035bb6` |
+| `code/spiked-cubic-radius-gemini-4c4c/test_controls.py` | 11,118 B | `f7a05fe5561bd1b28589682541a054850beedce945e756f3ec3d07b7b2ef9b9c` |
+| `code/spiked-cubic-radius-gemini-4c4c/make_cert.py` | 57,080 B | `39d980e48d4dcce31152a504377497df00122ae792689e333fbf7c052c75c2a6` |
+
+## The gate of two other degree-5 games, 25–26 November 2026 (STATUS 4.53–4.55, tag D5GATE)
+
+- `sources/degree5-gate-2026-11-25/GATE.md` was written for the repository; it is not a copy of a working file.
+- `code/degree5-gate/`: `pipeline/` (the scripts and command lists that ran on the droplet yo in `~/claude-b9ee-gate/pkg`,
+  removed afterwards), `results/` (the small outputs the note uses, copied by `collect.sh`), `summary.py` and its output
+  `SUMMARY.md`, `exact/ranges.py` and `exact/ranges.log`.
+- Outside the repository, in `handoff/degree5-gate-2026-11-25/` of the main checkout (git-ignored): `pkg/` (the droplet
+  folder as it was at the end: 1,005 files, 11 MB, with the per-row gate outputs `gate_*/out/`, the profiles
+  `thresholds/games/*/out/prof_*.npz`, the allowance logs and the law-bundle logs `law/*.err`), the same folder as one
+  archive, and the package list of the Python environment used.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `handoff/degree5-gate-2026-11-25/pkg.tar.gz` | 5,052,854 B | `058e375a4b31272dae597447516c86343484c1bd380913a419e7ffcab9c22965` |
+| `handoff/degree5-gate-2026-11-25/venv-freeze.txt` | 247 B | `9ad57a22603315ad85c065d7f137c2f67f5e45a423ec1ec0503720ced0f23a6a` |
+
+## Independent Level C clean-room replay of the degree-5 law layer and small-t bound (gemini-21d5, 26 November 2026, #625; STATUS 4.17, 4.18(b), 4.40, 4.42, 4.45, tag LAWREP)
+
+All files of `LAWREP` are committed in the repository, with zero external working-folder artefacts and zero third-party dependencies:
+- [`sources/degree5-law-replay-2026-11-25-gemini-21d5/PROOF.md`](sources/degree5-law-replay-2026-11-25-gemini-21d5/PROOF.md): complete proofs of Claim 1 and Claim 3 (both zero-`arcsin` cover and elementary Lean-constant proof), outward-rounded tables of all 29 rows of `rows2b.json` and all 26 rows of `rows2c_final.json`, exact envelope/room verification (including all 21 pieces of Design `D*`), sanity checks, and 12 negative controls.
+- [`code/degree5-law-replay-gemini-21d5/`](code/degree5-law-replay-gemini-21d5/):
+  - `python3 -IB research/higher-degree/code/degree5-law-replay-gemini-21d5/verify_law_caps.py` (and `python3 -IB -O ...`): zero-dependency Python 3 stdlib verifier (< 2 s) auditing SHA-256 provenance, static zero-`libm`-transcendental C++ source check, Claim 1 outer-domain premises, P4 §§4, 8 sanity checks in pure `Fraction` arithmetic, all 60 certified covers (`29` `rows2b` plain + `5` zero-`arcsin` Stein + `26` `rows2c` plain at `ρ₀ = 2287/2500`), all 55 exact rational multi-atom primal lower-bound witnesses in `ℒ = (L1)–(L4)` on the plain covers, pure-`Fraction` box-bound replays of exported binding plain and Stein boxes, both proofs of Claim 3 (`40` `σ`-nodes / `39` intervals and cover-free Lean deduction), exact rational envelopes and rooms (`rows2b`, `rows2c_final`, and all 21 `D*` pieces at `500/701`, `1/1.40195` and `1/1.40210`), and 12 adversarial negative/corruption controls (`--replay-cpp` recompiles `certify_law_caps.cpp` and checks deterministic equality across `rows`, `claim3_small_t`, `sample_boxes`, `sanity_checks`, and `negative_controls`, ~37 min wall on 8 threads).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/degree5-law-replay-2026-11-25-gemini-21d5/PROOF.md` | 50,807 B | `479c3a6c1bcfd4083271b4a8fb93b4bc8581adbd3fc956dceb06b1e7d1917366` |
+| `code/degree5-law-replay-gemini-21d5/certify_law_caps.cpp` | 160,431 B | `2168deca284b95a01c496e6277505cbe62193ee44c4f97a05735fb99cf14868f` |
+| `code/degree5-law-replay-gemini-21d5/verify_law_caps.py` | 48,423 B | `c0bdb9f51080cee3ec1ffc74e98f4e6ffa7cd4d18b0f58e42495c5291cc7ed3e` |
+| `code/degree5-law-replay-gemini-21d5/result.json` | 85,055 B | `0020b02c426d0bd9e9b9e15573db7d70bcf7a46f57d02fe14e4313e0ad388571` |

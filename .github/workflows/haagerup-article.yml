@@ -1,21 +1,19 @@
 name: Haagerup article (Lean)
 
-# The Lean proof of the article in haagerup-article/: the standalone Lake package haagerup-article/anc (the arXiv
-# ancillary files). Its sources Grothe/UpperSix/ are a byte-for-byte copy of the repository's Grothe/UpperSix/, which
-# the Grothe target also builds (lean.yml). This job checks that the copy is exact and that the package builds on its
-# own, with the pinned Lean and Mathlib, warning-free, without sorry, axioms or unchecked code, and with no axioms
-# beyond propext, Classical.choice, Quot.sound and the native_decide facts listed in haagerup-article/anc/native.txt.
-# It runs when a file under haagerup-article/anc/ or Grothe/UpperSix/ changes, when the Lean or Mathlib version
-# changes, when this file changes, or by hand (workflow_dispatch). Edits of the article's text alone (main.tex,
-# main.pdf, figures/, README.md) do not run it: the job checks only the Lean package.
+# The Lean package of the article in haagerup-article/: haagerup-article/anc (the arXiv ancillary files), a
+# self-contained Lake package that depends on Mathlib only and has its own lakefile, lean-toolchain and
+# lake-manifest.json. This job tests that package alone: it has no sorry, axiom or unchecked code; it builds with its
+# pinned Lean and Mathlib, with warnings as errors; and its six public theorems depend on no axioms beyond propext,
+# Classical.choice, Quot.sound and the native_decide facts listed in haagerup-article/anc/native.txt, each of which
+# is used (haagerup-article/anc/check_axioms.py). The Python scripts under haagerup-article/anc/scripts/ are not part
+# of the proof; the job only checks that they compile.
+# It runs when a file under haagerup-article/anc/ changes, when this file changes, or by hand (workflow_dispatch).
+# Edits of the article's text (main.tex, main.pdf, figures/, README.md) do not run it.
 
 on:
   push:
     paths:
       - 'haagerup-article/anc/**'
-      - 'Grothe/UpperSix/**'
-      - 'lean-toolchain'
-      - 'lake-manifest.json'
       - '.github/workflows/haagerup-article.yml'
   workflow_dispatch:
 
@@ -33,23 +31,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: The ancillary sources are the repository's Grothe/UpperSix, with the same Lean and Mathlib
-        run: |
-          diff -r Grothe/UpperSix haagerup-article/anc/Grothe/UpperSix
-          cmp lean-toolchain haagerup-article/anc/lean-toolchain
-          python3 - <<'PY'
-          import json, sys
-          rev = lambda p: {q["name"]: q.get("rev") for q in json.load(open(p))["packages"]}
-          root, anc = rev("lake-manifest.json"), rev("haagerup-article/anc/lake-manifest.json")
-          bad = {k: (v, root.get(k)) for k, v in anc.items() if root.get(k) != v}
-          if bad:
-              sys.exit(f"haagerup-article/anc/lake-manifest.json differs from the root: {bad}")
-          print("packages pinned as in the root:", sorted(anc))
-          PY
-
       - name: No sorry, axiom or unchecked code
         run: |
           ! grep -rn --include='*.lean' --exclude-dir=.lake -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' haagerup-article/anc
+
+      - name: The scripts compile (they are not run and are not part of the proof)
+        working-directory: haagerup-article/anc
+        run: python3 -m py_compile check_axioms.py scripts/*.py
 
       - name: Lean toolchain and Mathlib (from the Mathlib cache)
         uses: leanprover/lean-action@v1
@@ -66,19 +54,6 @@ jobs:
       - name: Axioms (standard ones and the listed native_decide facts only)
         working-directory: haagerup-article/anc
         run: |
-          lake env lean Axioms.lean > axioms.txt
-          cat axioms.txt
-          python3 - <<'PY'
-          import re, sys
-          text = " ".join(open("axioms.txt").read().split())
-          theorems = len(re.findall(r"^#print axioms", open("Axioms.lean").read(), re.M))
-          lists = re.findall(r"depends on axioms: \[([^\]]*)\]", text)
-          if len(lists) + text.count("does not depend on any axioms") != theorems:
-              sys.exit(f"expected {theorems} axiom reports")
-          allowed = {"propext", "Classical.choice", "Quot.sound"} | set(open("native.txt").read().split())
-          used = {a.strip() for l in lists for a in l.split(",")}
-          extra = sorted(used - allowed)
-          if extra:
-              sys.exit(f"axioms outside the allowlist: {extra}")
-          print(f"{theorems} theorems, {len(used)} axioms, all allowed")
-          PY
+          set -o pipefail
+          lake env lean Axioms.lean | tee axioms.txt
+          python3 check_axioms.py axioms.txt

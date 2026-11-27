@@ -46,4 +46,8 @@ Inputs that live in git, not in this folder:
   `Grothe/UpperReplacement/RootData.lean`, `Grothe/UpperReplacement/HeadWitnessFacts/Group00.lean`–`Group07.lean`
   and `tools/replay_private_upper_budget.py`, whose interval routines the scripts import.
 
-No log is kept in the repository.
+Apart from the logs of the eighth-channel run (next paragraph), no log is kept in the repository.
+
+**Eighth channel (26 November 2026, #723).** The run was on the droplet `yo`, in the folder
+`~/claude-b9ee-eighth`, which is deleted. Its logs and small JSON results are in `code/eighth-channel/`. Only the
+intermediate `columns.json` (0.96 MB) was not kept: `columns.py` rebuilds it in two minutes.

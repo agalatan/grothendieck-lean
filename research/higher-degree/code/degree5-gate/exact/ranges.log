@@ -1,0 +1,50 @@
+capped (39/50, 779/10000)
+  target 1.402  (a) direct: t <= 0.250885 | (e) Parseval: t <= 0.34554022 | (e) mass: t <= 0.35859076 | (f) verifier accepts: t <= 0.36495
+    values at t = 0: direct 0.655227, Parseval 0.665459, mass 0.658272; target value 0.713267
+    (d) large t: verify.py: all requirements pass; verify_coupled.py: all requirements pass
+    (t) endpoint tangent (l, beta) = (17/10, 17/100): V < target for every pair with t >= 0.88527103
+  target 1.4025 (a) direct: t <= 0.250335 | (e) Parseval: t <= 0.34462006 | (e) mass: t <= 0.35776078 | (f) verifier accepts: t <= 0.36409
+    values at t = 0: direct 0.655227, Parseval 0.665459, mass 0.658272; target value 0.713012
+    (d) large t: verify.py: fails at "strict bracket on the lower crossing of the parabola"; verify_coupled.py: fails at "crossing is strictly between .88425209 and .88425210"
+    (t) endpoint tangent (l, beta) = (17/10, 17/100): V < target for every pair with t >= 0.88542710
+  control: 0.250885, 0.34554022, 0.35859076, 0.36495 at 1.402 are the certified endpoints of ledger 4.18a, e, f
+  control (t): the capped game with (17/10, 17/100) at 500/701 gives 0.88527103, as PROOF.md after (3)
+  negative control (t): beta = 1/100 is rejected (floor of g* not at T = 0)
+  negative control (t): (e, eta, l, beta) = (1/2, 9/10, 9/5, 8/25) is rejected (quintic square not absorbed)
+  negative control (t): (e, eta, l, beta) = (9/10, 1/10, 9/5, 33/50) is rejected (cubic form not absorbed)
+ridge B (41/50, 97/500)
+  target 1.4025 (a) direct: t <= 0.122921 | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= 0.17858605 | (f) verifier accepts: t <= 0.17948
+    values at t = 0: direct 0.700834, Parseval 0.717874, mass 0.699975; target value 0.713012
+    (d) large t: verify.py: fails at "full quintic margin"; verify_coupled.py: fails at "full quintic absorption"
+    (t) endpoint tangent (l, beta) = (9/5, 91/500): V < target for every pair with t >= 0.88569350
+  target 1.403  (a) direct: t <= 0.121632 | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= 0.17683715 | (f) verifier accepts: t <= 0.17771
+    values at t = 0: direct 0.700834, Parseval 0.717874, mass 0.699975; target value 0.712758
+    (d) large t: verify.py: fails at "full quintic margin"; verify_coupled.py: fails at "full quintic absorption"
+    (t) endpoint tangent (l, beta) = (9/5, 91/500): V < target for every pair with t >= 0.88583247
+A2 (106/125, 559/2000) = (0.848, 0.2795)
+  target 1.4025 (a) direct: t <= none (above the target at t = 0) | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= none (above the target at t = 0) | (f) verifier accepts: t <= not run (no start)
+    values at t = 0: direct 0.738980, Parseval 0.755254, mass 0.729467; target value 0.713012
+    (d) large t: verify.py: fails at "full quintic margin"; verify_coupled.py: fails at "full quintic absorption"
+    (t) endpoint tangent (l, beta) = (9/5, 47/250): V < target for every pair with t >= 0.88591151
+  target 1.403  (a) direct: t <= none (above the target at t = 0) | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= none (above the target at t = 0) | (f) verifier accepts: t <= not run (no start)
+    values at t = 0: direct 0.738980, Parseval 0.755254, mass 0.729467; target value 0.712758
+    (d) large t: verify.py: fails at "full quintic margin"; verify_coupled.py: fails at "full quintic absorption"
+    (t) endpoint tangent (l, beta) = (9/5, 47/250): V < target for every pair with t >= 0.88605051
+A1 (0.84896, 0.2818)
+  target 1.4025 (a) direct: t <= none (above the target at t = 0) | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= none (above the target at t = 0) | (f) verifier accepts: t <= not run (no start)
+    values at t = 0: direct 0.740234, Parseval 0.756433, mass 0.730434; target value 0.713012
+    (d) large t: verify.py: fails at "full quintic margin"; verify_coupled.py: fails at "full quintic absorption"
+    (t) endpoint tangent (l, beta) = (9/5, 47/250): V < target for every pair with t >= 0.88590627
+  target 1.403  (a) direct: t <= none (above the target at t = 0) | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= none (above the target at t = 0) | (f) verifier accepts: t <= not run (no start)
+    values at t = 0: direct 0.740234, Parseval 0.756433, mass 0.730434; target value 0.712758
+    (d) large t: verify.py: fails at "full quintic margin"; verify_coupled.py: fails at "full quintic absorption"
+    (t) endpoint tangent (l, beta) = (9/5, 47/250): V < target for every pair with t >= 0.88604527
+A (8493/10000, 2827/10000)
+  target 1.4025 (a) direct: t <= none (above the target at t = 0) | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= none (above the target at t = 0) | (f) verifier accepts: t <= not run (no start)
+    values at t = 0: direct 0.740697, Parseval 0.756864, mass 0.730782; target value 0.713012
+    (d) large t: verify.py: fails at "full quintic margin"; verify_coupled.py: fails at "full quintic absorption"
+    (t) endpoint tangent (l, beta) = (9/5, 47/250): V < target for every pair with t >= 0.88590616
+  target 1.403  (a) direct: t <= none (above the target at t = 0) | (e) Parseval: t <= none (above the target at t = 0) | (e) mass: t <= none (above the target at t = 0) | (f) verifier accepts: t <= not run (no start)
+    values at t = 0: direct 0.740697, Parseval 0.756864, mass 0.730782; target value 0.712758
+    (d) large t: verify.py: fails at "full quintic margin"; verify_coupled.py: fails at "full quintic absorption"
+    (t) endpoint tangent (l, beta) = (9/5, 47/250): V < target for every pair with t >= 0.88604516

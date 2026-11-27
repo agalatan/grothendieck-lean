@@ -1,19 +1,23 @@
 # More channels for the upper bound: start here
 
-**The problem.** Lean proves K_G^ℂ ≤ 1.40455741 (`Grothe.UpperSix.bound`, `main_bounds`) with a mixture of six
-rounding channels. Can a mixture with more, or other, channels give a smaller proved bound, and at what cost in
-Lean? This folder records a numerical experiment of 24 November 2026 on that question. Nothing here is a proof:
-every result is a model value (label **N** of [`../README.md`](../README.md)), by one author, not replayed by anyone
-else. The ledger is [`STATUS.md`](STATUS.md).
+**The proved selector improvement.** Lean proves $K_G^{\mathbb C}\le 1.404556392$ by adding a Gaussian angular selector to the six established rounding channels. Its signed scalar and matrix expansions, full Wiener error, and mixture with the six certified heads are formalized in `Grothe/UpperSelector/`. The seven-column transfer slope is `711968565817136711740669035/10^27`. An independently replayable rational dual puts every six-column slope below `0.7119685648573` with those same maps, preprocessors, cutoffs and tail allowances. [Root theorem](../../Grothe/UpperResult.lean) · [Uniform six-column comparison](sources/angular-selector-transfer-codex-a7c4/PROOF.md) · [Current bounds](../../docs/CONSTANTS.md).
+
+The 24 November 2026 mixture experiment has status **N**. The [ledger](STATUS.md) also records the paper proofs about rounding channels.
+
+**What can one complex coordinate achieve?** Phase rounding maximizes the alternating coefficient sum over every charge-one disk map of one complex Gaussian coordinate and every contractive polynomial preprocessor. Its value is exactly Haagerup’s $\gamma^\dagger$. Thus beating that value by the mixture transfer requires a channel using at least two coordinates. The proof reduces the problem to a radial integral operator and certifies a spectral gap. [Proof and exact replay](sources/one-coordinate-ceiling-codex-a7c4/PROOF.md)
 
 **The result in one paragraph.** Adding to the six channels **one** new channel, the cell channel of the
 eighteen-channel certificate with the preprocessor R(X) = a − (1 − a)X at a = 93079/100000 instead of its committed
-a = 0.9194…, gives the model slope D = 0.711974083612, that is 1/D = 1.404545507 against the proved
-1/D = 1.404557403 (ledger 4.7). The new channel takes the place of the six's channel 4, whose weight drops to zero.
+a = 0.9194…, gives the model slope D = 0.711974083612, that is 1/D = 1.404545507 (ledger 4.7). The experiment compared it with
+the certificate of the six channels at the commit it read, 1/D = 1.404557403: 1.19·10⁻⁵ more. The six-channel Lean theorem proves
+1.404556407 with a sharper certificate of those channels (another polynomial in the first channel, the linear
+energy removed from the tail budgets, 321 head coefficients of the phase channel); the model value is 1.09·10⁻⁵
+below that bound. Whether those refinements also gain for the candidate was not examined. The new channel takes the place of the six's channel 4, whose weight drops to zero.
 The head of the new channel is an exact interval composition of grades that Lean already verifies on the
 eighteen-channel branch, and its allowance (8.9·10⁻¹⁰) is the one that branch already pays for the same channel type;
 both were re-derived here independently (ledger §4). The cell channel cannot be written inside the six-channel
 framework: a certificate needs the cell machinery of the eighteen-channel branch, which is not on master.
+Against master's seven channels the same copy still gains 1.18·10⁻⁵ (1/D = 1.404544590 at a = 23277/25000), and the selector then drops out ([eighth-channel note](sources/eighth-channel-2026-11-26/NOTE.md), ledger §9).
 The candidate has exactly six channels with positive weight, so the six-channel assembly of master keeps its
 shape: the new cell pair takes the slot of channel 4 (ledger §5).
 
@@ -34,12 +38,14 @@ lemma: a bound B on the mean square on a circle of radius ρ > 1 inside the disk
 Σ_{k>K} |h_k| ≤ √(B ρ^{−(4K+6)}/(1 − ρ^{−4}))), and any comparison or truncation error of its head. The signs of the
 h_k^{(p)} cancel across channels before the absolute value is taken, so the best weights solve a linear programme.
 
+**The alternating sum in large dimension.** For this class of maps the supremum of $W=\sum_k(-1)^k H_k$ over all dimensions is one. Every fixed dimension has a strict gap. A charge-one version of Xie and Zhang’s quadratic-phase construction gives a finite example above $0.96$, while the transferable slope satisfies $D(H)\le\pi/4$ in every dimension. This answers the article's finite-attainment and slope-approximation questions. [Proof and finite witness](sources/high-dimensional-alternation-codex-a7c4/PROOF.md)
+
 ## The two families of channels
 
 | | six channels | eighteen channels |
 |---|---|---|
 | where | master, `Grothe/UpperSix/` (article: `haagerup-article/main.tex`); read here at commit `f6620f3b` | the branch `gemini-1aa9/upper-mixture` of pull request #556 (closed, the branch deleted): `Grothe/UpperReplacement/`, its `docs/UPPER_CERTIFICATE.md`; read here at commit `76c4647b`, which `refs/pull/556/head` keeps |
-| certified D, 1/D | 0.711968053274, 1.4045574031 (the Lean bound of master) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
+| certified D, 1/D | 0.711968053274, 1.4045574031 (the certificate at that commit; the six-channel theorem proves 1.404556407 with the certificate of `Grothe/UpperSixExact/`) | 0.711962052581, 1.404569241261 (stated by that branch; read, not replayed) |
 | channel types | smoothed 64×64×36 cell map with (P, Q = −X): channels 0, 1, 5; phase with a degree-14 preprocessor: 2; reflected cell map with (−R, R): 3, 4 | ten GT channels, seven phase channels, one cell channel (a pair of responses on 64 angular × 128 × 128 radial cells, both coordinates preprocessed by R) |
 | head data | `Haagerup/Data/OverlapData.lean` (interval tables at scale 2⁻¹²⁸), `Haagerup/Parameters.lean` | `data/upper-replacement/exact-columns.json`, `cell-inputs.npz`, `Grothe/Upper/Data.lean`, `HeadWitnessFacts/Group00`–`07` (cell grades), `RootData.lean` |
 | head length | 251 coefficients per channel | 251 (GT, phase); 126 for the cell channel, which pays a truncation allowance for the rest |
@@ -102,3 +108,7 @@ runs are of 24 November 2026; [`INVENTORY.md`](INVENTORY.md) says where the logs
 | [`STATUS.md`](STATUS.md) | the ledger: every result with its label, author and checker, and what a certificate needs |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository |
 | `code/` | the scripts and their small JSON results |
+
+## Endpoint restrictions on rounding channels
+
+For the common-map class, high alternating score and high first coefficient each impose a restriction on transfer. If the absolute alternating score approaches one, the transfer slope approaches minus one. If the first coefficient approaches $\pi/4$, the entire series approaches the phase series and the slope approaches $\pi/2-1$. Both limits hold uniformly over convex mixtures and dimensions. [Proofs and explicit thresholds](STATUS.md#7-rigidity-of-the-transfer-slope).

@@ -1,0 +1,23 @@
+{
+  "peak": {
+    "visible_mean_variance": "1181331/1562500",
+    "unpaired_deficit_lower": "268214247/500000000",
+    "paired_deficit_lower": "552689449/1000000000",
+    "block_deficit_lower": "83909517/500000000",
+    "perturbation_charge_upper": "18853608851482578356645208696981321/40000000000000000000000000000000000"
+  },
+  "flank": {
+    "visible_mean_variance": "38566667/50000000",
+    "unpaired_deficit_lower": "523953697/1000000000",
+    "paired_deficit_lower": "134577123/250000000",
+    "block_deficit_lower": "41134303/250000000",
+    "perturbation_charge_upper": "472768422413290919566170877503275961/1000000000000000000000000000000000000"
+  },
+  "upper": {
+    "visible_mean_variance": "815337/1000000",
+    "unpaired_deficit_lower": "122591003/250000000",
+    "paired_deficit_lower": "500201331/1000000000",
+    "block_deficit_lower": "15567993/100000000",
+    "perturbation_charge_upper": "1850538076575180277805577142150468449/4000000000000000000000000000000000000"
+  }
+}

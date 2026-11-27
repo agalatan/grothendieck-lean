@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Exact zero-float pure-stdlib 4D certifier coupling signed 2-plane norms & commutator defects.
 
-Agent-ID: gemini-8732 (Refs #506, #501, #458; STATUS.md 3.21 (e4), 3.21 (e9)(iii)).
+Agent-ID: gemini-8732 (Refs #506, #501, #458; STATUS.md 3.21 (e1), 3.21 (e4), 3.21 (e9)(iii)).
 Usage:  python3 -I -O verify_tensor_combined.py [--quiet]
 
 Only the Python 3 standard library is used (ast, fractions, itertools, math, pathlib, sys, time).
@@ -18,20 +18,20 @@ T_{112} = s >= 0, T_{11k} = 0 (k >= 3), B = T(e_1, ., .)|_{e_1^perp} (B_{22} = b
 and C = T(e_2, ., .)|_{e_1^perp} (C_{22} = d), the entries ([A_p, A_1])_{1q} (p, q >= 2) form the
 matrix D = s^2 e_2 e_2^T + B^2 - x B - s C, giving 18*sum_{r,s} ||[A_r, A_s]||_F^2 >= 72*||D||_F^2.
 
-Coupling this full matrix Frobenius defect, M_{12} = 0, symmetrized directional caps on B, and
-Weyl-Karamata bounds on tr(M^2) (#519) WITH the signed rational 2-plane circle norm inequalities
+Coupling this full matrix Frobenius defect, M_{12} = 0, M_{22} <= lambda, symmetrized directional
+caps on B, and Weyl-Karamata bounds on tr(M^2) (#519) WITH the signed rational 2-plane circle norm
+inequalities
   (m^2 x + 2 m k s + k^2 b)^2 + (m^2 s + 2 m k b + k^2 d)^2 <= (m^2 + k^2)^2 a_0^2
-on span(e_1, e_2) (#520, which #519 sign-averaged and which interact with ||T||_HS = 1 whenever
-a_0 > a(T_*) = (2 + sqrt(2)/2)^{-1/2} ~ 0.6078 to strictly beat #520's scale-free (1+(1+sqrt2)a_0^2)/3):
-  1. Exact rational identity & inequality controls on explicit non-commuting tensors in R^2, R^3, R^4.
-  2. Strict 4D branch-and-bound certificates across all dimensions:
-     - Sharp Gaussian threshold a(T) <= 349/500 = 0.698:
-         lambda(T) < 27/40 = 0.675      (down from 173/250 = 0.692 on master; note T = sqrt(3) e_1(.)e_1(.)e_2
-                                         has a(T) = lambda(T) = 2/3 = 0.6666..., within 0.0084 of 27/40),
-         kappa_4(F) < 48                (down from 49 on master);
-     - Practical (T) threshold a(T) <= 321/500 = 0.642:
-         lambda(T) < 33/50 = 0.66       (down from 33251/50000 = 0.66502 on master),
-         kappa_4(F) < 229/5 = 45.8      (down from 233/5 = 46.6 on master).
+on span(e_1, e_2) and analytic interval tightening on d = T_{222} under ||T||_HS = 1 (#520):
+  1. Exact rational identity & inequality controls on explicit non-commuting tensors in R^4.
+  2. Strict 4D branch-and-bound certificates across all dimensions (max_depth = 46):
+     - Sharp Gaussian regime a(T) <= 349/500 = 0.698:
+         lambda(T) < 27/40 = 0.675,   kappa_4(F) < 48;
+     - Practical (T) regime a(T) <= 321/500 = 0.642:
+         lambda(T) < 33/50 = 0.66,    kappa_4(F) < 229/5 = 45.8.
+  3. Full-depth negative controls (at exact production max_depth = 46) backed by 4 explicit rational
+     binary cubic witnesses whose bounds a(T) < a_0 (via exact Sturm sequences on R) and
+     lambda(T) > lam_false / kappa_4(T) > k4_false are verified algebraically before testing rejection.
 """
 import ast
 import itertools
@@ -111,12 +111,6 @@ class Iv:
         return Iv(0, cdiv(m * m, S))
 
 
-ZERO = Iv(0, 0)
-ONE = Iv(S, S)
-TWO = Iv(2 * S, 2 * S)
-THREE = Iv(3 * S, 3 * S)
-
-
 def isqrt_lo(x_int):
     require(x_int >= 0, 'isqrt_lo negative arg')
     r = math.isqrt(x_int * S)
@@ -138,7 +132,7 @@ def verify_exact_tensor_identities():
     """Verify ([A_p, A_1])_{1q} == D_{pq}, M_{12} Cauchy-Schwarz, and 72*||D||_F^2 defect on R^4."""
     test_tensors = [
         {(0, 0, 0): Q(1)},
-        {(0, 0, 1): Q(1)},  # T = sqrt(3) e_1 (.) e_1 (.) e_2 (attains lambda = a = 2/3)
+        {(0, 0, 1): Q(1)},
         {(0, 0, 0): Q(3, 5), (0, 1, 1): Q(-2, 5), (0, 2, 2): Q(1, 3), (1, 2, 3): Q(1, 2)},
         {
             (0, 0, 0): Q(2, 3), (0, 0, 1): Q(1, 4), (0, 1, 1): Q(-1, 5),
@@ -168,7 +162,6 @@ def verify_exact_tensor_identities():
         require(norm2 == x * x + 3 * s * s + 3 * P + tp_norm2, 'norm2 slot identity failed')
         require(M[0][0] == x * x + 2 * s * s + P, 'M_{00} identity failed')
 
-        # Check exact matrix entry identity ([A_p, A_0])_{0, q} == D_{p-1, q-1} for all p, q in 1..n-1:
         B2 = [[sum(B[p][r] * B[r][q] for r in range(n - 1)) for q in range(n - 1)] for p in range(n - 1)]
         for p in range(1, n):
             for q in range(1, n):
@@ -189,7 +182,6 @@ def verify_exact_tensor_identities():
         )
         require(18 * comm_tot >= 72 * d_frob2, '18*sum ||[A_r, A_s]||_F^2 >= 72*||D||_F^2 failed')
 
-        # Check ||C||_F^2 <= (1/3)*d^2 + (2/3)*tp_norm2 and M_{01} Cauchy-Schwarz:
         d = T[1][1][1]
         c_frob2 = sum(C[p][q] ** 2 for p in range(n - 1) for q in range(n - 1))
         require(c_frob2 <= Q(1, 3) * d * d + Q(2, 3) * tp_norm2, '||C||_F^2 bound failed')
@@ -199,8 +191,96 @@ def verify_exact_tensor_identities():
     return len(test_tensors)
 
 
+def _poly_strip(p):
+    p = list(p)
+    while len(p) > 1 and p[-1] == 0:
+        p.pop()
+    return p
+
+
+def _poly_rem(a, b):
+    a = _poly_strip(a)
+    b = _poly_strip(b)
+    require(b[-1] != 0, 'division by zero polynomial')
+    db = len(b) - 1
+    while len(a) - 1 >= db and a[-1] != 0:
+        da = len(a) - 1
+        fac = a[-1] / b[-1]
+        shift = da - db
+        for j in range(db + 1):
+            a[shift + j] -= fac * b[j]
+        a = _poly_strip(a)
+    return a
+
+
+def verify_poly_pos_all_real(coeffs):
+    """Prove P(t) = sum_{k=0}^d coeffs[k] * t^k > 0 for ALL t in R via exact rational Sturm sequence."""
+    p0 = _poly_strip([Q(c) for c in coeffs])
+    deg = len(p0) - 1
+    require(deg >= 2 and deg % 2 == 0 and p0[-1] > 0 and p0[0] > 0, 'expected even-degree poly with P(0)>0, lead>0')
+    p1 = _poly_strip([k * p0[k] for k in range(1, len(p0))])
+    chain = [p0, p1]
+    while len(chain[-1]) > 1:
+        r = _poly_rem(chain[-2], chain[-1])
+        if len(r) == 1 and r[0] == 0:
+            raise ValueError('polynomial is not square-free; Sturm check requires square-free P')
+        chain.append([-c for c in r])
+    require(len(chain[-1]) == 1 and chain[-1][0] != 0, 'expected nonzero constant Sturm remainder')
+
+    def sign_at_inf(sgn_t):
+        signs = []
+        for poly in chain:
+            d = len(poly) - 1
+            s_lead = 1 if poly[-1] > 0 else -1
+            if sgn_t < 0 and d % 2 == 1:
+                s_lead = -s_lead
+            signs.append(s_lead)
+        return sum(1 for u, v in zip(signs[:-1], signs[1:]) if u != v)
+
+    n_roots = sign_at_inf(-1) - sign_at_inf(+1)
+    require(n_roots == 0, f'expected 0 real roots, Sturm found {n_roots}')
+
+
+def verify_binary_witness_exact(x, s, b, d, a0, min_lam=None, min_k4=None):
+    """Prove in exact Q-algebra that binary cubic (x, s, b, d) satisfies a(T) < a0 and violates a false cap."""
+    x, s, b, d, a0 = Q(x), Q(s), Q(b), Q(d), Q(a0)
+    norm2 = x * x + 3 * s * s + 3 * b * b + d * d
+    require(norm2 > 0, 'witness must be nonzero')
+    # 1. Check sin(theta) = +-1 (cos(theta) = 0): ||T(e_2, e_2, .)||_2^2 = b^2 + d^2 < a0^2 * norm2:
+    c4_coeff = a0 * a0 * norm2 - (b * b + d * d)
+    require(c4_coeff > 0, 'witness fails at theta = pi/2')
+    # 2. For cos(theta) != 0, put t = tan(theta) in R:
+    #    (1+t^2)^2 * (a0^2 * norm2 - ||T(w,w,.)||_2^2)
+    #      == a0^2 * norm2 * (1 + 2*t^2 + t^4) - (x + 2*s*t + b*t^2)^2 - (s + 2*b*t + d*t^2)^2:
+    A = a0 * a0 * norm2
+    p4 = [
+        A - (x * x + s * s),
+        -4 * s * (x + b),
+        2 * A - (4 * s * s + 2 * x * b + 4 * b * b + 2 * s * d),
+        -4 * b * (s + d),
+        A - (b * b + d * d),
+    ]
+    verify_poly_pos_all_real(p4)  # proves a(T)^2 <= sup_{w in S^1} ||T(w,w,.)||_2^2 / norm2 < a0^2!
+
+    # 3. Exact M(T) = [[m11, m12], [m12, m22]] and exact lambda(T), kappa_4(T):
+    m11 = (x * x + 2 * s * s + b * b) / norm2
+    m12 = (x * s + 2 * s * b + b * d) / norm2
+    m22 = (s * s + 2 * b * b + d * d) / norm2
+    if min_lam is not None:
+        min_lam = Q(min_lam)
+        # lambda(T) = (m11 + m22 + sqrt((m11 - m22)^2 + 4*m12^2)) / 2 > min_lam:
+        rhs = 2 * min_lam - (m11 + m22)
+        disc = (m11 - m22) ** 2 + 4 * m12 * m12
+        require(rhs < 0 or disc > rhs * rhs, 'witness failed lambda(T) > min_lam')
+    if min_k4 is not None:
+        min_k4 = Q(min_k4)
+        trM2 = m11 * m11 + 2 * m12 * m12 + m22 * m22
+        comm12 = (s * s + b * b - x * b - s * d) / norm2
+        k4_exact = 90 * trM2 - 72 * comm12 * comm12
+        require(k4_exact > min_k4, 'witness failed kappa_4(T) > min_k4')
+
+
 def build_rational_test_grids():
-    # 1. Signed rational 2-plane circle norm directions (m, k) in Z^2 \ {(0,0)}:
     dirs = [(1, 0), (0, 1), (80, 1), (80, -1), (40, 1), (40, -1), (20, 1), (20, -1)]
     for m in (16, 11, 7):
         for k in range(-m, m + 1):
@@ -214,7 +294,6 @@ def build_rational_test_grids():
         W2 = (m * m + k * k) ** 2
         rdirs_int.append((A, B, C, W2))
 
-    # 2. Rational c in (0, 1) for symmetrized eigenvalue caps m_+, m_- on B:
     c_rats = [Q(k, 40) for k in range(1, 40)] + [Q(79, 80), Q(159, 160)]
     c_cap_data = []
     for c in c_rats:
@@ -236,7 +315,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
     lam_tar_lo = Iv.frac(lam_tar_q).lo
     k4_tar_lo = Iv.frac(k4_tar_q).lo
 
-    # Store rational box bounds AND integer priority scale so zero floats appear anywhere:
     todo = [(Q(0), a0_q, Q(0), a0_q, -a0_q, a0_q, Q(0), Q(1, 3), 0)]
     leaves = 0
     pruned = 0
@@ -251,7 +329,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
         S2 = Sv.sq()
         B2 = Bv.sq()
 
-        # Basic norm & circle pruning:
         if X2.lo + S2.lo > a0_sq_hi or B2.lo > a0_sq_hi or B2.lo > Pv.hi:
             pruned += 1
             continue
@@ -259,10 +336,7 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
         if tp_hi < 0:
             pruned += 1
             continue
-        tp_lo = max(0, S - (X2.hi + 3 * S2.hi + 3 * Pv.hi))
 
-        # Symmetrized directional caps m_+, m_- on eigenvalues of B:
-        # m_+ <= (a0*(1/c) - x*c^2) / (3*(1 - c^2)),  m_- <= (a0*(1/c) + x*c^2) / (3*(1 - c^2))
         mp_hi = min(
             cdiv(max(0, cdiv(a0_hi * inv_c_hi, S) - fdiv(X.lo * c2_lo, S)) * fac_hi, S)
             if cdiv(a0_hi * inv_c_hi, S) - fdiv(X.lo * c2_lo, S) >= 0 else -1
@@ -282,7 +356,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
             pruned += 1
             continue
 
-        # 2*u + d^2 <= x^2 + s^2 + P - 2*b^2 (from M_{22} <= lambda):
         u2_cap_hi = X2.hi + S2.hi + Pv.hi - 2 * B2.lo
         if u2_cap_hi < 0:
             pruned += 1
@@ -294,7 +367,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
         d_lim = isqrt_hi(d2_max_hi)
         wB_hi = max(0, Pv.hi - B2.lo)
 
-        # Analytically tighten [d_lo, d_hi] using EVERY signed 2-plane norm direction AND M_{12}=0 CS!
         d_lo_cur = -d_lim
         d_hi_cur = d_lim
         pruned_by_dir = False
@@ -310,7 +382,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
                 rad = isqrt_hi(rhs2)
                 sh_lo = A_c * Sv.lo + (B_c * Bv.lo if B_c >= 0 else B_c * Bv.hi)
                 sh_hi = A_c * Sv.hi + (B_c * Bv.hi if B_c >= 0 else B_c * Bv.lo)
-                # C_c * d in [-rad - sh_hi, +rad - sh_lo]
                 d_lo_c = fdiv(-rad - sh_hi, C_c)
                 d_hi_c = cdiv(rad - sh_lo, C_c)
                 if d_lo_c > d_lo_cur:
@@ -324,8 +395,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
             pruned += 1
             continue
 
-        # Also tighten [d_lo_cur, d_hi_cur] from M_{12}=0 when Bv does not straddle 0:
-        # |b*d + s*(x + 2*b)| <= sqrt((2/3)*wB_hi*tp_hi)
         if Bv.lo > 0 or Bv.hi < 0:
             rhs_m12 = cdiv(2 * cdiv(wB_hi * tp_hi, S), 3)
             rad_m12 = isqrt_hi(rhs_m12)
@@ -336,7 +405,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
                 dm_lo = fdiv(num_lo * S, Bv.hi) if num_lo >= 0 else fdiv(num_lo * S, Bv.lo)
                 dm_hi = cdiv(num_hi * S, Bv.lo) if num_hi >= 0 else cdiv(num_hi * S, Bv.hi)
             else:
-                # Bv.hi < 0: divide by negative interval [Bv.lo, Bv.hi] flips order!
                 ab_lo, ab_hi = -Bv.hi, -Bv.lo
                 n2_lo, n2_hi = -num_hi, -num_lo
                 dm_lo = fdiv(n2_lo * S, ab_hi) if n2_lo >= 0 else fdiv(n2_lo * S, ab_lo)
@@ -349,7 +417,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
                 pruned += 1
                 continue
 
-        # Slice tightened [d_lo_cur, d_hi_cur] into n_d outward-rounded subintervals:
         n_d = 8 if depth < 14 else 16
         d_span = d_hi_cur - d_lo_cur
         surv_D = []
@@ -382,7 +449,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
             pruned += 1
             continue
 
-        # Note ALSO: 3*lambda - 1 = 2*x^2 + 3*s^2 - ||T_perp||_HS^2 <= 2*x^2 + 3*s^2 - min_surv(d^2)!
         min_d2_surv = min(Dk2.lo for _, Dk2 in surv_D)
         lam_lo = X2.lo + 2 * S2.lo + Pv.lo
         lam_hi = min(X2.hi + 2 * S2.hi + Pv.hi, cdiv(S + 2 * X2.hi + 3 * S2.hi - min_d2_surv, 3))
@@ -392,7 +458,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
 
         def split_box():
             require(depth < max_depth, f'max_depth={max_depth} exceeded at x=[{x0},{x1}], s=[{s0},{s1}], b=[{b0},{b1}], p=[{p0},{p1}]')
-            # Exact rational weighted widths: (x1-x0, s1-s0, (4/5)*(b1-b0), (3/2)*(p1-p0))
             w_list = [
                 (x1 - x0, 0),
                 (s1 - s0, 1),
@@ -414,7 +479,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
             split_box()
             continue
 
-        # Now check kappa_4 < k4_tar_q across surviving D-slices and 4 p_+-slices:
         pp_max = Pv.hi - pm_lo
         if pp_max < pp_lo:
             pruned += 1
@@ -432,18 +496,15 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
             u_hi = min(u_hi_1, u_hi_2)
             Uv = Iv(0, u_hi)
 
-            # Defect 1: |s^2 + b^2 + u - x*b - s*d|
             expr22 = S2 + B2 + Uv - X * Bv - Sv * Dk
             if expr22.lo <= 0 <= expr22.hi:
                 def1_lo = 0
             else:
                 def1_lo = min(abs(expr22.lo), abs(expr22.hi))
 
-            # ||C||_F <= sqrt((1/3)*d^2 + (2/3)*tp_hi)
             c2_num_hi = cdiv(Dk2.hi + 2 * tp_hi, 3)
             norm_C_hi = isqrt_hi(c2_num_hi)
 
-            # Term 2*s^2*(b^2 + u - x*b) + s^4 lower bound:
             b2_u_xb = B2 + Uv - X * Bv
             two_s2_term_lo = (Iv(2 * S2.lo, 2 * S2.hi) * b2_u_xb + S2 * S2).lo
 
@@ -460,9 +521,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
                 L2_hi = S2.hi + 2 * b2_op_hi + tp_hi
                 L_max = min(lam_hi, L2_hi)
 
-                # Weyl-Karamata upper bound on tr(M^2) over lam in [lam_lo, lam_hi] with lambda_j <= L_max (j >= 2):
-                # Since lambda |-> lambda^2 + q*L_max^2 + (1 - lambda - q*L_max)^2 is piecewise convex with breakpoints
-                # 1 - m*L_max, its maximum on [lam_lo, lam_hi] is attained at {lam_lo, lam_hi} union breakpoints inside!
                 cands_l = [lam_lo, lam_hi]
                 if L_max >= S // 20:
                     m_idx = 1
@@ -489,7 +547,6 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
                     if val_tr > trM2_hi:
                         trM2_hi = val_tr
 
-                # Defect 2: max(0, sqrt(pml*x_lo^2 + ppl*xp_sq_lo + two_s2_term_lo) - s_hi * norm_C_hi)
                 lb_B_lo = fdiv(pml * X2.lo, S) + fdiv(ppl * xp_sq_lo, S) + two_s2_term_lo
                 norm_Bs_lo = isqrt_lo(lb_B_lo) if lb_B_lo > 0 else 0
                 diff_frob = norm_Bs_lo - cdiv(Sv.hi * norm_C_hi, S)
@@ -511,6 +568,7 @@ def certify_4d_combined(a0_q, lam_tar_q, k4_tar_q, grids, max_depth=46):
 
 
 def run_negative_controls(grids):
+    """Verify 4 explicit rational planar witnesses by Sturm sequences and reject false caps at FULL max_depth=46."""
     rejected = 0
 
     def must_fail(fn, label):
@@ -523,12 +581,28 @@ def run_negative_controls(grids):
         require(failed, f'Negative control {label} was NOT rejected!')
         rejected += 1
 
-    # 1. T = sqrt(3) e_1 (.) e_1 (.) e_2 has ||T||_HS = 1, a(T) = 2/3 < 0.698, and lambda(T) = 2/3 = 0.6666...:
-    #    Therefore claiming lambda < 0.665 at a_0 = 0.698 MUST fail!
-    must_fail(lambda: certify_4d_combined(Q(349, 500), Q(665, 1000), Q(48), grids, max_depth=14), 'lam < 0.665 at a0=0.698')
-    # 2. At a_0 = 0.642, claiming kappa_4 < 45 (violated by two equal blocks M = diag(1/2, 1/2), k4 = 45) MUST fail!
-    must_fail(lambda: certify_4d_combined(Q(321, 500), Q(66, 100), Q(45), grids, max_depth=14), 'k4 < 45 at a0=0.642')
-    # 3. AST zero-float audit of this source file:
+    # Witness 1 (Sharp lambda): (x, s, b, d) = (37/125, 53/100, -3/20, -4/125) has a(T) < 349/500 = 0.698
+    # and lambda(T) = 0.672717... > 672/1000 = 0.672; also T_0 = (0, 1, 0, 0) has a(T_0) = lambda(T_0) = 2/3 > 0.665:
+    verify_binary_witness_exact(Q(37, 125), Q(53, 100), Q(-3, 20), Q(-4, 125), Q(349, 500), min_lam=Q(672, 1000))
+    verify_binary_witness_exact(Q(0), Q(1), Q(0), Q(0), Q(349, 500), min_lam=Q(665, 1000), min_k4=Q(41))
+    must_fail(lambda: certify_4d_combined(Q(349, 500), Q(672, 1000), Q(48, 1), grids), 'lam < 0.672 at a0=0.698 (full depth 46)')
+
+    # Witness 2 (Practical lambda): (x, s, b, d) = (0, 57/100, 0, -3/20) has a(T) < 321/500 = 0.642
+    # and lambda(T) = 0.651625... > 13/20 = 0.650:
+    verify_binary_witness_exact(Q(0), Q(57, 100), Q(0), Q(-3, 20), Q(321, 500), min_lam=Q(13, 20))
+    must_fail(lambda: certify_4d_combined(Q(321, 500), Q(13, 20), Q(229, 5), grids), 'lam < 0.650 at a0=0.642 (full depth 46)')
+
+    # Witness 3 (Sharp kappa_4): (x, s, b, d) = (1, 1/2, -1/2, 3/5) has a(T) < 349/500 = 0.698
+    # and kappa_4(T) = 44.9207... > 44:
+    verify_binary_witness_exact(Q(1), Q(1, 2), Q(-1, 2), Q(3, 5), Q(349, 500), min_k4=Q(44))
+    must_fail(lambda: certify_4d_combined(Q(349, 500), Q(27, 40), Q(44, 1), grids), 'k4 < 44 at a0=0.698 (full depth 46)')
+
+    # Witness 4 (Practical kappa_4): (x, s, b, d) = (1, 1/20, -3/5, -3/5) has a(T) < 321/500 = 0.642
+    # and kappa_4(T) = 37.4405... > 37:
+    verify_binary_witness_exact(Q(1), Q(1, 20), Q(-3, 5), Q(-3, 5), Q(321, 500), min_k4=Q(37))
+    must_fail(lambda: certify_4d_combined(Q(321, 500), Q(33, 50), Q(37, 1), grids), 'k4 < 37 at a0=0.642 (full depth 46)')
+
+    # 5. AST zero-float audit of this source file:
     src = pathlib.Path(__file__).read_text(encoding='utf-8')
     tree = ast.parse(src)
     fl_name = 'fl' + 'oat'
@@ -547,10 +621,10 @@ def main():
     n_id = verify_exact_tensor_identities()
     grids = build_rational_test_grids()
 
-    # 1. Sharp Gaussian threshold on master: a(T) <= 349/500 = 0.698
+    # 1. Sharp Gaussian regime: a(T) <= 349/500 = 0.698
     l_sh, p_sh = certify_4d_combined(Q(349, 500), Q(27, 40), Q(48, 1), grids)
 
-    # 2. Practical (T) threshold on master: a(T) <= 321/500 = 0.642
+    # 2. Practical (T) regime: a(T) <= 321/500 = 0.642
     l_pr, p_pr = certify_4d_combined(Q(321, 500), Q(33, 50), Q(229, 5), grids)
 
     n_rej = run_negative_controls(grids)
@@ -561,7 +635,7 @@ def main():
         print(f'1. Exact R^4 matrix/slot/commutator controls: {n_id} non-commuting rational tensors PASS')
         print(f'2. Sharp regime  a(T) <= 349/500 = 0.698: lambda(T) < 27/40 = 0.675, kappa_4(F) < 48          (leaves={l_sh}, pruned={p_sh}) PASS')
         print(f'3. Practical (T) a(T) <= 321/500 = 0.642: lambda(T) < 33/50 = 0.660, kappa_4(F) < 229/5 = 45.8 (leaves={l_pr}, pruned={p_pr}) PASS')
-        print(f'4. Negative controls & AST zero-float audit: {n_rej} adversarial checks ALL REJECTED ({elapsed_ms} ms).')
+        print(f'4. Sturm-verified rational witnesses & full-depth (max_depth=46) negative controls + AST audit: {n_rej} checks ALL REJECTED ({elapsed_ms} ms).')
 
 
 if __name__ == '__main__':

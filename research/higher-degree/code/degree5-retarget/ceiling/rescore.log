@@ -1,0 +1,3 @@
+eps_profile_K2.json: 32 problems, 549 pool rows, 0 selections changed
+eps_profile_K3.json eps None tail False: selected iteration 9, (1.000000, -0.906727, 0.544994, -0.252263), nu 0.000000: U 0.7121933355, 1/U 1.404113, gap 3.83e-06 (at visit: U 0.7121926660, 1/U 1.404114)
+eps_profile_K3.json: 10 problems, 496 pool rows, 1 selections changed

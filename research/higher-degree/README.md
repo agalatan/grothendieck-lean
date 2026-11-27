@@ -1,9 +1,9 @@
 # Higher-degree games: start here
 
-The proved lower bound K_G^ℂ > 1.40191 comes from the cubic witness P₁,₀ − (191/250)P₂,₁ with an identity tail
+The proved lower bound K_G^ℂ > 1.4020221627 comes from the cubic witness P₁,₀ − (191/250)P₂,₁ with an identity tail
 ([`../identity-tail/`](../identity-tail/README.md)). Even a perfect evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
 ledger 12.2). Larger lower bounds need games of higher degree. In particular, the third decimal of K_G^ℂ needs a
-certified 1.404, because the upper bound 1.40455741 is already below 1.4046.
+certified 1.404, because the upper bound 1.404556392 is already below 1.4046.
 
 This folder records what is known about higher-degree games:
 - their numerical values and the responses that bind them;
@@ -19,7 +19,7 @@ numerical (N)**, apart from the **P** or **C** parts of `STATUS.md` rows 1.6, 1.
 | `README.md` | this file: notation, the state in brief, reading order |
 | [`STATUS.md`](STATUS.md) | **the ledger**: every statement with its scope, status, author and source |
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository (logs, numerical archives, downloaded sources), with paths, sizes and SHA-256 |
-| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, and the attack plan of 25 November with its six problem statements) |
+| `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, the attack plan of 25 November with its six problem statements, the design computation of 25 November with the assembly theorem, the note of 25 November on the middle range of t, the note of 25 November on targets above 1.402, the gate note of 26 November on two other degree-5 games, and the clean-room Level C law-cap replay of 26 November) |
 | `code/` | the scripts behind them and the small result files the ledger cites |
 
 **Living documents.** `STATUS.md` is edited in place by every PR that changes the state of knowledge; copies under
@@ -82,18 +82,32 @@ record.
 | 7 | (1, −0.906596, 0.541570, −0.242531) | 1.404113 |
 | 9 | (1, −0.93600, 0.72057, −0.59202, 0.23468) | < 1.404218 (**P + C**, author only), 1.4041781 (**N**) against t = 0 multi-spike pairs (1.40430 in the PD2 pool; at most 1.40430 after retuning, open; STATUS 1.6, 1.8, 2.6) |
 
-- **Bracket.** Upper bound K_G^ℂ ≤ 1.40455741 < 1/γ† = 1.404575934663742 (**Lean**: `Grothe.Statement.main_bounds`, `Grothe.UpperSix.constant_lt_inv_gammaDagger`); heuristic lower end at most 1.40430, open after STATUS 2.6 (λ₉ of STATUS 1.6 itself is below 1.404218 certified and ≈ 1.4041781 numerically against mesoscopic t = 0 multi-spike pairs, and a degree-9 game retuned against the larger pool is at most 1.40430; STATUS 1.6, 1.8, 2.6). Its left end is a model estimate, not a bound
-  (STATUS 1.8). Haagerup's 1/γ† lies above the proved six-channel upper bound. No rounding built from the degree-9 binding responses
+- **Bracket.** Upper bound K_G^ℂ ≤ 1.404556392 < 1/γ† = 1.404575934663742 (**Lean**: `Grothe.Statement.main_bounds`, `Grothe.UpperSeven.constant_lt_inv_gammaDagger`); heuristic lower end at most 1.40430, open after STATUS 2.6 (λ₉ of STATUS 1.6 itself is below 1.404218 certified and ≈ 1.4041781 numerically against mesoscopic t = 0 multi-spike pairs, and a degree-9 game retuned against the larger pool is at most 1.40430; STATUS 1.6, 1.8, 2.6). Its left end is a model estimate, not a bound
+  (STATUS 1.8). Haagerup's 1/γ† lies above the proved seven-channel upper bound. No rounding built from the degree-9 binding responses
   beats Haagerup's γ_H (STATUS 3.3).
 - **The degree-5 programme.** At t = 0 a row bound is at least λ₁ρ\*², so the proved radius bound caps the cubic
   weight λ₁ (STATUS 4.12; the games per cap are in 1.10 and 4.33). For the game (1, −39/50, 779/10000), model value
   1.402785, a certificate for 1.402 is computed over all t, conditional on a sector inequality K₅ on each row, with
-  3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). It has one author and no independent replay. K₅ is open in
-  several parts (STATUS §5), none of them the only one: the content lemma on every tuned row from t = 0.647 to
+  3.7·10⁻⁴ of room at the binding rows (STATUS 4.17). Independent replays verify both the row/envelope reductions (STATUS 4.40) and, from scratch with zero `libm` transcendentals, all 29 plain/Stein law caps of 4.17, the small-t cover of 4.18(b), and all 26 plain law caps at ρ₀ = 2287/2500 (STATUS 4.42, LAWREP). On [1/4, 5/12], actual pairs force the sector comparison with their own remote cubic to spend more than the published row allowances. For the same pairs, row 0.25 of Claim 1 stays more than 0.172 below the target. A direct comparison with the law cap remains open for general pairs. Several proof steps remain open (STATUS §5): the content lemma on every tuned row from t = 0.647 to
   0.886, whose binding rows are the lowest and need covering rows (STATUS 4.31, 4.32); whether the content
   inequality holds in every dimension (STATUS 4.28, 4.30); certified constants on t ≥ 0.86; the law rows between
-  the direct bound (proved up to t = 0.1365; numerically up to 0.228 with the radius 0.93 and spectral Stein cuts:
-  STATUS 4.18, 4.35) and t = 0.647; and the other pieces of the gate (STATUS 4.16). The work runs under issue #453.
+  the direct bound (through t = 0.36495 with the independently reviewed cubic radius and the fourth-excess and spectral mass estimates, STATUS 4.18f, and through t = 0.36763356 via the certified spiked-radius ray of STATUS 4.48, **P + C, author only**, where global ρ_s ≤ 939/1000 < √(9π/32) is also proved) and t = 0.647; and the other pieces of the gate (STATUS 4.16). At the upper end, a direct proof covers every pair from $t=0.88425210$ to the physical endpoint, and also covers pairs of remote cubic energy at most $3/5000$ from $t=0.81$ upward (STATUS 4.18d). The work runs under issue #453.
+
+- **Visible quintic phase.** Optimizing its complex coefficient over a remote cubic buys less than $1.07\times10^{-7}$ over optimizing the real coefficient for the same law on all nineteen P6 rows. The gain from changing the prescribed real coefficient is a separate term in a fixed-profile proof (STATUS 4.16a).
+
+- **Odd and quintic pure-cost constants.** Across all nineteen rationalised degree-5 rows (`0.70`–`0.886`), the zero-core scalar $Z < 1$ and finite-amplitude odd ratio $\kappa_{\mathrm{odd}} < 1$ are certified on all thirteen rows $\ge 0.81$ (with $\sup_{s \ge 0} \lambda_{\max}(M_{\mathrm{odd}}(s)) = p_1 Z$ on every row), the odd excess $E_{\max}(s)$ is bounded by $2.499\times 10^{-3}$ on `0.79` and $1.143\times 10^{-3}$ on `0.80` (vanishing above $s = 0.3834$ and $0.1958$), and the elementary quintic matrices stay below $\frac{1}{4}p_2$ on $\mathbb{E}_1$ and $\frac{1}{2}p_2$ on $\mathbb{E}$ across all nineteen rows (**P + C, author only**; STATUS 4.16b).
+
+- **The design of the certificate.** With the radius 2287/2500 in the law layer the room is 3.7356·10⁻⁴ on plain
+  covers alone (STATUS 4.42, independently certified in LAWREP). The allowances of the content law rested on an A/B secant margin that fails at finite
+  amplitude with the tilt (2/5, 3/10); a design with the tilt (2/5, 3/20) and the content law posed per (u, χ) cell
+  has exact positive rooms on 21 pieces from t = 0.649 (STATUS 4.43, 4.44). Giving those rooms entirely to the A/B
+  sector is false on the eleven pieces below 0.835: explicit pairs with zero content need a part of the room for the
+  visible quintic. With that part set aside the design has, numerically, a factor of at least 2.76 against every
+  cubic tested, in at most 13 variables (STATUS 4.44). One conditional theorem assembles the certificate from
+  hypotheses H0–H9. The direct bound in 4.18e covers the start of the mid-t interval through 0.35859076. The rest up to 0.649, the secant inequality, the content law and the
+  other-sector statement are open (STATUS 4.45).
+
+- **Above 1.402** (issue #702). The target 500/701 is below the Lean bound. The design of the capped game cannot give more than 1/B₅ < 1.402735 (exact from its row constants); raising its target to 1.4023 leaves 59 % of the rooms and the same numerical factors, and from 1.4025 on the funded allocation has no room on one piece (STATUS 4.50, 4.51). In the model no degree-5 game certifies more than 1.403646 (1.403741 with an identity tail). The games near the optimum are inside the cap that the proved radius sets for a law layer charging it and have no hypothesis-free start. Their t = 0 row in the plain law class moves by 0.83 per unit of ε: it limits the saved optimum (ε = 0.8492868) to 1.40341, with at most 2.07·10⁻⁴ of room at 1.403, while games with ε between 0.848 and 0.849 have an estimated room of 2.9 to 3.0·10⁻⁴ at 1.403 (5.5 to 5.6·10⁻⁴ at 1.4025) at the peak; their sector costs are not measured, so 1.403 is neither excluded nor supported. In a certificate that charges the proved radius, degree 7 is worth 1.4037 (STATUS 1.11, 1.12, 4.52). The gate of 4.16 and law rows over all t then decided against both other games: the optimum fails the gate and its plain small-t law rows (the rows searched) exceed every target from 1.402 up, and the ridge game (1, −0.82, 0.194) passes the sampled gate on its finite points but its sector shares are worse than the cap-0.81 game's, so degree 5 stops (STATUS 4.53–4.55, issue #713).
 
 **Reading order:** [`STATUS.md`](STATUS.md) §1 (values), §4 (the certificate design) and §5 (open problems), then the
 sources it cites.

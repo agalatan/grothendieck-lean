@@ -1,0 +1,53 @@
+07  Alternating sums W and the ceiling of the mixture
+=====================================================
+gamma-dagger in [0.7119586597782638015124585488, 0.7119586597782638015124585489] (exact enclosure, see 02)
+
+The reflected pair without preprocessor: S_250 = sum_{n=0}^{250} (-1)^n mu_n
+----------------------------------------------------------------------------
+  S_250 in [0.712901574109461445113829, 0.712901574109461445113830]
+  S_250 - gamma-dagger in [9.42914331e-04, 9.42914332e-04]
+  [ok] (interval) S_250 > gamma-dagger + 9.429e-4 (as stated in the paper)
+  at the midpoints: mu_0 = 0.770168709770, sum_{n=1..250} |mu_n| = 0.16923061, D_250 = 0.60093809, 1/D_250 = 1.664064
+  for all values in the intervals: D_250 <= 0.60093810, hence 1/D_250 >= 1.66406
+  [ok] (interval) the slope D = mu_0 - sum_{n>=1} |mu_n| of this channel is positive: D >= 2 mu_0 - 1 >= 0.540337 > 0.54 (because sum_n |mu_n| <= 1)
+  (so 0 < D <= D_250 and 1/D >= 1/D_250 >= 1.66406: the transfer lemma cannot give a constant
+   below 1.66406 from this channel alone.)
+  mu_1 = 0.081076309246, mu_2 = 0.033522478293; signs of mu_0..mu_250 (midpoints): 151 positive, 100 negative
+
+Full alternating sums W(h^(p)) = head sum +- tau_p
+--------------------------------------------------
+  channel 0: head sum in [0.71191987975049455579, 0.71191987975049455580], tau = 5.002400e-08
+             W in [0.711919829726494, 0.711919929774495]
+  channel 1: head sum in [0.71191987975049455578, 0.71191987975049455579], tau = 4.981600e-08
+             W in [0.711919829934494, 0.711919929566495]
+  channel 2: head sum in [0.71112804160775278959, 0.71112804160775278960], tau = 1.785796e-06
+             W in [0.711126255811752, 0.711129827403753]
+  channel 3: head sum in [0.71290128224153185225, 0.71290128224153185226], tau = 1.108350e-07
+             W in [0.712901171406531, 0.712901393076532]
+  channel 4: head sum in [0.71290128224153155914, 0.71290128224153155915], tau = 3.000000e-12
+             W in [0.712901282238531, 0.712901282244532]
+  channel 5: head sum in [0.71191987975049455578, 0.71191987975049455579], tau = 5.761900e-08
+             W in [0.711919822131494, 0.711919937369495]
+  [ok] (interval) channels 0, 1, 5 (same map, P(-1) = Q(-1) = 1) have one common value of W: their enclosures intersect in [0.711919829934, 0.711919929567]
+  [ok] (interval) W < 0.7119200 for channels 0, 1, 5 (paper), and this is below gamma-dagger
+  gamma-dagger - W(smoothed) in [3.873021e-05, 3.882985e-05]
+  [ok] (interval) channels 3, 4 (R(-1) = 1) have one common value of W: their enclosures intersect in [0.712901282238531, 0.712901282244532]
+  [ok] (interval) 0.712901282238 < W < 0.712901282245 for channel 4 (paper)
+  W(reflected) - gamma-dagger in [9.42622460e-04, 9.42622467e-04]
+  channel 2: sigma = P_2(-1) = 0.998613877434; W = sum_m (-1)^m r_m sigma^(2m+1)
+  [ok] (interval) |W| <= gamma-dagger for channel 2
+
+The ceiling W(H) = sum_p w_p W(h^(p)) of the mixture
+----------------------------------------------------
+  from the enclosures above:  W(H) in [0.711975189801059, 0.711975284343386]
+  from the paper's three rounded bounds (0.7119200; gamma-dagger < 0.711958683; 0.712901282245):
+      W(H) < 0.711975480275656
+  [ok] (interval) W(H) < 0.711975481 (paper)
+  c - delta = 0.711968053274152
+  [ok] (exact) 0.711968053 < c - delta
+  [ok] (interval) c - delta <= W(H) (consistent with D(H) <= W(H)); W(H) - (c - delta) in [7.136526e-06, 7.231070e-06]
+  [ok] (interval) max_p W(h^(p)) < 0.712901282245: no mixture of these six channels has slope above it
+  1 / 0.712901282245 = 1.402718756
+  [ok] (exact) 1 / 0.712901282245 > 1.40271: such mixtures give no bound below 1.40271 (paper)
+
+RESULT: all 12 checks passed

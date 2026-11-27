@@ -1,0 +1,8 @@
+(1) remote q:            0.886227   (sqrt(pi)/2 = 0.886227)
+    i z1 Q, Q real H11:  0.886227
+    conj(z1) B, B in H20: 0.443113
+    i e21(z1):           0.775449
+    z1 A, A complex diffuse H11 (half of it is transverse): 0.443113
+    span{e11(z1) w, e20(z1) conj(w)}: largest eigenvalue 0.726878
+(2) sup_c E|z(1 - c(T-2))|/norm = 0.94596 at c = 0.345;  at c = 1/4: 0.94328;  sqrt(9 pi/32) = 0.93999
+(3) E sqrt(T+S)/sqrt2 = Gamma(5/2)/sqrt2 = 0.93999

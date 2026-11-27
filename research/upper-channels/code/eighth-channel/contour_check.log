@@ -1,0 +1,9 @@
+a = 23277/25000: disk R = 11/10, contour rho = 109/100, j = 17/40, |H|^2 <= 2 on 16 cells: PROVED; tail from 126 < 8.897e-10
+a = 23277/25000: disk R = 6/5, contour rho = 1197/1000, j = 3/20, |H|^2 <= 144 on 8 cells: not certified
+a = 93079/100000: disk R = 11/10, contour rho = 109/100, j = 17/40, |H|^2 <= 2 on 16 cells: PROVED; tail from 126 < 8.897e-10
+a = 93079/100000: disk R = 6/5, contour rho = 1197/1000, j = 3/20, |H|^2 <= 144 on 8 cells: PROVED; tail from 126 < 2.927e-19
+a = 931/1000: disk R = 11/10, contour rho = 109/100, j = 17/40, |H|^2 <= 2 on 16 cells: PROVED; tail from 126 < 8.897e-10
+a = 931/1000: disk R = 6/5, contour rho = 1197/1000, j = 3/20, |H|^2 <= 144 on 8 cells: PROVED; tail from 126 < 2.927e-19
+a = 1863/2000: disk R = 11/10, contour rho = 109/100, j = 17/40, |H|^2 <= 2 on 16 cells: PROVED; tail from 126 < 8.897e-10
+a = 1863/2000: disk R = 6/5, contour rho = 1197/1000, j = 3/20, |H|^2 <= 144 on 8 cells: not certified
+a = 23277/25000: disk 6/5, contour rho = 119/100: PROVED with j = 1/10, |H|^2 <= 144; tail from 126 < 1.306e-18

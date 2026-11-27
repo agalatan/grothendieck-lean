@@ -5,6 +5,7 @@ import Grothe.LowerAnalytic.CircularFourth
 import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.CircularTensor
 import Grothe.LowerAnalytic.GramBudget
+import Grothe.LowerAnalytic.SharpRadius
 
 /-!
 # From the Gaussian lemmas to the shared row reduction
@@ -17,7 +18,9 @@ follow by `Circular.chaos3_right`, `Circular.gaussian_sq_eq`, `Circular.gaussian
 assembles the shared reduction from the scale, gate variable and row inequalities.
 
 * `moments_of_three`: `E √U ≤ ρ` and the integrability of `√U` are consequences of the other
-  fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments.
+  fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments; for a
+  circular cubic Gaussian chaos, `gaussian_moments` discharges `mh` directly from the sharper
+  certified bound `first_moment_lt_93` (`SharpRadius.lean`).
 * `gaussian_moments`: for the Gaussian law, `E U = 1`, `E U² ≥ 2` (from the fluctuation bound),
   the sharp cap `E U² ≤ 44 ≤ 2 + xMax²` (`Circular.gaussian_fourth_moment_le_44`) and
   integrability are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment
@@ -105,23 +108,33 @@ theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
       gaussE_mul_self_nonneg (radB a b)]
   have hcap : m ≤ 44 := hc.gaussian_fourth_moment_le_44 a b ha haa
   have hx2 : √(m - 2) ^ 2 = m - 2 := Real.sq_sqrt (by linarith)
-  refine moments_of_three _ _ _ (fun x => eval_radU_nonneg a b x) (Real.sqrt_nonneg _) ?_
-    (integrable_eval _) (eval_pow_integrable _ 2) (eval_pow_integrable _ 3) ?_ (by rw [hx2]; ring)
-    ?_
-  · rw [Real.sqrt_le_left (by norm_num [xMax])]
-    norm_num [xMax]
-    linarith
-  · have e : ∀ x, eval x (radU a b) = eval x a ^ 2 + eval x b ^ 2 := fun x => by
-      simp only [radU, map_add, map_mul, sq]
-    simp only [e]
-    rw [integral_add (eval_pow_integrable a 2) (eval_pow_integrable b 2), haa, hbb]
-    norm_num
-  · have e : nX √(m - 2) = 9 * m - 12 + LowerAnalytic.C6 * (m - 2) ^ ((3 : ℝ) / 2) := by
-      rw [rpow_three_halves (by linarith), nX,
-        show √(m - 2) ^ 3 = √(m - 2) ^ 2 * √(m - 2) by ring, hx2]
-      ring
-    rw [e]
-    exact h6
+  exact
+    { nonneg := fun x => eval_radU_nonneg a b x
+      x0 := Real.sqrt_nonneg _
+      x1 := by
+        rw [Real.sqrt_le_left (by norm_num [xMax])]
+        norm_num [xMax]
+        linarith
+      ih := integrable_sqrt (fun x => eval_radU_nonneg a b x) (integrable_eval _)
+      i1 := integrable_eval _
+      i2 := eval_pow_integrable _ 2
+      i3 := eval_pow_integrable _ 3
+      mh := (first_moment_lt_93 a b ha haa hc).le.trans (by norm_num [Lower.ρ])
+      m1 := by
+        have e : ∀ x, eval x (radU a b) = eval x a ^ 2 + eval x b ^ 2 := fun x => by
+          simp only [radU, map_add, map_mul, sq]
+        simp only [e]
+        rw [integral_add (eval_pow_integrable a 2) (eval_pow_integrable b 2), haa, hbb]
+        norm_num
+      m2 := by rw [hx2]; ring
+      m3 := by
+        have e : nX √(m - 2) = 9 * m - 12 + LowerAnalytic.C6 * (m - 2) ^ ((3 : ℝ) / 2) := by
+          rw [rpow_three_halves (by linarith), nX,
+            show √(m - 2) ^ 3 = √(m - 2) ^ 2 * √(m - 2) by ring, hx2]
+          ring
+        change _ ≤ nX √(m - 2)
+        rw [e]
+        exact h6 }
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 

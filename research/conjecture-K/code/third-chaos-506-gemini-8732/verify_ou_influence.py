@@ -25,7 +25,7 @@ WHAT THIS SCRIPT PROVES AND CERTIFIES:
                            <= (72*alpha_hat + 54*beta_hat - 15/4)*m
                            <= (72*alpha_hat + 54*beta_hat - 15/4)*lambda.
 
-2. Optimal rational Triple 3:
+2. Dedicated rational Schur Triple 3:
      (alpha_hat_3, beta_hat_3, gamma_hat_3) = (583/25000, 4239/100000, -1497/50000)
    certified across all x in [0, oo) (including the infinite ray), yielding exact rational slope
      M_hat_3 = 72*(583/25000) + 54*(4239/100000) - 15/4 = 2181/10000 = 0.2181:
@@ -33,15 +33,17 @@ WHAT THIS SCRIPT PROVES AND CERTIFIES:
        E|F| <= sqrt(2/pi) * ||F||_2 * (1 + (2181/10000) * tr(M^2) / ||T||_HS^4)
             <= sqrt(2/pi) * ||F||_2 * (1 + (2181/10000) * ||M||_op / ||T||_HS^2).
    - Strict practical target (T) (E|F| < sqrt(17/25) * ||F||_2) whenever
-       tr(M^2) / ||T||_HS^4 <= 96/625 = 0.1536   (and in particular <= 76/500 = 38/250 = 0.152),
-     hence whenever lambda / ||T||_HS^2 <= 96/625 = 0.1536 (an exact 24x improvement over the
-     previous quartic-Huber threshold lambda <= 16/2500 = 0.0064).
+       tr(M^2) / ||T||_HS^4 <= 3841/25000 = 0.15364   (in particular <= 96/625 = 0.1536),
+     hence whenever lambda / ||T||_HS^2 <= 3841/25000 = 0.15364 (extending KNG505's Var(tau)
+     consequence tr(M^2) <= 373/2800 ~ 0.13321 and #519's quartic-Huber lambda <= 16/2500 = 0.0064).
 
 3. Isotropic / irreducibly symmetric corollary in every dimension n >= 1:
    Whenever M = (||T||_HS^2 / n) * I_n (e.g. by Schur's lemma whenever F is invariant up to sign
-   under a subgroup of O(n) acting irreducibly on R^n), tr(M^2) / ||T||_HS^4 = 1/n <= 1/7 < 96/625
-   for all n >= 7, overlapping STATUS.md 3.21 (e3) (all n <= 15) on 7 <= n <= 15 and proving (T)
-   for every isotropic third-chaos polynomial in every dimension n >= 1.
+   under a subgroup of O(n) acting irreducibly on R^n, such as the regular-simplex cubic under the
+   standard representation of S_{n+1} on {y in R^{n+1} : sum y_j = 0} ~= R^n),
+   tr(M^2) / ||T||_HS^4 = 1/n <= 1/7 < 96/625 for all n >= 7, overlapping STATUS.md 3.21 (e3)
+   (all n <= 15) on 7 <= n <= 15 and proving (T) for every isotropic third-chaos polynomial in
+   every dimension n >= 1.
 """
 import ast
 import itertools
@@ -113,8 +115,6 @@ def verify_foundations_and_tensor_identities():
     pi_hi = 16 * a5_hi - 4 * a239_lo
     require(Fr(31415926535, 10**10) < pi_lo < pi_hi < Fr(31415926536, 10**10), 'Machin pi failed')
 
-    # Verify exact identities ||U||_HS^2 == tr(M^2), 0 <= u <= m <= tr(M)^2, and
-    # U_2/U_4 variance identities on three non-commuting rational symmetric 3-tensors in R^2, R^3, R^4:
     test_specs = [
         (2, {(0, 0, 0): Fr(2), (0, 0, 1): Fr(-3), (0, 1, 1): Fr(1), (1, 1, 1): Fr(4)}),
         (3, {(0, 0, 0): Fr(3), (0, 0, 1): Fr(-2), (0, 1, 2): Fr(5), (1, 2, 2): Fr(-1), (2, 2, 2): Fr(2)}),
@@ -385,8 +385,11 @@ def certify_cover(tables, knots, triple, cache, max_depth=12):
     return total_leaves, min_d1, min_d2, min_det_margin
 
 
-def run_negative_controls(tables, knots, pi_lo, cache):
+def run_negative_controls(tables, knots, pi_lo, pi_hi, cache):
+    """Run deterministic negative controls at the exact production max_depth=12."""
     t3 = (Fr(583, 25000), Fr(4239, 100000), Fr(-1497, 50000))
+    # Positive sanity check: exact same certify_cover call (production max_depth=12) accepts t3:
+    require(certify_cover(tables, knots, t3, cache)[0] == 336, 'positive control leaf count mismatch')
     rejected = 0
 
     def must_fail(fn, label):
@@ -399,20 +402,20 @@ def run_negative_controls(tables, knots, pi_lo, cache):
         require(failed, f'Negative control {label} was NOT rejected!')
         rejected += 1
 
-    # 1. Zero cross-multiplier gamma = 0:
-    must_fail(lambda: certify_cover(tables, knots, (t3[0], t3[1], Fr(0)), cache, max_depth=4), 'gamma=0')
-    # 2. Flipped sign of gamma:
-    must_fail(lambda: certify_cover(tables, knots, (t3[0], t3[1], -t3[2]), cache, max_depth=4), 'flipped gamma')
-    # 3. Lowering beta_hat below 1/24 = 0.041666...:
-    must_fail(lambda: certify_cover(tables, knots, (t3[0], Fr(1, 24), t3[2]), cache, max_depth=4), 'beta=1/24')
-    # 4. Lowering alpha_hat to 0.0224:
-    must_fail(lambda: certify_cover(tables, knots, (Fr(224, 10000), t3[1], t3[2]), cache, max_depth=4), 'alpha=0.0224')
+    # 1. Zero cross-multiplier gamma = 0 (at full production max_depth=12):
+    must_fail(lambda: certify_cover(tables, knots, (t3[0], t3[1], Fr(0)), cache), 'gamma=0')
+    # 2. Flipped sign of gamma (at full production max_depth=12):
+    must_fail(lambda: certify_cover(tables, knots, (t3[0], t3[1], -t3[2]), cache), 'flipped gamma')
+    # 3. Lowering beta_hat to 1/24 = 0.041666... where d_2(oo) == 0 (at full production max_depth=12):
+    must_fail(lambda: certify_cover(tables, knots, (t3[0], Fr(1, 24), t3[2]), cache), 'beta=1/24')
+    # 4. Lowering alpha_hat to 0.0224 < -min(g_hat_2)/9 (at full production max_depth=12):
+    must_fail(lambda: certify_cover(tables, knots, (Fr(224, 10000), t3[1], t3[2]), cache), 'alpha=0.0224')
     # 5. Dropping infinite tail None:
     must_fail(lambda: certify_cover(tables, knots[:-1], t3, cache), 'missing infinite tail')
-    # 6. Overclaiming tr(M^2) = 0.16 with slope 2181/10000:
+    # 6. Overclaiming tr(M^2) = 1921/12500 = 0.15368 with slope 2181/10000 (exceeds (17/50)*pi_hi):
     must_fail(
-        lambda: require((1 + Fr(2181, 10000) * Fr(4, 25)) ** 2 < Fr(17, 50) * pi_lo, 'overclaimed m=0.16'),
-        'overclaimed m=0.16',
+        lambda: require((1 + Fr(2181, 10000) * Fr(1921, 12500)) ** 2 < Fr(17, 50) * pi_hi, 'overclaimed m=1921/12500'),
+        'overclaimed m=1921/12500',
     )
     # 7. AST zero-float audit of this source file:
     src = pathlib.Path(__file__).read_text(encoding='utf-8')
@@ -445,24 +448,23 @@ def main():
     # Verify u-coefficient positivity and exact slope M_hat_3 = 2181/10000:
     coeff_m = 72 * al3 - Fr(3, 2)
     coeff_u = 54 * be3 - Fr(9, 4)
-    require(coeff_m > 0 and coeff_u > 0, 'expected positive m and u coefficients')
+    require(coeff_m == Fr(1119, 6250) and coeff_u == Fr(1953, 50000), 'unexpected m/u coefficients')
     M_hat_3 = coeff_m + coeff_u
     require(M_hat_3 == Fr(2181, 10000), 'unexpected M_hat_3')
 
-    m_thresh = Fr(96, 625)     # 0.1536 (exact 24x over 16/2500 = 0.0064)
-    m_clean = Fr(19, 125)      # 0.152
-    require(m_clean < m_thresh, 'm_clean ordering failed')
+    m_thresh_full = Fr(3841, 25000)   # 0.15364
+    m_thresh = Fr(96, 625)            # 0.1536
+    m_kng_prev = Fr(373, 2800)        # ~0.133214 (direct consequence of KNG505 Var(tau) <= 373/200)
+    require(m_kng_prev < m_thresh < m_thresh_full, 'threshold ordering failed')
+    lhs_sq_full = (1 + M_hat_3 * m_thresh_full) ** 2
     lhs_sq = (1 + M_hat_3 * m_thresh) ** 2
     rhs_sq_target = Fr(17, 50) * pi_lo
-    require(lhs_sq < rhs_sq_target, 'tr(M^2) <= 96/625 target comparison failed')
+    require(lhs_sq < lhs_sq_full < rhs_sq_target, 'tr(M^2) <= 3841/25000 target comparison failed')
 
-    # Verify exact 24x improvement factor over #519's lambda <= 16/2500 = 0.0064 and overlap n >= 7 with (e3) n <= 15:
-    gain_ratio = m_thresh / Fr(16, 2500)
-    require(gain_ratio == Fr(24), 'gain ratio check failed')
     for n_iso in range(7, 25):
-        require(Fr(1, n_iso) <= Fr(1, 7) < m_clean < m_thresh, 'isotropic 1/n check failed')
+        require(Fr(1, n_iso) <= Fr(1, 7) < m_thresh < m_thresh_full, 'isotropic 1/n check failed')
 
-    n_rej = run_negative_controls(tables, knots, pi_lo, cache)
+    n_rej = run_negative_controls(tables, knots, pi_lo, pi_hi, cache)
     elapsed_ms = (time.monotonic_ns() - t0) // 1000000
 
     if not quiet:
@@ -471,10 +473,10 @@ def main():
         print(f'2. Triple 3 [tr(M^2) & lambda]: ({al3}, {be3}, {gm3}) certified on [0, oo) in {leaves3} leaves')
         print(f'   min d_1 = {dec_floor10(min_d1)}, min d_2 = {dec_floor10(min_d2)}, min Schur det margin = {dec_floor10(min_det)}')
         print(f'   Exact slope: 72*al_3 + 54*be_3 - 15/4 = {M_hat_3} = {dec_ceil10(M_hat_3)}')
-        print(f'   At tr(M^2) <= 96/625 = 0.1536 (and lambda <= 96/625 = 0.1536, exact 24x > 16/2500 = 0.0064):')
-        print(f'   (1 + (2181/10000)*(96/625))^2 = {dec_ceil10(lhs_sq)} < (17/50)*pi_lo = {dec_floor10(rhs_sq_target)}  ==> (T) PASS!')
+        print(f'   At tr(M^2) <= 3841/25000 = 0.15364 (and <= 96/625 = 0.1536, vs KNG505 373/2800 ~ 0.13321):')
+        print(f'   (1 + (2181/10000)*(3841/25000))^2 = {dec_ceil10(lhs_sq_full)} < (17/50)*pi_lo = {dec_floor10(rhs_sq_target)}  ==> (T) PASS!')
         print('3. Isotropic / irreducibly symmetric cubics (M = I_n / n): 1/n <= 1/7 < 96/625 for all n >= 7 (overlaps n <= 15 on 7..15) ==> (T) PASS for all n >= 1!')
-        print(f'4. Negative controls & AST zero-float audit: {n_rej} adversarial checks ALL REJECTED ({elapsed_ms} ms).')
+        print(f'4. Full-depth negative controls (max_depth=12) & AST zero-float audit: {n_rej} adversarial checks ALL REJECTED ({elapsed_ms} ms).')
 
 
 if __name__ == '__main__':

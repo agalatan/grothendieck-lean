@@ -1687,17 +1687,203 @@ The proof and exact replay cover ledger row 7.5.4c. Run `python3 -I research/con
 | `sources/odd-harmonic-energy-codex-a7c4/PROOF.md` | 7,754 B | `f1a460b99520e59d309ed36b4e2de63ceb5aa129223826b2ea53f0d75be4fbbf` |
 | `code/odd-harmonic-energy-codex-a7c4/verify.py` | 5,845 B | `8842763f3804329b12efc3bc713199fbf99052a514af45c9fb829a9d0c8f91fa` |
 
-## Hilbert–Schmidt / influence OU bounds and coupled signed-circle commutator cutoffs on V₃(ℝⁿ) (gemini-8732, tasks #506, #501, #458)
+## Complete one-driver self-interaction family closure (gemini-21d5, refs #509)
 
-- [Proof and replay instructions](sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md) and
-  [exact zero-float verifiers and replay log](code/third-chaos-506-gemini-8732/) (tag KTC506; STATUS 3.21 (e1), 3.21 (e4), 3.21 (e9)(iii)–(iv); author only). Every file is under 25 KB and committed in the repository; no external files or dependencies were left outside.
-- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations, AST-audited):**
-  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_ou_influence.py` verifies `||U||_HS^2 == tr(M^2) >= ||U_tilde||_HS^2` on rational symmetric 3-tensors in $\mathbb{R}^2, \mathbb{R}^3, \mathbb{R}^4$, Machin $\pi$ bounds, $2\times 2$ Schur positivity across $[0, \infty)$ (336 leaves including the infinite ray) for Triple 3 $(583/25000, 4239/100000, -1497/50000)$ (exact slope $2181/10000$), `(T)` for $\operatorname{tr}(M^2)/\|T\|_{\mathrm{HS}}^4 \le 96/625 = 0.1536$ and $\lambda \le 96/625 = 0.1536$ (exact $24\times$ over $16/2500 = 0.0064$, covering all isotropic / irreducibly symmetric third-chaos cubics in every dimension $n \ge 1$), and 7 negative controls (~33 s).
-  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_tensor_combined.py` verifies exact commutator-submatrix $([A_p, A_1])_{1q} = D_{pq}$ and $M_{12} = 0$ identities on 4 rational $\mathbb{R}^4$ tensors, 4D branch-and-bound covers coupling signed 2-plane circle norms + analytic $d$-tightening with the full Frobenius commutator block $72\|D\|_F^2$ + Weyl–Karamata ($\lambda < 27/40 = 0.675$, $\kappa_4 < 48$ at $a \le 349/500 = 0.698$ in 32,515 leaves; $\lambda < 33/50 = 0.66$, $\kappa_4 < 229/5 = 45.8$ at $a \le 321/500 = 0.642$ in 14,955 leaves), and 3 negative controls (~6 min). [Replay log](code/third-chaos-506-gemini-8732/REPLAY.log)
+- [Proof and replay instructions](sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md) and
+  [C++17 interval certifier, exact rational verifier, negative controls and saved certificate](code/one-driver-self-interaction-gemini-21d5/) (tag K1DSI; STATUS 6.3.5–6.3.7, 6.3.13–6.3.15; **P + C, author only**). All files are committed in the repository with zero external dependencies.
+- **Replay:**
+  - Fast exact rational audit of saved `result.json`, unbounded tails (`|z| >= 4` and `y >= 500`), and 10 negative/corruption controls (< 1 s, Python 3 stdlib only): `python3 -I research/conjecture-K/code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py` and `python3 -I -O research/conjecture-K/code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py`.
+  - Full C++17 outward-rounded interval regeneration + exact bit-for-bit verification against `result.json` (~8 min on Apple Silicon across 3 threads): `python3 -I -O research/conjecture-K/code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py --replay-cpp`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md` | 18,838 B | `a3d8e659dfa335c8ebfd840e3c003751790181b4bef5f7f44a2455776508b20e` |
-| `code/third-chaos-506-gemini-8732/verify_ou_influence.py` | 21,277 B | `aeae6698505236ebe87787da5b0d9ca896f9b3a7c1c069a51cabd3f25350ff33` |
-| `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 23,665 B | `7ffa3ccf64cc39fce86a154e7875837fd86de2ee76618489ad5b101056ccfb67` |
-| `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,374 B | `a1cff53c14c8151b04b7d20f89a1d52df14558e5d1ccb9f7f8453bb451204a49` |
+| `sources/one-driver-self-interaction-2026-11-24-gemini-21d5/PROOF.md` | 28,461 B | `93543017188fa97f9ebd67d4631821fb6bb32ec425dff9753b6ac330048f62aa` |
+| `code/one-driver-self-interaction-gemini-21d5/README.md` | 1,874 B | `1f24718f0551197ecc47e56ed23734fe81e5aedea5edc21e2c49e07a61fa8c2c` |
+| `code/one-driver-self-interaction-gemini-21d5/certify_one_driver.cpp` | 101,228 B | `d24fc17b6382fc4cbb71be4b0eef2a686a7aca7e07e3d6fdd7107f7ce46b0df7` |
+| `code/one-driver-self-interaction-gemini-21d5/verify_one_driver.py` | 23,919 B | `98001d940c9696e474581e0f61563d81a09f850562ae58368cd15724cb4485de` |
+| `code/one-driver-self-interaction-gemini-21d5/result.json` | 7,593 B | `943d3e5bd5ea051753f82e9d8a632e96d9fffef509131fa0ccbaa0aba6631c0b` |
+
+## Mixed one-driver content (codex-a7c4, #509)
+
+The [paper proof](sources/mixed-driver-folding-codex-a7c4/PROOF.md) derives the mixed shell case of 6.3.16 from the existing scalar envelopes. The [standard-library checker](code/mixed-driver-folding-codex-a7c4/verify.py) derives the moment constants, verifies the obstruction to the separate sixth-moment assumption, and checks joint polynomial moments. Run `python3 -IB -O research/conjecture-K/code/mixed-driver-folding-codex-a7c4/verify.py`.
+
+## Real trilinear projections (codex-a7c4, #509)
+
+The [proof](sources/real-trilinear-neighbourhood-codex-a7c4/PROOF.md) and [replay](code/real-trilinear-neighbourhood-codex-a7c4/verify.py) give the three-row result from the real coefficient tensor and the second and fourth moments of its trilinear projection. [Real sign characters](sources/real-trilinear-neighbourhood-codex-a7c4/REAL_CHARACTERS.md) give the related conditional theorem for general cores.
+
+| file | bytes | SHA-256 |
+|---|---:|---|
+| `sources/real-trilinear-neighbourhood-codex-a7c4/PROOF.md` | 12197 | `3032b9b83a36fa155d22e7512c2e3000bd04e44d89cd93551448fb6777ce1364` |
+| `sources/real-trilinear-neighbourhood-codex-a7c4/REAL_CHARACTERS.md` | 4623 | `af38967bfe95a9511fc29c75f144e8fd48231720f4c1bdf654fc888a2edb74e4` |
+| `code/real-trilinear-neighbourhood-codex-a7c4/verify.py` | 4779 | `71e6b37ec094a01781e4d43a59bcc7c636e3abae0709629222bafe408b069d66` |
+| `code/real-trilinear-neighbourhood-codex-a7c4/result.json` | 991 | `ef6e1deb5fa05b4b81489f24cc4a13e18c8efe99673a6299e06beadae1cebc29` |
+
+## Mixed Gaussian-driver blocks (codex-a7c4, #509)
+
+The [proof](sources/mixed-driver-blocks-codex-a7c4/PROOF.md) and [certificate](code/mixed-driver-blocks-codex-a7c4/) cover ledger 6.3.16a. The three JSON files are the original 6.3.4 kernel-node subsets. The verifier rechecks the scalar envelope over the continuum and the covariance and moment budgets. Use `python3 -IB research/conjecture-K/code/mixed-driver-blocks-codex-a7c4/verify.py --recompute-kernels` with `python-flint` to regenerate every node enclosure with Arb as well.
+
+| file | bytes | SHA-256 |
+|---|---:|---|
+| `sources/mixed-driver-blocks-codex-a7c4/PROOF.md` | 10237 | `577c0bf0cbb7ff7244d08e3466fc80b4198f0a9762871efe5f1dc936817a6133` |
+| `code/mixed-driver-blocks-codex-a7c4/verify.py` | 8640 | `f903f41371ca29cbae8abf939e04a42e2e44a68f4ede0adb5c7ef31e6b686c8a` |
+| `code/mixed-driver-blocks-codex-a7c4/flank_kernels.json` | 9548 | `92c8928e5edc1b1d2288da3c3445f80d229cab7784f8ce161d9f32a160325387` |
+| `code/mixed-driver-blocks-codex-a7c4/peak_kernels.json` | 9551 | `1b3fc13512463d81c4f245540b99744dfab31492541834450aaed4d3d9c9e30c` |
+| `code/mixed-driver-blocks-codex-a7c4/result.json` | 351 | `c4417a59c18734890e29597e78d7efd960a25070ab37908d17107c0b71fe49a9` |
+| `code/mixed-driver-blocks-codex-a7c4/upper_kernels.json` | 9543 | `d08d5ba8842987f919ea33c7b3ed14f7e226175ffb2cc618444f9eaa396ec7dd` |
+
+## Character perturbations of a cubic core (codex-a7c4, #509)
+
+The [proof](sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md) gives the three-row sign and circle neighbourhoods of 6.3.9c. The [replay](code/mixed-driver-sign-perturbation-codex-a7c4/verify.py) checks the outward budget at each of three core constants using the derivative data of 6.3.9b.
+
+| file | bytes | SHA-256 |
+|---|---:|---|
+| `sources/mixed-driver-sign-perturbation-codex-a7c4/PROOF.md` | 8315 | `da4791af2f4704b269701995fc19b23580e385b24f9c0ca83d02936c4c5a5d33` |
+| `code/mixed-driver-sign-perturbation-codex-a7c4/verify.py` | 3122 | `8d3e0d60cc98185e5b51f1dd13986f48113afa5719c041878f70766cb421e182` |
+| `code/mixed-driver-sign-perturbation-codex-a7c4/result.json` | 1257 | `63baa832b5fe3706183decd7552e1f7745d2623e3d11c1e3755bf371e972af77` |
+
+## Real Gaussian carrier blocks (codex-a7c4, #509)
+
+The [proof](sources/real-driver-blocks-codex-a7c4/PROOF.md) and [exact Gaussian moment replay](code/real-driver-blocks-codex-a7c4/verify.py) give ledger 6.3.16b. The replay computes the parity energies, covariance, improved coefficient and componentwise controls from standard Gaussian moments. Run `python3 -IOB research/conjecture-K/code/real-driver-blocks-codex-a7c4/verify.py`.
+
+## Circular cubic total variation (codex-a7c4, #685)
+
+The [proof](sources/radial-gram-comparison-codex-a7c4/PROOF.md) gives the Gaussian comparison in 3.31. The [kernel replay](sources/radial-gram-comparison-codex-a7c4/KERNEL.md) checks the algebraic estimates, and the [rational replay](code/radial-gram-comparison-codex-a7c4/verify.py) checks the dual and extremal ray.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/radial-gram-comparison-codex-a7c4/PROOF.md` | 5411 | `2f540dd0bef2cf18291f890a16e4d91a20befd5f5530becafb9685469e44d2c3` |
+| `sources/radial-gram-comparison-codex-a7c4/KERNEL.md` | 5011 | `bb11a53872af2c6d627096ef4e7825bc9dfa77e52683f95615def67e8efa8a98` |
+| `code/radial-gram-comparison-codex-a7c4/verify.py` | 2464 | `bc67f7ff58421f9e46b4e7cb6e1e020413f42837b86b2bcd433acfbbb34b54af` |
+| `code/radial-gram-comparison-codex-a7c4/result.json` | 329 | `303ff1fb9044d82212e10e1b0bcfc44d11eb41c074999f297a8ef065b76f51c7` |
+
+## Sharp covariance comparison for quadratic fields (codex-a7c4, #698)
+
+[Derivation](sources/quadratic-spectrum-codex-a7c4/PROOF.md) and [exact SymPy replay](code/quadratic-spectrum-codex-a7c4/verify.py) for 3.26a.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/quadratic-spectrum-codex-a7c4/PROOF.md` | 6175 | `23543e0cd9d1c1683ef69174d0e8ad93e62837dbfbd02125e43e40c03fd7f645` |
+| `sources/quadratic-spectrum-codex-a7c4/INDEPENDENT_BLOCKS.md` | 8164 | `1ec363ea43c2720184a2d02c9d1e94d88fcae08dad6949efab1fa224c3607b54` |
+| `code/quadratic-spectrum-codex-a7c4/verify.py` | 4745 | `e4b502db1ee70b9c0dcfc6fc4ecf7ac7f76171a5911141c27aec65f23d71f1be` |
+
+## Fixed unitary decoupling and zero content (codex-a7c4, #687)
+
+The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusion in ledger 3.24 and gives 6.3.26a. The [symbolic replay](code/cubic-shear-codex-a7c4/verify.py) uses Python and SymPy to check the polarised contraction, Wick moments, circle weights, negative control and perturbation constants. Run `python3 -IB research/conjecture-K/code/cubic-shear-codex-a7c4/verify.py`.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
+| `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |
+
+## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
+
+- [Proof and replay instructions](sources/global-all-sector-gemini-c1de/PROOF.md) and
+  [C++17 interval certifier, exact rational verifier, saved certificate and 23 corruption controls](code/global-all-sector-gemini-c1de/) (tag KGAS; STATUS 7.5.13; **P + C, author only**). All files are committed in the repository with zero external dependencies left outside.
+- **Replay:**
+  - Exact rational audit of saved `result.json`, zero-float 2D Bernstein proofs of Lemmas L1/L2 and Smooth-Split $H_{5,\delta}$ (Lemmas S1/S2), $\psi(r, q)$ calculus, $w \ge 8$ even+odd analytic exteriors, analytic Jensen diagonal lower-bound controls, and Parts 1–3 contiguity/PSD/handoffs (< 1 s, Python 3 stdlib only, `-I`, rejects `-O`): `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/test_controls.py` (23 negative/corruption controls including Part 3 `RingGeom` `hT` and `AngGeom` `df` inward-rounding regressions, live C++ even & odd false-target controls, and `-DNDEBUG` compile rejection).
+  - Full C++17 outward-rounded (`FE_UPWARD`) 8-thread interval replay (`33,684` CPU-s / `11,701` s wall; compiles/runs to a temporary file, audits all 3 parts, and verifies exact bit-for-bit equality against committed `result.json` without overwriting it; pass `--replay-cpp --update-result` only to intentionally regenerate `result.json`): `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/global-all-sector-gemini-c1de/PROOF.md` | 31,333 B | `e98ee17b947fa8792d47a5a72c93383ac83a84c0881c9d8531fc8b533e2e0b22` |
+| `code/global-all-sector-gemini-c1de/README.md` | 3,008 B | `194c99e54a6901d354f84e10ab710f92524fe358fe5e5b3275393d062203f2ae` |
+| `code/global-all-sector-gemini-c1de/certify_all_sector.cpp` | 162,100 B | `2186d7971f9693cc2440fe794eab29ffb80a0ca3b775f916583cb903eab0705c` |
+| `code/global-all-sector-gemini-c1de/verify.py` | 30,836 B | `fc9af6813e2bf7430989ff1bce18aa6db27f287b2997fd8c874ec3ddf1f92e17` |
+| `code/global-all-sector-gemini-c1de/result.json` | 546,108 B | `fe5e948a3090d64692064575268289490f7f89d3ab0747ee27dfc09dff1bdcbb` |
+| `code/global-all-sector-gemini-c1de/test_controls.py` | 10,455 B | `2d4586ffd9c33d8873cd59a4b0f24989f635865009193c2a944cf4e0cf6053ef` |
+
+## Gaussian fibres and the transverse radius (codex-a7c4, #509)
+
+The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b and 6.3.26b. Run the [exact checks](code/invariant-fibres-codex-a7c4/verify.py) with `python3 -IB research/conjecture-K/code/invariant-fibres-codex-a7c4/verify.py` and SymPy.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/invariant-fibres-codex-a7c4/PROOF.md` | 12226 | `4b91bbe639c8242e9147bf9e8ea0e3d870595bb16b09bd1d6d76b7ec703620ff` |
+| `code/invariant-fibres-codex-a7c4/verify.py` | 4999 | `c2b5fafff62199919fc1ad79b45424666a58af93b93a318814022e65a76372f8` |
+
+## Global raw joint A/B bounds and common diagonal costs (gemini-4c4c, #706)
+
+- [Proof and replay instructions](sources/raw-joint-ab-gemini-4c4c/PROOF.md) and
+  [C++17 interval certifier, exact rational verifier, saved certificate and 21 corruption controls](code/raw-joint-ab-gemini-4c4c/) (tag KRJAB; STATUS 7.4, 7.4.2, 7.4.5, 7.4.17; **P + C**). All files are committed in the repository (`result.json` is 232,931 B < 300 KB) with zero external dependencies left outside.
+- codex-a7c4 verified the revised exterior and transfer arguments, reproduced all 10,567,008 boxes byte for byte, and reran the revised verifier and all 21 controls. [independent review](https://github.com/agalatan/grothendieck-lean/pull/708#issuecomment-7169354017) · [full C++ replay](https://github.com/agalatan/grothendieck-lean/pull/708#issuecomment-7169160883).
+- **Replay:**
+  - Exact rational audit of saved `result.json`, zero-float proofs of the $|x| \ge 29/10$ shift exterior (`< 187/200 S_0`), $\|v\|_\infty \ge 4$ circle total-variation amplitude exterior (`< 47/50 S_0`), and 7.4.2 assembly corollaries (`gamma = 11/50 = 0.22` diagonal, plus strong, additive-slack, and weak-allowance `gamma = 6/25 = 0.24` signed bounds with Schur complement `6697/31250`), plus all 21 corruption and compiler/hotspot controls (Python 3 stdlib, `-I`, rejects `-O`; compiler required for the two build controls): `python3 -I research/conjecture-K/code/raw-joint-ab-gemini-4c4c/verify.py` and `python3 -I research/conjecture-K/code/raw-joint-ab-gemini-4c4c/test_controls.py`.
+  - Full C++17 outward-rounded (`FE_UPWARD`) 8-thread interval replay (~670 s wall / ~1,725 CPU-s; compiles/runs to a temporary file and verifies exact bit-for-bit equality against committed `result.json`): `python3 -I research/conjecture-K/code/raw-joint-ab-gemini-4c4c/verify.py --replay-cpp`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/raw-joint-ab-gemini-4c4c/PROOF.md` | 34,976 B | `e1d1bb7a4c2c6924bc039c257d6ff38643cad395453ff9dfc0ae389c036e22e5` |
+| `code/raw-joint-ab-gemini-4c4c/README.md` | 2,438 B | `cb27c021206d66b684aabd8b43c8043be2a37e015713e3a0f71525c5d733d7b8` |
+| `code/raw-joint-ab-gemini-4c4c/certify_raw_joint_ab.cpp` | 62,998 B | `2612df3565e2a457f561b7886dd620898796119c3ae326a8c731511e4b782a20` |
+| `code/raw-joint-ab-gemini-4c4c/result.json` | 232,931 B | `35d811ade8a309dc9fbcc1ad93f1f9e00d43b4e998e005c428db39d6716fcdaa` |
+| `code/raw-joint-ab-gemini-4c4c/verify.py` | 31,106 B | `2686c1c4590af4248d9480d802551bd22944ddf4ca91c728bed79d18581355ab` |
+| `code/raw-joint-ab-gemini-4c4c/test_controls.py` | 7,391 B | `43115a2cd974a5e9c29ae75c3979656e174474926882402130471d89ac2f0714` |
+
+## Multi-driver self-interaction content inequality and sharpened character perturbations (gemini-21d5, #726)
+
+- [Proof and replay instructions](sources/multi-driver-self-interaction-gemini-21d5/PROOF.md) and
+  [pure-stdlib 640-bit zero-float verifier, rational receipt, and 15 built-in adversarial controls](code/multi-driver-self-interaction-gemini-21d5/) (tag KMDSI; STATUS 6.3.9c, 6.3.9d, 6.3.10, 6.3.17, 6.3.18, 6.4.2; **P + C, author only**). All files are committed in the repository (`result.json` is 9,421 B) with zero external dependencies.
+- **Replay:**
+  - Fast zero-float audit + from-scratch 640-bit recomputation of single-pole integrals, $M_0^A, M_1^A$, $\varphi'(0)$, $-\varphi''(0)$, Theorem 3 shared-bath budgets, Theorem 4 sharp integer denominators, 7.4.17 joint A+B corollaries, `result.json` contiguity/bound audit, and 15 adversarial controls (< 3 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py`.
+  - Full 640-bit zero-float continuum recomputation of all Bessel-moment tables, `(0, 4]` positivity cover, $\tau$-panel midpoint-tangent and convexity-secant quadratures, and all 355 $u$-slabs across all 3 rows (~118 s on Apple Silicon): `python3 -IB -O research/conjecture-K/code/multi-driver-self-interaction-gemini-21d5/verify.py --recompute`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/multi-driver-self-interaction-gemini-21d5/PROOF.md` | 52,472 B | `15e50ee661b2019b3a615dbc18b5eae1281e9c44562c502543b280764300dfd8` |
+| `code/multi-driver-self-interaction-gemini-21d5/README.md` | 1,400 B | `1d6524eb0dbed914172be7d3b795a7c7cfc684fef0ed30213288b99788334ce2` |
+| `code/multi-driver-self-interaction-gemini-21d5/verify.py` | 62,494 B | `7508bc2bfc3bf163f8f33ef25f9281bb5f46419dc6f07b57c0b83d7fc73624b3` |
+| `code/multi-driver-self-interaction-gemini-21d5/result.json` | 9,421 B | `3614df20314af9e5c570b0d38f72ac271d591853b16094da64073627d4e713ef` |
+
+## Tied U(1)-averaged OU resolvent and self-contained Damped Level-3 cubic radius 114/125 = 0.912 (gemini-4c4c, #720)
+
+- [Self-contained proof and replay instructions](sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md) and
+  [exact rational certificate, two zero-float stdlib verifiers, symbolic identity & zero-set checks, 97 negative/corruption controls, and generator](code/cubic-radius-ou-l3-gemini-4c4c/) (tag KOUL3; STATUS 3.6, 3.7, 3.21; `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C, author only**). Every file is strictly below 300 KB (`cert_912.json` is 229,130 B) with zero external dependencies left outside.
+- **Replay (pure Python 3 standard library only, zero floating-point operations or float clocks, `-IB` and `-IB -O` identical):**
+  - Primary $LDL^\top$ + Sturm + downstream verifier (~60 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify.py`
+  - Second verifier — independent on all 10 Stein rows and `4.18e` (Block2-Schur + Bernstein + symbolic $\mathbb{Q}[v, c_2]$ raw bracket check) and applying $2\times 2$ Block Schur complements to the shared OU quadrature/congruence enclosures (~54 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py`
+  - Exact symbolic & interval identity checks including traced Wick identity ($d = 1, 2, 3$) and $z = \sqrt{2}$ zero-set regression (~18 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py`
+  - AST zero-float self-audit + 97 negative & corruption controls (~138 s): `python3 -IB -O research/conjecture-K/code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py`
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,574 B | `d58499b89dae1c386efc04028a0f8a985cc8f7b9c8eb0701697a204d2b26005f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/README.md` | 2,990 B | `24e96c9ddcd29789e49c78872f6f1d746b287502bedac72e943e84d56de6c14a` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/cert_912.json` | 229,130 B | `5fd94b4b1bda430344388013009b18e8fc00077ec4e67ec993a5755c85b0ba04` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/verify.py` | 65,398 B | `9b5a2d83166006db93de6d59201a98ae3506088290095d43a0ccfbd0dd1cf70f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/verify_bernstein.py` | 40,901 B | `53cfd31eabe3f4ff77bf5800a705b3b99daf7debf5773e5f35deef6de4bdd86f` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/check_identities_exact.py` | 46,642 B | `242bd78e49dafe996222f788b047782ac14e0b4d0784aa3eeccd5f6c16f52553` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/test_controls.py` | 12,889 B | `bb9e8fc43d8a49bb8b29907b762d142bfde143aa462487c1bad4dfdb50757d6e` |
+| `code/cubic-radius-ou-l3-gemini-4c4c/make_cert.py` | 64,325 B | `2f83919cc3e5dfd31e61283660b047edd5733daf5770ba078f4b3a3979570675` |
+
+## Sharpened retained six-sector peak bounds, profile transfer, and central consumer slabs (gemini-c1de, #728)
+
+- [Proof and replay instructions](sources/all-sector-transfer-gemini-c1de/PROOF.md) and
+  [zero-float stdlib verifier, rational certificate, generator, and 21-check control suite](code/all-sector-transfer-gemini-c1de/) (tag KAST; STATUS 7.4.10, 7.4.16, 7.5.3, 7.5.13, 8.1, 8.7, 8.10, 8.13, 11.47, 11.53; **P + C, author only**). All files are committed in the repository (`all_sector_transfer_cert.json` is 267,846 B < 300 KB) with zero external dependencies.
+- **Replay:**
+  - Zero-float, zero-`assert` exact rational verification of Machin $\pi$, $\sqrt{\pi}$, the `2.12a–b` Rice tangent at $u = 1/10$, all 7 2D `(u, V)` covers (`peak_dplus`, `peak_signed`, pure-`D_+` `7.5.3` `cession_dplus` with `sig_lo = r_rem = 0` and scalar `(P_Psi)` control, and `11.53` scaled profile covers `scale_even_*` and `scale_all6_*`), direct Row 8 (`[0.840, 0.847]`) closure of `8.13(ii)`, and all 5 pinned central consumer $t$-slab covers (< 2 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py`.
+  - Positive-fixture, mathematical negative-control (including forbidden signed `11.61` below $u = 2/125$, forbidden double-spending of $\sigma(u)$ on `(P_Psi)` cession, omitted $(\lambda - 1)(49/625)|\nu_0|^2$ on $\lambda > 1$ six-sector transfer, pinned `< 29.36e-6` / `< 27.00e-6` headline thresholds, and truncated consumer slabs), and corruption control suite (21 checks, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py`.
+  - Certificate regeneration from scratch (~15 s): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/generate_certs.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/all-sector-transfer-gemini-c1de/PROOF.md` | 23,362 B | `caa00cc8c6938135219506c6c16c91f8f21cf9495a46a502c5f148f261a73244` |
+| `code/all-sector-transfer-gemini-c1de/README.md` | 2,922 B | `ca959b115951666c445ec100476857a0a4caf035da915388610e8a1e45723074` |
+| `code/all-sector-transfer-gemini-c1de/generate_certs.py` | 21,536 B | `b82930d3bcbf56c28b0672f866552efb441cbc5918550528408bde8e7b033416` |
+| `code/all-sector-transfer-gemini-c1de/verify.py` | 36,010 B | `65fea8844b793b2333d77a5a29a832c2a158bb6e5d7b5e8abf7dc611910f191b` |
+| `code/all-sector-transfer-gemini-c1de/test_controls.py` | 8,784 B | `c6afbdb43aef19aa7d05043739ee5dba069a3710c5142095786924e7f021cbdf` |
+| `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 267,846 B | `c0464da7a116c1f7cb459191227185f8e3c631d0ca7f4ad9594750e82bb90f47` |
+
+## Hilbert–Schmidt / influence OU bounds and coupled signed-circle commutator cutoffs on V₃(ℝⁿ) (gemini-8732, tasks #506, #501, #458)
+
+- [Proof and replay instructions](sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md) and
+  [exact zero-float verifiers and replay log](code/third-chaos-506-gemini-8732/) (tag KTC506; STATUS 3.21 (e1), 3.21 (e4), 3.21 (e9)(iii)–(iv); **P + C, author only**). Every file is under 30 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations, AST-audited):**
+  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_ou_influence.py` verifies `||U||_HS^2 == tr(M^2) >= ||U_tilde||_HS^2` on rational symmetric 3-tensors in $\mathbb{R}^2, \mathbb{R}^3, \mathbb{R}^4$, Machin $\pi$ bounds, $2\times 2$ Schur positivity across $[0, \infty)$ (336 leaves including the infinite ray) for the dedicated Triple 3 $(583/25000, 4239/100000, -1497/50000)$ (exact slope $2181/10000$), `(T)` for $\operatorname{tr}(M^2)/\|T\|_{\mathrm{HS}}^4 \le 3841/25000 = 0.15364$ (in particular $\le 96/625 = 0.1536$, vs `KNG505` $373/2800 \approx 0.13321$) and $\lambda \le 3841/25000 = 0.15364$ (covering all isotropic / irreducibly $O(n)$-symmetric third-chaos cubics $M = (\|T\|_{\mathrm{HS}}^2/n)I_n$ in every dimension $n \ge 1$), and 7 negative controls at full production depth `max_depth = 12` (~39 s).
+  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_tensor_combined.py` verifies exact commutator-submatrix $([A_p, A_1])_{1q} = D_{pq}$ and $M_{12} = 0$ identities on 4 rational $\mathbb{R}^4$ tensors, 4D branch-and-bound covers coupling signed 2-plane circle norms + analytic $d$-tightening with the full Frobenius commutator block $72\|D\|_F^2$ + Weyl–Karamata ($\lambda < 27/40 = 0.675$, $\kappa_4 < 48$ at $a \le 349/500 = 0.698$ in 32,515 leaves; $\lambda < 33/50 = 0.66$, $\kappa_4 < 229/5 = 45.8$ at $a \le 321/500 = 0.642$ in 14,955 leaves), exact rational Sturm-sequence proofs on $\mathbb{R}$ for 4 planar cubic witnesses, and 5 negative controls at full production depth `max_depth = 46` (~4 min). [Replay log](code/third-chaos-506-gemini-8732/REPLAY.log)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md` | 23,415 B | `e01b771f51a90d05539b2b14c6729eabd826b57dbb7b99fb4d8547c6d06c035f` |
+| `code/third-chaos-506-gemini-8732/verify_ou_influence.py` | 21,736 B | `42d0860f6c3eaaea6570c1f6b0c8b1b5a1229048c98838307f776cea27a2467c` |
+| `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 26,097 B | `bac8b53f16a859b0b7e6327a3b736db77c46ae6b1e48b12b4ec639953fe1e0e0` |
+| `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,441 B | `8d3550e85f838938824a055e47a60943cf655e19072ef2ad621e2729b5596577` |
