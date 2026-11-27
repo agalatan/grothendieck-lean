@@ -13,12 +13,12 @@ Pure-Python standard-library zero-float verifier and certified rational receipt 
 
 From the repository root:
 
-1. **Fast zero-float audit + from-scratch Schläfli–Watson $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, asymptotic tails, spot checks, and 15 adversarial controls (< 5 s):**
+1. **Default zero-float audit — live recomputation of Schläfli–Watson $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, asymptotic/small-frequency analytic lemmas, $m = 1$ Wick doubling, and coarse outward consistency enclosures on every $m = 2 \dots 12$, plus spot-checked saved continuum slab bounds and 19 adversarial controls (~30 s):**
    ```sh
    python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py
    python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py
    ```
-2. **Full 1088-bit zero-float continuum recomputation of the `(0, 19/2]` algebraic envelope, `F_pos` & `T_PVD` slabs, `(0, 6/5]` log-slope monotonicity, `m = 1..12` step-by-step CLT gains, and `(0, 169/100]` diffuse doubling cover for `max_j u_j <= (1/7)u` (~90 s on Apple Silicon):**
+2. **Full 1088-bit zero-float continuum recomputation from scratch of the `[0, 19/2]` algebraic envelope, `F_pos` & `T_PVD` slabs, `(0, 6/5]` log-slope monotonicity, `m = 1..12` step-by-step CLT gains, and `(0, 169/100]` diffuse doubling cover for `max_j u_j <= (1/7)u`, verifying `saved == fresh` byte-for-byte (~7 min on Apple Silicon):**
    ```sh
    python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute
    ```

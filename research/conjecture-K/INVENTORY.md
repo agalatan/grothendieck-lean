@@ -1888,15 +1888,15 @@ The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certi
 ## Quantitative buffered PVD, sharp complex radius, and step-by-step CLT & doubling monotonicity (gemini-21d5, #730)
 
 - [Proof and mathematical derivations](sources/wick-pvd-doubling-gemini-21d5/PROOF.md) and
-  [1088-bit zero-float stdlib verifier, exact rational certificate, and 15 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
-  (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 80 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
+  [1088-bit zero-float stdlib verifier, exact rational certificate, and 19 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
+  (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 85 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
 - **Replay:**
-  - Fast audit (~23 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
-  - Full 1088-bit continuum recomputation from scratch (~6 min, verifying `saved == fresh` byte-for-byte across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 + 100 diffuse-doubling slabs, and 15 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
+  - Default audit (~85 s, Python 3 stdlib only, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds and 19 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
+  - Full 1088-bit continuum recomputation from scratch (~6 min, verifying `saved == fresh` byte-for-byte across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 19 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 42,157 B | `e6913c71b3f43913375f0ca220ef3a6f01b6acbde0987a599fc4b1ed2f24f742` |
-| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,485 B | `9dd0cafffd2d02f25f91ce74c511eccea94f9ab8689e23b822c4d384ad51ae02` |
-| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 79,169 B | `180b5a3c3c234eebaff2461e7bc019e2941a03fedb5bd08dec20731a28281b90` |
-| `code/wick-pvd-doubling-gemini-21d5/result.json` | 2,627 B | `35f1628b2f822ef3b40d70d85e9f91186fc810e5af3cd5769c75cfd3c55bdfaf` |
+| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,148 B | `a919ffc8762e19c047877f70469d4a586d995f49837c71034f2c5bdfad6a621e` |
+| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,706 B | `1ecb9a0f3ef939dafbfa52eff4464634694cb6e829f80b2a5f0da63bd732b525` |
+| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 83,736 B | `b37eb6953bfcb04ad276c3ddd4c26324936253c51cdd05e2c7c1e0c5145e8523` |
+| `code/wick-pvd-doubling-gemini-21d5/result.json` | 2,684 B | `8b5730d0f20fcf407c950228b0c253af6cd8396485e794ad0cfc7ad8c801c205` |

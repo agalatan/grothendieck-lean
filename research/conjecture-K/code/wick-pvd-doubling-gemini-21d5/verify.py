@@ -8,22 +8,23 @@ Task: #730 (Refs #177, part of #34)
 
 Modes:
   python3 -IB verify.py
-      Fast (< 5 s) zero-float audit: AST self-check (zero floats, zero asserts),
+      Default (~30 s) zero-float audit: AST self-check (zero floats, zero asserts),
       from-scratch 1088-bit recomputation of Schlaefli-Watson constant C_{1/4},
-      analytic crossing at zeta = 19/2, small-u / small-M analytic bounds,
+      analytic crossing at zeta = 19/2, small-u / small-M / small-z analytic bounds,
       m >= 13 asymptotic CLT monotonicity bound, real He_3/sqrt(6) doubling failure
-      enclosure, full contiguity/bound audit and 1088-bit spot verification of
-      result.json, plus 15 built-in adversarial controls.
+      enclosure, live m = 1 Wick doubling recomputation, coarse outward consistency
+      enclosures on every m = 2..12, spot verification of saved continuum slab bounds
+      in result.json, plus 19 built-in adversarial controls.
   python3 -IB -O verify.py --recompute [--write-result]
-      Full (~60 s) zero-float 1088-bit continuum recomputation of:
-      (1) |psi_Wick(zeta)| <= (1 + (19/5)*zeta)^{-1/5} on [0, inf),
+      Full (~7 min) zero-float 1088-bit continuum recomputation from scratch of:
+      (1) |psi_Wick(zeta)| <= (1 + (19/5)*zeta)^{-1/5} on [0, inf) (< 1 for zeta > 0),
       (2) quantitative buffered PVD gap >= (1/20) * sum(u_j^2) / (u + v)^{3/2}
           across all m >= 1, (c_1, ..., c_m) != 0, and v >= 0 (plus single Wick
           monomial radius enclosure E|H(X)|),
       (3) strict log-slope increase g'(zeta) > 0 on (0, 6/5] (g'(zeta) >= 3/2 on
           (0, 1/12]) and step-by-step CLT monotonicity E|q_{m+1}| > E|q_m| for all m >= 1,
-      (4) diffuse unequal-weight doubling monotonicity E|(q_0 + q_0')/sqrt(2)| > E|q_0|
-          for all max_j u_j <= (1/7) u.
+      (4) diffuse unequal-weight doubling monotonicity E|(q_0 + q_0')/sqrt(2)| - E|q_0|
+          >= (1/40) * sum(u_j^2) / u^{3/2} for all max_j u_j <= (1/7) u.
 """
 
 import ast
@@ -201,17 +202,22 @@ def iv_sqrt_pos(x):
     return iv_nth_root_pos(x, 2)
 
 
-def atan_recip_iv(m: int):
-    require(m >= 5, "atan_recip_iv expects m >= 5")
+def atan_recip_iv(m: int, n_last: int = 244):
+    """Outward interval for arctan(1/m) via alternating series sum_{k=0}^{n_last} (-1)^k / ((2k+1) m^{2k+1}).
+    Requires even n_last >= 2 so the last included term (+1/((2*n_last+1) m^{2*n_last+1})) is positive
+    and the first omitted term (-1/((2*n_last+3) m^{2*n_last+3})) is negative, enclosing arctan(1/m)
+    in [acc_lo - rem_hi, acc_hi].
+    """
+    require(m >= 5 and n_last >= 2 and (n_last % 2 == 0), "atan_recip_iv domain/parity")
     m2 = m * m
     term = iv_div_int((ONE, ONE), m)
     acc = term
-    for k in range(1, 245):
+    for k in range(1, n_last + 1):
         term = iv_div_int(term, m2)
         t_div = iv_div_int(term, 2 * k + 1)
         acc = iv_sub(acc, t_div) if (k & 1) else iv_add(acc, t_div)
-    rem = iv_div_int(iv_div_int(term, m2), 491)
-    return (acc[0], acc[1] + rem[1])
+    rem = iv_div_int(iv_div_int(term, m2), 2 * n_last + 3)
+    return (acc[0] - rem[1], acc[1])
 
 
 def compute_pi_iv():
@@ -317,9 +323,9 @@ def iv_ln_pos(x_iv):
         for j in range(1, 250):
             term = iv_mul(term, u2)
             acc = iv_add(acc, iv_div_int(term, 2 * j + 1))
-        # Geometric tail <= |term| * (1/25) / (1 - 1/25) / 501 = |term| / (24 * 501):
+        # Geometric tail <= |term| * (1/23) / 501:
         t_abs = max(abs(term[0]), abs(term[1]))
-        rem = -((-t_abs) // (24 * 501))
+        rem = -((-t_abs) // (23 * 501))
         k_ln2 = (k * LN2_IV[0], k * LN2_IV[1]) if k >= 0 else (k * LN2_IV[1], k * LN2_IV[0])
         return (acc[0] - rem + k_ln2[0], acc[1] + rem + k_ln2[1])
 
@@ -427,57 +433,11 @@ def compute_schlaefli_watson_and_real_he3():
 
     # Real third-chaos doubling failure:
     # h_3(G) = (G^3 - 3G)/sqrt(6) => E|h_3(G)| = (1 + 4 e^{-3/2}) / sqrt(3 pi).
-    # (h_3(G_1) + h_3(G_2))/sqrt(2) = (U / (2*sqrt(6))) * (U^2 + 3V^2 - 6) for U, V ~ N(0,1) iid.
-    # For fixed u >= 0, E_V|3V^2 - (6 - u^2)|:
-    # - if u^2 >= 6: 3V^2 + u^2 - 6 >= 0 => E_V[...] = u^2 - 3, and int_{sqrt(6)}^inf u*(u^2-3) e^{-u^2/2} du:
-    #   substitute s = u^2 / 2 in [3, inf) (du u e^{-u^2/2} = e^{-s} ds):
-    #   int_3^inf (2s - 3) e^{-s} ds = 2*(3+1)*e^{-3} - 3*e^{-3} = 5 e^{-3}!
-    #   Multiplied by sqrt(2/pi) / (2*sqrt(6)) = 1 / (2*sqrt(3*pi)): gives 5 e^{-3} / (2*sqrt(3*pi))!
-    # - if 0 <= u < sqrt(6): let c = 6 - u^2 > 0, v0 = sqrt(c / 3).
-    #   Since d/dv (-3v e^{-v^2/2}) = (3v^2 - 3) e^{-v^2/2},
-    #   int_0^inf |3v^2 - c| e^{-v^2/2} dv = int_0^inf (3v^2 - c) e^{-v^2/2} dv + 2 int_0^{v0} (c - 3v^2) e^{-v^2/2} dv!
-    #   Wait: int_0^{v0} (c - 3v^2) e^{-v^2/2} dv = (c - 3) int_0^{v0} e^{-v^2/2} dv + 3 v0 e^{-v0^2/2}!
-    #   Substitute u = sqrt(6) * sin(theta), v0 = sqrt(2) * cos(theta) — OR even simpler: in polar coordinates
-    #   U = r cos(phi), V = r sin(phi) (r^2 = 2s, s ~ Exp(1), phi ~ Unif[0, 2pi))!!
-    #   LOOK AT POLAR COORDINATES U = sqrt(2s) cos(phi), V = sqrt(2s) sin(phi):
-    #   |(h_3(G_1) + h_3(G_2))/sqrt(2)| = (1/(2*sqrt(6))) * sqrt(2s) |cos(phi)| * |2s*(cos^2(phi) + 3 sin^2(phi)) - 6|
-    #   = (1/sqrt(12)) * sqrt(s) |cos(phi)| * |2s*(3 - 2 cos^2(phi)) - 6|!
-    #   Even simpler: substitute x = cos(phi) in [0, 1] (no! dphi is uniform in phi, and integrating s in [0, inf) FIRST
-    #   for FIXED phi in [0, pi/2] HAS AN EXACT CLOSED FORM IDENTICAL TO E|h_3(G)|)!!
-    #   CHECK THIS: for fixed phi in (0, pi/2), set A(phi) := 3 - 2 cos^2(phi) in (1, 3)!
-    #   In 1D, int_0^inf sqrt(s) |2 A s - 6| e^{-s} ds:
-    #   split at s0 = 3 / A:
-    #   int_0^inf sqrt(s) (2 A s - 6) e^{-s} ds = 2 A Gamma(5/2) - 6 Gamma(3/2) = sqrt(pi) * (3A/2 - 3).
-    #   And 2 int_0^{3/A} sqrt(s) (6 - 2 A s) e^{-s} ds: substitute s = (3/A) t^2 (t in [0, 1])!
-    #   Wait: d/ds [ -4 A s^{3/2} e^{-s} ] = (4 A s^{3/2} - 6 A s^{1/2}) e^{-s}, not quite;
-    #   1D monotone panel sum in (s, phi) or 1D in u is tiny, OR 1D in t = sin(phi) after exact s-antiderivative?
-    #   Wait: in s = r^2 / 2, r = sqrt(2s):
-    #   d/dr [ -2 A r^2 e^{-r^2/2} ] = (2 A r^3 - 4 A r) e^{-r^2/2}!
-    #   YES!! IN POLAR RADIUS r = sqrt(U^2 + V^2) (density r e^{-r^2/2} dr on [0, inf), phi uniform on [0, pi/2] * 4/(2pi) = 2/pi):
-    #   Integrand in r is (1/(2*sqrt(6))) * cos(phi) * |A(phi) r^3 - 6 r| * r e^{-r^2/2} dr — WAIT: r * r = r^2 (even power!),
-    #   whereas in Cartesian (U, V): for fixed V = v, integrand in U = u >= 0 is:
-    #   u * |u^2 + 3v^2 - 6| * e^{-u^2/2} du!!
-    #   SUBSTITUTE w = u^2 / 2 (dw = u du)!! IT IS ELEMENTARY EXPONENTIALS WITH **ZERO** ERF!!
-    #   CHECK THAT MIRACLE:
-    #   u du e^{-u^2/2} = e^{-w} dw!!
-    #   int_0^inf |2w + 3v^2 - 6| e^{-w} dw:
-    #   - If 3v^2 >= 6 (i.e. v >= sqrt(2)): 2w + 3v^2 - 6 >= 0 for ALL w >= 0 => int_0^inf (2w + 3v^2 - 6) e^{-w} dw = 3v^2 - 4!
-    #   - If 0 <= v < sqrt(2): split at w0 = 3 - (3/2)v^2 > 0!
-    #     int_0^inf |2w - 2w0| e^{-w} dw = 2 * [ w0 - 1 + 2 e^{-w0} ] = 2 + 3v^2 - 6 + 4 e^{-(3 - 3v^2/2)} = 3v^2 - 4 + 4 e^{-3 + 3v^2/2}!!
-    #   MULTIPLY BY e^{-v^2/2} AND INTEGRATE OVER v in [0, inf)!!
-    #   1) int_0^inf (3v^2 - 4) e^{-v^2/2} dv = (3 - 4) * sqrt(pi/2) = -sqrt(pi/2)!
-    #   2) 4 int_0^{sqrt(2)} e^{-3 + v^2} dv!! (Since -3 + 3v^2/2 - v^2/2 = -3 + v^2!!)
-    #   WHAT A CLOSED-FORM IDENTITY:
-    #   E|(h_3(G_1) + h_3(G_2))/sqrt(2)| = (1 / (2*sqrt(6))) * (2 / sqrt(2*pi)) * [ int_0^inf (3v^2 - 4) e^{-v^2/2} dv + 4 e^{-3} int_0^{sqrt(2)} e^{v^2} dv ]
-    #   = (1 / sqrt(12*pi)) * [ -sqrt(2*pi) ... wait: let's check factors of 2/sqrt(2*pi)! ]
-    #   Joint density of (|U|, |V|) on [0, inf)^2 is (2 / pi) * e^{-u^2/2} e^{-v^2/2} du dv!
-    #   Multiply by 1 / (2*sqrt(6)): prefactor is 1 / (pi * sqrt(6)).
-    #   Inner integral over u >= 0 (w = u^2/2, u du = dw):
-    #     for v >= sqrt(2): 3v^2 - 4;
-    #     for 0 <= v < sqrt(2): 3v^2 - 4 + 4 e^{-3 + 3v^2/2}.
-    #   Outer integral over v >= 0 against e^{-v^2/2} dv:
-    #     int_0^inf (3v^2 - 4) e^{-v^2/2} dv = 3*sqrt(pi/2) - 4*sqrt(pi/2) = -sqrt(pi/2);
-    #     4 e^{-3} int_0^{sqrt(2)} e^{v^2} dv = 4 e^{-3} * sqrt(2) * sum_{k>=0} 2^k / (k! * (2k + 1))!!
+    # Rotating to U = (G_1 + G_2)/sqrt(2), V = (G_1 - G_2)/sqrt(2) ~ N(0,1) iid gives
+    # (h_3(G_1) + h_3(G_2))/sqrt(2) = U(U^2 + 3V^2 - 6) / (2*sqrt(6)).
+    # Integrating u >= 0 first via w = u^2/2 and then v >= 0 against (2/pi) e^{-(u^2+v^2)/2} yields
+    # E|(h_3(G_1) + h_3(G_2))/sqrt(2)| = (1/(pi*sqrt(6))) * (6*sqrt(2)*e^{-1} + 2*sqrt(2)*int_0^1 e^{-t^2} dt
+    #   + 4*e^{-3}*int_0^{sqrt(2)} e^{v^2} dv - sqrt(pi/2)).
     sq3pi = iv_sqrt_pos(iv_mul((3 * ONE, 3 * ONE), pi_iv))
     e_neg_32 = exp_neg_iv(Q(3, 2))
     eh3_1 = iv_div_pos((ONE + 4 * e_neg_32[0], ONE + 4 * e_neg_32[1]), sq3pi)
@@ -838,10 +798,24 @@ def verify_fast_analytic_lemmas():
     require(Q(69082, 100000) < eh_lo_q < eh_hi_q < Q(69083, 100000), "E|H(X)| enclosure")
     require(gap_m1_lo > Q(195, 1000), "sqrt(pi)/2 - E|H(X)| > 0.195")
 
+    # (7) Exact cosine-moment polynomial bounds P_3(t) <= psi_Wick(t) <= P_2(t) and P_4(t) >= psi_Wick(t),
+    # certifying D_doub(z) >= (P_3(z) - P_2(z/2)^2) = z^2 * (21/4 - (3751/12)*z - (121/16)*z^2)
+    # >= z^2 * (21/4 - 313*z) >= (53/25) z^2 > 2 z^2 across all z in [0, 1/100]:
+    w_exact = [
+        sum(math.comb(2 * k, j) * ((-2) ** (2 * k - j)) * math.factorial(k + j) for j in range(2 * k + 1))
+        for k in range(5)
+    ]
+    require(w_exact == [1, 2, 176, 90816, 121488384], "exact moments w_0..w_4 mismatch")
+    require(Q(3751, 12) + Q(121, 1600) == Q(1500763, 4800) < Q(313), "affine slope 313 check on [0, 1/100]")
+    ddoub_poly_at_1_100 = Q(21, 4) - Q(3751, 12) * Q(1, 100) - Q(121, 16) * Q(1, 10000)
+    ddoub_aff_at_1_100 = Q(21, 4) - Q(313, 100)
+    require(ddoub_poly_at_1_100 == Q(1019237, 480000) > ddoub_aff_at_1_100 == Q(53, 25) > Q(2), "D_doub(z)/z^2 > 2 on (0, 1/100]")
+
     return {
         "wick_monomial_E_abs_H_enclosure": [q_str(eh_lo_q), q_str(eh_hi_q)],
         "wick_monomial_unbuffered_gap_lower": q_str(gap_m1_lo),
         "asymptotic_clt_m13_net_scaled_lower": "1/25",
+        "small_z_ddoub_over_z2_min_on_0_1_100": q_str(ddoub_poly_at_1_100),
     }, eh_iv
 
 
@@ -1304,11 +1278,11 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         require(0 < s_lo_q < s_hi_q, f"CLT step m={m} -> {m+1} not strictly positive: [{s_lo_q}, {s_hi_q}]")
         clt_steps[str(m)] = [q_str(s_lo_q), q_str(s_hi_q)]
 
-    # (D) Certify diffuse unequal-weight doubling monotonicity for all max_j u_j <= (1/4) u:
+    # (D) Certify diffuse unequal-weight doubling monotonicity for all max_j u_j <= (1/7) u:
     # 1. Certify D_doub(zeta) := psi_Wick(zeta) - psi_Wick(zeta/2)^2 > 0 on (0, 169/100] = (0, (13/10)^2]:
-    brk_1_100 = eng.c2_small_lo - iv_div_int((eng.c3_small_hi,) * 2, 100)[1]
-    require(brk_1_100 > q_to_iv(Q(3, 2) * Q(5, 1))[1], "D_doub > 0 on (0, 1/100]")
-    require(brk_1_100 + (ONE >> 1) - q_to_iv(Q(6) + Q(1, 600) + Q(529, 640000))[1] > 2 * ONE, "D_doub(z) >= 2 z^2 on (0, 1/100]")
+    #    On (0, 1/100]: P_3(z) - P_2(z/2)^2 = z^2 * (21/4 - (3751/12)*z - (121/16)*z^2) >= (1019237/480000) z^2 > 2 z^2:
+    ddoub_c_100 = Q(21, 4) - Q(3751, 12) * Q(1, 100) - Q(121, 16) * Q(1, 10000)
+    require(ddoub_c_100 == Q(1019237, 480000) > Q(2), "D_doub(z) > 2 z^2 on (0, 1/100]")
 
     def eval_ddoub_lb(za: Q, zb: Q) -> int:
         # Enclose D_doub(z) = psi(z) - psi(z/2)^2 from below on [za, zb] via midpoint + MVT
@@ -1342,17 +1316,17 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
             zb = z_left + Q(sub + 1, 1000)
             require(eval_ddoub_lb(za, zb) > 0, f"D_doub <= 0 on [{za}, {zb}]")
 
-    # 2. Certify F_doub(w) >= (7/40) w^2 on w in (0, 1/7] and T_doub(M) <= (3/20) M^2 on M in (0, 1/7]:
+    # 2. Certify F_doub(w) >= (173/1000) w^2 on w in (0, 1/7] and T_doub(M) <= (147/1000) M^2 on M in (0, 1/7]:
+    #    On w in (0, 1/100], integrating on xi = tau^2 in [0, 1] (where w*xi <= 1/100 so D_doub(w*xi) >= 2 w^2 xi^2)
+    #    yields F_doub(w)/w^2 >= (1/4) * int_0^1 e^{-xi} (2 xi^2) xi^{-3/2} dxi = int_0^1 tau^2 e^{-tau^2} dtau > 173/1000:
     m_doub_cap = Q(1, 7)
     int_sq_1_lo = 0
     dt_200 = q_to_iv(Q(1, 200))
     for k in range(200):
         tk, tk1 = Q(k, 200), Q(k + 1, 200)
-        int_sq_1_lo += iv_mul(q_to_iv(Q(9, 4) * tk * tk), iv_mul(exp_neg_iv(tk1 * tk1, 28), dt_200))[0]
-    brk_chk = eng.c2_small_lo + (ONE >> 1) - q_to_iv(Q(6) + Q(1, 600) + Q(529, 640000))[1]
-    require(2 * brk_chk > 9 * ONE, "D_doub(z) >= (9/2) z^2 on (0, 1/100]")
-    fdoub_small_q = Q(iv_mul(q_to_iv(Q(1)), (int_sq_1_lo, int_sq_1_lo))[0], ONE)
-    require(fdoub_small_q > Q(7, 40), f"small-w F_doub/w^2 > 7/40 ({fmt_dec_floor(fdoub_small_q)})")
+        int_sq_1_lo += iv_mul(q_to_iv(tk * tk), iv_mul(exp_neg_iv(tk1 * tk1, 28), dt_200))[0]
+    fdoub_small_q = Q(int_sq_1_lo, ONE)
+    require(fdoub_small_q > Q(173, 1000), f"small-w F_doub/w^2 > 173/1000 ({fmt_dec_floor(fdoub_small_q)})")
 
     wd_edges = [Q(k, 1400) for k in range(14, 70)] + [Q(k, 700) for k in range(35, 101)]
     require(wd_edges[0] == Q(1, 100) and wd_edges[-1] == m_doub_cap, "wd_edges endpoints")
@@ -1370,7 +1344,11 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
             za, zb = wlo * tk * tk, whi * tk1 * tk1
             eb = exp_neg_iv((1 - wlo) * tk1 * tk1, 28)[0]
             if zb <= Q(1, 100):
-                term = iv_mul((eb, eb), q_to_iv(Q(3, 4) * wlo * wlo * (tk1 ** 3 - tk ** 3)))[0]
+                # On [0, zb] subset [0, 1/100], D_doub(z) >= (21/4 - 313*zb) z^2, so
+                # (1/4) * int_{tk^2}^{tk1^2} (21/4 - 313*zb) wlo^2 xi^2 * xi^{-3/2} dxi
+                # = ((21/4 - 313*zb) / 6) * wlo^2 * (tk1^3 - tk^3):
+                c_panel = (Q(21, 4) - 313 * zb) / 6
+                term = iv_mul((eb, eb), q_to_iv(c_panel * wlo * wlo * (tk1 ** 3 - tk ** 3)))[0]
                 acc_fd += max(0, term)
             else:
                 dd_lo = eval_ddoub_lb(za, zb)
@@ -1378,7 +1356,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
                     wt = q_to_iv(Q(1, 2) * (Q(1) / tk - Q(1) / tk1))
                     acc_fd += iv_mul((eb, eb), iv_mul((dd_lo, dd_lo), wt))[0]
         rf = Q(acc_fd, ONE) / (whi * whi)
-        require(rf > Q(7, 40), f"F_doub/w^2 <= 7/40 on [{wlo}, {whi}]: {fmt_dec_floor(rf)}")
+        require(rf > Q(173, 1000), f"F_doub/w^2 <= 173/1000 on [{wlo}, {whi}]: {fmt_dec_floor(rf)}")
         min_fdoub_over_w2 = min(min_fdoub_over_w2, rf)
 
     zd_cut = Q(169, 100)
@@ -1403,7 +1381,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     rem_td = q_to_iv(Q(1, 393216))[1]
     tdoub_hi = iv_mul(iv_div_int(iv_sqrt_pos(q_to_iv(m_doub_cap)), 4), (0, acc_td + rem_td))[1]
     max_tdoub_over_m2 = Q(tdoub_hi, ONE) / (m_doub_cap * m_doub_cap)
-    require(max_tdoub_over_m2 < Q(3, 20), f"T_doub/M^2 >= 3/20 at M=1/7: {fmt_dec_ceil(max_tdoub_over_m2)}")
+    require(max_tdoub_over_m2 < Q(147, 1000), f"T_doub/M^2 >= 147/1000 at M=1/7: {fmt_dec_ceil(max_tdoub_over_m2)}")
 
     SCALE7 = 10 ** 7
     env_ratio_ceil = Q(-(((-max_env_ratio_q.numerator) * SCALE7) // max_env_ratio_q.denominator), SCALE7)
@@ -1415,7 +1393,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
 
     require(env_ratio_ceil < 1, "env_ratio_ceil < 1")
     require(fpos_floor >= Q(19, 50) and tpvd_ceil <= Q(7, 25), "PVD constants check")
-    require(fdoub_floor >= Q(7, 40) and tdoub_ceil <= Q(3, 20), "diffuse doubling constants check")
+    require(fdoub_floor >= Q(173, 1000) and tdoub_ceil <= Q(147, 1000) and fdoub_floor - tdoub_ceil >= Q(1, 40), "diffuse doubling constants check")
 
     return {
         "algebraic_envelope": {
@@ -1446,10 +1424,10 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
 
 
 # ---------------------------------------------------------------------------
-# 6. Audit of saved result.json & 15 built-in adversarial controls
+# 6. Audit of saved result.json & 19 built-in adversarial controls
 # ---------------------------------------------------------------------------
 
-def audit_result_dict(res: dict, sw_real: dict, fast_lem: dict, spot_eng=None) -> None:
+def audit_result_dict(res: dict, sw_real: dict, fast_lem: dict, pi_iv=None, eh_iv=None, c14_iv=None, spot_eng=None) -> None:
     require(res.get("schema") == "wick-pvd-doubling-v1", "unexpected schema")
     require(res.get("agent_id") == "gemini-21d5", "unexpected agent_id")
     require(res.get("task_issue") == 730, "unexpected task_issue")
@@ -1461,10 +1439,12 @@ def audit_result_dict(res: dict, sw_real: dict, fast_lem: dict, spot_eng=None) -
     ae = ct.get("algebraic_envelope", {})
     require(Q(ae.get("alpha", "0")) == ALPHA_ENV and Q(ae.get("c1", "0")) == C1_ENV, "envelope parameter mismatch")
     require(Q(ae.get("compact_zeta_cap", "0")) == ZETA_CROSS, "compact_zeta_cap mismatch")
+    require(ae.get("num_compact_cells") == 1292, "num_compact_cells must equal 1292")
     require(0 < Q(ae.get("max_compact_ratio_upper", "1")) < 1, "max_compact_ratio_upper must be < 1")
     require(Q(ae.get("psi_wick_minus_exp_scaled_lb_min_zeta2_1_on_0_4", "0")) >= Q(2509689, 10 ** 9), "positivity floor mismatch")
 
     bp = ct.get("buffered_pvd", {})
+    require(bp.get("w_slab_count") == 160 and bp.get("M_slab_count") == 320, "PVD slab counts must equal (160, 320)")
     fpos_lb = Q(bp.get("F_pos_over_w2_lower", "0"))
     tpvd_ub = Q(bp.get("T_PVD_over_M2_upper", "1"))
     net_pvd = Q(bp.get("certified_net_gap_coef", "0"))
@@ -1486,17 +1466,83 @@ def audit_result_dict(res: dict, sw_real: dict, fast_lem: dict, spot_eng=None) -
     fd_lb = Q(cd.get("F_doub_over_w2_lower", "0"))
     td_ub = Q(cd.get("T_doub_over_M2_upper", "1"))
     cd_net = Q(cd.get("certified_diffuse_doubling_coef", "0"))
-    require(fd_lb >= Q(7, 40) and 0 < td_ub <= Q(3, 20), "diffuse doubling slab bounds out of range")
+    require(fd_lb >= Q(173, 1000) and 0 < td_ub <= Q(147, 1000), "diffuse doubling slab bounds out of range")
     require(fd_lb - td_ub >= cd_net == Q(1, 40) > 0, "diffuse doubling net coefficient invalid")
 
     if spot_eng is not None:
-        # Spot-check algebraic envelope, positivity, and doubling sign at representative points:
+        # 1. Spot-check algebraic envelope and positivity at representative points:
         for z_t in [Q(1, 10), Q(1), Q(4), Q(8), Q(19, 2)]:
             p_iv, _, d_iv, _ = spot_eng.eval_psi_and_delta_jet1(z_t)
             rhs = iv_div_pos((ONE, ONE), iv_nth_root_pos(q_to_iv(1 + C1_ENV * z_t), 5))[0]
             require(max(abs(p_iv[0]), abs(p_iv[1])) < rhs, f"spot algebraic envelope failed at {z_t}")
             if z_t <= Q(4):
                 require(d_iv[0] > 0, f"spot positivity failed at {z_t}")
+
+        # 2. Live recomputation of m=1 Wick doubling & coarse outward consistency check on EVERY m = 2..12:
+        if pi_iv is not None and eh_iv is not None:
+            SCALE6 = 10 ** 6
+            st1 = compute_m1_wick_doubling_enclosure(pi_iv, eh_iv)
+            s1_lo = Q((st1[0] * SCALE6) >> P, SCALE6)
+            s1_hi = Q(-(((-st1[1]) * SCALE6) >> P), SCALE6)
+            require(steps["1"] == [q_str(s1_lo), q_str(s1_hi)], "m=1 step gain in result.json differs from live recomputation")
+
+        if c14_iv is not None:
+            dz_cf, n_cf = Q(1, 200), 80    # [0, 2/5]
+            dz_cm, n_cm = Q(1, 50), 450    # [0, 9]
+            tab_cf = [spot_eng.eval_psi_and_delta_jet1(i * dz_cf) for i in range(n_cf + 1)]
+            tab_cm = [spot_eng.eval_psi_and_delta_jet1(i * dz_cm) for i in range(n_cm + 1)]
+
+            def box_c(za: Q, zb: Q):
+                zm = (za + zb) / 2
+                if zb <= Q(2, 5):
+                    idx = max(1, min(n_cf, int((zm / dz_cf).__round__())))
+                    z0 = idx * dz_cf
+                    p0, dp0, _, _ = tab_cf[idx]
+                else:
+                    idx = max(1, min(n_cm, int((zm / dz_cm).__round__())))
+                    z0 = idx * dz_cm
+                    p0, dp0, _, _ = tab_cm[idx]
+                m2 = taylor_curv_psi(z0, za, zb)
+                p_iv = enclose_jet1_on_interval(p0, dp0, z0, za, zb, m2)
+                rm = max(abs(za - z0), abs(zb - z0))
+                dr = q_to_iv(m2 * rm)[1]
+                return p_iv, (dp0[0] - dr, dp0[1] + dr)
+
+            dt_c = Q(1, 100)
+            tau_c = Q(3)
+            n_tc = int(tau_c / dt_c)
+            inv_z14_c = iv_div_pos((ONE, ONE), iv_sqrt_pos(q_to_iv(tau_c)))
+            for m in range(2, 13):
+                qm = Q(m, m + 1)
+                alo = 0
+                ahi = q_to_iv(Q(m * (21 + m), 48000))[1]
+                for k in range(5, n_tc):
+                    tk, tk1 = k * dt_c, (k + 1) * dt_c
+                    za1, zb1 = tk * tk, tk1 * tk1
+                    zmid, rz = (za1 + zb1) / 2, (zb1 - za1) / 2
+                    p1m, _ = box_c(zmid, zmid)
+                    p2m, _ = box_c(qm * zmid, qm * zmid)
+                    hmm = iv_sub(iv_pow_int(p1m, m), iv_pow_int(p2m, m + 1))
+                    p1s, dp1s = box_c(za1, zb1)
+                    p2s, dp2s = box_c(qm * za1, qm * zb1)
+                    dd = iv_sub(iv_mul(iv_pow_int(p1s, m - 1), dp1s), iv_mul(iv_pow_int(p2s, m), dp2s))
+                    rad = iv_mul((0, m * max(abs(dd[0]), abs(dd[1]))), q_to_iv(rz))[1]
+                    dp = (hmm[0] - rad, hmm[1] + rad)
+                    wt = q_to_iv(Q(1) / tk - Q(1) / tk1)
+                    cb = iv_mul(dp, wt)
+                    alo += cb[0]
+                    ahi += cb[1]
+                pref_m = iv_div_pos(q_to_iv(Q(1, 2)), iv_sqrt_pos(q_to_iv(Q(m))))
+                m_iv = iv_mul(pref_m, (alo, ahi))
+                tp1 = iv_mul(q_to_iv(Q(4, m + 2)), iv_mul(iv_pow_int(c14_iv, m), iv_pow_int(inv_z14_c, m + 2)))[1]
+                rq = iv_nth_root_pos(q_to_iv(Q(m + 1, m)), 4)
+                tp2 = iv_mul(q_to_iv(Q(4, m + 3)), iv_mul(iv_mul(iv_pow_int(c14_iv, m + 1), iv_pow_int(rq, m + 1)), iv_pow_int(inv_z14_c, m + 3)))[1]
+                tlo = iv_mul(iv_div_pos(q_to_iv(Q(1, 4)), iv_sqrt_pos(q_to_iv(Q(m)))), (0, tp2 if (m % 2 == 0) else (tp1 + tp2)))[1]
+                thi = iv_mul(iv_div_pos(q_to_iv(Q(1, 4)), iv_sqrt_pos(q_to_iv(Q(m)))), (0, tp1 if (m % 2 == 1) else (tp1 + tp2)))[1]
+                c_lo = Q(m_iv[0] - tlo, ONE)
+                c_hi = Q(m_iv[1] + thi, ONE)
+                s_lo, s_hi = [Q(x) for x in steps[str(m)]]
+                require(max(s_lo, c_lo) <= min(s_hi, c_hi), f"saved CLT step m={m} [{s_lo}, {s_hi}] disjoint from live enclosure")
 
 
 def expect_failure(fn, name: str) -> None:
@@ -1508,7 +1554,7 @@ def expect_failure(fn, name: str) -> None:
     require(failed, f"adversarial control '{name}' failed to trigger")
 
 
-def run_adversarial_controls(res: dict, sw_real: dict, fast_lem: dict, eng: WickEngine) -> int:
+def run_adversarial_controls(res: dict, sw_real: dict, fast_lem: dict, eng: WickEngine, pi_iv=None, eh_iv=None, c14_iv=None) -> int:
     # 1. AST rejects float literal / float() call:
     expect_failure(lambda: audit_ast_source("y = 1.5\n", "ctrl1_lit"), "ctrl1_float_literal")
     expect_failure(lambda: audit_ast_source("y = float(2)\n", "ctrl1_call"), "ctrl1_float_call")
@@ -1579,7 +1625,40 @@ def run_adversarial_controls(res: dict, sw_real: dict, fast_lem: dict, eng: Wick
     bad15["schlaefli_watson_and_real_he3"]["zeta_cross_19_2_power5_product_upper"] = "1"
     expect_failure(lambda: audit_result_dict(bad15, sw_real, fast_lem), "ctrl15_bad_sw")
 
-    return 15
+    # 16. False small-frequency coefficient D_doub(z)/z^2 >= 9/2 at z = 1/100 rejected by exact cosine-moment polynomials:
+    w_ex = [1, 2, 176, 90816, 121488384]
+    z_cx = Q(1, 100)
+    p3_half = sum(Q((-z_cx / 4) ** k * w_ex[k], math.factorial(k) ** 2) for k in range(4))
+    p4_full = sum(Q((-z_cx / 2) ** k * w_ex[k], math.factorial(k) ** 2) for k in range(5))
+    require(p3_half == Q(11942827, 12000000) > 0, "ctrl16: P_3(1/200) exact value")
+    ddoub_ub_100 = (p4_full - p3_half * p3_half) / (z_cx * z_cx)
+    require(ddoub_ub_100 == Q(60857808071, 14400000000) < Q(9, 2), "ctrl16: D_doub(1/100)/(1/100)^2 < 9/2")
+
+    # 17. Arctangent alternating-series remainder side check at n_last = 2 (m = 5):
+    #     s_3(1/5) < arctan(1/5) < s_2(1/5), so outward [lo, hi] must satisfy lo <= s_3 and s_2 <= hi < s_2 + rem/2:
+    s2_5 = Q(1, 5) - Q(1, 3 * 125) + Q(1, 5 * 3125)
+    s3_5 = s2_5 - Q(1, 7 * 78125)
+    at2 = atan_recip_iv(5, n_last=2)
+    require(
+        at2[0] <= q_to_iv(s3_5)[0] and q_to_iv(s2_5)[0] <= at2[1] < q_to_iv(s2_5 + Q(1, 14 * 78125))[0],
+        "ctrl17: atan_recip_iv remainder side",
+    )
+
+    # 18. Tampered num_compact_cells = 0 rejected:
+    bad18 = copy.deepcopy(res)
+    bad18["continuum_certificates"]["algebraic_envelope"]["num_compact_cells"] = 0
+    expect_failure(lambda: audit_result_dict(bad18, sw_real, fast_lem), "ctrl18_zero_compact_cells")
+
+    # 19. Disjoint m=5 step-gain interval rejected by live outward consistency check:
+    if c14_iv is not None:
+        bad19 = copy.deepcopy(res)
+        bad19["continuum_certificates"]["clt_and_doubling"]["clt_step_gains_m_1_to_12"]["5"] = ["1/20", "3/50"]
+        expect_failure(
+            lambda: audit_result_dict(bad19, sw_real, fast_lem, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv, spot_eng=eng),
+            "ctrl19_disjoint_m5_step",
+        )
+
+    return 19
 
 
 def main(argv: list[str]) -> int:
@@ -1615,28 +1694,32 @@ def main(argv: list[str]) -> int:
         require(RESULT_JSON.is_file(), f"missing {RESULT_JSON}")
         saved = json.loads(RESULT_JSON.read_text(encoding="utf-8"))
         require(saved == fresh, "recomputed certificate differs from committed result.json")
-        audit_result_dict(saved, sw_real, fast_lem, spot_eng=eng)
-        n_ctrl = run_adversarial_controls(saved, sw_real, fast_lem, eng)
-        mode_lbl = "FULL 1088-BIT RECOMPUTE"
+        audit_result_dict(saved, sw_real, fast_lem, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv, spot_eng=eng)
+        n_ctrl = run_adversarial_controls(saved, sw_real, fast_lem, eng, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv)
+        mode_lbl = "FULL 1088-BIT RECOMPUTE FROM SCRATCH (saved == fresh)"
+        src_tag = "[recomputed]"
     else:
         require(RESULT_JSON.is_file(), f"missing {RESULT_JSON}; run with --recompute --write-result first")
         saved = json.loads(RESULT_JSON.read_text(encoding="utf-8"))
-        audit_result_dict(saved, sw_real, fast_lem, spot_eng=eng)
-        n_ctrl = run_adversarial_controls(saved, sw_real, fast_lem, eng)
-        mode_lbl = "FAST AUDIT + FROM-SCRATCH ANALYTIC CHECKS"
+        audit_result_dict(saved, sw_real, fast_lem, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv, spot_eng=eng)
+        n_ctrl = run_adversarial_controls(saved, sw_real, fast_lem, eng, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv)
+        mode_lbl = "DEFAULT AUDIT (live analytic/m=1..12 checks + saved slab bounds)"
+        src_tag = "[saved receipt, spot-checked]"
 
     dt_ms = (time.monotonic_ns() - t0) // 1000000
     ct = saved["continuum_certificates"]
     c14_lo, c14_hi = [Q(x) for x in sw_real["C_quarter_enclosure"]]
     r_lo, r_hi = [Q(x) for x in sw_real["real_he3_doubling_gain_enclosure"]]
     m1_lo, m1_hi = [Q(x) for x in ct["clt_and_doubling"]["clt_step_gains_m_1_to_12"]["1"]]
+    env_cap_str = fmt_dec_ceil(Q(ct["algebraic_envelope"]["max_compact_ratio_upper"]))
     print(f"=== PASS [{mode_lbl}] ({dt_ms} ms, {n_ctrl} adversarial controls passed) ===")
-    print(f"  Schlaefli-Watson C_{{1/4}}          : [{fmt_dec_floor(c14_lo)}, {fmt_dec_ceil(c14_hi)}] < 17/20")
-    print(f"  Envelope |psi_Wick(z)|(1+19z/5)^1/5 : <= {fmt_dec_ceil(Q(ct['algebraic_envelope']['max_compact_ratio_upper']))} < 1 on [0, inf)")
-    print(f"  Buffered PVD gap coef (all m, v>=0) : >= {ct['buffered_pvd']['certified_net_gap_coef']} * sum(u_j^2)/(u+v)^(3/2)")
-    print(f"  Complex Wick m=1 doubling gain      : [{fmt_dec_floor(m1_lo, 6)}, {fmt_dec_ceil(m1_hi, 6)}] > 0")
-    print(f"  Real He_3/sqrt(6) doubling gain     : [{fmt_dec_floor(r_lo, 6)}, {fmt_dec_ceil(r_hi, 6)}] < -1/80 < 0")
-    print(f"  CLT E|q_{{m+1}}| > E|q_m|            : CERTIFIED for ALL m >= 1 (direct m=1..12 + asymptotic m>=13)")
+    print(f"  Schlaefli-Watson C_{{1/4}}          : [{fmt_dec_floor(c14_lo)}, {fmt_dec_ceil(c14_hi)}] < 17/20 [recomputed]")
+    print(f"  Envelope |psi_Wick(z)|(1+19z/5)^1/5 : <= 1 on [0, inf) (< 1 for z>0; <={env_cap_str} on [1/50, 19/2]) {src_tag}")
+    print(f"  Buffered PVD gap coef (all m, v>=0) : >= {ct['buffered_pvd']['certified_net_gap_coef']} * sum(u_j^2)/(u+v)^(3/2) {src_tag}")
+    print(f"  Complex Wick m=1 doubling gain      : [{fmt_dec_floor(m1_lo, 6)}, {fmt_dec_ceil(m1_hi, 6)}] > 0 [recomputed]")
+    print(f"  Real He_3/sqrt(6) doubling gain     : [{fmt_dec_floor(r_lo, 6)}, {fmt_dec_ceil(r_hi, 6)}] < -1/80 < 0 [recomputed]")
+    print(f"  CLT E|q_{{m+1}}| > E|q_m|            : m=1..12 coarse/exact + m>=13 analytic [recomputed], g'>0 {src_tag}")
+    print(f"  Diffuse doubling (max u_j <= u/7)   : >= {ct['clt_and_doubling']['certified_diffuse_doubling_coef']} * sum(u_j^2)/u^(3/2) {src_tag}")
     return 0
 
 

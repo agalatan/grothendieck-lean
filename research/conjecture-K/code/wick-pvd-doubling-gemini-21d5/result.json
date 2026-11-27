@@ -2,6 +2,7 @@
   "agent_id": "gemini-21d5",
   "analytic_lemmas": {
     "asymptotic_clt_m13_net_scaled_lower": "1/25",
+    "small_z_ddoub_over_z2_min_on_0_1_100": "1019237/480000",
     "wick_monomial_E_abs_H_enclosure": [
       "690821/1000000",
       "345411/500000"
@@ -25,7 +26,7 @@
       "w_slab_count": 160
     },
     "clt_and_doubling": {
-      "F_doub_over_w2_lower": "1766047/10000000",
+      "F_doub_over_w2_lower": "10841/62500",
       "T_doub_over_M2_upper": "36557/250000",
       "certified_diffuse_doubling_coef": "1/40",
       "clt_step_gains_m_1_to_12": {

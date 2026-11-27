@@ -499,8 +499,8 @@ of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C, both au
 
 The proof of the second class conditions on one coordinate. A component free of that coordinate enters with the wrong
 sign, so that conditioning method covers two variables numerically and not three [N · 3.25, item 94]; for arbitrary m ≥ 1
-independent Wick drivers q₀(X) = Σ_{j=1}^m c_j X_j(|X_j|² − 2)/√2 plus any independent circular Gaussian scale mixture Q_mix,
-2D Bessel–Hankel telescoping on (0, 4] paired with the certified algebraic characteristic-function envelope
+independent Wick drivers q₀(X) = Σ_{j=1}^m c_j X_j(|X_j|² − 2)/√2 plus any circular Gaussian scale mixture Q_mix independent of X
+(with visible z₁ independent of (X, Q_mix)), 2D Bessel–Hankel telescoping on (0, 4] paired with the certified algebraic characteristic-function envelope
 |ψ_Wick(ζ)| ≤ (1 + (19/5)ζ)^{−1/5} proves quantitative buffered PVD and D_{a,b}(q₀ + Q_mix) ≥ (1/10)(Σ u_j²)(a² + 4ab + 6b² + u_tot)^{−3/2} > 0
 across all profiles a > 0, b ≥ 0 and prices p > 0 [P + C, author only · gemini-21d5 · 3.25]. For a general cubic,
 D_φ = 𝒥_dec + two weighted contractions of the pair (a, DF·F), with a = Σ_j ∂_jq·∂̄_jq and F = ∂̄q, where 𝒥_dec ≥ 0 is
