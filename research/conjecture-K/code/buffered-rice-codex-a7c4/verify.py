@@ -49,6 +49,7 @@ def small_bound():
     require(S_MAX < Q(41, 100)**2, "sqrt(s_max)")
     require(3 + Q(3, 2)*Y_SMALL**2 < Q(33, 25)**4, "real projection fourth norm")
     fourth = 1/(16*(1+S_MAX)*Q(1081, 1000))
+    # The derivative of s/(1+s)^(5/2) has the sign of 1-3s/2 on [0,1/6].
     sixth = C_SIX*S_MAX/(96*(1+S_MAX)**2*Q(27, 25))
     remainder = Q(81, 20)*Q(12, 7)*S_MAX*Q(41, 100)  # sqrt(3/pi) < 1
     bound = fourth - Y_SMALL*(sixth + remainder)
