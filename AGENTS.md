@@ -460,7 +460,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - **Where to build while developing (every AI, Claude and Codex alike):** prefer **small, targeted `lake build`s of
   the modules you changed** (and what imports them) over pushing a WIP branch or starting a cloud job. **Find usable
   compute wherever it is:** look at every machine that is up and take the first with CPU room, in this order: **yo**
-  (`ssh yo`, 8 vCPUs, 31 GB); then the temporary droplets **big** (`ssh big`, 48 vCPUs, 188 GB) and **mega**
+  (`ssh yo`, 8 vCPUs, 31 GB); then the temporary droplets **big** (`ssh big`, 48 vCPUs, 94 GB) and **mega**
   (`ssh mega`, 32 vCPUs, 251 GB), each only if it exists (see below); else **locally** on the laptop.
   "Room" means **at least 50 % of the machine's CPUs idle when you look**: `nproc` against the 1-minute load in
   `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24; mega: load ≤ 16), or `scripts/droplet_status.sh` for yo. Then use at most that
@@ -469,7 +469,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   (below), never in a runner workspace, and delete the folder when done (§14). Never run Lean on a droplet while a
   caps run's bounded builder is active there (its foreign-work guard aborts the run). A full proof check is what a
   push at a milestone is for (§8).
-- **Big and mega** (`ssh big`: 48 vCPUs, 188 GB RAM; `ssh mega`: 32 vCPUs, 251 GB RAM; Linux): temporary droplets,
+- **Big and mega** (`ssh big`: 48 vCPUs, 94 GB RAM; `ssh mega`: 32 vCPUs, 251 GB RAM; Linux): temporary droplets,
   billed by the hour, for computations that are too big for yo (scans, sharded scripts, builds of many modules) and,
   first of all, for heavy CI: the rebuild of the node caps and of master's cache after an invalidation (§10). Each
   exists only while a task needs it; either, both or neither may be up.
@@ -477,14 +477,28 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
     `big`) exits 0 when it is up. Use whichever is up and has room. If neither is up, use yo or a cloud job (§11);
     if your task needs one, ask on the task's issue. Only the agent the user names (currently `claude-b9ee`)
     creates and destroys them, from their snapshots, and it opens the second one when the first is full.
-  - **Never take all of one.** Half of each stays free for heavy CI: an agent uses **at most 8 cores and 48 GB**
-    (pinned with `taskset -c`), and all agents' work together at most **half the cores** (16 on mega, 24 on big):
-    before you start, the 1-minute load in `cat /proc/loadavg` plus your own cores must not exceed that. A larger
-    share for one task is granted by the agent that manages the droplets, on the task's issue, and only while no CI
+  - **Never take all of one.** Half of each stays free for heavy CI: an agent uses **at most 8 cores, and 48 GB of memory on mega or 16 GB on big**,
+    and all agents' work together stays inside **one fixed half of the cores, the upper one**: cores 16–31 on mega,
+    24–47 on big. Pin every job to **8 cores inside that range**, never outside it (for example `taskset -c 16-23`
+    or `taskset -c 24-31` on mega, `taskset -c 24-31`, `32-39` or `40-47` on big; take a block that is idle in
+    `mpstat -P ALL 1 1` or `top`): the range, not the load, is what bounds everyone together (several agents can read the same low 1-minute
+    load and start at once, and a job that is still loading its input shows no load). Before you start, the
+    1-minute load in `cat /proc/loadavg` plus your own cores must still not exceed the half. `taskset` limits
+    cores only: the memory limit is for your whole process group, in KiB from
+    `ps -eo pgid=,rss= | awk -v pg="$(cat job.pid)" '$1 == pg { kb += $2 } END { print kb + 0 }'` (`ps -g` selects
+    by session on Linux and reports nothing for a job started with `set -m`). Stop your job if it grows past the
+    limit. As a conservative check for everyone together, do not start a job unless `free -g` shows more than half
+    the machine's memory available: that figure is machine-wide and includes CI. A larger share
+    for one task is granted by the agent that manages the droplets, on the task's issue, and only while no CI
     runner job runs there.
-  - **CI comes first.** If a runner job is active (`pgrep -x Runner.Worker` prints a pid), do not start Lean
-    there (a caps run's foreign-work guard aborts the run, see above) and keep other work within 8 cores in total.
-    When a heavy CI job is announced on an issue, stop or shrink your work when asked.
+  - **CI comes first.** Run Lean (`lake`, `lean`) there only while that droplet's CI runner is **offline**
+    (`pgrep -x Runner.Listener` prints nothing) or in an interval that the agent managing the droplets announced on
+    the task's issue, and stop your Lean jobs before the runner is started again. A check that no job is running
+    now (`pgrep -x Runner.Worker`) is not enough: an idle runner takes a job at any moment, without an
+    announcement, and a caps run's foreign-work guard then pauses on your Lean processes (exit 75 of
+    `scripts/build_caps_batches.py`). Work that is not Lean may use the research half while the runner is up; if a
+    runner job is active, keep it within 8 cores in total. When a heavy CI job is announced on an issue, stop or
+    shrink your work when asked.
   - **Everything else as on yo:** your own signed folder `~/<agent-id>-<topic>` with `job.pid` (§2), process groups
     (below), never `~/actions-runner*`, the runner workspaces or `~/grothe-caps`, and never start, stop or
     re-register a CI runner (its workspace may hold old node caps: a job there would rebuild all of them).

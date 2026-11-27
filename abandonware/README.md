@@ -1,41 +1,57 @@
 # abandonware
 
-Code removed from the active libraries but kept for reference. Nothing here is built, imported or checked: the folder is outside the Lake libraries (`Grothe/`, `GrotheKernel/`, `GrotheCapsKernel/`, `GrotheQuadKernel/`, `GrotheQuadExtKernel/`), `tools/gen_root_imports.py` does not import it (it only drops axiom-list entries that name archived declarations), and CI's forbidden-code scan is limited to the library folders. Two kinds of file live here: whole modules under `abandonware/Grothe/` (below), and removed fragments in the table that follows. Each fragment file names the original module, the commit it was removed from and the PR; the text is the removed lines of that diff, verbatim, not a self-contained module.
+Lean modules that left the libraries and are kept because a planned or running line of work would reuse them.
+Nothing here is built, imported or checked: the folder is outside the Lake libraries (`Grothe/`, `GrotheKernel/`,
+`GrotheCapsKernel/`, `GrotheQuadKernel/`, `GrotheQuadExtKernel/`), CI's forbidden-code scan is limited to those
+folders, and `tools/gen_root_imports.py` does not import these modules (it only drops axiom-list entries that name
+declarations found here and not in the libraries).
 
-| archived file | original module | removed lines |
+The repository proves 1.4020221627 < K_G^ℂ ≤ 1.404556392 (`Grothe.Statement.main_bounds`; the constants are stated
+exactly in [`docs/CONSTANTS.md`](../docs/CONSTANTS.md)). No module of this folder is part of that proof.
+
+Policy (user, 4 and 15 November 2026): Lean code that `main_bounds` does not use leaves the libraries. On
+28 November 2026 (#764) this archive was reduced to the modules below; everything else that was archived is in git
+history only (last section).
+
+## What is here
+
+Each file is at its original path below `abandonware/` (`abandonware/Grothe/X/Y.lean` was `Grothe/X/Y.lean`).
+[`MANIFEST.tsv`](MANIFEST.tsv) lists every file with the commit where it was last part of the build, its content
+and the task that would use it.
+
+| family | modules | content | the task that would use it |
+|---|---:|---|---|
+| Hilbert transfer | 3 | `TransferHilbert`, `ScalarOpt`, `VectorOpt`: every Grothendieck bound extends to unit vectors of any complex inner product space; the scalar and vector optima are attained, the vector optimum in dimension min(m, n) (`isGrothendieckBound_iff_fixed_dim`) | a lower-bound certificate of degree 5 or 7 ([`research/higher-degree`](../research/higher-degree/README.md)): transfer of the witness to finite matrices and projection of the responses |
+| cubic-chaos budgets | 8 | `Lower/SteinFusion`, `Lower/Reserve`, `Lower/MomentLift`, `LowerAnalytic/FourthMoment` (E F⁴ ≤ 93 (E F²)² on the real third chaos), `JointSixth`, `JointBudget`, `MomentCone`, `MomentConeBoundary` | the row certificates of Conjecture K ([`research/conjecture-K`](../research/conjecture-K/README.md)) and of a degree-5 game, when they need fused Stein cuts or joint sixth-moment budgets |
+| cubic-witness ceiling | 1 | `LowerAnalytic/ScalarCubicFamilyCeiling`: the arithmetic behind the ceiling 1.4022581233 of the witnesses P₁,₀ − zP₂,₁; the Gaussian inputs are hypotheses | the Lean part of `research/conjecture-K/STATUS.md` 12.2; its written proof is in `research/conjecture-K/sources/cubic-witness-ceiling-2026-10-23/` |
+| phase Taylor bounds | 5 | `Haagerup/PhaseStability`, `PhaseTaylorAlgebra`, `PhaseTaylorSharp`, `PhaseTaylorOptimal`, `PhaseTaylorCubic`: ‖ph z − 1 − (z − Re z)‖ ≤ 2‖z − 1‖², the optimality of the coefficient 2, and the cubic refinement | a certificate for a perturbed phase channel ([`research/upper-channels`](../research/upper-channels/STATUS.md), 8.1 and 9.5) |
+| packed-dyadic decoder | 4 | `UpperChaos/LegacySingleCharacterSplit`, `PackedDyadicStructural`, `PackedDyadicLegacyDelimiter`, `PackedDyadicSourceAssembly`: kernel-checked statements about the decoder of the stored Taylor centres | retiring the native fact `Grothe.UpperChaos.taylor_centers_decode_check` |
+
+**These files are not kept compiling.** Their imports from `Grothe.*` all exist, in the libraries or in this folder,
+but none was rebuilt after it left the build, and the library has changed since. To revive a module: move it back to
+its path under `Grothe/`, run `python3 tools/gen_root_imports.py`, repair what changed, and connect it to the main
+proof (a module that `Grothe.MainResult` does not import is removed again).
+
+## What was removed, and where it is
+
+[`RETIRED.txt`](RETIRED.txt) lists the declarations of the removed modules that were once in the axiom report or
+the axiom lists, and the removed modules. `tools/gen_root_imports.py` reads it: if a union merge with an old branch
+brings such a line back into `scratch/Axioms.lean` or `data/axioms/`, the generator drops it, as it does for the
+modules still in this folder (`scripts/test_gen_root_imports.py`).
+
+`git show <commit>:<path>` reads any of it; `git log --diff-filter=D -- <path>` finds the removal.
+
+| material | last present at | path at that commit |
 |---|---|---|
-| `abandonware/Upper/Haagerup.lean` | `Grothe/Upper/Haagerup.lean` | 240 |
-| `abandonware/Upper/Compose.lean` | `Grothe/Upper/Compose.lean` | 111 |
-| `abandonware/Upper/Realise.lean` | `Grothe/Upper/Realise.lean` | 30 |
-| `abandonware/Upper/Bivariate.lean` | `Grothe/Upper/Bivariate.lean` | 13 |
-| `abandonware/Upper/ComparisonMass.lean` | `Grothe/Upper/ComparisonMass.lean` | 13 |
-| `abandonware/Upper/Final.lean` | `Grothe/Upper/Final.lean` | 10 |
-| `abandonware/Upper/GroupedBridge.lean` | `Grothe/Upper/GroupedBridge.lean` | 19 |
-| `abandonware/Upper/PolynomialBridge.lean` | `Grothe/Upper/PolynomialBridge.lean` | 8 |
-| `abandonware/LowerAnalytic/CapTables.lean` | `Grothe/LowerAnalytic/CapTables.lean` | 19 |
+| the conditional sharper upper route `fresh_upper_rounder` (K_G^ℂ < 1.404598148840 from fourteen Gaussian error estimates that were never proved; weaker than the proved 1.404556392) and the Gaussian-comparison programme built for those estimates: 192 modules | master `bfb5961e3` | `abandonware/Grothe/UpperChaos/`, `abandonware/Grothe/Upper/GroupedBridge.lean`; the list with one reason per module is `abandonware/MANIFEST-2026-11-15.tsv` |
+| comparison budgets and other general lemmas with no planned use (`PolarizedGram`, `QuadraticDual`, `LowerAnalytic/JointDefect`, `LowerAnalytic/QuarticNewton`, `UpperQuad/CentralDerivative`), the exporter `LowerAnalytic/CapExport` (its reader `tools/caps_plan.py` is gone) | master `bfb5961e3` | `abandonware/Grothe/` |
+| nine files of removed lines of `Grothe/Upper/*.lean` and `Grothe/LowerAnalytic/CapTables.lean` | master `bfb5961e3` | `abandonware/Upper/`, `abandonware/LowerAnalytic/`; the modules they were cut from are in the libraries |
+| the other ~2,370 modules outside the import closure of `Grothe.MainResult` on 15 November 2026 (#422): generated modules, axiom audits, superseded certificates | master `36ab13004` | `Grothe/` |
+| the archive of other endpoints of 27 October 2026 (#202): the single-channel bounds by resolvent completion (K_G^ℂ ≤ 1.404909132791 without hypotheses), the reproduction of the HJM origin panels, the scalar-tail refinement, their generators and verification records, and byte copies of the documents of that day (`tree/`, `snapshot/`, `revisions/`, `manifest.json`, `check_archive.py`) | master `bfb5961e3` | `miscellaneous/other-bounds/` |
+| 24 research modules of October 2026 that serve no bound (response geometry and screens for the upper side; the algebra of the response-lift, replica, spherical and quintic studies), their axiom reports, audit modes and replay tools | master `bfb5961e3` | `miscellaneous/research/` |
+| the delivery `grothendieck-common-stein-reassessment-20261023.zip` (7.5 MB; its `section.tex` is the chapter `common-stein-kernel-20261023.tex` of the manuscript under `research/conjecture-K/sources/manuscript/`, its data are the source laws of the superseded row tables) | master `bfb5961e3` | `miscellaneous/deliveries/` |
 
-Policy (user, 4 and 15 November 2026): Lean code that the main theorem `main_bounds` does not use leaves the
-libraries. Modules worth keeping are moved here; the rest is deleted (git history keeps it, and generated modules can be
-regenerated from their generators and inputs, which are in git history: `tools/` and `data/` keep only what an
-existing module was generated from).
-
-## Whole modules: `abandonware/Grothe/` (15 November 2026, #422)
-
-After #383 the libraries held about 2,580 modules outside the import closure of `Grothe.MainResult`. The 210 worth
-keeping are here, verbatim, at their original path below `abandonware/` (`abandonware/Grothe/UpperChaos/X.lean` was
-`Grothe/UpperChaos/X.lean` at master 36ab13004). [`MANIFEST-2026-11-15.tsv`](MANIFEST-2026-11-15.tsv) lists every one with
-its family and the reason it is kept. The other ~2,370 were deleted: generated modules (their generators and inputs are in git history), pure axiom audits, superseded certificates and endpoints, and scaffolding.
-
-| what | modules | content |
-|---|---|---|
-| the conditional sharper upper route | 3 | `fresh_upper_rounder` (`UpperChaos/GroupedRounder.lean`): K_G^ℂ ≤ 500000000000000000/355973699960428191 < 1.404598148840 from fourteen finite-band Gaussian error estimates (not proved) and the table accuracy; `GroupedComparison`, `Upper/GroupedBridge` (`fresh_upper`) |
-| the Gaussian-comparison programme for those fourteen estimates (October–November) | 155 | the actual coherent and HS source-norm chain, the retained-coefficient quadrature, the unit-mode Wick compiler, generic Wick lemmas |
-| phase Taylor bounds and conditional-error lemmas | 24 | `Haagerup/PhaseTaylor*`, `ZeroProfilePhase*`, `ProductionPhase*` |
-| finite-dimensional optimisation and comparison budgets (15 November) | 7 | `VectorOpt`, `ScalarOpt`, `TransferHilbert`, `PolarizedGram`, `QuadraticDual`, `LowerAnalytic/JointDefect`, `QuarticNewton` |
-| other general lemmas, the packed-dyadic decoder proofs, the sample ledger | 20 | see the manifest |
-| tooling | 1 | `LowerAnalytic/CapExport` (piece matrices for the S-lemma search; its reader `tools/caps_plan.py` has since been deleted) |
-
-These files are not kept compiling against the current library. For example, `GroupedRounder` uses
-`HardyReal.hardy_GT_tight` (budget 1737972/10⁶), which was removed with the arc-cover Hardy path; it follows from
-`HardyReal.hardy_GT_gaussian` (budget 117/100) by `le_trans`. To revive a module: move it back to its path under `Grothe/`,
-run `python3 tools/gen_root_imports.py`, repair what changed, and connect it to the main proof (or it is dangling again).
+The research notes of 23 October 2026 that were in `miscellaneous/` and whose conclusions were not yet recorded are
+now under `research/`: `conjecture-K/sources/cubic-witness-ceiling-2026-10-23/`,
+`conjecture-K/sources/response-lift-fibre-2026-10-23/`, `higher-degree/sources/quintic-projection-2026-10-23/` and
+`upper-channels/sources/cubic-phase-separator-2026-10-23/` (each area's `INVENTORY.md` says what they hold).

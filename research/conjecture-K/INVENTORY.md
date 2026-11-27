@@ -1184,6 +1184,10 @@ review: read it with `REVIEW.md` §7, whose findings the ledger rows follow.
   folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/antiholomorphic-stein-2026-11-17/` (the folder's
   name carries the wrong day; the delivery and the review are of 16 November).
 
+## Two coupled thirteen-coordinate cubics (codex-a7c4, #766)
+
+[Fourth-excess proof](sources/paired-cubic-codex-a7c4/PROOF.md) and [exact mixed-moment calculation](code/paired-cubic-codex-a7c4/verify.py). Run `python3 -IB research/conjecture-K/code/paired-cubic-codex-a7c4/verify.py` from the repository root.
+
 ## Codex-a786: the Malliavin addendum and the Clifford cubic (16 November 2026)
 
 `sources/malliavin-addendum-2026-11-16-codex-a786/` holds the delivery's four documents and `REVIEW_claude-b9ee.md`;
@@ -1779,6 +1783,10 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 
 [Angular measures and the raw two-shell price interval](sources/signed-score-coupling-codex-a7c4/PROOF.md) · [Retained six-sector result, STATUS 7.5.14](sources/signed-score-coupling-codex-a7c4/SIX.md) · [Exact replay and upstream hashes](code/signed-score-coupling-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/signed-score-coupling-codex-a7c4/verify.py` at the repository root. The proof uses the global pointwise bound of 7.5.13 and the scalar deficit certificates identified in the source.
 
+## Sharp retained peak value on the capped energy domain (codex-a7c4, #761)
+
+[Central energy/excess proof](sources/peak-window-codex-a7c4/PROOF.md) · [All shapes, sharpness and scaling](sources/peak-window-codex-a7c4/PEAK.md) · [Rational certificate and verifier](code/peak-window-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/peak-window-codex-a7c4/verify.py` from the repository root. Each of 24 spectral duals is checked on the positive half-line before its deficit estimate is used in a closed two-dimensional cover.
+
 ## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
 
 - [Proof and replay instructions](sources/global-all-sector-gemini-c1de/PROOF.md) and
@@ -1850,7 +1858,7 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,574 B | `d58499b89dae1c386efc04028a0f8a985cc8f7b9c8eb0701697a204d2b26005f` |
+| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,781 B | `8ac273bf65451f957527c3b88f7259543a1976ce5bf8ee578b2391df2cdb4cd2` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/README.md` | 2,990 B | `24e96c9ddcd29789e49c78872f6f1d746b287502bedac72e943e84d56de6c14a` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/cert_912.json` | 229,130 B | `5fd94b4b1bda430344388013009b18e8fc00077ec4e67ec993a5755c85b0ba04` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/verify.py` | 65,398 B | `9b5a2d83166006db93de6d59201a98ae3506088290095d43a0ccfbd0dd1cf70f` |
@@ -1880,3 +1888,33 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 ## Retained six-sector peak bound at high fourth excess (7.5.15)
 
 The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).
+
+## The notes of 23 October 2026 on the cubic witness, moved from the archive (claude-b9ee, #764)
+
+Six notes of the Codex sessions of 23 October 2026 were in the archive folder `miscellaneous/` until master
+`bfb5961e3`; the folder was removed by #764 and the notes whose conclusions the manuscript chapters under
+`sources/manuscript/` do not contain were moved here, verbatim (one provenance line added at the top of each). Their
+targets are those of their date: the cubic witness at ε = 149/200, under the interval
+1.401697049825 < K_G^ℂ < 1.404598149218 of that day. Lean now proves 1.4020221627 < K_G^ℂ ≤ 1.404556392.
+
+| folder | files | what they hold |
+|---|---|---|
+| `sources/cubic-witness-ceiling-2026-10-23/` | `CUBIC_FAMILY_CEILING_2026-10-23.md` (18 KB), `GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md` (12 KB), `GENUINE_CUBIC_OBSTRUCTION_2026-10-23.md` (16 KB) | The written proofs behind `STATUS.md` 12.2 and 8.3, which cite the summary in `docs/overview.tex`: the genuine response pair built on q_m ∈ H₂,₁ over Sym²(ℂᵐ), the closure of its U(m)-invariant first and cubic image, the floor 0.71313546585 for every complex multiplier (ceiling 1.4022581233 of the cubic witness family) and the value above 0.71329 at ε = 149/200. |
+| `sources/response-lift-fibre-2026-10-23/` | `RESPONSE_LIFT_EXPERIMENT_2026-10-23.md` (15 KB), `JOINT_FIBRE_EXPERIMENT_2026-10-23.md` (28 KB), `JOINT_ROW_UNIFORMITY_2026-10-23.md` (13 KB) | Negative results on two relaxations of the row certificate at ε = 149/200. The finite multiplication-compression lifts have exact minimum zero for the selected projection penalties at all twelve audited contacts; an actual bounded response pair matches the selected moments of the saved radial law 7234. The fixed-law joint model has a bounded randomized response with relaxed score near 0.7131527 (a lower bound on that relaxed supremum) and a certified upper cap 178315341/250000000 at the fixed contact. The third note states which uniform extensions remain meaningful. These statements concern abstract radial laws of a finite cut bank, not Gaussian cubics. |
+
+Not in the repository: the verifiers and certificate files that these notes name (`tools/verify_cubic_family_floor.py`,
+`tools/verify_diffuse_cubic_limit.py`, `tools/verify_joint_fibre_*.py`, `tools/verify_response_lift*.py`,
+`tools/verify_abstract_response_*.py` and their JSON files) were deleted from `tools/` by commit `d84c3fdfc` and are
+read with `git show 8115260f8:tools/<name>`. The replay wrappers `run_genuine_cubic_checks.py` and
+`run_joint_fibre_checks.py` and the list of input hashes were at `miscellaneous/research/tools/` and
+`miscellaneous/research/research/response_geometry_inputs/README.md` of master `bfb5961e3`. The source laws
+(`radial-complete-*-exact.json`, 7 to 9 MB each) were never in the repository: they are in the delivered bundles
+`joint-fibre-20261023` and `genuine-cubic-obstruction-20261023` and in
+`grothendieck-common-stein-reassessment-20261023.zip` (7.5 MB, `git show bfb5961e3:miscellaneous/deliveries/grothendieck-common-stein-reassessment-20261023.zip`).
+The Lean arithmetic of the ceiling is `abandonware/Grothe/LowerAnalytic/ScalarCubicFamilyCeiling.lean` (not built);
+the other Lean modules the notes name (`DiffuseCubicObstruction`, `ProjectionGateCeiling`, `JointRowRepricing`,
+`ResponseCompression`) are at `miscellaneous/research/Grothe/LowerAnalytic/` of master `bfb5961e3`.
+
+The other notes of that day in the archive were deleted, because `sources/manuscript/` holds their content as
+chapters: the binding audit, the common Stein kernel and the table floor, the joint response lift, the symmetric
+response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/symmetric-response-replicas-20261023.tex`).

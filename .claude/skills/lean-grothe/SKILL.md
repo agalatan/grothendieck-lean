@@ -56,7 +56,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | `docs/` | `CONSTANTS.md`, `LEAN_DETAILS.md` (module inventory), `overview.tex` (source of `OVERVIEW.pdf`), notes |
 | `research/` | ledgers of open problems (Conjecture K, higher-degree games, identity tail); nothing built; rules in `research/README.md` |
 | `haagerup-article/` | the article, **frozen**, with its own Lean package under `anc/`: it never quotes the repository's current bounds |
-| `handoff/` (git-ignored), `miscellaneous/`, `abandonware/` | archives; never built or imported |
+| `handoff/` (git-ignored), `abandonware/` | archives; never built or imported (`abandonware/README.md` lists the few kept modules) |
 
 ## Building
 
@@ -67,8 +67,9 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
   a local build.
 - The upper bound alone builds locally: `lake build Grothe.UpperResult`, then
   `lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six`.
-- Where: `ssh yo` (8 vCPUs) if its load is at most 4, else `ssh big` or `ssh mega` if one exists (at most 8 cores each, half of it
-  stays free for heavy CI: AGENTS.md §12), else the laptop; in your own folder `~/<id>-<topic>` with
+- Where: `ssh yo` (8 vCPUs) if its load is at most 4, else `ssh big` or `ssh mega` if one exists and its CI runner is
+  offline or the managing agent announced an interval (at most 8 cores, pinned inside the upper half of the cores; the other half stays free for heavy CI:
+  AGENTS.md §12), else the laptop; in your own folder `~/<id>-<topic>` with
   `~/grothe-caps/.lake/packages` symlinked. One heavy job at a time on the laptop, across all agents.
 - Long jobs run in their own process group (`set -m; nohup … & echo $! > job.pid`); stop with
   `kill -- -"$(cat job.pid)"`. Never `pkill -f`, never `killall`, never wait with `pgrep -f`.

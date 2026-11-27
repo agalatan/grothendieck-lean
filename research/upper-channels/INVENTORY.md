@@ -51,3 +51,16 @@ Apart from the logs of the eighth-channel run (next paragraph), no log is kept i
 **Eighth channel (26 November 2026, #723).** The run was on the droplet `yo`, in the folder
 `~/claude-b9ee-eighth`, which is deleted. Its logs and small JSON results are in `code/eighth-channel/`. Only the
 intermediate `columns.json` (0.96 MB) was not kept: `columns.py` rebuilds it in two minutes.
+
+**Two notes of 23 October 2026, moved from the archive (#764).** `sources/cubic-phase-separator-2026-10-23/` holds
+`CUBIC_PHASE_SEPARATOR_2026-10-23.md` (13 KB: the Gaussian-phase channels with a cubic preprocessor Aρ + Bρ³,
+\|A\| + \|B\| ≤ 1, complex phases and convex mixtures included, have full reciprocal score at most 0.71186, through
+the separator Re(c₀ − (9/25)c₁ − c₂ − c₃)) and `CUBIC_ENDPOINT_TAIL_2026-10-23.md` (5 KB: for the pair
+ph(Z + cH₂,₁(Z) ± cG) at c = 119623/500000 and c = 14953/62500, Re E[conj(f)g] ≤ 0.705287031876, so the absolute
+coefficient score of the pair and of its mixtures is below 0.71). They were in the archive folder `miscellaneous/`
+until master `bfb5961e3` and are verbatim, with one provenance line added. Not in the repository: the verifiers
+`tools/verify_cubic_phase_ceiling.py`, `tools/verify_balanced_endpoint.py`, `tools/generate_cubic_phase_lean.py`
+and `tools/cubic_endpoint_cap.json` (deleted by commit `d84c3fdfc`; `git show 8115260f8:tools/<name>`), the replay
+records `miscellaneous/research/docs/research/spectral-separator-20261023/` and the Lean polynomial certificate
+`miscellaneous/research/Grothe/Upper/CubicPhaseScreen.lean` with `SpectralScreen.lean` and `KernelScreen.lean`
+(all at master `bfb5961e3`).

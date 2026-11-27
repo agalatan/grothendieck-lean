@@ -9,10 +9,11 @@ the proved six-error estimates and tighter budgets of `UpperTightSix` and
 `UpperTightBudget`.
 
 The conditional target `K_G^C < 1.404598148840` built on the eighteen-piece
-comparison below is archived in `abandonware/` and not built: its fourteen
+comparison below was removed from the repository (git history;
+`abandonware/README.md` gives the commit): its fourteen
 original Gaussian finite-band estimates are not proved (energy-table accuracy is
-proved by `Final.hclose_final`). The previous endpoint
-ledger is preserved in `miscellaneous/other-bounds/snapshot/data/localized-comparison/PROOF.md`.
+proved by `Final.hclose_final`), and the seven-channel bound `K_G^C <= 1.404556392` of
+`main_bounds` is smaller.
 The pinned recipe and generator remain active because the comparisons use
 the same comparison bands and table radii. Their historical endpoint metadata
 is not the current grouped endpoint ledger.
@@ -95,8 +96,8 @@ reproduction hashes are in `recipe.json`. The resulting allowance is
 `C = 106490963/125000000000000 = 0.000000851927704`.
 
 The conditional endpoint assembly with the grouped comparison budget
-(`Upper/GroupedBridge`, `UpperChaos/GroupedRounder`) is archived in `abandonware/`
-and not built; the shared comparison above remains active.
+(`Upper/GroupedBridge`, `UpperChaos/GroupedRounder`) was removed from the repository
+(git history); the shared comparison above remains active.
 The unconditional endpoint regroups the certified band-mass squares,
 uses the six proved low-band/whole-source estimates, and deducts the forced
 linear energy from the Gaussian-amplitude Hardy budget `117/100`. Its comparison allowance is

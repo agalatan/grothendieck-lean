@@ -41,6 +41,7 @@ Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof re
   with arbitrary sharing (2.9); the central part of the consumer on [0.84, 0.851] conditional on an all-sector bound (2.10, 8.1; supplied for Λ̂ by 7.5.13), at
   ε = 299/400 the whole consumer outside (0.8165, 0.866), and by homothety transfer of the spectral mass row the
   whole consumer outside (0.795, 0.864) at ε = 3/4 and outside (0.7515, 0.863) at ε = 94/125 [author only] (2.10).
+- **Sharp retained value on the capped peak domain [P + C · 7.5.16, author only].** On the capped peak domain $u\le0.0463$, $u+V\le0.080051$, the sharp supremum of the retained functional over finite dimensions is $S$. Each finite cubic satisfies $\widehat\Lambda(G)<S$, with arbitrary odd energy and sharing. The intermediate-excess estimate in 7.5.16 joins the low- and high-excess results of 7.5.14–15 to the two exterior energy intervals in 7.5.13. A sequence approaches $S$ exactly when its remote energy tends to the Gaussian optimizer, its normalized fourth excess tends to zero and its other five sector energies vanish. The optimal finite-dimensional gap has order $1/m$ in $m$ remote complex coordinates, with a limiting coefficient given by a quartic tensor minimum. [Maximizing sequences and dimension dependence](sources/peak-window-codex-a7c4/RIGIDITY.md) · [Proof and exact hypotheses](sources/peak-window-codex-a7c4/PEAK.md)
 - **Proved for the retained functional Λ̂** (which keeps the first-chaos penalty dropped from the row; a bound on
   sup Λ̂ suffices just as well, and its benchmark is the same S): the whole A-shell at the peak row,
   Λ̂(q + (T − 1)r) < S + 2·10⁻⁵ for every remote cubic q of energy at most 0.0463 and every remote linear form r, in
@@ -240,6 +241,8 @@ C(q). The **Wick monomial** is the one-variable cubic X(|X|² − 2), up to a co
 
 (subtracting the constants changes nothing because Π₁q = 0).
 
+For $m$ remote complex coordinates the influence matrix gives $m\chi\ge12$, and the radial projection of the fourth-order contraction strengthens this to $m\chi\ge12+12/(m+1)$ for every nonzero cubic. A 26-coordinate example attains $m\chi=91813293/7123561<12.889$. Two thirteen-coordinate copies supply its real part before a mixed cubic in the two driver variables lowers the fourth moment to first order. [Construction and dimension bound, 6.3.32a](sources/paired-cubic-codex-a7c4/PROOF.md)
+
 ### 1.9 The six layers of a proof
 
 K_η must hold for every G, not only for the core. A proof has six layers:
@@ -261,7 +264,8 @@ profiles [STATUS §15].
       remote cap (3.3)  →  retained A-core, S + 2·10⁻⁵ (11.51: tilt 11.12, remainder 11.39, gain 11.40, content 11.61)
         →  A + B core, S + 4.936·10⁻⁵ (7.4.10; < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ in KAST)   unconditional on the peak energy domain (7.4.16)
         →  all six sectors, < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ (7.5.13 + KAST; < S + 7.971·10⁻⁵ conditional on open (P_Ψ) in 7.5.3 + KAST, proved on strips/regions 7.5.4c, 7.5.12)
-        →  consumer (8.1, 8.7, 8.9–8.13)                    [0.8400, 0.8661] at peak ε and [0.8400, 0.8547] at 94/125 from 7.5.13 + KAST; remaining rows and Lean statement: open
+        →  consumer (8.1, 8.7, 8.9–8.13)                    [0.8400, 0.8661] at peak ε and [0.8400, 0.8547] at 94/125, cap 500/701 (7.5.13 + KAST, P + C)
+        →  tighter consumer (8.13a)                          [0.8393, 0.8635] at 94/125, cap .713245 (also 3.3a and 3.5a, P + C, author only)
 
     through Λ (Conjecture K itself):
       remote sign D(q) ≥ 0 on the class handled  →  A-core by cost 6.2.1 and the content inequality
@@ -498,12 +502,12 @@ the deficit of the decoupled surrogate ⟨w, ∂̄q⟩ with an independent Gauss
 sharp comparison at fixed output covariance gives $\mathcal J_{\rm dec}>\operatorname{tr}H^2/8$ at the peak
 for positive energy at most $0.0463$. On the zero-contraction class the sharp rank-one modulus bound is
 $\mathbb E|q|\le(\pi/4)\,\Vert q\Vert_2$ in arbitrarily many input coordinates.
-[Covariance comparison and sharpness, P + C, author only · 3.26a](sources/quadratic-spectrum-codex-a7c4/PROOF.md).
+[Covariance comparison and sharpness, P + C · 3.26a](sources/quadratic-spectrum-codex-a7c4/PROOF.md).
 On disjoint Gaussian inputs this gives the peak-row content bound $C^2\le D/10$ after adding an arbitrary
 cubic of energy up to $\sqrt{\operatorname{tr}(H^2)}/11$ to a zero-contraction core, where the total energy
 is at most $0.0463$. Many independent blocks can carry more total energy, including 28 equal residuals
 whose combined energy equals that of a rank-one core.
-[Independent blocks, P + C, author only · 6.3.42a](sources/quadratic-spectrum-codex-a7c4/INDEPENDENT_BLOCKS.md).
+[Independent blocks, P + C · 6.3.42a](sources/quadratic-spectrum-codex-a7c4/INDEPENDENT_BLOCKS.md).
 At the peak row all three terms
 are nonnegative on every cubic tested; a proof of the sign of the two contractions would give D(q) ≥ 0 there in every
 dimension [P author only for the identity, N for the signs · 3.26]. For √v itself this split and that of 2.5 each have
@@ -1165,6 +1169,8 @@ F_joint is nonpositive when |q| ≥ 10, and, if |ν|² ≤ 1/50 (which holds whe
 
 **Strict six-sector peak comparison [P + C · 7.5.14].** On the same classes of remote cubics as the signed-score comparison in §2.8, completing the two coupled content squares in 7.5.13 gives $\widehat\Lambda(G)\le B_G(u)-p_0u-(41/125)D(q)<S$. This permits arbitrary odd energy and sharing, with $u\le0.0463$ and $u+V\le0.080051$. The same strict comparison with $S$ holds on these energy ranges whenever the stabilizer of the cubic has no fixed vector in first chaos, since both gains vanish. [Proof, precise classes and energy caps](sources/signed-score-coupling-codex-a7c4/SIX.md)
 
+**Exact retained peak K on the capped domain [P + C · 7.5.16, author only].** Twenty-four spectral Stein duals bound the actual same-variance deficit throughout the central energy interval for $0.0784\le\chi\le3$. A separate finite cover prices both even shells while the global odd-sector estimate permits arbitrary odd energy. This completes the peak comparison across all fourth excesses. The exact homothetic profiles with $0<\lambda\le1$ inherit the strict upper comparison on the scaled caps. [Central certificate](sources/peak-window-codex-a7c4/PROOF.md) · [Sharp supremum and homothetic rows](sources/peak-window-codex-a7c4/PEAK.md)
+
 ### 2.10 Response domains and the central consumer
 
 Only G that come from actual responses enter the row. Let E_q, E_A, E_B, E_Q, E_P, E_ν be the
@@ -1233,6 +1239,15 @@ Outward-rounded integer Rice enclosures certify nine central rows on [0.795, 0.8
 (minimum > 1.021·10⁻⁴, above the peak budget of 2.9); Row 8 on [0.840, 0.847] lies strictly inside the proved
 remote and retained rectangles of 2.1 and 2.6 with u/λ² < 0.0463 and λ = 1880/1891 < 1, closing directly at **`< 6.35·10⁻⁵` (`D_+`) and `< 6.11·10⁻⁵` (signed) `< 10⁻⁴ < η_{max,8}`** across all six sectors using 7.5.13 and Row 8's benchmark (8.13, author only) (and giving the same bound for `q + A + B` on Row 8's profile via 7.4.16), while zero-profile-loss subdivided $t$-slabs of the exact scaled peak row $(\lambda\ell_0, \lambda\beta_0)$ close **`[0.8400, 0.8547]`** (Rows 8–10 + into Row 11, 11 slabs) at ε = 94/125, **`[0.84000, 0.85168]`** (Rows 4–6 + into Row 7, 10 slabs) at ε = 3/4, and **`[0.84000, 0.84948]`** (9 slabs below `713263/10⁶`) at ε = 299/400 by 7.5.13 [P + C; remaining central premises open ·
 STATUS 8.10, 8.13; `KAST`].
+
+At the tighter cap 0.713245 and ε = 94/125, three scaled peak profiles cover [.8393,.8635].
+The effective price μ/ε pays for the retained shift at μ > 1, while the positive same-variance deficit
+in 3.3a lets the fixed trial spend the Gaussian buffer and tilted content together. At this cap the 8.12
+exterior covers 1,548 of 1,773 cells and leaves [.751,.8635]. The three slabs reduce that gap to
+[.751,.8393]. Profiles 3 and 7 would complete this consumer if their
+retained errors are below 144.035 and 156.451 millionths on [.751,.8205] and [.8205,.8393],
+respectively. Their conditional reciprocal is 200000/142649. [8.13a, **P + C, author only**;
+[proof and exact replay](sources/priced-peak-consumer-codex-a7c4/PROOF.md)].
 
 ### 2.11 Charging response feasibility to the discarded squares
 
@@ -1523,7 +1538,7 @@ without a restriction on the amplitude at every tilt tried [11.17].
 | 2.4–2.5 shared drivers, content | 6.1.1–6.5.1 |
 | 2.6 tilted lemma, retained A-core | 11.25–11.62 |
 | 2.7–2.8 B-sector, joint form | 7.1.1–7.4.17 |
-| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.14 |
+| 2.9 odd sectors | 2.6, 2.6a, 5.4–5.4c, 7.2.2–7.2.11, 7.5.1–7.5.16 |
 | 2.10–2.11 response, consumer, penalties | 2.12–2.12f, 8.1–8.13 |
 | 3 open problems | section 15 |
 | 4 false statements | section 13 (and 14) |
