@@ -1184,6 +1184,10 @@ review: read it with `REVIEW.md` §7, whose findings the ledger rows follow.
   folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/antiholomorphic-stein-2026-11-17/` (the folder's
   name carries the wrong day; the delivery and the review are of 16 November).
 
+## Two coupled thirteen-coordinate cubics (codex-a7c4, #766)
+
+[Fourth-excess proof](sources/paired-cubic-codex-a7c4/PROOF.md) and [exact mixed-moment calculation](code/paired-cubic-codex-a7c4/verify.py). Run `python3 -IB research/conjecture-K/code/paired-cubic-codex-a7c4/verify.py` from the repository root.
+
 ## Codex-a786: the Malliavin addendum and the Clifford cubic (16 November 2026)
 
 `sources/malliavin-addendum-2026-11-16-codex-a786/` holds the delivery's four documents and `REVIEW_claude-b9ee.md`;
@@ -1854,7 +1858,7 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,574 B | `d58499b89dae1c386efc04028a0f8a985cc8f7b9c8eb0701697a204d2b26005f` |
+| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,781 B | `8ac273bf65451f957527c3b88f7259543a1976ce5bf8ee578b2391df2cdb4cd2` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/README.md` | 2,990 B | `24e96c9ddcd29789e49c78872f6f1d746b287502bedac72e943e84d56de6c14a` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/cert_912.json` | 229,130 B | `5fd94b4b1bda430344388013009b18e8fc00077ec4e67ec993a5755c85b0ba04` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/verify.py` | 65,398 B | `9b5a2d83166006db93de6d59201a98ae3506088290095d43a0ccfbd0dd1cf70f` |

@@ -223,6 +223,19 @@ def main():
     c_lowt["degree5_midt"]["lean_mass"]["segments"][-1]["t_hi"] = str(t_short)
     expect_reject(c_lowt, "Control 8f (lowering lean_mass.t_cutoff below 9190839/25000000 rejected)")
 
+    # Control 8f stops at the grid-crossing check.  Raising R_0 as well moves the
+    # crossing past the shortened cutoff, so only the Theorem 2(2) cutoff guard is left.
+    c_guard = copy.deepcopy(c_lowt)
+    c_guard["rays"][0]["R"] = "9312000011/10000000000"
+    try:
+        VF.verify_certificate(c_guard, quiet=True, jobs=1)
+    except (ValueError, ArithmeticError, KeyError) as exc:
+        if "does not cover Theorem 2(2) target" not in str(exc):
+            raise AssertionError(f"Control 8g rejected for another reason: {exc}")
+        print(f"  [PASS] Control 8g (shortened cutoff with R_0 = 9312000011/10^10 reaches the cutoff guard): cleanly rejected ({exc})")
+    else:
+        raise AssertionError("SECURITY FAILURE: Control 8g was ACCEPTED by verify_certificate!")
+
     print("ALL NEGATIVE & CORRUPTION CONTROLS PASSED.")
 
 

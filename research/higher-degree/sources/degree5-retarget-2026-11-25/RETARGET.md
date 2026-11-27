@@ -467,7 +467,7 @@ The table reads the same data as targets: the largest K\* that leaves the model 
 | game | 1/N | K\* at the present room | K\* at twice that room |
 |---|---|---|---|
 | cubic + tail, best (0.7681, 0.0235) | 1.402483 | 1.40170 | 1.40092 |
-| (1, −0.78, 0.0786) (the capped game) | 1.402785 | 1.40200 | 1.40122 |
+| (1, −0.78, 0.0786) (the best game at ε = 0.78, ledger 1.11; the capped game (1, −39/50, 779/10000) of ledger 1.10 has the same 1/N to six decimals) | 1.402785 | 1.40200 | 1.40122 |
 | (1, −0.80, 0.1364) | 1.403117 | 1.40233 | 1.40155 |
 | (1, −0.82, 0.1940) | 1.403385 | 1.40260 | 1.40181 |
 | (1, −0.85, 0.2846) | 1.403645 | 1.40286 | 1.40207 |
