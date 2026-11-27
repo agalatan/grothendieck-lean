@@ -109,12 +109,14 @@ Times measured on one core of a cloud VM (x86-64, Python 3.12):
 ### Comparing with the reference outputs
 
 `expected_output/` holds the output of each script from the author's run (`04_overlaps.txt` for the default
-options, `04_overlaps_all.txt` for `--all`). `run_all.sh` says whether a new run reproduces them byte for byte.
-The outputs of 01, 05 and 07 are exact and must be identical. In 02, 03, 04 and 06 the floating-point figures are
-printed with fewer digits than they are computed with, so they are normally identical too (they are with the
-versions listed under "Requirements"), but a last digit may differ on another platform or with another version of
-numpy or mpmath; the `[ok]` lines must not change. `./run_all.sh --save` overwrites the reference outputs with
-those of the current run.
+options, `04_overlaps_all.txt` for `--all`). `run_all.sh` compares each new run with them and fails if a comparison fails.
+The outputs of 01, 05 and 07 are exact and must be identical byte for byte. In 02, 03, 04 and 06 the
+floating-point figures are printed with fewer digits than they are computed with, so they are normally identical
+too (they are with the versions listed under "Requirements"), but a last digit may differ on another platform or
+with another version of numpy or mpmath: `run_all.sh` then reports the difference and passes, provided the `[ok]`
+lines are identical. A missing reference output is a failure. `./run_all.sh --save` overwrites the reference
+outputs with those of the current run, and fails if it cannot write one. `./test_run_all.sh` tests these rules
+on the stored outputs in a few seconds, without running the scripts.
 
 ## What is read from the Lean files
 
