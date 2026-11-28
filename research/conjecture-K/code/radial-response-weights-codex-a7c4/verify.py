@@ -46,7 +46,7 @@ def sector_bounds(weight_hi, moments):
     return (weight_hi, h1, h0, h2-2*l1+h0, h2/2, (h3-4*l2+4*h1)/2)
 
 
-def smooth_bounds(r):
+def smooth_moments(r):
     """Integrate w=sqrt(T+r²) using the alternating Gaussian integral."""
     z = r*r
     require(0 < r <= Q('.4'), 'unsupported radius')
@@ -61,7 +61,11 @@ def smooth_bounds(r):
     for j in (1,2):
         moments.append(tuple((j+Q(1,2)-z)*x+j*z*y
                              for x,y in zip(moments[j],moments[j-1])))
-    return sector_bounds(w_hi, moments)
+    return w_hi, moments
+
+
+def smooth_bounds(r):
+    return sector_bounds(*smooth_moments(r))
 
 
 def checked_row(r, entries):
