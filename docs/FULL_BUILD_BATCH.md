@@ -58,3 +58,45 @@ Mathlib are then upgraded to the latest stable versions in the same build.
    `land.yml` reads the labels and the review of the head commit, not the commit message, and dispatches `lean.yml`
    with `land=true`. The landing check builds everything once on the heavy runner; master's own check then replays
    it (AGENTS.md §10).
+5. **The fast-forward is refused: a permission failure, not a failed check.** This branch changes
+   `.github/workflows/` (commit `69eae7193`: the forbidden-code scan of `lean.yml` and `cloud.yml` reads the library
+   folders that exist). Unless the repository secret `MERGE_TOKEN` exists, the finish job checks out with
+   `github.token`, and `scripts/land_ready.sh` (step 4, `git push origin merge-candidate:master`) is refused: the
+   job ends red with "this delivery changes .github/workflows and the token may not update workflows". Everything
+   before that step passed: the merged tree built and checked green, the approval and the task issue were verified,
+   and the recreated merge was compared with the checked tree. Nothing has to be rebuilt. Then (AGENTS.md §9):
+   1. The operator reads the checked tree: the `tree=` line of the `merge-info` artifact of the landing run, or the
+      name of its `lean-build-tree-<tree hash>` artifact (kept one day), and the `base=` line (the master commit
+      the check merged with). Master must still be that commit; the freeze guarantees it.
+   2. The user merges #787 by hand with GitHub's **Create a merge commit** at the reviewed head commit (no squash,
+      no rebase, no push in between). Because the branch was merged with master before the `/land` and
+      `tools/gen_root_imports.py` had nothing to change, that merge has exactly the checked tree.
+   3. The operator verifies, before anything else lands: `git fetch origin master` and
+      `git rev-parse 'origin/master^{tree}'` equals the checked tree. If it differs, stop and report it.
+   4. Master's own check (started by the user's push) then finds the artifact `lean-build-tree-<tree hash>` and
+      replays the finished build instead of building the node caps again (AGENTS.md §10). It must start within the
+      day the artifact is kept. Since CI did not land the PR, the operator also closes the `Closes #n` issues by
+      hand, deletes the branch and its build caches, and lifts the freeze (next section).
+
+## Freeze and staging (the user's decision, 28 November 2026)
+
+From the moment `/land claude-b9ee` is commented on this pull request until master has fast-forwarded to the batch
+(by CI, or by the user's hand merge of step 5 above), **no pull request lands on master**: the landing check must
+find master where it started, and the hand merge must produce exactly the checked tree.
+
+1. At the moment of the `/land`, `claude-b9ee` creates the branch `staging` from that master commit
+   (`git push origin <master sha>:refs/heads/staging`) and announces the freeze on #225 and #786, naming `staging`.
+2. Approved pull requests go to `staging` instead: each is retargeted with `gh pr edit <n> --base staging`, reviewed
+   as usual (AGENTS.md §7a), and merged into `staging` by `claude-b9ee` with a merge commit, after checking that the
+   approval (`Independent review` status) is at the pull request's current head. `/land` cannot do this: it only
+   lands into master. Nobody pushes to `staging` otherwise.
+3. When the batch is on master and master's own check is green, `claude-b9ee` creates `claude-b9ee/staging-land`
+   from `staging`, merges `master` into it (resolving conflicts by understanding both sides, then
+   `python3 tools/gen_root_imports.py`), and opens one ordinary pull request from it into master, naming the task
+   issues of every pull request it carries (`land.yml` lands only branches named `<agent-id>/<topic>`, so not
+   `staging` itself). It gets its own review and its own landing check (`/land claude-b9ee`), and its landing closes
+   the `Closes #n` issues named in its commits.
+4. The freeze ends when master has the batch. `claude-b9ee` then deletes `staging` on GitHub (once
+   `claude-b9ee/staging-land` holds it) and says so on #225: `scripts/sync_master.sh` reads the freeze from the
+   existence of `origin/staging` (AGENTS.md §6). Pull requests not merged into `staging` are retargeted back with
+   `gh pr edit <n> --base master` and land as usual.
