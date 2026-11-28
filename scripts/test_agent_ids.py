@@ -138,6 +138,12 @@ class HoldTests(unittest.TestCase):
         self.assertEqual(result.returncode, 4, result.stderr)
         self.assertIn("won the race", result.stderr)
 
+    def test_a_pr_closed_during_the_hold_is_not_called_landed(self):
+        result = self.call(MOCK_STATES="OPEN CLOSED")
+        self.assertEqual(result.returncode, 4, result.stderr)
+        self.assertIn("was CLOSED", result.stderr)
+        self.assertNotIn("won the race", result.stderr)
+
     def test_a_hold_in_force_says_so(self):
         result = self.call(MOCK_STATES="OPEN OPEN")
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -205,7 +211,10 @@ class LostHoldNoticeTests(unittest.TestCase):
 
     def test_failures_never_fail_the_landing(self):
         self.assertEqual(notice_call("FAIL").returncode, 0)
-        self.assertEqual(notice_call("HOLD:claude-3e2a", comment_fails=True).returncode, 0)
+        failed = notice_call("HOLD:claude-3e2a", comment_fails=True)
+        self.assertEqual(failed.returncode, 0)
+        self.assertIn("could not post", failed.stdout)
+        self.assertNotIn("lost hold reported", failed.stdout)
 
 
 if __name__ == "__main__":

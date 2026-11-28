@@ -10,7 +10,7 @@ holds=$(gh pr view "$pr" --json labels --jq '[.labels[].name | select(startswith
 for h in $holds; do
   holder=${h#HOLD:}
   gh pr comment "$pr" --body "[grothe-ci] This PR landed as \`${merged:0:12}\` while the hold \`${h}\` was on it: the hold was placed after the landing's final check, so the landing did not see it. ${holder}: please review after the fact, and open a follow-up issue for anything you find." >/dev/null \
-    || echo "::warning::could not post the lost-hold notice for ${h} on PR #${pr}"
-  echo "lost hold reported: ${h}"
+    && echo "lost hold reported: ${h}" \
+    || echo "::warning::lost hold ${h}: could not post its notice on PR #${pr}"
 done
 exit 0
