@@ -39,6 +39,19 @@ class WitnessTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "published bound"):
             replay.bind_cells(self.cfg, weights)
 
+    def test_receipt_must_match_the_stream_and_cell(self):
+        cell = replay.bind_cells(self.cfg, self.weights)[0]
+        rec = {k: cell[k] for k in ("kind", "u_idx", "u_lo", "u_hi", "t_lo", "chi_lo", "chi_hi")}
+        rec.update(piece=cell["piece_idx"], row=cell["row_tag"], F_certified=cell["F_claimed"],
+                   worst_M_A=-0.01, worst_M_B=-0.01)
+        digest = "a" * 64
+        receipt = {"dat_sha256": digest, "status": "CERTIFIED", "cells": [rec]}
+        with self.assertRaisesRegex(ValueError, "certificate input"):
+            replay.check_receipt(receipt, [cell], "b" * 64)
+        for field, value in [("kind", "INFEAS_R1"), ("u_hi", 0.5)]:
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "cell mismatch"):
+                replay.check_receipt({**receipt, "cells": [{**rec, field: value}]}, [cell], digest)
+
     def test_invalid_multiplier_on_either_sector(self):
         for sector in ("slicesA", "slicesB"):
             with self.subTest(sector=sector):

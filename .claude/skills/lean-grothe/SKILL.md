@@ -12,12 +12,12 @@ version plus what the rulebook does not say.
 
 `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`), without hypotheses:
 
-    1.4020237104 < K_G^ℂ ≤ 1.404554025 < 1/γ† = 1.40457593…
+    1.4020238808 < K_G^ℂ ≤ 1.404554025 < 1/γ† = 1.40457593…
 
-- The strict lower bound is `14020237104 / 10000000000`. Its exact endpoint is `Grothe.Statement.first_chaos_endpoint`.
-  The witness mixes the identity-tail operator with the first-chaos projector at weight 3645203/50000000000.
+- The strict lower bound is `14020238808 / 10000000000`. Its exact endpoint is `Grothe.Statement.first_chaos_endpoint`.
+  The witness mixes the identity-tail operator with the first-chaos projector at weight 358503031/5000000000000.
   The physical amplitude certificate and finite-matrix transfer are in `Grothe/LowerAnalytic/FirstChaosProfile.lean`.
-  The 38-cell schedule gives the scalar budget `713254699303/1000000000000`.
+  The 38-cell schedule gives the scalar budget `713254612582/1000000000000`.
 - Upper bound: `1404554025 / 1000000000`, weak (≤). Multi-channel bivariate Gaussian roundings in `Grothe/UpperBivar/` on the certified maps of `Grothe/UpperSix/` and `Grothe/UpperSixExact/`. `Grothe/UpperResult.lean` has exactly three theorems:
   `Grothe.UpperBivar.bound` (the exact value, for every finite matrix), `constant_le` (rounded up) and
   `constant_lt_inv_gammaDagger`.

@@ -2,6 +2,7 @@
 """Replay the piece-15 JM1 certificates using the original content-cell verifier. Agent-ID: codex-062a."""
 from decimal import Decimal
 from fractions import Fraction as Q
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -90,20 +91,26 @@ def run_replay(cfg, cells):
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp)
         binary, data, receipt = (work / name for name in ("certifier", "cells.dat", "result.json"))
-        original.emit_dat_from_json({**cfg, "cells": cells}, data)
-        subprocess.run(["c++", "-O3", "-ffp-contract=off", "-std=c++17", "-pthread",
+        stream = original.emit_dat_from_json({**cfg, "cells": cells}, data)
+        subprocess.run(["c++", "-O3", "-frounding-math", "-ffp-contract=off", "-Wno-unknown-pragmas", "-std=c++17", "-pthread",
                         str(SOURCE / "certify_content_cells.cpp"), "-o", str(binary)], check=True)
         subprocess.run([str(binary), "--verify-all", str(data), str(receipt), "--threads", "3"], check=True)
         result = json.loads(receipt.read_text())
+    check_receipt(result, cells, hashlib.sha256(stream).hexdigest())
+
+
+def check_receipt(result, cells, stream_digest):
+    check(result["dat_sha256"] == stream_digest, "receipt does not match certificate input")
     check(result["status"] == "CERTIFIED" and len(result["cells"]) == len(cells), "incomplete C++ replay")
     for c, rec in zip(cells, result["cells"]):
         check((rec["piece"], rec["row"], rec["u_idx"], rec["u_lo"], rec["u_hi"], rec["t_lo"],
-               rec["chi_lo"], rec["chi_hi"], rec["F_certified"]) ==
+               rec["chi_lo"], rec["chi_hi"], rec["kind"], rec["F_certified"]) ==
               (c["piece_idx"], c["row_tag"], c["u_idx"], c["u_lo"], c["u_hi"], c["t_lo"],
-               c["chi_lo"], c["chi_hi"], c["F_claimed"]), "cell mismatch")
+               c["chi_lo"], c["chi_hi"], c["kind"], c["F_claimed"]), "cell mismatch")
         check(rec["worst_M_A"] < 0 and rec["worst_M_B"] < 0, "continuous residual is nonnegative")
         left = "(" if rec["chi_lo"] == 0 else "["
-        print(f"energy node {rec['u_idx']}, chi in {left}{rec['chi_lo']}, {rec['chi_hi']}], F = {Q(rec['F_certified'])}, "
+        print(f"u in [{rec['u_lo']}, {rec['u_hi']}], chi in {left}{rec['chi_lo']}, {rec['chi_hi']}], "
+              f"F = {Q(rec['F_certified'])}, "
               f"sup bounds A, B = {rec['worst_M_A']:.6g}, {rec['worst_M_B']:.6g}")
 
 
