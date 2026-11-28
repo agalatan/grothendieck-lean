@@ -737,6 +737,11 @@ their content allowances on eleven of fifteen fourth-excess bins, ten more than 
 allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
 [C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
 
+Above the 0.70 node on the same row, both profiles satisfy the affine funding under (R1) on the four middle bins
+(8, 10], (10, 12], (12, 14] and (14, 16] through $x=51/256$, $13/64$, $37/128$ and $43/256$, respectively.
+Here $x$ interpolates from the 0.70 to the 0.78 node. The portions above these endpoints remain open.
+[C · 40-rectangle native replay by codex-062a and independent funding audit by gemini-21d5](../higher-degree/sources/piece15-content-codex-062a/MIDDLE_PREFIX.md).
+
 **Influences.** With J₁[a, b] = E[∂_aq·conj(∂_bq)] and I₂[j, k] = ⟨∂̄_jq, ∂̄_kq⟩ (traces 2u and u), the field c₂ − u
 has ‖c₂ − u‖² = ‖J₁‖²_HS + ‖I₂‖²_HS, and the largest eigenvalues satisfy λ₁² + λ₂² ≤ δ/2, with equality only at X²Ȳ
 [P + C · 6.3.32]. The content is a pairing of two shadows of the profile with these matrices,
