@@ -732,7 +732,7 @@ constant 5/3, and for sums of shared matrix blocks [P + C · 6.3.36, 6.3.37, 6.3
 cubic covers only χ ≤ 9·10⁻⁸ to 3·10⁻⁵ on the band rows [P, N · 6.3.38]. None of these results closes a row, and on
 the rows t = 0.80 and 0.82 the inequality is open in both directions [`../higher-degree/STATUS.md` 4.20, 4.27].
 
-Under the Rice hypothesis (R1), both funded Case I profiles on piece 15, row 0.855 at the discrete energy 0.78 u_cap, satisfy
+Under the Rice hypothesis (R1), both funded Case I profiles on piece 15, row 0.855, satisfy their content allowances on all fifteen fourth-excess bins at each of the first two discrete energies, 0.60 and 0.70 u_cap. Across these two rows seventeen bins have active allowances. [C, author only · codex-062a · first two energies](../higher-degree/sources/piece15-content-codex-062a/FIRST_ENERGIES.md). At 0.78 u_cap both profiles satisfy
 their content allowances on eleven of fifteen fourth-excess bins, ten more than previously certified. The bound on [16, 20] is 6.545, below the funded
 allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
 [C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
