@@ -1,5 +1,7 @@
 # A sixth-order Gaussian upper bound for a shifted circular cubic
 
+The [buffered Rice comparison and sharpness proof](../../research/conjecture-K/sources/buffered-rice-codex-a7c4/PROOF.md) gives the sharp Gaussian upper bound $\mu\sqrt{1+\lambda^2}$ throughout $\lambda^2\le1/6$. The proof below gives an elementary independent polynomial estimate using the cubic moment bounds.
+
 For every unit circular cubic $q$ of bidegree $(2,1)$ and every independent standard proper complex Gaussian $Z$, write $\mu=\sqrt\pi/2$. Then
 $$
  \mathbb E|Z+\lambda q|\le

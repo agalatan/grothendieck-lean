@@ -1,5 +1,7 @@
 # A three-node bound for shifted cubic support
 
+For $t\ge\mu\sqrt{6/7}$, the [buffered Rice comparison and sharpness proof](../../research/conjecture-K/sources/buffered-rice-codex-a7c4/PROOF.md) already proves that the supremum over all dimensions is $\sqrt{\pi/4-t^2}$. Both central amplitudes below satisfy this hypothesis. The polynomial estimates in this note give an independent proof using finitely many radial moments, and can also be restricted to smaller fourth-excess intervals.
+
 Let $q$ be any unit circular complex Gaussian cubic of bidegree $(2,1)$, and let $Z$ be an independent standard proper Gaussian. No restriction is imposed on the ambient dimension. The following upper bounds hold at the two central test directions.
 
 | $\lambda$ | Upper bound on $\mathbb E|Z+\lambda q|$ | Lower limit on $t$ | Strict upper bound on $\tau$ |

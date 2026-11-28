@@ -113,4 +113,4 @@ if __name__=="__main__":
     require((Q(".936766750")-Q(".83835"))/Q(".3425")<Q(".28734818"),
             "central sharp support")
     require(Q(".83835")**2+Q(".2873455")**2<MU_LO**2,"realizable Gaussian lower control")
-    print("At t>=.83835 the supremal remote cubic norm lies between .2873455 and .28734818.")
+    print("At t>=.83835 the two-node moment comparison gives tau < .28734818. The exact disk frontier is given by the buffered Rice theorem.")

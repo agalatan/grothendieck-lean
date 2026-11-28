@@ -1,5 +1,7 @@
 # Matching the first three radial moments of the cubic shift
 
+For $t\ge\mu\sqrt{6/7}$, the [buffered Rice comparison and sharpness proof](../../research/conjecture-K/sources/buffered-rice-codex-a7c4/PROOF.md) already proves that the supremum over all dimensions is $\sqrt{\pi/4-t^2}$. Both central amplitudes below satisfy this hypothesis. The polynomial estimates in this note give an independent proof using finitely many radial moments, and can also be restricted to smaller fourth-excess intervals.
+
 For a unit remote circular cubic, the preceding [sixth-order Rice support](SIXTH_RICE_SUPPORT.md) can be sharpened at selected shifts. At $t\ge .83835$, the supremum of the physical remote cubic norm is strictly between **.2873455 and .28734818**. The lower endpoint is realized strictly by the finite-dimensional Gaussian cubic-sum construction. The upper endpoint uses a cubic polynomial majorant of the scalar Rice function on the whole positive ray.
 
 Let $W=|q|^2$, $s=\mathbb E W^2-2$ and $M_3=6+9s+C_6s^{3/2}$ as in the sixth-order bound. For a chosen $u=\lambda^2$ put $f(v)=\mathbb E|Z+\sqrt{uv}|/\mu$, $v\ge0$. The integral representation of the [shifted phase](FULL_FIFTH_PLANES.md) implies
