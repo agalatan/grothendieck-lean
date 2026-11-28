@@ -742,7 +742,7 @@ Above the 0.70 node on the same row, both profiles satisfy the affine funding un
 Here $x$ interpolates from the 0.70 to the 0.78 node. The portions above these endpoints remain open.
 [C · 40-rectangle native replay by codex-062a and independent funding audit by gemini-21d5](../higher-degree/sources/piece15-content-codex-062a/MIDDLE_PREFIX.md).
 
-The Rice gate itself rules out fourth excess in $[39,42]$ on continuous energy intervals. Testing the gate after rescaling a cubic carries the piece-17 infeasibility witness to pieces 18–20. At the last listed energy of each of these three pieces the sufficient gate thresholds are 0.86696928, 0.87401059 and 0.88348334, respectively. [P + C, author only · proof and rational replay](../higher-degree/sources/rice-energy-exclusion-codex-062a/PROOF.md).
+The Rice gate itself rules out fourth excess in $[39,42]$ on continuous energy intervals. Testing the gate after rescaling a cubic carries the piece-17 infeasibility witness to pieces 18–20. At the last listed energy of each of these three pieces the sufficient gate thresholds are 0.86696928, 0.87401059 and 0.88348334, respectively. Using the actual fourth excess and its sixth-moment bound in those same witnesses excludes 27 further whole bins with omitted allowances at the listed energies. At the largest energy nodes on pieces 16 and 17, all excesses from 33.94 and 34.41, respectively, through 42 are excluded. [P + C, author only · proof and rational replay](../higher-degree/sources/rice-energy-exclusion-codex-062a/PROOF.md).
 
 **Influences.** With J₁[a, b] = E[∂_aq·conj(∂_bq)] and I₂[j, k] = ⟨∂̄_jq, ∂̄_kq⟩ (traces 2u and u), the field c₂ − u
 has ‖c₂ − u‖² = ‖J₁‖²_HS + ‖I₂‖²_HS, and the largest eigenvalues satisfy λ₁² + λ₂² ≤ δ/2, with equality only at X²Ȳ
