@@ -217,6 +217,10 @@ All files of `KSPH` (STATUS 4.30) are committed in the repository, with no exter
 - [`sources/kappa-spheres-2026-11-24-gemini-21d5/PROOF.md`](sources/kappa-spheres-2026-11-24-gemini-21d5/PROOF.md): complete proofs and dependency inventory for Theorems 1–4.
 - [`code/kappa-spheres-gemini-21d5/verify_kappa_spheres.py`](code/kappa-spheres-gemini-21d5/verify_kappa_spheres.py) ([`REPLAY.log`](code/kappa-spheres-gemini-21d5/REPLAY.log), [`verify_kappa_spheres_result.json`](code/kappa-spheres-gemini-21d5/verify_kappa_spheres_result.json)): pure Python stdlib verifier (`python3 -I -O verify_kappa_spheres.py`, AST-audited zero floats, **C**), checking the four-square defect identity from first-principles monomial Gaussian moments, the quantitative odd-c Hurwitz lower bound, the closed-form algebraic c = 3 construction and rational witnesses, the disjoint circular block harmonic-mean constructions for c = 5, 6, 8, 9, 10 (including C_opt ≥ 1168/729 > 8/5 at c = 8) plus the coupled rational c = 7 witness, and 7 adversarial negative controls.
 
+The dense dimension-seven witness in row 4.30 uses the [search coefficients](code/degree5-attack/ref/bulk/bulk_c7.json).
+The [derivation](sources/kappa-seven-codex-062a/PROOF.md) identifies the rational polynomial and its exact spherical
+fourth moment. The [standard-library replay](code/kappa-seven-codex-062a/verify.py) reads the coefficient table directly.
+
 ## The attack plan and problem statements of 25 November 2026 (STATUS 4.39, tag ATK)
 
 - `sources/degree5-attack-2026-11-25/PLAN.md` and `problems/P1`–`P6`: written from the ledger and its sources by a
