@@ -59,7 +59,7 @@ At ε = 94/125 = 0.752 everything outside the wider central interval (0.7515, 0.
 least 1.021·10⁻⁴ > 10⁻⁴ on every row (> 3.36× the binding room at ε = 299/400, with Row 8 on [0.840, 0.847] directly closed `< 6.35·10⁻⁵` / `< 6.11·10⁻⁵ < 10⁻⁴` and subdivided scaled-peak slabs closing `[0.8400, 0.8547]` across Rows 8–10 using 7.5.13 in `KAST`; at ε = 3/4 Lean's `Lower.ρ` alone closes the exterior outside (0.795, 0.864) with nine central rows
 admitting > 7.57·10⁻⁵ and `[0.84000, 0.85168]` across Rows 4–6 closed using 7.5.13 in `KAST`). At the peak row, the averaged odd-sector argument gives an all-sector bound for Λ̂ of S + 9.9·10⁻⁵ (`< S + 7.971·10⁻⁵` via the pure-`D_+` cession in `KAST`), conditional on the averaged odd-sector premise (P_Ψ) outside the certified regions (2.8, 2.9), while row 7.5.13 [P + C] certifies $F_{\mathrm{joint}}(c^*) \le 0$ pointwise on all of $\mathbb{C}^6$, giving unconditional six-sector $\widehat{\Lambda}(G) < S + 27.00\cdot 10^{-6}$ (`KAST`, from `4936/10^8` in `KGAS`) on $u \le 0.0463, u + V \le 0.080051$: well below the allowance of every row at ε = 94/125,
 but still near the peak profile. At the stricter cap 0.713245 and fixed ε = 94/125, two trial prices and
-the exterior now leave only [.751,.82815] for unrestricted responses (2.10, 8.13d). Naive triangle
+the exterior now leave only [.751,.826] for unrestricted responses (2.10, 8.13d). Naive triangle
 transfer to profile M costs about 7·10⁻⁴ (8.6). With the retained functional the A-shell uses 2·10⁻⁵ of the budget, and global (P) + $F_{\mathrm{joint}}(c^*) \le 0$ [7.4.16; 7.5.13] close the remaining peak-row sector assembly. With the raw functional of K the content inequality is also
 missing. The gain at stake is about 3·10⁻⁴ on the constant.
 
@@ -266,7 +266,7 @@ profiles [STATUS §15].
         →  A + B core, S + 4.936·10⁻⁵ (7.4.10; < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ in KAST)   unconditional on the peak energy domain (7.4.16)
         →  all six sectors, < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ (7.5.13 + KAST; < S + 7.971·10⁻⁵ conditional on open (P_Ψ) in 7.5.3 + KAST, proved on strips/regions 7.5.4c, 7.5.12)
         →  consumer (8.1, 8.7, 8.9–8.13)                    [0.8400, 0.8661] at peak ε and [0.8400, 0.8547] at 94/125, cap 500/701 (7.5.13 + KAST, P + C)
-        →  tighter consumer (8.13a, 8.13c, 8.13d)                   [0.82815, 0.8635] at 94/125, cap .713245 (also 3.3a and 3.5a, P + C, author only)
+        →  tighter consumer (8.13a, 8.13c, 8.13d)                   [0.826, 0.8635] at 94/125, cap .713245 (also 3.3a and 3.5a, P + C, author only)
 
     through Λ (Conjecture K itself):
       remote sign D(q) ≥ 0 on the class handled  →  A-core by cost 6.2.1 and the content inequality
@@ -1251,7 +1251,7 @@ remote and retained rectangles of 2.1 and 2.6 with u/λ² < 0.0463 and λ = 1880
 STATUS 8.10, 8.13; `KAST`].
 
 At ε = 94/125 the cubic witness is below 0.713245 for every actual six-sector response on
-[.82815,.8635]. On [.8297,.8393] a single visible profile suffices even when normalized remote
+[.826,.8635]. On [.8297,.8393] a single visible profile suffices even when normalized remote
 energy exceeds .0463. Ninety-one radial bounds price the remote cubic by its energy and fourth
 excess. A bound on its second-chaos projection controls the covariance with the two even drivers,
 and the common trial pays for the three odd sectors at arbitrary energy. The physical clearance
@@ -1259,7 +1259,9 @@ on this interval exceeds 1.942723 millionths. Three scaled peak profiles cover [
 On [.82815,.8297] a second price, 1.316, combines a joint six-sector trial with the
 all-energy odd-sector estimate at the same remote cubic. The response ellipsoid bounds the
 energy of the second even driver in both trials. The physical clearance exceeds 1.017792
-millionths. Together with the exterior 8.12, the remaining unrestricted interval is [.751,.82815]. Closing
+millionths. On [.826,.82815], rescaling the same odd field between the two arms gives a harmonic
+odd-energy price. Supplemental radial duals at energy .06 cover the middle fourth-excess
+range [.1,27]. The adaptive trials cover both closed outer ranges. Together with the exterior 8.12, the remaining unrestricted interval is [.751,.826]. Closing
 it would give $K_G^{\mathbb C}\ge 200000/142649$. [Two-price certificate](sources/uncapped-peak-consumer-codex-a7c4/TWO_PRICES.md) · [Single-price certificate, 8.13d](sources/uncapped-peak-consumer-codex-a7c4/PROOF.md) · [Three profiles and exterior, 8.13a](sources/priced-peak-consumer-codex-a7c4/PROOF.md)
 
 On [.8372,.8393], seven energy-dependent profiles give a second proof within the original normalized
