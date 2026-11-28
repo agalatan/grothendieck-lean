@@ -42,7 +42,7 @@ for A and $-1.1053\times10^{-7}$ for B. The low-bin 132-rectangle stream has SHA
 `0d9c4b43c7f67962a080e850dd7f9bd07d6f71f7ac193e7dcece2e10aaf6d58c`.
 The upper residuals in the low-bin replay are at most $-1.0103\times10^{-7}$ for A and
 $-1.0008\times10^{-7}$ for B. Each replay also passed the three low-energy controls. Encoding
-all 162 rectangles consecutively gives SHA-256 `dff2c8f14636ef974ed71f901166b1b921550034e471bfd9f46268d35088bbfa`.
+all 162 rectangles consecutively and replaying them with the original 15-row certifier also passes all three controls. The combined input has SHA-256 `dff2c8f14636ef974ed71f901166b1b921550034e471bfd9f46268d35088bbfa`.
 
 Run the following commands from the repository root with Python 3 and a C++17 compiler.
 
@@ -59,5 +59,5 @@ uv run --no-project --python 3.10.21 --with numpy==2.2.6 --with scipy==1.15.3 py
 uv run --no-project --python 3.12.3 --with numpy==2.3.5 --with scipy==1.17.1 python -IB second_band.py --price row.json --price-bin 42
 ```
 
-For the six low bins, run the second command with `--price-bin 8`. The certificate replay above
+For the six low bins, the second command with `--price-bin 8` reproduced all 27 stored pairs. The certificate replay above
 uses the stored multipliers directly and requires only Python and a C++17 compiler.
