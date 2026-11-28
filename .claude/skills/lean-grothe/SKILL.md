@@ -72,7 +72,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 - Where: `ssh yo` (8 vCPUs) if its load is at most 4, else `ssh big` or `ssh mega` if one exists and its CI runner is
   offline or the managing agent announced an interval (runner offline: at most half of the idle cores and of the
   available memory when you start; runner online: 8 cores in an atomically reserved `~/research-slots/<slot>` in the
-  upper half, `MemoryMax=48G` on mega or `16G` on big via `systemd-run --user --scope --quiet -p MemoryMax=… -- taskset -c …`,
+  upper half via `scripts/run_research_slot.sh`, with 48 GiB per slot on mega and 16/16/15 GiB on big,
   aggregate research memory below half the RAM, Lean forbidden: AGENTS.md §12), else the laptop; in your own folder
   `~/<id>-<topic>` with `~/grothe-caps/.lake/packages` symlinked. Check `scripts/droplet_status.sh` first. One heavy
   job at a time on the laptop, across all agents.

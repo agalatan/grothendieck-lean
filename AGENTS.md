@@ -510,23 +510,22 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
       `ps -eo pgid=,rss= | awk -v pg="$(cat job.pid)" '$1 == pg { kb += $2 } END { print kb + 0 }'` (`ps -g`
       selects by session on Linux and reports nothing for a job started with `set -m`). Do not start a job at all
       unless at least a quarter of the cores and of the memory is free.
-    - **Runner online: half stays for heavy CI.** An agent uses **at most 8 cores, and 48 GB of memory on mega or
-      16 GB on big**, and all agents' work together stays inside **one fixed half of the cores, the upper one** —
-      cores 16–31 on mega (slots `16-23`, `24-31`), 24–47 on big (slots `24-31`, `32-39`, `40-47`) — and **below
-      half the machine's RAM in aggregate** (125 GB on mega, 47 GB on big). Reserve one 8-core slot atomically
-      before starting so two agents never share the same 8 cores, and enforce the per-tree memory cap with
-      `systemd-run --user --scope`:
+    - **Runner online: half stays for heavy CI.** Use one 8-core research slot in the upper half of the machine.
+      On mega the slots `16-23` and `24-31` each allow 48 GiB. On big the slots `24-31`, `32-39` and `40-47`
+      allow 16, 16 and 15 GiB respectively. Their combined limits reserve at most 47 GiB on big, including while
+      jobs are still loading. Before starting, check that the 1-minute load plus your requested cores fits the
+      research half and that more than half the machine's memory is available. When switching big to these limits,
+      let any earlier 16 GiB job on `40-47` finish before admitting more work.
+      From your job directory, use the slot launcher with your agent ID, chosen slot, and foreground command.
+      For example, replacing the ID and research command with your own:
       ```sh
-      SLOT=16-23   # mega: 16-23 or 24-31 (MemoryMax=48G); big: 24-31, 32-39 or 40-47 (MemoryMax=16G)
-      mkdir -p ~/research-slots && mkdir ~/research-slots/$SLOT
-      echo "<agent-id> $(pwd)" > ~/research-slots/$SLOT/owner
-      systemd-run --user --scope --quiet -p MemoryMax=48G -- \
-        taskset -c "$SLOT" bash -c 'set -m; nohup bash -c "trap \"rm -rf ~/research-slots/'"$SLOT"'\" EXIT; <cmd>" </dev/null > build.log 2>&1 & echo $! > job.pid; echo "<agent-id> $! $(pwd)" > ~/research-slots/'"$SLOT"'/owner'
+      bash -c 'set -m; nohup scripts/run_research_slot.sh codex-7f3a 24-31 python3 experiment.py </dev/null > build.log 2>&1 &'
       ```
-      If `mkdir ~/research-slots/$SLOT` fails, inspect `scripts/droplet_status.sh` (which flags a slot `STALE` if
-      its recorded process group is gone) and pick another free slot. Before you start, the 1-minute load plus
-      your own cores must not exceed the half, `free -g` must show more than half the machine's memory available,
-      and on big active research RSS plus your cap must stay within 47 GB.
+      The launcher acquires the slot before writing `job.pid` or starting the command. It pins the cores with
+      `taskset`, sets the slot's `MemoryMax` with `systemd-run --user --scope`, and releases the slot when the
+      foreground command returns. Keep its workers in the foreground job and wait for them there. If another
+      job owns the slot, choose a free one from `scripts/droplet_status.sh`. If the wrapper was killed, check the
+      recorded owner and process group before clearing your own stale reservation.
     - When the agent that manages the droplets is about to start a runner, it announces it on #225 and the task
       issues of the jobs running there; shrink your jobs to the runner-online limits before it starts. A larger
       share for one task while a runner is online is granted by that agent on the task's issue.
