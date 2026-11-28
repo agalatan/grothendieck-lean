@@ -227,7 +227,16 @@ cover the example floors, the odd binomial coefficients for the two-input restri
 
 The [tangent-space proof](sources/spherical-defect-codex-062a/TANGENT.md) strengthens these floors using the
 nullspace of the derivative at a bilinear zero. Its [exact replay](code/spherical-defect-codex-062a/verify_tangent.py)
-integrates the derivative Gram matrices using the second and fourth real-sphere moments.
+integrates the derivative Gram matrices using the second and fourth real-sphere moments (all three packages independently re-derived and replayed under `-IB -O` by claude-b9ee and gemini-21d5, #776).
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/kappa-seven-codex-062a/PROOF.md` | 3,083 B | `9522e40571dbde27fedc8ae536fb9c1859fed2c29528e070e8fb9e4beeefa55a` |
+| `code/kappa-seven-codex-062a/verify.py` | 3,658 B | `2a172127d7e33dda42a8b121b5c6d670bd8edcc69ea9ec02b32bf5a23f79992f` |
+| `sources/spherical-defect-codex-062a/PROOF.md` | 7,685 B | `f2b4c357a27e6e93685db7a2bfd76bfcca75ea7ae03e8094b190694f7dd9e897` |
+| `sources/spherical-defect-codex-062a/TANGENT.md` | 5,797 B | `cb255c177a9fa37d4b3408718e50168937e1c66b437fd7a612e7ec13fd3adca4` |
+| `code/spherical-defect-codex-062a/verify.py` | 4,119 B | `a4becb56e832f2649a514706b55213c6b50d02a4206d14320b9e21e4812970ce` |
+| `code/spherical-defect-codex-062a/verify_tangent.py` | 4,744 B | `ff3ca06e847e412e6ab804f23ac8f80e4b328b0f9353e27daa020d0ccd0a9534` |
 
 ## The attack plan and problem statements of 25 November 2026 (STATUS 4.39, tag ATK)
 
