@@ -2,7 +2,7 @@
 import importlib.util
 import json
 import sys
-from bisect import bisect_left
+from bisect import bisect_left, bisect_right
 from fractions import Fraction as Q
 from functools import cache
 from math import isqrt
@@ -117,7 +117,7 @@ def shell_gain(a, b, k0, left, right):
             gain = min(gain, a*a/ar+b*b/au+m*DEN*(right if m>=0 else left))
     return gain
 
-def make_radial_bound(polys, nodes):
+def make_radial_bound(polys, nodes, *, continuation=None, chord_curvature=None):
     """Return a verified upper price on a closed energy and fourth-excess cell."""
     node_energies = sorted(nodes)
     @cache
@@ -150,7 +150,13 @@ def make_radial_bound(polys, nodes):
             left,right = node_price(a,x,y),node_price(b,x,y)
             chord = max(((b-z)*left+(z-a)*right)/(b-a) for z in (l,h))
             z = min(h,max(l,(a+b)/2))
-            bound = min(bound,chord+Q('1.673')*(2+y)*(z-a)*(b-z)/2)
+            curvature = Q('1.673')*(2+y) if chord_curvature is None else chord_curvature(a, 2+y)
+            bound = min(bound,chord+curvature*(z-a)*(b-z)/2)
+        if continuation is not None:
+            stop = bisect_right(node_energies, l)
+            for v in node_energies[max(0, stop-2):stop]:
+                if v > 0:
+                    bound = min(bound, continuation(v, node_price(v,x,y), l,h,y))
         return bound
 
     return radial

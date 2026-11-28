@@ -1894,6 +1894,18 @@ Row 8.13c uses the public KAST certificate pinned by 8.13a. Run
 [shared cell construction](code/priced-peak-consumer-codex-a7c4/peak_cells.py) ·
 [public input hashes](code/priced-peak-consumer-codex-a7c4/public.sha256).
 
+## Two-moment peak radial prices (codex-a7c4, #820)
+
+Row 3.3b derives curvature bounds for interpolation and outgoing estimates beyond the last spectral node. The [derivation and physical comparison](sources/uncapped-peak-consumer-codex-a7c4/RADIAL_CONTINUATION.md) and [exact Python replay](code/uncapped-peak-consumer-codex-a7c4/radial_continuation.py) use the existing whole-ray spectral certificates. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/radial_continuation.py` from the repository root.
+
+Row 3.3b also uses the Gauss–Radau upper on the curvature for a physical region with all admissible shell energies (**P + C, author only**, codex-a7c4, #825). Reproduce it with `python3 -IB research/conjecture-K/code/radau-physical-shoulder-codex-a7c4/verify.py` from the repository root.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| [radau.py](code/radau-physical-shoulder-codex-a7c4/radau.py) | 3,579 | `f9b4f8f1b2ea69432487dc747b9f5c0a87c27b798e851796e5193fff523c4ab6` |
+| [verify.py](code/radau-physical-shoulder-codex-a7c4/verify.py) | 6,912 | `656c3f9c632070ee572f691b63e8635c33a9224fd00454849ebf8186f5112af9` |
+| [PROOF.md](sources/radau-physical-shoulder-codex-a7c4/PROOF.md) | 7,127 | `d6394bbddb87fc07fc65f8adf4de6055e5b06d4aadccb6d678e6407ede72629f` |
+
 ## Retained six-sector peak bound at high fourth excess (7.5.15)
 
 The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).
@@ -1977,15 +1989,18 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 | `code/homothety-consumers-gemini-c1de/test_controls.py` | 11,139 B | `c67d7c937cca6427221e77a8506f10bab1611fb495bfa8117c679e345d3093aa` |
 | `code/homothety-consumers-gemini-c1de/homothety_consumers_cert.json` | 268,246 B | `cb7027d95f1caa16c2b56493d3793a16f86e0dd1f83d36cbd080bb847fae156e` |
 
-## Six-sector lower-shoulder comparison (8.13d–e)
+## Six-sector lower-shoulder comparison (8.13d–f)
 
-The three supplemental Stein models at normalized energy .06 extend the comparison in 8.13d. Row 8.13e reuses them with the even price inside the square completion. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py` from the repository root.
+The three supplemental Stein models at normalized energy .06 extend the comparison in 8.13d. Row 8.13e reuses them with the even price inside the square completion. For 8.13f, run the adjacent `odd_response.py` with the same flags. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py` from the repository root.
 
 | File | Bytes | SHA-256 |
 |---|---:|---|
 | [extension_duals.json](code/uncapped-peak-consumer-codex-a7c4/extension_duals.json) | 6,491 | `47d9ef8b0bec58097a0ad159c12aff244d7c755e636343796bbbf86760281d25` |
-| [weighted_shoulder.py](code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py) | 8,248 | `dd2ee76fe224e63cf58732ad57091eb6b3e28f7c1b066a170797c63a1c79dc3f` |
+| [weighted_shoulder.py](code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py) | 8,667 | `b871f0f2a83720df6c8d4279a62f14010faaca1919cc6239f57e766639bcb91f` |
 | [WEIGHTED_SHOULDER.md](sources/uncapped-peak-consumer-codex-a7c4/WEIGHTED_SHOULDER.md) | 6,400 | `09278be0b2c757c478d0b43769d7a58d1a5a1a1aec41093eb3a23bed44116cb4` |
+| [odd_response.py](code/uncapped-peak-consumer-codex-a7c4/odd_response.py) | 6,580 | `3d7ac7667a28ebbac47b99f36734979df06603c32b3195bb2465150286894555` |
+| [ODD_RESPONSE.md](sources/uncapped-peak-consumer-codex-a7c4/ODD_RESPONSE.md) | 6,418 | `841a91dc8a5a04977cf1215840f1dcba14542ce670f4b7b6d78eea38395d8d72` |
+| [ODD_SMALL_BALL.md](sources/uncapped-peak-consumer-codex-a7c4/ODD_SMALL_BALL.md) | 5,552 | `93ded721fbf48131580848349b11310a73546361adbbc6d4494ad816d8c7026f` |
 
 ## Real Level-2 Malliavin–Stein hierarchy closing #501 & #506 (`3999/5000 = 0.7998 < √(17/25)`), sharp high-kurtosis regime `κ₄ ≥ 14`, and complex cubic radius `2221/2500 = 0.8884` (gemini-8732, #501, #506, #458)
 
@@ -2007,4 +2022,4 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 | `code/real-stein-501-gemini-8732/check_identities_exact.py` | 34,584 B | `27bc2bd1a773bcecfe1583a9cc08dcb30d79a75fc3d350a202d35906c3ff78cb` |
 | `code/real-stein-501-gemini-8732/test_controls.py` | 10,075 B | `d28677b5fe6415d109a17e341a60baed97e9013d2306d4990debcb21a7493fdf` |
 | `code/real-stein-501-gemini-8732/make_cert.py` | 29,449 B | `b3ddf98284ecc54b3adc9049c0e9490124003906ff7056d3a4028a81415e90f8` |
-| `code/real-stein-501-gemini-8732/REPLAY.log` | 6,754 B | `7369420d4dcfd008f80e7d9e9002bad59e163a167f3c918dec459c9b099a339c` |
+| `code/real-stein-501-gemini-8732/REPLAY.log` | 6,754 B | `7369420d4dcfd008f80e7d9e9002bad59e167f3c918dec459c9b099a339c` |
