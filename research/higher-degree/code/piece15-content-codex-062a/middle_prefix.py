@@ -51,7 +51,7 @@ def main():
     groups = json.loads((replay.HERE / "middle_prefix.json").read_text())
     cells = bind(groups)
     replay.original.verify_all()
-    cfg = json.loads((replay.SOURCE / "dual_certs.json").read_text())
+    cfg = replay.original.load_full_cfg(str(replay.SOURCE / "dual_certs.json"))
     replay.run_replay(cfg, cells)
     for group in groups:
         print(f"Verified chi in ({group['chi'][0]}, {group['chi'][1]}] through x = {group['through']}.")

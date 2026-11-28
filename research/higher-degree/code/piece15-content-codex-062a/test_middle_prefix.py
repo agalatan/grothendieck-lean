@@ -45,7 +45,7 @@ class MiddlePrefixTest(unittest.TestCase):
     def test_published_endpoints_and_stream(self):
         self.assertEqual([g["through"] for g in self.groups], ["51/256", "13/64", "37/128", "43/256"])
         cells = mid.bind(self.groups)
-        cfg = json.loads((mid.replay.SOURCE / "dual_certs.json").read_text())
+        cfg = mid.replay.original.load_full_cfg(str(mid.replay.SOURCE / "dual_certs.json"))
         with tempfile.TemporaryDirectory() as directory:
             data = Path(directory) / "middle.dat"
             stream = mid.replay.original.emit_dat_from_json(dict(cfg, cells=cells), data)
