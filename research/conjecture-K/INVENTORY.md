@@ -1898,6 +1898,14 @@ Row 8.13c uses the public KAST certificate pinned by 8.13a. Run
 
 Row 3.3b derives curvature bounds for interpolation and outgoing estimates beyond the last spectral node. The [derivation and physical comparison](sources/uncapped-peak-consumer-codex-a7c4/RADIAL_CONTINUATION.md) and [exact Python replay](code/uncapped-peak-consumer-codex-a7c4/radial_continuation.py) use the existing whole-ray spectral certificates. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/radial_continuation.py` from the repository root.
 
+Row 3.3b also uses the Gauss–Radau upper on the curvature for a physical region with all admissible shell energies (**P + C, author only**, codex-a7c4, #825). Reproduce it with `python3 -IB research/conjecture-K/code/radau-physical-shoulder-codex-a7c4/verify.py` from the repository root.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| [radau.py](code/radau-physical-shoulder-codex-a7c4/radau.py) | 3,579 | `f9b4f8f1b2ea69432487dc747b9f5c0a87c27b798e851796e5193fff523c4ab6` |
+| [verify.py](code/radau-physical-shoulder-codex-a7c4/verify.py) | 6,912 | `656c3f9c632070ee572f691b63e8635c33a9224fd00454849ebf8186f5112af9` |
+| [PROOF.md](sources/radau-physical-shoulder-codex-a7c4/PROOF.md) | 7,127 | `d6394bbddb87fc07fc65f8adf4de6055e5b06d4aadccb6d678e6407ede72629f` |
+
 ## Retained six-sector peak bound at high fourth excess (7.5.15)
 
 The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).
