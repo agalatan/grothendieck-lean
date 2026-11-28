@@ -9,6 +9,8 @@ For **every** pair and **all** finite dimensions, with $t=\|P((f+g)/2)\|$ and $\
 \]
 Thus the directions strictly decrease every real payoff above $55\mu/56$ and $271\mu/272$, respectively. For $\beta=2$ and $t\ge .8858$, the decrease exceeds $.0213a$. The same direction decreases the payoffs of the two [certified central responses](GRADED_STEP.md) by more than $.0025a$ and $.008a$, respectively. The central assertions are two physical tests; a general central near-maximizer remains to be priced. The real rotation used for an absolute payoff determines the $t$ in the universal estimates.
 
+The [positive fifth multiplier](POSITIVE_REMOTE_MULTIPLIER.md) additionally gives the sharp one-coordinate value and an unrestricted high-amplitude arm for both coupled witnesses and the original pure fifth witness.
+
 ## Pure-chaos inverse-radius bound
 
 For a unit linear Gaussian coordinate $Z$ and any polynomial $v$ in either of the *individual* chaoses $Q$ or $F$,

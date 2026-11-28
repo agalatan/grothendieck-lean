@@ -17,6 +17,8 @@ The bound and the physical Rice inequality $\tau^2\le2\mu(\mu-t)$ give the follo
 
 Alternatively $\tau=0$ passes the target at every amplitude when $d\ge.000394$. This includes pairs with mixed cubic half-difference in many independent coordinates. For $d=1/50$ the criterion permits every $\tau\le.04372$, and for $d=47/2000$ it permits every $\tau\le.04747$.
 
+At the [central amplitude .83835](TILTED_CENTER.md), a tilted version at debit .02 reaches the same target for $\tau\le.137624483$. The [positive fifth version](POSITIVE_REMOTE_MULTIPLIER.md) covers the opposite perturbation sign.
+
 ## Proof by the fresh Hermite indices
 
 In Gaussian product Hermites in the variables $(Z,Y)$, split into orthogonal blocks by the exact normalized fresh Hermite multi-index, of bidegree $(a,b)$. Within one block the visible variable is an arbitrary function of $Z$. Multiplication by a radial function of $Z$ respects this orthogonal decomposition. So do $P,Q,F$, since each selects its own total bidegree. Inside a block with total fresh bidegree $(a,b)$, the remaining projection of bidegree $(j,l)$ is the line of the normalized visible Hermite $H_{j-a,l-b}$ when both subscripts are nonnegative, and zero otherwise. The same reasoning follows first on bounded finite polynomial expansions and then by Parseval in $Y$ for the weighted forms of bounded physical responses.

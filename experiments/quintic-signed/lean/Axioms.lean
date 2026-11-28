@@ -58,6 +58,7 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.independent_test_sign_integral
 #print axioms Grothe.LowerAnalytic.inner_blockLeft_blockRight
 #print axioms Grothe.LowerAnalytic.integral_finiteDiffuseCubic
+#print axioms Grothe.LowerAnalytic.joint_visible_cross_price
 #print axioms Grothe.LowerAnalytic.laguerre_clipped
 #print axioms Grothe.LowerAnalytic.linearRadius_diffuseCoeff
 #print axioms Grothe.LowerAnalytic.linear_eq_radius_mul_unit
@@ -119,6 +120,8 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.re_inner_quinticWitness
 #print axioms Grothe.LowerAnalytic.re_inner_visibleDirection
 #print axioms Grothe.LowerAnalytic.remoteCubic_le
+#print axioms Grothe.LowerAnalytic.remote_angular_component
+#print axioms Grothe.LowerAnalytic.remote_angular_pair
 #print axioms Grothe.LowerAnalytic.remote_cubic_lift_of_couplings
 #print axioms Grothe.LowerAnalytic.remote_frame_cubic_lift
 #print axioms Grothe.LowerAnalytic.remote_frame_cubic_lift_unconditional
@@ -133,10 +136,13 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.signedFifth_vector
 #print axioms Grothe.LowerAnalytic.signedHalfDifferenceDebit_nonneg
 #print axioms Grothe.LowerAnalytic.signedResidual_inner
+#print axioms Grothe.LowerAnalytic.signed_absolute_diagonal_cap
+#print axioms Grothe.LowerAnalytic.signed_absolute_small_cubics_14023
 #print axioms Grothe.LowerAnalytic.signed_central_cubic_14023
 #print axioms Grothe.LowerAnalytic.signed_cubic_budget
 #print axioms Grothe.LowerAnalytic.signed_cubic_budget_with_residuals
 #print axioms Grothe.LowerAnalytic.signed_cubic_cap_add_energy
+#print axioms Grothe.LowerAnalytic.signed_diagonal_norm_le_of_cap
 #print axioms Grothe.LowerAnalytic.signed_fifth_at_least_154
 #print axioms Grothe.LowerAnalytic.signed_fifth_at_least_17
 #print axioms Grothe.LowerAnalytic.signed_fifth_h_tangent
@@ -146,6 +152,7 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.signed_fifth_radial_886176
 #print axioms Grothe.LowerAnalytic.signed_fifth_residual_gram
 #print axioms Grothe.LowerAnalytic.signed_floor_of_gram
+#print axioms Grothe.LowerAnalytic.signed_joint_visible_budget
 #print axioms Grothe.LowerAnalytic.signed_small_cubic_14023
 #print axioms Grothe.LowerAnalytic.signed_zero_cubic_cap
 #print axioms Grothe.LowerAnalytic.spectral_pair_gram
