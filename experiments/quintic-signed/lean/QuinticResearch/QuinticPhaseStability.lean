@@ -3,15 +3,9 @@ import QuinticResearch.QuinticDiffuseCarrier
 import QuinticResearch.QuinticRemoteSupport
 import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 import Mathlib.MeasureTheory.Integral.Layercake
+import Grothe.LowerAnalytic.Fifth.Direction
 
-/-!
-# Stability at the largest visible Gaussian amplitude
-
-Clipping the complex Gaussian radius bounds the midpoint’s squared distance from
-its visible phase and the full mass of the half-difference in a single estimate.
-
-Agent-ID: codex-a7c4
--/
+/-! Stability at the largest visible Gaussian amplitude Agent-ID: codex-a7c4 -/
 
 namespace Grothe.LowerAnalytic
 
@@ -79,11 +73,6 @@ theorem gaussC_soft_disk {r : ℝ} (hr : 0 < r) :
          rw [← intervalIntegral.integral_of_le hr.le]
          have he := intervalIntegral.integral_comp_sub_left (fun t : ℝ => t^2) r (a := 0) (b := r)
          norm_num [integral_pow] at he ⊢; exact he
-
-/-- A unit complex phase with the visible direction, with a fixed value at the origin. -/
-def unitPhaseL {n : ℕ} (z : L2G n) : L2G n :=
-  (MemLp.of_bound (measurable_ph.comp_aemeasurable (Lp.aestronglyMeasurable z).aemeasurable).aestronglyMeasurable
-    1 (.of_forall fun x => norm_ph_le (z x))).toLp (fun x => ph (z x))
 
 private theorem norm_ph_one (w : ℂ) : ‖ph w‖ = 1 := by
   by_cases hw : w = 0

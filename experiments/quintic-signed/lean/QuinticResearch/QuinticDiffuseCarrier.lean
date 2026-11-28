@@ -1,17 +1,9 @@
 import Grothe.LowerAnalytic.Frame
 import Mathlib.Probability.HasLaw
 import Mathlib.Probability.Moments.Variance
+import Grothe.LowerAnalytic.Fifth.Direction
 
-/-!
-# Finite cubic carriers on independent complex Gaussian coordinates
-
-The conditional variance of the normalized sum of triple products is the empirical
-mean of the products of two independent squared complex Gaussian radii. Normalizing
-the resulting finite linear test on each fibre gives a Gaussian copy on the same
-space, with squared L² error at most 3/N.
-
-Agent-ID: codex-a7c4
--/
+/-! Finite cubic carriers on independent complex Gaussian coordinates Agent-ID: codex-a7c4 -/
 
 namespace Grothe.LowerAnalytic
 
@@ -114,33 +106,6 @@ theorem diffuseScale_gaussian_mse {N : ℕ} (hN : 0 < N) :
     (Filter.Eventually.of_forall fun b => sqrt_sub_one_sq_le (diffuseScale_nonneg b))
   exact Integrable.of_integral_ne_zero (by rw [diffuseScale_mse hN]; positivity)
 
-private theorem hasLaw_zeta0 (n : ℕ) :
-    HasLaw (fun x => zeta0 n x) gaussC (stdGaussian ((n+1)+(n+1))) := by
-  have h := (measurePreserving_snd.comp (measurePreserving_split2 (n := n))).hasLaw
-  apply h.congr
-  have h₀ : (fun x => (split2 (n := n) x).2) =
-      (fun x => (((√2 : ℝ) : ℂ)⁻¹) * zc (n+1) 0 x) := by
-    apply funext_joinR
-    intro z y
-    rw [split2_joinR, joinR_zc0]
-    have htwo : ((√2 : ℝ) : ℂ) ≠ 0 := by exact_mod_cast sqrt_two_ne
-    field_simp
-  change _ =ᵐ[_] (fun x => (split2 (n := n) x).2)
-  rw [h₀]
-  filter_upwards [Lp.coeFn_smul (((√2 : ℝ) : ℂ)⁻¹) (zL (n+1) 0), zL_ae (n+1) 0] with x hx hz
-  change (((((√2 : ℝ) : ℂ)⁻¹) • zL (n+1) 0 : L2G (n+1)) x) = _
-  rw [hx]
-  simp only [Pi.smul_apply, hz, smul_eq_mul]
-
-/-- A unit first-chaos direction has exactly the standard complex Gaussian law. -/
-theorem hasLaw_unit_H10 {n : ℕ} (u : L2G (n+1)) (hu : u ∈ H10 (n+1)) (hunit : ‖u‖ = 1) :
-    HasLaw (fun x => u x) gaussC (stdGaussian ((n+1)+(n+1))) := by
-  obtain ⟨W, hW⟩ := exists_Cop_eq (Nat.succ_pos n) hu hunit
-  have he : Cop W u = zeta0 n := hW
-  have h := Cop_ae W.symm (Cop W u)
-  rw [Cop_symm_Cop, he] at h
-  exact ((hasLaw_zeta0 n).comp (measurePreserving_Phi W.symm).hasLaw).congr h
-
 /-- The L² norm of an unnormalized linear test in the repository's real coordinates. -/
 def linearRadius {N : ℕ} (c : Fin N → ℂ) := √(2 * ∑ i, ‖c i‖^2)
 
@@ -193,7 +158,6 @@ theorem linear_eq_radius_mul_unit {n : ℕ} (c : Fin (n+1) → ℂ) (x : Fin ((n
   · simp only [unitLinearSample, hc, ↓reduceIte]
     rw [← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hc]
     simp
-
 
 /-- The coefficient of the raw real-coordinate linear generator in a normalized
 triple product of three standard proper complex Gaussian variables. -/

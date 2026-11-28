@@ -103,8 +103,8 @@ shells and q are the "odd-frequency" = "z-even" block.
 
 | quantity | value | status and source |
 |---|---|---|
-| proved bounds (Lean, `main_bounds`) | 1.4020253021 < K_G^ℂ ≤ 1.404550522 | `Grothe/MainResult.lean`; `docs/LEAN_DETAILS.md` |
-| witness cap of the proved lower bound | B = 356626944773/500000000000 for the mixture of the identity-tail witness and the first-chaos projector. Its reciprocal is the exact endpoint rounded down in `main_bounds`. | [Certificate and controls](../identity-tail/PRICED_RICE.md) · [Exact constants](../../docs/CONSTANTS.md#behind-the-lower-bound) |
+| proved bounds (Lean, `main_bounds`) | 1.4020271882 < K_G^ℂ ≤ 1.404550522 | `Grothe/MainResult.lean`; `docs/LEAN_DETAILS.md` |
+| witness cap of the proved lower bound | B = 356626465021/500000000000 for the retuned identity-tail witness with a fifth-degree debit. Its reciprocal is the exact endpoint rounded down in `main_bounds`. | [Certificate and controls](../identity-tail/SIGNED_RICE_MIXES.md) · [Exact constants](../../docs/CONSTANTS.md#behind-the-lower-bound) |
 | row cap of the cubic-witness cover (Lean until #525) | 891774069/1250000000 = 0.7134192552 | `STATUS.md` 12.1 |
 | row cap needed for 1.402 | below 500/701 = 0.7132667617… | `STATUS.md`, section 8 |
 | row cap needed for 1.4022 | below 5000/7011 = 0.7131650263… | `STATUS.md`, section 8 |

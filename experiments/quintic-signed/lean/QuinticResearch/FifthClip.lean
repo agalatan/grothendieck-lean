@@ -1,31 +1,14 @@
 import QuinticResearch.RadialClip
 import QuinticResearch.QuinticPureWitness
 import Mathlib.Analysis.Real.Pi.Bounds
+import Grothe.LowerAnalytic.Fifth.RadialBounds
 
-/-! # A signed fifth price from actual phase energy and the visible amplitude
-
-Agent-ID: codex-a7c4
--/
+/-! A numerical corollary of the signed fifth clipping estimate. Agent-ID: codex-a7c4 -/
 
 set_option warningAsError true
+
 namespace Grothe.LowerAnalytic
 open MeasureTheory Real Grothe.Lower
-
-/-- An amplitude-dependent lower bound on the physical signed fifth energy
-from clipping the actual half-difference against its visible Gaussian radius. -/
-theorem signedFifth_clip {n : ℕ} {f g : L2G (n+1)}
-    (hf : f ∈ Unimod (stdGaussian ((n+1)+(n+1)))) (hg : g ∈ Unimod (stdGaussian ((n+1)+(n+1))))
-    (ht : 0 < tOf (n+1) f g) {r : ℝ} (hr : 0 < r) :
-    2*(tOf (n+1) f g-√π/2)/r-r^2/6 ≤
-    ‖(H32 (n+1)).starProjection (hOf (n+1) f g)‖^2-
-    ‖(H32 (n+1)).starProjection (kOf (n+1) f g)‖^2 := by
-  have h1 := visible_half_difference_clip hf hg ht hr
-  have h2 := pow_le_pow_left₀ (norm_nonneg _) ((H32 (n+1)).norm_starProjection_apply_le (kOf (n+1) f g)) 2
-  have h3 := sq_nonneg ‖(H32 (n+1)).starProjection (hOf (n+1) f g)‖
-  apply le_trans _ (show -‖kOf (n+1) f g‖^2 ≤ _ by linarith only [h2,h3])
-  rw [sub_le_iff_le_add,div_le_iff₀ hr]
-  apply (mul_le_mul_iff_left₀ hr).mp
-  nlinarith only [h1]
 
 theorem signedFifth_clip_828 {n : ℕ} {f g : L2G (n+1)}
     (hf : f ∈ Unimod (stdGaussian ((n+1)+(n+1)))) (hg : g ∈ Unimod (stdGaussian ((n+1)+(n+1))))

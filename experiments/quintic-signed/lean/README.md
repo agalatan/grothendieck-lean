@@ -9,7 +9,7 @@ This optional package studies the operator $P_{1,0}-(39/50)P_{2,1}+(779/10000)P_
 | What is proved for small visible amplitude? | [Centered-radius ellipse and the cap through 0.25373041](QuinticResearch/QuinticAsymmetricEllipse.lean) |
 | How does the endpoint use the original node caps? | [Cap from 0.885868 under the tail node-cap hypothesis](QuinticResearch/QuinticEndpoint.lean) |
 
-The positive perturbation in this WIP shares the definitions of the Gaussian subspace and fifth-chaos projection in [QuinticWitness.lean](QuinticResearch/QuinticWitness.lean). Its lower bound has a separate [per-cell certificate and ablation](https://github.com/agalatan/grothendieck-lean/blob/32a5a098bfc181239a2555b15b3153a6c825d0e5/research/identity-tail/RETUNED_QUINTIC.md).
+The positive perturbation in this WIP shares the Gaussian subspace and fifth-chaos projection from the production [fifth witness](../../../Grothe/LowerAnalytic/Fifth/Witness.lean). Existing `QuinticResearch` imports continue to expose these declarations under the same Lean names. Its lower bound has a separate [per-cell certificate and ablation](https://github.com/agalatan/grothendieck-lean/blob/32a5a098bfc181239a2555b15b3153a6c825d0e5/research/identity-tail/RETUNED_QUINTIC.md).
 
 The [signed perturbation](../SIGNED_FIFTH.md) gives unconditional high-amplitude scalar credits and the vector transfer for reducing the original fifth eigenvalue. Its central counterexample identifies where a near-saturation hypothesis is necessary.
 

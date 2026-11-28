@@ -220,17 +220,21 @@ def CentralDeductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ 
       RowHolds ε TightShared.row8.ell TightShared.row8.beta ((TightShared.row8.C : ℝ)-d8) V t Qh v ∧
       RowHolds ε TightShared.row9.ell TightShared.row9.beta ((TightShared.row9.C : ℝ)-d9) V t Qh v
 
-private theorem profile_cell (bandAt : ℚ → SparseStein.ScaleBand) {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+private theorem profile_chain (chain : List Segment)
+    (hchain : chainTo (fun s : Segment ↦ s.base.lo) (fun s ↦ s.base.hi) 0 (9/10) chain = true)
+    (hweights : chain.all (fun s ↦ decide (s.base.lo < s.base.hi ∧
+      0 ≤ s.leftWeight ∧ s.leftWeight ≤ 1 ∧ 0 ≤ s.rightWeight ∧ s.rightWeight ≤ 1)) = true)
+    (bandAt : ℚ → SparseStein.ScaleBand) {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
     (hred : CircularSharedReduction rowData V t Qh v)
     (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
     (hcentral : ∀ l : ℚ, (l : ℝ) ≤ t → ScaleChecked l (bandAt l) → CentralDeductions V t Qh v (bandAt l)) :
-    ∃ s ∈ cells, (s.base.lo : ℝ) ≤ t ∧ ∀ tilt limit : ℚ, valid bandAt tilt limit s = true → V+(tilt:ℝ)*t^2 ≤ (limit:ℝ) := by
+    ∃ s ∈ chain, (s.base.lo : ℝ) ≤ t ∧ ∀ tilt limit : ℚ, valid bandAt tilt limit s = true → V+(tilt:ℝ)*t^2 ≤ (limit:ℝ) := by
   obtain ⟨s, hs, hlo, hhi⟩ := chainTo_sound (fun c : Segment ↦ c.base.lo) (fun c ↦ c.base.hi)
-    cells 0 (9/10) checks.1 t (by simpa using ht₀) (by push_cast; exact ht₁)
+    chain 0 (9/10) hchain t (by simpa using ht₀) (by push_cast; exact ht₁)
   refine ⟨s, hs, hlo, ?_⟩
   intro tilt limit hc
-  obtain ⟨hspan,hw₀,hw₁,hz₀,hz₁⟩ := of_decide_eq_true (List.all_eq_true.mp checks.2.2 s hs)
+  obtain ⟨hspan,hw₀,hw₁,hz₀,hz₁⟩ := of_decide_eq_true (List.all_eq_true.mp hweights s hs)
   have hspanR : (s.base.lo : ℝ) < s.base.hi := by exact_mod_cast hspan
   have hpos := sub_pos.mpr hspanR
   let x := (t-(s.base.lo : ℝ))/((s.base.hi : ℝ)-s.base.lo)
@@ -274,6 +278,14 @@ private theorem profile_cell (bandAt : ℚ → SparseStein.ScaleBand) {E : Type*
           (by simpa only [sub_zero,RowOf] using hrows _ _ _ ha)
           (by simpa only [sub_zero,RowOf] using hrows _ _ _ hb) hθ₀ hθ₁
         simp
+
+private theorem profile_cell (bandAt : ℚ → SparseStein.ScaleBand) {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
+    (hred : CircularSharedReduction rowData V t Qh v)
+    (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
+    (hcentral : ∀ l : ℚ, (l : ℝ) ≤ t → ScaleChecked l (bandAt l) → CentralDeductions V t Qh v (bandAt l)) :
+    ∃ s ∈ cells, (s.base.lo : ℝ) ≤ t ∧ ∀ tilt limit : ℚ, valid bandAt tilt limit s = true → V+(tilt:ℝ)*t^2 ≤ (limit:ℝ) :=
+  profile_chain cells checks.1 checks.2.2 bandAt hv ht₀ ht₁ hred hrows hcentral
 
 /-- The physical 06/07 deductions and a certified central pair of deductions close the cover. -/
 theorem profile_bound {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
@@ -343,5 +355,77 @@ theorem rice_mixed_profile_below (a b c budget : ℚ) (ha : 0 < a)
     field_simp
   rw [he] at hv'
   linarith
+
+/-- Row-09 shares at the 16 existing closed central intervals for the signed witness. -/
+def signedShares : List (ℚ × ℚ × ℚ) := [
+  (855/1024, 2183/10000, 1731/5000),
+  (8559/10240, 1061/5000, 1717/5000),
+  (1071/1280, 1717/5000, 409/1000),
+  (3429/4096, 409/1000, 2209/5000),
+  (34299/40960, 2209/5000, 2249/5000),
+  (52339463/62500000, 2249/5000, 901/2000),
+  (209359009/250000000, 901/2000, 2253/5000),
+  (837437149/1000000000, 2253/5000, 2261/5000),
+  (837447529/1000000000, 1131/2500, 1187/2500),
+  (8577/10240, 4757/10000, 2543/5000),
+  (34317/40960, 203/400, 5393/10000),
+  (17163/20480, 5273/10000, 5739/10000),
+  (16767/20000, 5689/10000, 5879/10000),
+  (4293/5120, 5843/10000, 3511/5000),
+  (4059539762943421294892413284173771/4837034420756823638085206016000000, 271/400, 1953/2500),
+  (2031669766038241228652199472973771/2418517210378411819042603008000000, 1967/2500, 508/625)]
+
+private def signedCells : List Segment := cells.map fun s ↦
+  match signedShares.lookup s.base.lo with
+  | some (w,z) => {s with leftWeight := w, rightWeight := z}
+  | none => s
+
+private theorem signedChain :
+    chainTo (fun s : Segment ↦ s.base.lo) (fun s ↦ s.base.hi) 0 (9/10) signedCells = true ∧
+    signedCells.all (fun s ↦ decide (s.base.lo < s.base.hi ∧ 0 ≤ s.leftWeight ∧
+      s.leftWeight ≤ 1 ∧ 0 ≤ s.rightWeight ∧ s.rightWeight ≤ 1)) = true := by
+  decide +kernel
+
+/-- Two amplitude prices with a common positive multiplier of the original payoff.
+The upper price can only be selected on a whole segment above the threshold. -/
+def riceGuardedCheck (stop cut a b₀ c₀ b₁ c₁ budget : ℚ) : Bool :=
+  signedCells.all fun s ↦ decide (stop ≤ s.base.lo) ||
+    if cut ≤ s.base.lo then valid riceBand (b₁/a) ((budget-c₁)/a) s
+    else valid riceBand (b₀/a) ((budget-c₀)/a) s
+
+private theorem of_tilted_price {a b c budget : ℚ} {V t : ℝ} (ha : 0 < a)
+    (h : V+((b/a : ℚ):ℝ)*t^2 ≤ (((budget-c)/a : ℚ):ℝ)) :
+    (a:ℝ)*V+(b:ℝ)*t^2+(c:ℝ) ≤ (budget:ℝ) := by
+  push_cast at h
+  have ha' : (0:ℝ) < a := Rat.cast_pos.mpr ha
+  have hv := (le_div_iff₀ ha').mp h
+  have he : (V+(b:ℝ)/a*t^2)*a = (a:ℝ)*V+(b:ℝ)*t^2 := by field_simp
+  rw [he] at hv
+  linarith
+
+/-- Every amplitude below the switch pays the first price, or it lies above the
+specified threshold and pays the second. A segment straddling the threshold
+uses the first price throughout. -/
+theorem rice_guarded_profile_below (stop cut a b₀ c₀ b₁ c₁ budget : ℚ) (ha : 0 < a)
+    (check : riceGuardedCheck stop cut a b₀ c₀ b₁ c₁ budget = true)
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
+    (ht : t < (stop:ℝ)) (hred : CircularSharedReduction rowData V t Qh v)
+    (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
+    (hcentral : ∀ l : ℚ, (l : ℝ) ≤ t → ScaleChecked l (riceBand l) →
+      CentralDeductions V t Qh v (riceBand l)) :
+    (a:ℝ)*V+(b₀:ℝ)*t^2+(c₀:ℝ) ≤ (budget:ℝ) ∨
+    ((cut:ℝ) ≤ t ∧ (a:ℝ)*V+(b₁:ℝ)*t^2+(c₁:ℝ) ≤ (budget:ℝ)) := by
+  obtain ⟨s,hs,hlo,bound⟩ := profile_chain signedCells signedChain.1 signedChain.2 riceBand hv ht₀ ht₁ hred hrows hcentral
+  have hl : ¬ stop ≤ s.base.lo := fun h ↦
+    ht.not_ge (((Rat.cast_le (K := ℝ)).2 h).trans hlo)
+  have hc := List.all_eq_true.mp check s hs
+  simp only [hl,decide_false,Bool.false_or] at hc
+  by_cases high : cut ≤ s.base.lo
+  · rw [ite_eq_left high] at hc
+    exact Or.inr ⟨((Rat.cast_le (K := ℝ)).2 high).trans hlo,
+      of_tilted_price ha (bound _ _ hc)⟩
+  · rw [ite_eq_right high] at hc
+    exact Or.inl (of_tilted_price ha (bound _ _ hc))
 
 end Grothe.Lower.SparseEnvelope

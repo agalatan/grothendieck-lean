@@ -401,12 +401,4 @@ theorem fibre_mean_energy_priced (k : ℝ) {f g : ℂ → ℂ}
   simp only [Complex.div_ofNat_re,Complex.add_re]
   linarith only [hjoint, sq_nonneg ‖((∫ z, f z ∂gaussC)+(∫ z, g z ∂gaussC))/2‖]
 
-/-- The quadratic Rice energy bound. -/
-theorem fibre_mean_energy {f g : ℂ → ℂ}
-    (hfm : AEStronglyMeasurable f gaussC) (hgm : AEStronglyMeasurable g gaussC)
-    (hfb : ∀ z, ‖f z‖ ≤ 1) (hgb : ∀ z, ‖g z‖ ≤ 1) :
-    ‖∫ z, (f z - g z)/2 ∂gaussC‖^2 ≤ 2*(√π/2)*
-      ((√π/2) - (∫ z, conj z * ((f z+g z)/2) ∂gaussC).re) := by
-  simpa [riceSlope,riceIntercept] using fibre_mean_energy_priced 0 hfm hgm hfb hgb
-
 end Grothe.LowerAnalytic.PhysicalRice

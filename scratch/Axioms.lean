@@ -27,6 +27,8 @@ import Grothe
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.pairGain_strongChord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.twoScale_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
+#print axioms Grothe.Lower.SignedFifth.check
+#print axioms Grothe.Lower.SignedFifth.rounded_lt
 #print axioms Grothe.Lower.SparseEnvelope.endpoint_eq
 #print axioms Grothe.Lower.SparseEnvelope.mixed_profile_bound
 #print axioms Grothe.Lower.SparseEnvelope.profile_bound
@@ -241,6 +243,14 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.scalar_sixth
 #print axioms Grothe.LowerAnalytic.sharedReduction_frame
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
+#print axioms Grothe.LowerAnalytic.signedFifth_payoff
+#print axioms Grothe.LowerAnalytic.signedFifth_phase_budget
+#print axioms Grothe.LowerAnalytic.signedFifth_profile_transfer
+#print axioms Grothe.LowerAnalytic.signedFifth_quadratic_floor
+#print axioms Grothe.LowerAnalytic.signedFifth_sameWeight_high_price
+#print axioms Grothe.LowerAnalytic.signedFifth_transfer
+#print axioms Grothe.LowerAnalytic.signedFifth_vector
+#print axioms Grothe.LowerAnalytic.signed_fifth_radial_885868
 #print axioms Grothe.LowerAnalytic.sixth_moment_circular
 #print axioms Grothe.LowerAnalytic.sixth_moment_complex
 #print axioms Grothe.LowerAnalytic.sos1_circular
@@ -270,6 +280,8 @@ import Grothe
 #print axioms Grothe.Statement.firstChaosEndpoint_le_of_tailNodeCaps
 #print axioms Grothe.Statement.first_chaos_endpoint
 #print axioms Grothe.Statement.main_bounds
+#print axioms Grothe.Statement.signedFifthEndpoint_le_of_tailNodeCaps
+#print axioms Grothe.Statement.signed_fifth_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upper_below_tight
 #print axioms Grothe.Statement.upper_bound_tight

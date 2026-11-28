@@ -2,17 +2,9 @@ import QuinticResearch.QuinticEllipse
 import Grothe.LowerAnalytic.Frame
 import Mathlib.Probability.IdentDistribIndep
 import Mathlib.Probability.HasLaw
+import Grothe.LowerAnalytic.Fifth.Direction
 
-/-!
-# Physical support of a unimodular pair
-
-The midpoint and half-difference admit a joint support estimate against arbitrary L² tests.
-For an independent remote cubic subprojection, reflection of the visible linear Gaussian
-identifies the two signed integrals. This derives the physical pairing step of the
-remote cubic lift directly from the original phase pair.
-
-Agent-ID: codex-a7c4
--/
+/-! Physical support of a unimodular pair Agent-ID: codex-a7c4 -/
 
 namespace Grothe.LowerAnalytic
 
@@ -51,28 +43,6 @@ theorem phase_pair_support {n : ℕ} {f g : L2G n}
   simp only [inner_add_left, inner_sub_left, inner_add_right, inner_sub_right,
     Complex.add_re, Complex.sub_re] at hsum hdiff
   linarith only [hsum, hdiff]
-
-/-- The direction of the visible projection. At zero amplitude it is the zero function. -/
-def visibleDirection (n : ℕ) (f g : L2G n) : L2G n :=
-  (((tOf n f g)⁻¹ : ℝ) : ℂ) • (H10 n).starProjection (hOf n f g)
-
-theorem visibleDirection_mem (n : ℕ) (f g : L2G n) : visibleDirection n f g ∈ H10 n :=
-  (H10 n).smul_mem _ ((H10 n).starProjection_apply_mem _)
-
-theorem norm_visibleDirection_of_pos {n : ℕ} {f g : L2G n} (ht : 0 < tOf n f g) :
-    ‖visibleDirection n f g‖ = 1 := by
-  rw [visibleDirection, norm_smul, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_pos (inv_pos.mpr ht)]
-  change (tOf n f g)⁻¹ * tOf n f g = 1
-  exact inv_mul_cancel₀ ht.ne'
-
-theorem re_inner_visibleDirection (n : ℕ) (f g : L2G n) :
-    (inner ℂ (hOf n f g) (visibleDirection n f g)).re = tOf n f g := by
-  rw [visibleDirection, inner_smul_right, Complex.re_ofReal_mul, re_inner_starProjection]
-  change (tOf n f g)⁻¹ * tOf n f g ^ 2 = tOf n f g
-  by_cases h : tOf n f g = 0
-  · simp [h]
-  · field_simp
 
 /-- For a subspace of the actual cubic chaos, projecting the cubic of the half-difference
 gives a test with physical pairing equal to its own energy. -/
@@ -212,7 +182,6 @@ theorem cubic_subprojection_alignment_deficit {n : ℕ} {f g : L2G n}
     dsimp only [p, m]
     nlinarith only [parallelogram_law_with_norm ℂ (u x) (v x)]
   nlinarith only [hsq, hvar, hpar]
-
 
 /-- The remote cubic subspace in the visible-coordinate frame consists exactly of
 cubics that depend only on the remaining coordinates, embedded as fibre piece zero. -/

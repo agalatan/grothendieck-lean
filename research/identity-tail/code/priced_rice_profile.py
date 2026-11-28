@@ -63,12 +63,23 @@ def physical_pieces(source, law, cuts, prices, small, use_affine=True):
     return pieces, used
 
 
-def verify_restricted(used):
+def restricted_tables():
     source = Path("Grothe/LowerAnalytic/SparseSteinWeights.lean").read_text()
-    tables = {Q(int(stop), 10000): [(i,Q(n,10**13)) for i,n in ast.literal_eval(values)]
+    body = source.split("def prices : List (ℚ × ℚ) := [", 1)[1].split("]", 1)[0]
+    weights = [Q(w) for w in re.findall(r"\(([0-9/]+), [0-9/]+\)", body)]
+    tables = {Q(int(stop), 10000): [(weights[i],Q(n,10**13)) for i,n in ast.literal_eval(values)]
               for stop,values in re.findall(r"\| \.cut(\d+) => entries (\[[^\n]*\])",source)}
-    checked(tables == {s: sorted(ws.items()) for s,ws in used.items()},
-            "Lean restricted weights, cutoffs or discounts differ from the physical replay")
+    checked(all(rows == sorted(dict(rows).items()) for rows in tables.values()),
+            "restricted weights must be unique and sorted")
+    return tables
+
+
+def verify_restricted(used, weights):
+    registered = restricted_tables()
+    keys = sorted(weights)
+    checked(set(used)==set(registered) and all((keys[i],v) in registered[s]
+            for s,entries in used.items() for i,v in entries.items()),
+            "missing original physical Rice prices")
 
 
 def high_arm(t, scales):
@@ -104,10 +115,10 @@ def main():
     cuts[25] = (Q(".83835"),)
     weights = first.curved.central_weights(source, cuts)
     prices, small = first.curved.price_tables(law, weights)
-    first.curved.check_lean_prices("prices", prices)
-    first.curved.check_lean_prices("smallPrices", small)
+    first.curved.check_lean_prices("prices", prices, allow_additional=True)
+    first.curved.check_lean_prices("smallPrices", small, allow_additional=True)
     pieces, used = physical_pieces(source, law, cuts, prices, small)
-    verify_restricted(used)
+    verify_restricted(used, weights)
     checked((len(pieces), len(weights), len(used), sum(map(len,used.values()))) == (57,17,13,27),
             "physical schedule changed")
     checked(4*MU_LOW**2 < Q("3.141592653") < PI_HIGH < 4*MU_UP**2,
