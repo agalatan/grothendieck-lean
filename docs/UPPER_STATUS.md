@@ -9,9 +9,10 @@ hypotheses: `Grothe.Statement.upper_below_tight` in
 [`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The combined statement `main_bounds` in
 [`MainResult.lean`](../Grothe/MainResult.lean) uses the seven-channel bound.
 
-The sharper target **K_G^ℂ < 1.404598149141** has only a conditional route,
-archived in [`abandonware/`](../abandonware/README.md) and not built:
-`fresh_upper_rounder` gives `K_G^ℂ ≤ 500000000000000000/355973699960428191 < 1.404598148840`
+The earlier target **K_G^ℂ < 1.404598149141** of the single-channel rounding (weaker than the proved
+seven-channel bound) had only a conditional route, removed from the repository
+([`abandonware/README.md`](../abandonware/README.md) gives the commit):
+`fresh_upper_rounder` gave `K_G^ℂ ≤ 500000000000000000/355973699960428191 < 1.404598148840`
 from fourteen original Gaussian finite-band error inequalities, which are not
 all proved, and the energy-table discrepancy bound `6847009/(5·10^17)`, which
 `Final.hclose_final` proves for the actual frozen response.
@@ -20,8 +21,8 @@ The single-channel proof uses six certified low-band and whole-source estimates,
 tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `117/100`) with a linear-energy
 deduction. Its entrypoint is `upper_below_tight`, and the energy-table accuracy
 `Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). The generated root includes this proof alongside the seven-channel proof used by
-`MainResult.lean`. Alternative single-channel formulations are in [the committed archive](../miscellaneous/other-bounds/README.md)
-and in [`abandonware/`](../abandonware/README.md).
+`MainResult.lean`. Alternative single-channel formulations are in git history only
+([`abandonware/README.md`](../abandonware/README.md)).
 
 Sections 1 and 4 describe this single-channel construction. Sections 2, 3 and 5 retain
 construction history and the original sharper-target plan, with completed
@@ -104,7 +105,7 @@ For historical provenance, the endpoint with preceding preprocessors passed
 That receipt is not evidence for the current source tree. The current degree-41/15
 preprocessors come from `data/upper-preprocess/`; current build evidence is the
 proof check of the exact branch or merged commit. Older gap and source guards
-are retained in `miscellaneous/other-bounds/tree/data/upper-preprocess/verification/`.
+are in git history (`miscellaneous/other-bounds/tree/data/upper-preprocess/verification/` at commit `bfb5961e3`).
 
 ## 2. `|φ| < 1`: proved input and construction history
 
@@ -221,8 +222,8 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
 ## 4. Remaining work toward the original sharper target
 
 * The fourteen original finite-band Gaussian caps are not all proved; the
-  conditional theorem that assumes them, `fresh_upper_concrete_taylor`, is
-  archived in `abandonware/` (not built).
+  conditional theorem that assumes them, `fresh_upper_concrete_taylor`, was
+  removed from the repository (git history).
   The error decomposition, supports and actual centers are formalized.
   `ComparisonInputs` is still a conditional interface for arbitrary `G, X`;
   the single-channel theorem uses a different seven-piece comparison
@@ -243,7 +244,7 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
   rounding norm cap are certified. `TaylorTailData` states the original
   finite-band errors from which the sharper tails would follow; those
   error targets must not be confused with established numerical enclosures.
-  The omitted-input Hilbert–Schmidt route, archived in `abandonware/`, is a
+  The omitted-input Hilbert–Schmidt route (removed from the repository, git history) was a
   separate way to seek those bounds, not an assumption of `main_bounds`.
 * The lower endpoint is also closed: `main_bounds` in `MainResult.lean`
   gives the lower bound from the certificate of the witness with an identity
@@ -255,7 +256,7 @@ Construction record (begun by claude/hardy on 26 October, with subsequent comple
 
 *Issue #20. Written from the master sources (`Grothe/UpperChaos/LocalizedComparison.lean`,
 `Grothe/Upper/ComparisonData.lean`, `data/localized-comparison/{recipe.json,PROOF.md}`,
-`miscellaneous/other-bounds/tree/docs/localized-comparison.tex`) and the inherited certificate (laptop archive
+`docs/localized-comparison.tex`, now in git history) and the inherited certificate (laptop archive
 `handoff/upper-residual/global_norm/`: `MIXED_TAYLOR_CUTOFF_LEMMA.md`, `GAUSSIAN_POLYNOMIAL_NORM.md`,
 `certify_taylor_comparison.py`, `taylor_comparison_result.json`). The error decomposition,
 spectral support, concrete center data and phase moments are now implemented.

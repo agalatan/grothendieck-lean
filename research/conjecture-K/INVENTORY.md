@@ -1184,6 +1184,10 @@ review: read it with `REVIEW.md` §7, whose findings the ledger rows follow.
   folder `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/antiholomorphic-stein-2026-11-17/` (the folder's
   name carries the wrong day; the delivery and the review are of 16 November).
 
+## Two coupled thirteen-coordinate cubics (codex-a7c4, #766)
+
+[Fourth-excess proof](sources/paired-cubic-codex-a7c4/PROOF.md) and [exact mixed-moment calculation](code/paired-cubic-codex-a7c4/verify.py). Run `python3 -IB research/conjecture-K/code/paired-cubic-codex-a7c4/verify.py` from the repository root.
+
 ## Codex-a786: the Malliavin addendum and the Clifford cubic (16 November 2026)
 
 `sources/malliavin-addendum-2026-11-16-codex-a786/` holds the delivery's four documents and `REVIEW_claude-b9ee.md`;
@@ -1775,10 +1779,18 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 | `sources/cubic-shear-codex-a7c4/PROOF.md` | 10059 | `95e21250414e0febf19728338945d5c8e5796ab1cc058054537d2511c2b5f224` |
 | `code/cubic-shear-codex-a7c4/verify.py` | 3506 | `1d1b02ed7b4fb5f44ebb7abb7049fde001237c93edb988629c7e8a950079b7ab` |
 
+## Signed angular-score coupling and six-sector peak reserve (codex-a7c4, #750)
+
+[Angular measures and the raw two-shell price interval](sources/signed-score-coupling-codex-a7c4/PROOF.md) · [Retained six-sector result, STATUS 7.5.14](sources/signed-score-coupling-codex-a7c4/SIX.md) · [Exact replay and upstream hashes](code/signed-score-coupling-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/signed-score-coupling-codex-a7c4/verify.py` at the repository root. The proof uses the global pointwise bound of 7.5.13 and the scalar deficit certificates identified in the source.
+
+## Sharp retained peak value on the capped energy domain (codex-a7c4, #761)
+
+[Central energy/excess proof](sources/peak-window-codex-a7c4/PROOF.md) · [All shapes, sharpness and scaling](sources/peak-window-codex-a7c4/PEAK.md) · [Rational certificate and verifier](code/peak-window-codex-a7c4/). Run `python3 -IB research/conjecture-K/code/peak-window-codex-a7c4/verify.py` from the repository root. Each of 24 spectral duals is checked on the positive half-line before its deficit estimate is used in a closed two-dimensional cover. The [Arb cap replay](code/peak-window-codex-a7c4/replay_caps.py) checks the 78 cubic caps and the tangent at 64. A [second optimization replay](code/peak-window-codex-a7c4/replay_window.py) checks the radial and shell prices.
+
 ## Global all-sector pointwise closure F_joint(c*) <= 0 on C^6 (gemini-c1de, #436)
 
 - [Proof and replay instructions](sources/global-all-sector-gemini-c1de/PROOF.md) and
-  [C++17 interval certifier, exact rational verifier, saved certificate and 23 corruption controls](code/global-all-sector-gemini-c1de/) (tag KGAS; STATUS 7.5.13; **P + C, author only**). All files are committed in the repository with zero external dependencies left outside.
+  [C++17 interval certifier, exact rational verifier, saved certificate and 23 corruption controls](code/global-all-sector-gemini-c1de/) (tag KGAS; STATUS 7.5.13; **P + C**). The [independent full replay](code/global-all-sector-gemini-c1de/REPLAY.md) compares both receipts, preserves the fresh Linux bytes as a text delta, and identifies the source and artifact hashes.
 - **Replay:**
   - Exact rational audit of saved `result.json`, zero-float 2D Bernstein proofs of Lemmas L1/L2 and Smooth-Split $H_{5,\delta}$ (Lemmas S1/S2), $\psi(r, q)$ calculus, $w \ge 8$ even+odd analytic exteriors, analytic Jensen diagonal lower-bound controls, and Parts 1–3 contiguity/PSD/handoffs (< 1 s, Python 3 stdlib only, `-I`, rejects `-O`): `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py` and `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/test_controls.py` (23 negative/corruption controls including Part 3 `RingGeom` `hT` and `AngGeom` `df` inward-rounding regressions, live C++ even & odd false-target controls, and `-DNDEBUG` compile rejection).
   - Full C++17 outward-rounded (`FE_UPWARD`) 8-thread interval replay (`33,684` CPU-s / `11,701` s wall; compiles/runs to a temporary file, audits all 3 parts, and verifies exact bit-for-bit equality against committed `result.json` without overwriting it; pass `--replay-cpp --update-result` only to intentionally regenerate `result.json`): `python3 -I research/conjecture-K/code/global-all-sector-gemini-c1de/verify.py --replay-cpp`.
@@ -1786,7 +1798,7 @@ The [proof](sources/cubic-shear-codex-a7c4/PROOF.md) resolves the strict inclusi
 | file | size | SHA-256 |
 |---|---:|---|
 | `sources/global-all-sector-gemini-c1de/PROOF.md` | 31,333 B | `e98ee17b947fa8792d47a5a72c93383ac83a84c0881c9d8531fc8b533e2e0b22` |
-| `code/global-all-sector-gemini-c1de/README.md` | 3,008 B | `194c99e54a6901d354f84e10ab710f92524fe358fe5e5b3275393d062203f2ae` |
+| `code/global-all-sector-gemini-c1de/README.md` | 4,419 B | `9d0d2720e8b49653bbb28bc4d8059ef7812b5fd585cbc1eef9ae5fa9b0ad1c1c` |
 | `code/global-all-sector-gemini-c1de/certify_all_sector.cpp` | 162,100 B | `2186d7971f9693cc2440fe794eab29ffb80a0ca3b775f916583cb903eab0705c` |
 | `code/global-all-sector-gemini-c1de/verify.py` | 30,836 B | `fc9af6813e2bf7430989ff1bce18aa6db27f287b2997fd8c874ec3ddf1f92e17` |
 | `code/global-all-sector-gemini-c1de/result.json` | 546,108 B | `fe5e948a3090d64692064575268289490f7f89d3ab0747ee27dfc09dff1bdcbb` |
@@ -1846,7 +1858,7 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,574 B | `d58499b89dae1c386efc04028a0f8a985cc8f7b9c8eb0701697a204d2b26005f` |
+| `sources/cubic-radius-ou-l3-gemini-4c4c/PROOF.md` | 52,781 B | `8ac273bf65451f957527c3b88f7259543a1976ce5bf8ee578b2391df2cdb4cd2` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/README.md` | 2,990 B | `24e96c9ddcd29789e49c78872f6f1d746b287502bedac72e943e84d56de6c14a` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/cert_912.json` | 229,130 B | `5fd94b4b1bda430344388013009b18e8fc00077ec4e67ec993a5755c85b0ba04` |
 | `code/cubic-radius-ou-l3-gemini-4c4c/verify.py` | 65,398 B | `9b5a2d83166006db93de6d59201a98ae3506088290095d43a0ccfbd0dd1cf70f` |
@@ -1858,7 +1870,7 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 ## Sharpened retained six-sector peak bounds, profile transfer, and central consumer slabs (gemini-c1de, #728)
 
 - [Proof and replay instructions](sources/all-sector-transfer-gemini-c1de/PROOF.md) and
-  [zero-float stdlib verifier, rational certificate, generator, and 21-check control suite](code/all-sector-transfer-gemini-c1de/) (tag KAST; STATUS 7.4.10, 7.4.16, 7.5.3, 7.5.13, 8.1, 8.7, 8.10, 8.13, 11.47, 11.53; **P + C, author only**). All files are committed in the repository (`all_sector_transfer_cert.json` is 267,846 B < 300 KB) with zero external dependencies.
+  [zero-float stdlib verifier, rational certificate, generator, and 21-check control suite](code/all-sector-transfer-gemini-c1de/) (tag KAST; STATUS 7.4.10, 7.4.16, 7.5.3, 7.5.13, 8.1, 8.7, 8.10, 8.13, 11.47, 11.53; **P + C**). The [independent transfer reviews](https://github.com/agalatan/grothendieck-lean/pull/731#issuecomment-7228493798) cover the scalar argument, its pinned endpoints and all 21 controls. The peak premise is supported by the [independent full replay](code/global-all-sector-gemini-c1de/REPLAY.md). The archived source and verifier output preserve the evidence labels from submission. The exceptionally re-certified 11.61 input and the direct Row 8 benchmark retain their individual ledger grades. All files are committed in the repository (`all_sector_transfer_cert.json` is 267,846 B < 300 KB) with zero external dependencies.
 - **Replay:**
   - Zero-float, zero-`assert` exact rational verification of Machin $\pi$, $\sqrt{\pi}$, the `2.12a–b` Rice tangent at $u = 1/10$, all 7 2D `(u, V)` covers (`peak_dplus`, `peak_signed`, pure-`D_+` `7.5.3` `cession_dplus` with `sig_lo = r_rem = 0` and scalar `(P_Psi)` control, and `11.53` scaled profile covers `scale_even_*` and `scale_all6_*`), direct Row 8 (`[0.840, 0.847]`) closure of `8.13(ii)`, and all 5 pinned central consumer $t$-slab covers (< 2 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/verify.py`.
   - Positive-fixture, mathematical negative-control (including forbidden signed `11.61` below $u = 2/125$, forbidden double-spending of $\sigma(u)$ on `(P_Psi)` cession, omitted $(\lambda - 1)(49/625)|\nu_0|^2$ on $\lambda > 1$ six-sector transfer, pinned `< 29.36e-6` / `< 27.00e-6` headline thresholds, and truncated consumer slabs), and corruption control suite (21 checks, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py` and `python3 -IB -O research/conjecture-K/code/all-sector-transfer-gemini-c1de/test_controls.py`.
@@ -1872,3 +1884,95 @@ The [derivation](sources/invariant-fibres-codex-a7c4/PROOF.md) gives rows 3.24b 
 | `code/all-sector-transfer-gemini-c1de/verify.py` | 36,010 B | `65fea8844b793b2333d77a5a29a832c2a158bb6e5d7b5e8abf7dc611910f191b` |
 | `code/all-sector-transfer-gemini-c1de/test_controls.py` | 8,784 B | `c6afbdb43aef19aa7d05043739ee5dba069a3710c5142095786924e7f021cbdf` |
 | `code/all-sector-transfer-gemini-c1de/all_sector_transfer_cert.json` | 267,846 B | `c0464da7a116c1f7cb459191227185f8e3c631d0ca7f4ad9594750e82bb90f47` |
+
+## Energy-dependent six-sector witness profiles (codex-a7c4, #790)
+
+Row 8.13c uses the public KAST certificate pinned by 8.13a. Run
+`python3 -IB research/conjecture-K/code/priced-peak-consumer-codex-a7c4/adaptive.py` from the repository root.
+[Proof and layer clearances](sources/priced-peak-consumer-codex-a7c4/ADAPTIVE.md) ·
+[exact replay and negative controls](code/priced-peak-consumer-codex-a7c4/adaptive.py) ·
+[shared cell construction](code/priced-peak-consumer-codex-a7c4/peak_cells.py) ·
+[public input hashes](code/priced-peak-consumer-codex-a7c4/public.sha256).
+
+## Retained six-sector peak bound at high fourth excess (7.5.15)
+
+The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).
+
+## The notes of 23 October 2026 on the cubic witness, moved from the archive (claude-b9ee, #764)
+
+Six notes of the Codex sessions of 23 October 2026 were in the archive folder `miscellaneous/` until master
+`bfb5961e3`; the folder was removed by #764 and the notes whose conclusions the manuscript chapters under
+`sources/manuscript/` do not contain were moved here, verbatim (one provenance line added at the top of each). Their
+targets are those of their date: the cubic witness at ε = 149/200, under the interval
+1.401697049825 < K_G^ℂ < 1.404598149218 of that day. Lean now proves 1.4020221627 < K_G^ℂ ≤ 1.404556392.
+
+| folder | files | what they hold |
+|---|---|---|
+| `sources/cubic-witness-ceiling-2026-10-23/` | `CUBIC_FAMILY_CEILING_2026-10-23.md` (18 KB), `GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md` (12 KB), `GENUINE_CUBIC_OBSTRUCTION_2026-10-23.md` (16 KB) | The written proofs behind `STATUS.md` 12.2 and 8.3, which cite the summary in `docs/overview.tex`: the genuine response pair built on q_m ∈ H₂,₁ over Sym²(ℂᵐ), the closure of its U(m)-invariant first and cubic image, the floor 0.71313546585 for every complex multiplier (ceiling 1.4022581233 of the cubic witness family) and the value above 0.71329 at ε = 149/200. |
+| `sources/response-lift-fibre-2026-10-23/` | `RESPONSE_LIFT_EXPERIMENT_2026-10-23.md` (15 KB), `JOINT_FIBRE_EXPERIMENT_2026-10-23.md` (28 KB), `JOINT_ROW_UNIFORMITY_2026-10-23.md` (13 KB) | Negative results on two relaxations of the row certificate at ε = 149/200. The finite multiplication-compression lifts have exact minimum zero for the selected projection penalties at all twelve audited contacts; an actual bounded response pair matches the selected moments of the saved radial law 7234. The fixed-law joint model has a bounded randomized response with relaxed score near 0.7131527 (a lower bound on that relaxed supremum) and a certified upper cap 178315341/250000000 at the fixed contact. The third note states which uniform extensions remain meaningful. These statements concern abstract radial laws of a finite cut bank, not Gaussian cubics. |
+
+Not in the repository: the verifiers and certificate files that these notes name (`tools/verify_cubic_family_floor.py`,
+`tools/verify_diffuse_cubic_limit.py`, `tools/verify_joint_fibre_*.py`, `tools/verify_response_lift*.py`,
+`tools/verify_abstract_response_*.py` and their JSON files) were deleted from `tools/` by commit `d84c3fdfc` and are
+read with `git show 8115260f8:tools/<name>`. The replay wrappers `run_genuine_cubic_checks.py` and
+`run_joint_fibre_checks.py` and the list of input hashes were at `miscellaneous/research/tools/` and
+`miscellaneous/research/research/response_geometry_inputs/README.md` of master `bfb5961e3`. The source laws
+(`radial-complete-*-exact.json`, 7 to 9 MB each) were never in the repository: they are in the delivered bundles
+`joint-fibre-20261023` and `genuine-cubic-obstruction-20261023` and in
+`grothendieck-common-stein-reassessment-20261023.zip` (7.5 MB, `git show bfb5961e3:miscellaneous/deliveries/grothendieck-common-stein-reassessment-20261023.zip`).
+The Lean arithmetic of the ceiling is `abandonware/Grothe/LowerAnalytic/ScalarCubicFamilyCeiling.lean` (not built);
+the other Lean modules the notes name (`DiffuseCubicObstruction`, `ProjectionGateCeiling`, `JointRowRepricing`,
+`ResponseCompression`) are at `miscellaneous/research/Grothe/LowerAnalytic/` of master `bfb5961e3`.
+
+The other notes of that day in the archive were deleted, because `sources/manuscript/` holds their content as
+chapters: the binding audit, the common Stein kernel and the table floor, the joint response lift, the symmetric
+response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/symmetric-response-replicas-20261023.tex`).
+
+## Hilbert–Schmidt / influence OU bounds and coupled signed-circle commutator cutoffs on V₃(ℝⁿ) (gemini-8732, tasks #506, #501, #458)
+
+- [Proof and replay instructions](sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md) and
+  [exact zero-float verifiers and replay log](code/third-chaos-506-gemini-8732/) (tag KTC506; STATUS 3.21 (e1), 3.21 (e4), 3.21 (e9)(iii)–(iv); **P + C, author only**). Every file is under 30 KB and committed in the repository; no external files or dependencies were left outside.
+- **Replay (Python 3 standard library only, isolated `-I -O`, zero floating-point operations, AST-audited):**
+  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_ou_influence.py` verifies `||U||_HS^2 == tr(M^2) >= ||U_tilde||_HS^2` on rational symmetric 3-tensors in $\mathbb{R}^2, \mathbb{R}^3, \mathbb{R}^4$, Machin $\pi$ bounds, $2\times 2$ Schur positivity across $[0, \infty)$ (336 leaves including the infinite ray) for the dedicated Triple 3 $(583/25000, 4239/100000, -1497/50000)$ (exact slope $2181/10000$), `(T)` for $\operatorname{tr}(M^2)/\|T\|_{\mathrm{HS}}^4 \le 3841/25000 = 0.15364$ (in particular $\le 96/625 = 0.1536$, vs $m \le 373/2800 \approx 0.13321 \implies \operatorname{Var}(\tau) \le 14m \le 373/200$ via Lemma 1.1 + `KNG505`) and in particular whenever $\lambda/\|T\|_{\mathrm{HS}}^2 \le 3841/25000 = 0.15364$ (covering all isotropic / irreducibly $O(n)$-symmetric third-chaos cubics $M = (\|T\|_{\mathrm{HS}}^2/n)I_n$ in every dimension $n \ge 1$), and 7 negative controls at full production depth `max_depth = 12` (~39 s).
+  - `python3 -I -O research/conjecture-K/code/third-chaos-506-gemini-8732/verify_tensor_combined.py` verifies exact commutator-submatrix $([A_p, A_1])_{1q} = D_{pq}$ and $M_{12} = 0$ identities on 4 rational $\mathbb{R}^4$ tensors, 4D branch-and-bound covers coupling signed 2-plane circle norms + analytic $d$-tightening with the full Frobenius commutator block $72\|D\|_F^2$ + Weyl–Karamata ($\lambda < 27/40 = 0.675$, $\kappa_4 < 48$ at $a \le 349/500 = 0.698$ in 32,515 leaves; $\lambda < 33/50 = 0.66$, $\kappa_4 < 229/5 = 45.8$ at $a \le 321/500 = 0.642$ in 14,955 leaves), exact rational Sturm-sequence proofs on $\mathbb{R}$ for 4 planar cubic witnesses, and 5 negative controls at full production depth `max_depth = 46` (~4 min). [Replay log](code/third-chaos-506-gemini-8732/REPLAY.log)
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/third-chaos-506-2026-11-25-gemini-8732/PROOF.md` | 24,122 B | `f39f3132fd9e555663b171cb40c731beec6691c66fe46147c84a0b404d47896a` |
+| `code/third-chaos-506-gemini-8732/verify_ou_influence.py` | 22,109 B | `b1d4698c3a2a2f3880451c5c4b5e9897701bbfd5f9aa3b9a94afdbbea7135572` |
+| `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 26,097 B | `bac8b53f16a859b0b7e6327a3b736db77c46ae6b1e48b12b4ec639953fe1e0e0` |
+| `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,468 B | `be10b7a0d585008cf660de0a6540803b033bf13f3fd085b8c67d5bc5cda01de8` |
+
+## Quantitative buffered PVD, sharp complex radius, and step-by-step CLT & doubling monotonicity (gemini-21d5, #730)
+
+- [Proof and mathematical derivations](sources/wick-pvd-doubling-gemini-21d5/PROOF.md) and
+  [1088-bit zero-float stdlib verifier, exact rational certificate, and 19 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
+  (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 85 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
+- **Replay:**
+  - Default audit (~85 s, Python 3 stdlib only, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds and 19 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
+  - Full 1088-bit continuum recomputation from scratch (~6 min, verifying `saved == fresh` byte-for-byte across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 19 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,148 B | `a919ffc8762e19c047877f70469d4a586d995f49837c71034f2c5bdfad6a621e` |
+| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,706 B | `1ecb9a0f3ef939dafbfa52eff4464634694cb6e829f80b2a5f0da63bd732b525` |
+| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 83,736 B | `b37eb6953bfcb04ad276c3ddd4c26324936253c51cdd05e2c7c1e0c5145e8523` |
+| `code/wick-pvd-doubling-gemini-21d5/result.json` | 2,684 B | `8b5730d0f20fcf407c950228b0c253af6cd8396485e794ad0cfc7ad8c801c205` |
+
+## Free-homothety peak-ray transfer, exempt-box-free retained bounds, and end-to-end consumer closures (gemini-c1de, #760)
+
+- [Proof and replay instructions](sources/homothety-consumers-gemini-c1de/PROOF.md) and
+  [zero-float stdlib verifier, single-file rational certificate, generator, and 19-check AST/corruption control suite](code/homothety-consumers-gemini-c1de/) (tag KHOM; STATUS 7.4.10, 8.1, 8.5, 8.6, 8.7, 8.10, 8.13; **P + C, author only**). All files are committed in the repository (`homothety_consumers_cert.json` is 268,246 B < 300 KB) with zero external dependencies.
+- **Replay:**
+  - Zero-float, zero-`assert` exact rational verification of 220-bit Machin $\pi$, $\sqrt{\pi}$, the `2.12a–b` Rice tangent, exact $\mathbb{Q}[T]$ partial-fraction identities and positive peak deficit Laplace moments $M_D[0..7]$, algebraic Cholesky-SOS proof of $U_7(y) \ge \sqrt{1 + y}$ and $B_{\mathrm{hi}}(u_0) \ge B_0(u_0)$ joined to `2.7` Jensen concavity, exempt-box-free peak retained covers (`mode == 2` enforced on $u_0 < 3/2000$), complete 1,773-cell `[0, \sqrt{\pi}/2]` verification of `8.5` (`K_G^ℂ > 1.40171`), and all 10 Track A / Track B consumer covers cross-checked against SHA-256-pinned `inherited_rows.json`, `central_94_125_certificate.json`, and `central_7475_certificate.json` (< 3 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/verify.py` and `python3 -IB -O research/conjecture-K/code/homothety-consumers-gemini-c1de/verify.py`.
+  - Static `ast` zero-float/zero-`assert` self-audit + 18 mathematical/corruption controls (`-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/test_controls.py` and `python3 -IB -O research/conjecture-K/code/homothety-consumers-gemini-c1de/test_controls.py`.
+  - Certificate regeneration from scratch: `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/generate_certs.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/homothety-consumers-gemini-c1de/PROOF.md` | 22,650 B | `ebee454a850797173c0e437df8380eba2e9a602a45b92c8c07aff9aefea5beff` |
+| `code/homothety-consumers-gemini-c1de/README.md` | 4,730 B | `4a98a3d9c4f4d657f84ea8a68fe73528e096ab49faa3074d7572662f57b03e09` |
+| `code/homothety-consumers-gemini-c1de/generate_certs.py` | 28,543 B | `84fca59d1bc445d8719186849dec5b3b8a0eb12b609abc4e5d78cea8b86356ca` |
+| `code/homothety-consumers-gemini-c1de/verify.py` | 42,879 B | `647baf6ab998b004fd7c31cc8b43e44732d91cac0358cc8e30ffdcef75320d12` |
+| `code/homothety-consumers-gemini-c1de/test_controls.py` | 11,139 B | `c67d7c937cca6427221e77a8506f10bab1611fb495bfa8117c679e345d3093aa` |
+| `code/homothety-consumers-gemini-c1de/homothety_consumers_cert.json` | 268,246 B | `cb7027d95f1caa16c2b56493d3793a16f86e0dd1f83d36cbd080bb847fae156e` |

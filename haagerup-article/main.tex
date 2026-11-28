@@ -62,6 +62,7 @@
 
 \title[Haagerup's value is a strict upper bound for \texorpdfstring{$\KGC$}{KGC}]{Haagerup's Value Is a Strict Upper Bound for the Complex Grothendieck Constant}
 \author{Alin Galatan}
+\email{alin.galatan@gmail.com}
 \date{November 2026}
 \subjclass[2020]{Primary 46B28; Secondary 46B07, 60G15, 65G30, 68V20}
 \keywords{Grothendieck inequality, complex Grothendieck constant, Gaussian rounding, computer-assisted proof, formal verification, Lean}
@@ -70,7 +71,7 @@
 \begin{document}
 
 \begin{abstract}
-Let $\KGC$ denote the complex Grothendieck constant. In 1987 Haagerup proved $\KGC\le 1.40491$ and proposed the value $1/\gd = 1.40457\ldots$ as a candidate for $\KGC$, where
+Let $\KGC$ denote the complex Grothendieck constant. In 1987 Haagerup proved $\KGC\le 1.40491$ and mentioned $1/\gd = 1.40457\ldots$ as a perhaps more plausible candidate for the value of $\KGC$, where
 \[
   \gd \;=\; \int_0^{\pi/2} \frac{\cos^2 t}{\sqrt{1 + \sin^2 t}}\,dt \;=\; 0.71195\ldots
 \]
@@ -78,7 +79,7 @@ We prove that
 \[
   \KGC \;\le\; 1.40456 \;<\; \frac{1}{\gd},
 \]
-so that $\KGC$ is strictly below Haagerup's value; this resolves this conjecture of Haagerup. The proof uses a mixture of six Gaussian rounding schemes and bounds the Grothendieck ratio directly by the $\ell^1$ distance between the correlation series of the mixture and a linear function. We show that the bound obtainable in this way from a scheme is limited by the alternating sum of its coefficients, that this sum is at most $\gd$ for phase rounding with any contractive preprocessing, and we construct a pair of rounding maps of two complex Gaussian coordinates for which it exceeds $\gd$. The whole proof, including its finite computations, is formalized in Lean~4.
+so that $\KGC$ is strictly below Haagerup's value; in particular $\KGC\ne1/\gd$. The proof uses a mixture of six Gaussian rounding schemes and bounds the Grothendieck ratio directly by the $\ell^1$ distance between the correlation series of the mixture and a linear function. We show that the bound obtainable in this way from a scheme is limited by the alternating sum of its coefficients, that this sum is at most $\gd$ for phase rounding with any contractive preprocessing, and we construct a pair of rounding maps of two complex Gaussian coordinates for which it exceeds $\gd$. The whole proof, including its finite computations, is formalized in Lean~4.
 \end{abstract}
 
 \maketitle
@@ -109,9 +110,9 @@ In the complex case, after the bounds of Kaijser~\cite{Kai73} and Pisier~\cite{P
   \qquad
   r_k \;:=\; \frac{\pi}{4(k+1)}\binom{2k}{k}^{\!2} 16^{-k} ,
 \end{equation}
-so that $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$. Writing $\varphi^{-1}(u) = \sum_{k\ge0} b_k u^{2k+1}$, Haagerup defines $\gamma_H$ as the solution of $\sum_{k\ge0} |b_k| \gamma_H^{2k+1}=1$ and proves
+so that $r_0 = \frac{\pi}{4}$ and $r_{k+1}/r_k = \frac{(2k+1)^2}{4(k+1)(k+2)}$. Writing $\varphi^{-1}(u) = \sum_{k\ge0} b_k u^{2k+1}$, Haagerup's bound is determined by the solution $\gamma_H\in(0,1)$ of $\sum_{k\ge0} |b_k| \gamma_H^{2k+1}=1$: he proves
 \[
-  \KGC \;\le\; \frac{1}{\gamma_H} \;=\; 1.4049091327\ldots \qquad (\gamma_H = 0.7117898067\ldots).
+  \KGC \;\le\; \frac{1}{\gamma_H} \;=\; 1.4049091327\ldots \qquad (\gamma_H = 0.7117898066\ldots).
 \]
 The series converges absolutely on the closed unit disk, and its value at the imaginary unit gives Haagerup's integral
 \begin{equation}\label{eq:gd-def}
@@ -122,16 +123,16 @@ The series converges absolutely on the closed unit disk, and its value at the im
   \frac{1}{\gd} \;=\; 1.4045759346637420\ldots
   \end{gathered}
 \end{equation}
-Haagerup~\cite[p.~202]{Haa87} remarked that the bound $1/\gamma_H$ is probably not sharp and called $1/\gd$ ``a perhaps more plausible candidate'' for $\KGC$. Pisier's survey~\cite[Section~4]{Pis12} states Haagerup's conjecture as the inequality $\KGC\le1/\gd$.
+Haagerup~\cite[p.~202]{Haa87} remarked that the bound $1/\gamma_H$ is probably not sharp and called $1/\gd$ ``a perhaps more plausible candidate'' for $\KGC$. We call $1/\gd$ \emph{Haagerup's value}. Pisier's survey~\cite[Section~4]{Pis12} records the inequality $\KGC\le1/\gd$ as a conjecture.
 
 Haagerup's bound was first improved by Heilman, Jones, and Malavolta~\cite{HJM26}, who proved
 \[
   1.4 \;<\; \KGC \;<\; 1.404898554746 \;<\; \frac{1}{\gamma_H} - 10^{-5}.
 \]
-Their upper bound mixes six correlation kernels: five preprocessed phase kernels and a sixth kernel built from perturbed phase functions, related to the rounding of Naor, Regev, and Vidick for the noncommutative inequality~\cite{NRV14}. Their lower bound improves on Davie's $1.33807$~\cite{Dav84} and on the bound $1.35584$ of Guo, Fang, and Lu~\cite{GFL26}. They record the equality $\KGC = 1/\gd$ as a remaining conjecture~\cite[Section~1.1]{HJM26}.
+Their upper bound mixes six correlation kernels: five preprocessed phase kernels and a sixth kernel built from perturbed phase functions, related to the rounding of Naor, Regev, and Vidick for the noncommutative inequality~\cite{NRV14}. Their lower bound improves on Davie's $1.33807$~\cite{Dav84} and on the bound $1.35584$ of Guo, Fang, and Lu~\cite{GFL26}. They list the equality $\KGC = 1/\gd$ as a remaining conjecture~\cite[Section~1.1]{HJM26}.
 
 \subsection{The result}
-In this paper we resolve this conjecture of Haagerup in both forms: the inequality $\KGC\le1/\gd$ holds, and it is strict.
+In this paper we prove that $\KGC$ is strictly below Haagerup's value: the inequality $\KGC\le1/\gd$ holds and is strict, so that $\KGC\ne1/\gd$.
 
 \begin{theorem}\label{thm:main}
 The complex Grothendieck constant satisfies
@@ -144,7 +145,7 @@ In particular, $\KGC$ is strictly below Haagerup's value $1/\gd$.
 
 The decimal expansions of $\gd$ and $1/\gd$ in~\eqref{eq:gd-def}, and those of $\gamma_H$ and $1/\gamma_H$ above, are numerical evaluations, given for orientation; the bounds of~\cite{HJM26} are quoted as stated there. The proof of Theorem~\ref{thm:main} uses only the rational enclosure $0.711958633<\gd<0.711958683$ of Lemma~\ref{lem:gd-upper}, which gives $1.4045758<1/\gd<1.4045760$.
 
-Together with the lower bound of~\cite{HJM26}, Theorem~\ref{thm:main} gives $1.4 < \KGC \le 1.40456$. The certificate constructed below proves the slightly smaller bound $\KGC\le 10^{24}/711968053274152967940951 = 1.4045574031\ldots$ (Theorem~\ref{thm:cert}); we state the rounded value because the fifth decimal is all that the comparison with $1/\gd$ needs.
+Together with the lower bound of~\cite{HJM26}, Theorem~\ref{thm:main} gives $1.4 < \KGC \le 1.40456$. The certificate constructed below proves the slightly smaller rational bound $\KGC\le 1.4045574031\ldots$ (Theorem~\ref{thm:cert}); we state the rounded value because the fifth decimal is all that the comparison with $1/\gd$ needs.
 
 \subsection{Overview of the proof}\label{sec:overview}
 A Gaussian rounding scheme turns unit vectors $u_r,v_s$ with inner products $\zeta_{rs}=\langle u_r,v_s\rangle$ into random scalars $Z_r,Z'_s$ of modulus at most one whose correlations are a fixed function of $\zeta_{rs}$,
@@ -181,10 +182,20 @@ Their method and ours also share the form of the verification: interval arithmet
 What is new here is the following. First, Propositions~\ref{prop:nogo} and~\ref{prop:phase-ceiling} identify an obstruction: the slope certified by any kernel is at most its alternating coefficient sum $W$, and every phase kernel with a contractive polynomial preprocessor has $W\le\gd$. So no mixture of such kernels can certify a slope above $\gd$ by Lemma~\ref{lem:transfer}, however its weights and preprocessors are chosen. Second, we construct a rounding map of two complex Gaussian coordinates whose pairing with its reflection in the first coordinate has $W=0.712901\ldots>\gd$. Third, the rounding maps are piecewise trigonometric polynomials on a grid of cells, with values in the closed unit disk rather than on the unit circle (a convenience: by Proposition~\ref{prop:unimodular} unimodular maps of the same two coordinates give the same bounds); their boundedness is certified by sums of squares, and their coefficients are enclosed in exact arithmetic. Fourth, every step of the proof of Theorem~\ref{thm:main}, including the finite computations, is checked in Lean.
 
 \subsection{Formal verification}
-The proof below is complete as a mathematical text up to eight finite computations, which are stated precisely in Section~\ref{sec:computations} and whose methods are justified in Appendix~\ref{app:comp}. The ancillary files of this paper contain a Lean~4 package, described in Appendix~\ref{app:lean}, which proves Theorem~\ref{thm:main} without hypotheses; it contains the formal counterparts of all statements of Sections~\ref{sec:prelim}--\ref{sec:proof} that are used in the proof of Theorem~\ref{thm:main}, and it carries out the eight computations. Three of the computations (Computations~\ref{comp:sos}--\ref{comp:energies}, four Boolean facts in all) are evaluated by Lean's evaluator (\texttt{native\_decide}) and the other five inside Lean's kernel. The package is self-contained and fixed with this paper; it was extracted from the larger development~\cite{Gal26}, which continues to evolve and on which nothing here depends.
+The proof below is complete as a mathematical text up to eight finite computations, which are stated precisely in Section~\ref{sec:computations} and whose methods are justified in Appendix~\ref{app:comp}. The ancillary files of this paper contain a Lean~4 package, described in Appendix~\ref{app:lean}, which proves Theorem~\ref{thm:main} without hypotheses; it contains the formal counterparts of all statements of Sections~\ref{sec:prelim}--\ref{sec:proof} that are used in the proof of Theorem~\ref{thm:main}, and it carries out the eight computations. Three of the computations (Computations~\ref{comp:sos}--\ref{comp:energies}, four Boolean facts in all) are evaluated by Lean's compiled evaluator (\texttt{native\_decide}) and the other five inside Lean's kernel. The package is self-contained and fixed with this paper; it was extracted from the larger development~\cite{Gal26}, which continues to evolve and on which nothing here depends. This work was carried out with substantial assistance from AI systems, which is the reason why the whole proof was formalized; see the section ``Use of AI tools'' at the end of the paper.
 
-\subsection{Organization}
-Section~\ref{sec:prelim} fixes conventions and recalls the complex Hermite basis and Mehler's formula. Section~\ref{sec:theory} contains the general theory: the transfer lemma, the alternating ceiling, the Gaussian realization of a channel, and the ceiling for phase channels. Section~\ref{sec:construction} constructs the cell maps, the reflected pair and the smoothed map. Section~\ref{sec:cert} states the six-channel certificate (Table~\ref{tab:cert}) and the list of computations. Sections~\ref{sec:head} and~\ref{sec:tails} bound the head and the tails, and Section~\ref{sec:proof} assembles the proof of Theorem~\ref{thm:main}, including the comparison with $\gd$. Section~\ref{sec:remarks} contains remarks: how close the certificate is to its ceiling, why unimodular rounding maps suffice, and the role of the computer. Appendix~\ref{app:comp} explains the computations and Appendix~\ref{app:lean} the Lean package.
+\subsection{Structure of the proof}\label{sec:structure}
+The proof of Theorem~\ref{thm:main} occupies Sections~\ref{sec:prelim}--\ref{sec:proof} and is linear. Its steps, with their dependencies, are the following.
+\begin{enumerate}
+  \item \emph{Preliminaries} (Section~\ref{sec:prelim}): complex Gaussian pairs, the complex Hermite basis and Mehler's formula (Lemmas~\ref{lem:mehler} and~\ref{lem:mehler2}).
+  \item \emph{General theory} (Section~\ref{sec:theory}): a dominated sequence $h$ with $D(h)>0$ gives $\KGC\le1/D(h)$ (Lemma~\ref{lem:transfer}); a measurable map $G:\C^2\to\overline{\D}$ of charge one and two polynomials of $\ell^1$ norm at most one give a dominated sequence, which is expressed through the Hermite energies of $G$ (Proposition~\ref{prop:channel}, from step~1 and Lemmas~\ref{lem:lift} and~\ref{lem:proj}).
+  \item \emph{The maps} (Section~\ref{sec:construction}): the cell maps $\ftig$ and $\Tcell$ and the smoothed map $\fsm$ are measurable, of charge one and bounded by one (Lemmas~\ref{lem:cell-basic}, \ref{lem:sos} and~\ref{lem:smooth-basic}, Computation~\ref{comp:sos}), and their Hermite coefficients are finite sums of integrals of Laguerre functions (Lemmas~\ref{lem:cell-hermite} and~\ref{lem:smooth-hermite}, Proposition~\ref{prop:mu}).
+  \item \emph{The certificate} (Section~\ref{sec:cert}): Table~\ref{tab:cert} defines six channels and their mixture $H$, which is dominated by steps~2 and~3 (Proposition~\ref{prop:channels-dominated}). Theorem~\ref{thm:cert} asserts $D(H)\ge\ccert-\dcert$. The eight finite computations on which the remaining steps rest are stated in Section~\ref{sec:computations}.
+  \item \emph{The head} (Section~\ref{sec:head}): $|H_0-\ccert|+\sum_{k=1}^{250}|H_k|\le\eta_{\mathrm{cert}}$ (Proposition~\ref{prop:head}, from step~3 and Computations~\ref{comp:mu}--\ref{comp:head}).
+  \item \emph{The tails} (Section~\ref{sec:tails}): $\sum_{k>250}|h^{(p)}_k|\le\tau_p$ for each channel (Proposition~\ref{prop:tails}, from Lemmas~\ref{lem:kerpos}--\ref{lem:hardy} and Computations~\ref{comp:reg}--\ref{comp:rat}).
+  \item \emph{Conclusion} (Section~\ref{sec:proof}): steps~5 and~6 give Theorem~\ref{thm:cert}, hence $\KGC\le1/(\ccert-\dcert)\le1.40456$ by Lemma~\ref{lem:transfer}; and $1.40456<1/\gd$ by the enclosure of $\gd$ (Lemma~\ref{lem:gd-upper}, Computation~\ref{comp:gd}).
+\end{enumerate}
+Each computation is a precise assertion about explicitly given finite data, and the proofs use the computations only through these assertions. Appendix~\ref{app:comp} describes the algorithms and proves that their outcomes imply the assertions; the data themselves and the verification are in the ancillary files (Appendix~\ref{app:lean}). Propositions~\ref{prop:nogo} and~\ref{prop:phase-ceiling}, the remarks containing numerical values, and Section~\ref{sec:remarks} (how close the certificate is to its ceiling, why unimodular rounding maps suffice, and the role of the computer) explain the construction and are not used in the proof of Theorem~\ref{thm:main}.
 
 \section{Preliminaries}\label{sec:prelim}
 
@@ -579,7 +590,7 @@ The two cell tables used in the certificate, each with a witness table, are part
 \[
   \ftig \qquad\text{and}\qquad \Tcell .
 \]
-By Lemmas~\ref{lem:cell-basic} and~\ref{lem:sos} and Computation~\ref{comp:sos} (Section~\ref{sec:computations}), which verifies~\eqref{eq:sos-cond} for both, $\ftig$ and $\Tcell$ are Borel measurable maps $\C^2\to\overline{\D}$ of charge one.
+(the subscripts are the names of the two tables in the Lean package, \texttt{tig} and \texttt{tcell}). By Lemmas~\ref{lem:cell-basic} and~\ref{lem:sos} and Computation~\ref{comp:sos} (Section~\ref{sec:computations}), which verifies~\eqref{eq:sos-cond} for both, $\ftig$ and $\Tcell$ are Borel measurable maps $\C^2\to\overline{\D}$ of charge one.
 
 \subsection{The reflected pair}\label{sec:tiger}
 The channels with $W>\gd$ use the two preprocessing polynomials $(P,Q)=(-R,R)$.
@@ -597,7 +608,7 @@ Let $G:\C^2\to\overline{\D}$ be measurable of charge one and let $R$ be a real p
 In~\eqref{eq:bivar-kernel}, for $d_1+d_2=2n+1$ the polynomial is $X^{n}(-R)^{d_1}R^{d_2}=(-1)^{d_1}X^nR^{2n+1}$, and $[X^k](X^nR^{2n+1})=[X^{k-n}]R^{2n+1}$, which vanishes for $n>k$.
 \end{proof}
 
-We call the numbers $\mu_n(G)$ the \emph{overlaps} of $G$. The title of this subsection refers to the following description of the channel $(G,-R,R)$. If $(X_1,Y_1)\sim\mathcal{N}_\rho$, then $(-X_1,Y_1)\sim\mathcal{N}_{-\rho}$. Hence, writing $G^-(z_1,z_2):=G(-z_1,z_2)$ for the reflection of $G$ in the first coordinate,
+We call the numbers $\mu_n(G)$ the \emph{overlaps} of $G$. The channel $(G,-R,R)$ has the following description, which explains the title of this subsection. If $(X_1,Y_1)\sim\mathcal{N}_\rho$, then $(-X_1,Y_1)\sim\mathcal{N}_{-\rho}$. Hence, writing $G^-(z_1,z_2):=G(-z_1,z_2)$ for the reflection of $G$ in the first coordinate,
 \[
   \Theta_G(-\rho,\rho) \;=\; \E\bigl[\overline{G^-(X)}\;G(Y)\bigr],
 \]
@@ -629,6 +640,9 @@ For $\epsilon_1=\epsilon_2=1$ a Hermite component of total degree $2n+1$ contrib
   \caption{Left: the overlaps $\mu_n(\ftig)$, $0 \le n \le 250$, from the enclosures of Computation~\ref{comp:mu}. Right: the alternating partial sums $\sum_{n=0}^K (-1)^n \mu_n(\ftig)$ relative to $\gd$; the value at $K=250$ exceeds $\gd$ by about $9.42914\times10^{-4}$.}\label{fig:tiger-mu}
 \end{figure}
 
+\begin{remark}[Numerical values]\label{rem:W-tig}
+The numerical statements of this remark are not used in the proof of Theorem~\ref{thm:main} and are not part of the Lean package; they follow from the enclosures of Computation~\ref{comp:mu} and the tail bounds of Proposition~\ref{prop:tails}, and are reproduced by the script \path{anc/scripts/07_alternating_sums.py}.
+
 For the map $\ftig$, Computation~\ref{comp:mu} encloses the overlaps $\mu_0(\ftig),\dots,\mu_{250}(\ftig)$ in intervals of length less than $2^{-114}$. For orientation, $\mu_0=0.770168\ldots$, $\mu_1=0.081076\ldots$, $\mu_2=0.033522\ldots$, and (Figure~\ref{fig:tiger-mu})
 \[
   \sum_{n=0}^{250} (-1)^n \mu_n(\ftig) \;=\; 0.71290157\ldots \;>\; \gd + 9.429 \times 10^{-4}.
@@ -637,7 +651,8 @@ For channels~$3$ and~$4$ of the certificate the polynomial is $R(X)=a-bX$ with $
 \begin{equation}\label{eq:W-tig}
   0.712901282238\;<\;W\;<\;0.712901282245 ,
 \end{equation}
-so that $W-\gd=9.42622\ldots\times10^{-4}$. (The tail bound $\tau_3$ of channel~$3$ alone would only give $W<0.7129013931$.) On the other hand, the same enclosures give $\mu_0-\sum_{n=1}^{250}|\mu_n|\approx0.600938$. The slope $\mu_0-\sum_{n\ge1}|\mu_n|$ of the channel without preprocessing is at most this number, and it is at least $2\mu_0-1>0.54$ because $\sum_n|\mu_n|\le1$ by Proposition~\ref{prop:channel}(1); so without preprocessing and mixing Lemma~\ref{lem:transfer} cannot give a constant below $1.66406$ from this channel; the other channels of the certificate serve to cancel its higher coefficients. The numerical statements of this paragraph and~\eqref{eq:W-tig} are not used in the proof of Theorem~\ref{thm:main} and are not part of the Lean package; they are reproduced by the script \path{anc/scripts/07_alternating_sums.py}.
+so that $W-\gd=9.42622\ldots\times10^{-4}$. (The tail bound $\tau_3$ of channel~$3$ alone would only give $W<0.7129013931$.) On the other hand, the same enclosures give $\mu_0-\sum_{n=1}^{250}|\mu_n|\approx0.600938$. The slope $\mu_0-\sum_{n\ge1}|\mu_n|$ of the channel without preprocessing is at most this number, and it is at least $2\mu_0-1>0.54$ because $\sum_n|\mu_n|\le1$ by Proposition~\ref{prop:channel}(1); so without preprocessing and mixing Lemma~\ref{lem:transfer} cannot give a constant below $1.66406$ from this channel. The other channels of the certificate serve to cancel its higher coefficients.
+\end{remark}
 
 \subsection{The smoothed map}\label{sec:smooth}
 The second two-coordinate map is obtained from the cell map $\Tcell$ by a rotation and a Gaussian average. Fix the rational numbers
@@ -711,7 +726,9 @@ In particular, $h_0,\dots,h_{250}$ depend only on the energies $E_G(d_1,d_2)$ wi
 For $Q=-X$ the polynomial in~\eqref{eq:bivar-kernel} is $(-1)^{d_2}X^{(d_1+d_2-1)/2+d_2}P^{d_1}$, whose coefficient of $X^k$ is $(-1)^{d_2}[X^{k-(d_1+3d_2-1)/2}]P^{d_1}$ and vanishes unless $d_1+3d_2\le2k+1$. The count is elementary.
 \end{proof}
 
-For channels $0$, $1$ and~$5$ of the certificate, $P(-1)=1$ and $Q(-1)=1$, so by Remark~\ref{rem:signs} these three channels have the same alternating sum $W=\sum_{d_1+d_2\,\mathrm{odd}}(-1)^{(d_1+d_2-1)/2}E_{\fsm}(d_1,d_2)$; the polynomials $P$ only redistribute the coefficients. From the enclosures of Computation~\ref{comp:energies} and the tail bound of Proposition~\ref{prop:tails} for channel~$0$ one obtains $W<0.7119200<\gd$. Like~\eqref{eq:W-tig}, this bound is not used in the proof of Theorem~\ref{thm:main}, is not part of the Lean package, and is reproduced by \path{anc/scripts/07_alternating_sums.py}. Together with Propositions~\ref{prop:nogo} and~\ref{prop:phase-ceiling} it shows that the four channels built from $\fsm$ and from the phase map cannot reach a slope above $\gd$ in any mixture: the two reflected channels are necessary for the certificate.
+\begin{remark}[The alternating sum of the smoothed channels]\label{rem:W-sm}
+For channels $0$, $1$ and~$5$ of the certificate, $P(-1)=1$ and $Q(-1)=1$, so by Remark~\ref{rem:signs} these three channels have the same alternating sum $W=\sum_{d_1+d_2\,\mathrm{odd}}(-1)^{(d_1+d_2-1)/2}E_{\fsm}(d_1,d_2)$; the polynomials $P$ only redistribute the coefficients. From the enclosures of Computation~\ref{comp:energies} and the tail bound of Proposition~\ref{prop:tails} for channel~$0$ one obtains $W<0.7119200<\gd$. Like the values of Remark~\ref{rem:W-tig}, this bound is not used in the proof of Theorem~\ref{thm:main}, is not part of the Lean package, and is reproduced by \path{anc/scripts/07_alternating_sums.py}. Together with Propositions~\ref{prop:nogo} and~\ref{prop:phase-ceiling} it shows that the four channels built from $\fsm$ and from the phase map cannot reach a slope above $\gd$ in any mixture: the two reflected channels are necessary for the certificate.
+\end{remark}
 
 \section{The certificate}\label{sec:cert}
 
@@ -760,12 +777,13 @@ The main result of Sections~\ref{sec:cert}--\ref{sec:proof} is the following.
 \begin{theorem}[Six-channel certificate]\label{thm:cert}
 The sequence $H=(H_k)_{k\ge0}$ is dominated, and
 \[
-  D(H)\;=\;H_0-\sum_{k=1}^\infty|H_k|\;\ge\;\ccert-\dcert\;=\;\frac{711968053274152967940951}{10^{24}} .
+  D(H)\;=\;H_0-\sum_{k=1}^\infty|H_k|\;\ge\;\ccert-\dcert\;=\;0.7119680532\ldots
 \]
 Consequently
 \[
-  \KGC\;\le\;\frac{1}{\ccert-\dcert}\;=\;\frac{10^{24}}{711968053274152967940951}\;=\;1.4045574031\ldots
+  \KGC\;\le\;\frac{1}{\ccert-\dcert}\;=\;1.4045574031\ldots
 \]
+The exact values of the rational numbers $\ccert-\dcert$ and $1/(\ccert-\dcert)$ are given in Computation~\ref{comp:rat}(4).
 \end{theorem}
 
 \begin{remark}[Cancellation across channels]\label{rem:cancel}
@@ -869,13 +887,28 @@ The parameters of Table~\ref{tab:cert} and of~\eqref{eq:smooth-params} and~\eqre
   \item $w_p>0$ and $\sum_{p=0}^5w_p=1$;
   \item $\lone{P_p}\le1$ for $p\in\{0,1,2,5\}$ and $\lone{R_p}\le1$ for $p\in\{3,4\}$ (in fact with equality); $c_\theta^2+s_\theta^2=1$ and $s_\eta^2+c_\eta^2=1$;
   \item $1<\varrho_p<r_{\mathrm{reg},p}$, $\beta_p>0$, and $B_p\,\varrho_p^{-1006}\le\tau_p^2\,(1-\varrho_p^{-4})$ for all $p$;
-  \item $\eta_{\mathrm{cert}}+\sum_pw_p\tau_p=\dcert<\ccert$, and $(\ccert-\dcert)^{-1}=10^{24}/711968053274152967940951\le140456/100000$.
+  \item $\eta_{\mathrm{cert}}+\sum_pw_p\tau_p=\dcert<\ccert$; $\ccert-\dcert=711968053274152967940951/10^{24}$; and $(\ccert-\dcert)^{-1}=10^{24}/711968053274152967940951\le140456/100000$.
 \end{enumerate}
 The arithmetic is exact rational arithmetic. \emph{Lean:} within the proofs of the theorems \texttt{isBound\_cert}, \texttt{certificate\_value} and \texttt{isBound} (kernel). \emph{Script:} \path{01_certificate_arithmetic.py}.
 \end{computation}
 
 \begin{computation}[Rational arithmetic for $\gd$]\label{comp:gd}
-The polynomial identities and the inequalities between explicit rational numbers used in the proof of Lemma~\ref{lem:gd-upper}, as marked there, hold. The arithmetic is exact rational arithmetic. \emph{Lean:} in the proofs of \texttt{gammaDagger\_bounds} and \texttt{inv\_gammaDagger\_gt} (kernel). \emph{Script:} \path{02_gamma_dagger.py}.
+Let $\mathsf{c}_k:=\binom{2k}{k}4^{-k}$ for $k\ge0$, the Taylor coefficients of $(1-x)^{-1/2}$, and $P_{14}(x) := \sum_{k=0}^{14} \mathsf{c}_k x^k$; let $\mathsf{m}_k:=\binom{k}{k/2}2^{-k}$ for even $k\ge0$ and $\mathsf{m}_k:=0$ for odd $k$; and put
+\[
+  a_-:=\frac{40824827623}{5\times10^{10}},\qquad a_+:=\frac{40824830469}{5\times10^{10}},\qquad
+  q_0:=\sum_{k=0}^{14}\frac{\mathsf{c}_k}{3^k}\cdot\frac{\mathsf{m}_k+\mathsf{m}_{k+1}}{2} .
+\]
+Then:
+\begin{enumerate}
+  \item the polynomial $1-(1-x)P_{14}(x)^2$ has the form $\sum_{m=15}^{29}d_mx^m$ with $d_m>0$ for all $15\le m\le29$;
+  \item $a_-^2\cdot\frac32\,(1+3^{-15})\le1\le a_+^2\cdot\frac32\,(1-3^{-15})$;
+  \item $q_0=40545758045051663/73040694872113152$ $(=0.55511\ldots)$, and with the rational bounds $\pi_-<\pi<\pi_+$ of~\eqref{eq:pi},
+  \[
+    0.711958633\;<\;a_-\,q_0\,\frac{\pi_-}2\qquad\text{and}\qquad a_+\,q_0\,\frac{\pi_+}2\;<\;0.711958683 ;
+  \]
+  \item $140456 \times 711958683 = 99998868779448 < 10^{14}$.
+\end{enumerate}
+The arithmetic is exact rational arithmetic. \emph{Lean:} in the proofs of \texttt{gammaDagger\_bounds} and \texttt{inv\_gammaDagger\_gt} (kernel). \emph{Script:} \path{02_gamma_dagger.py}.
 \end{computation}
 
 We record the first consequence.
@@ -911,7 +944,7 @@ By Proposition~\ref{prop:channels-dominated} the hypotheses of Lemmas~\ref{lem:b
 
 All quantities on the right-hand sides are enclosed by the computations: $\mu_n(\ftig)$ for $n\le250$ by Computation~\ref{comp:mu}; $E_{\fsm}(d_1,d_2)$ for $d_1+3d_2\le501$ by Computation~\ref{comp:energies}; and $r_m=\frac\pi4\hat r_m$, where $\hat r_0=1$ and $\hat r_{m+1}=\hat r_m\frac{(2m+1)^2}{4(m+1)(m+2)}$ are rational and
 \begin{equation}\label{eq:pi}
-  3.14159265358979323846\;<\;\pi\;<\;3.14159265358979323847 .
+  \pi_-:=3.14159265358979323846\;<\;\pi\;<\;3.14159265358979323847=:\pi_+ .
 \end{equation}
 
 \begin{proposition}[Head bound]\label{prop:head}
@@ -1064,7 +1097,7 @@ and $\RePart(y^{\mathsf{T}}\sB y)=y^{\mathsf{T}}\sZ y$. Collecting terms, with $
   \mathcal{I}:=\int_{\R^2}\!\int_{\R^2}e^{-\beta|y|^2/2}\,|\mathfrak{m}(y,y')|\,e^{-\beta|y'|^2/2}\,dy\,dy'=\frac{\pi}{\sqrt{\det\sZ}}\cdot\frac{(2\pi)^2}{\sqrt{\det(\sT+\beta I)\,\det(\sT+2\sE+\beta I)}} .
 \end{equation}
 
-\emph{Step 3: the Cauchy--Schwarz inequality.} Since $|\mathfrak{k}(x,y)|=\exp(-\frac12x^{\mathsf{T}}\sZ x-\frac12y^{\mathsf{T}}\sZ y+x^{\mathsf{T}}\sC_ry)$, Steps~1 and~2 applied with $\sC_r$ in place of $\sC$ (so that $\sK_i$ is replaced by $0$, and the two matrices of Step~2 by $\sT+\beta I$ and $\sZ+\beta I$) show that
+\emph{Step 3: the Cauchy--Schwarz inequality.} Since $|\mathfrak{k}(x,y)|=\exp(-\frac12x^{\mathsf{T}}\sZ x-\frac12y^{\mathsf{T}}\sZ y+x^{\mathsf{T}}\sC_ry)$, Steps~1 and~2 applied with $(\sZ,\sC_r)$ in place of $(\sB,\sC)$ (so that $\sK_i$ is replaced by $0$, and the two matrices of Step~2 by $\sT+\beta I$ and $\sZ+\beta I$, which are positive definite) show that
 \[
   \int_{\R^4}\!\int_{\R^4}\!\int_{\R^4}|\mathfrak{K}(\mathbf{x},\mathbf{y})|\,\varphi_\beta(\mathbf{y})\,|\mathfrak{K}(\mathbf{x},\mathbf{y}')|\,\varphi_\beta(\mathbf{y}')\,d\mathbf{x}\,d\mathbf{y}\,d\mathbf{y}'<\infty .
 \]
@@ -1142,7 +1175,7 @@ By Proposition~\ref{prop:channels-dominated}, $H\in\Scl$ and $H$ is absolutely s
 \end{equation}
 By Proposition~\ref{prop:head} the bracket is at most $\eta_{\mathrm{cert}}$, and by Proposition~\ref{prop:tails} the last sum is at most $\sum_pw_p\tau_p$. Hence, by~\eqref{eq:cert-consts} and Computation~\ref{comp:rat}(4),
 \[
-  D(H)\;\ge\;\ccert-\eta_{\mathrm{cert}}-\sum_{p=0}^5w_p\tau_p\;=\;\ccert-\dcert\;=\;\frac{711968053274152967940951}{10^{24}}\;>\;0 .
+  D(H)\;\ge\;\ccert-\eta_{\mathrm{cert}}-\sum_{p=0}^5w_p\tau_p\;=\;\ccert-\dcert\;>\;0 .
 \]
 Lemma~\ref{lem:transfer} gives $\KGC\le1/D(H)\le1/(\ccert-\dcert)$. \qed
 
@@ -1157,31 +1190,33 @@ Haagerup's integral satisfies $0.711958633 < \gd < 0.711958683$. In particular, 
 \end{lemma}
 
 \begin{proof}
-The steps marked $(\ast)$ are identities between polynomials with rational coefficients or inequalities between explicit rational numbers; they constitute Computation~\ref{comp:gd}.
+We use the notation $\mathsf{c}_k$, $P_{14}$, $\mathsf{m}_k$, $a_\pm$, $q_0$ of Computation~\ref{comp:gd}; all arithmetic with explicit rational numbers is contained in the four parts of that computation.
 
-Write $1 + \sin^2 t = \frac{3}{2}(1 - x)$ with $x := \frac{1}{3}\cos(2t) \in [-\tfrac{1}{3}, \tfrac{1}{3}]$. Let $\mathsf{c}_k:=\binom{2k}{k}4^{-k}$, the Taylor coefficients of $(1-x)^{-1/2}$, and let $P_{14}(x) := \sum_{k=0}^{14} \mathsf{c}_k x^k$. Since $\mathsf{c}_{2m+1}/\mathsf{c}_{2m} = \frac{4m+1}{4m+2} < 1$, each term $(\mathsf{c}_{2m} + \mathsf{c}_{2m+1} x) x^{2m}$, $0 \le m \le 6$, is non-negative for $|x|\le\frac13$, the term with $m=0$ is positive, and the remaining term $\mathsf{c}_{14}x^{14}$ is non-negative; hence $P_{14}(x) > 0$ on $[-\tfrac{1}{3}, \tfrac{1}{3}]$. The coefficients of $(1-x)P_{14}(x)^2$ in degrees $0,\dots,14$ agree with those of $(1-x)\bigl(\sum_{k\ge0}\mathsf{c}_kx^k\bigr)^2=1$, so
+\emph{Step 1: a polynomial approximation of $(1-x)^{-1/2}$.} Write $1 + \sin^2 t = \frac{3}{2}(1 - x)$ with $x := \frac{1}{3}\cos(2t) \in [-\tfrac{1}{3}, \tfrac{1}{3}]$. Since $\mathsf{c}_{2m+1}/\mathsf{c}_{2m} = \frac{4m+1}{4m+2} < 1$, each term $(\mathsf{c}_{2m} + \mathsf{c}_{2m+1} x) x^{2m}$, $0 \le m \le 6$, is non-negative for $|x|\le\frac13$, the term with $m=0$ is positive, and the remaining term $\mathsf{c}_{14}x^{14}$ is non-negative; hence $P_{14}(x) > 0$ on $[-\tfrac{1}{3}, \tfrac{1}{3}]$. The coefficients of $(1-x)P_{14}(x)^2$ in degrees $0,\dots,14$ agree with those of $(1-x)\bigl(\sum_{k\ge0}\mathsf{c}_kx^k\bigr)^2=1$, so
 \[
   (1 - x)\, P_{14}(x)^2 \;=\; 1 - \sum_{m=15}^{29} d_m\, x^m
 \]
-with rational numbers $d_m$, and one finds $d_m > 0$ for all $15\le m\le29$ $(\ast)$; evaluating at $x = 1$ gives $\sum_{m=15}^{29} d_m = 1$. For $|x| \le \frac{1}{3}$ we get $|1 - (1 - x)P_{14}(x)^2| \le 3^{-15}$, hence
+with rational numbers $d_m$, and $d_m > 0$ for all $15\le m\le29$ by Computation~\ref{comp:gd}(1); evaluating at $x = 1$ gives $\sum_{m=15}^{29} d_m = 1$. For $|x| \le \frac{1}{3}$ we get $|1 - (1 - x)P_{14}(x)^2| \le 3^{-15}$, hence
 \[
   \frac{P_{14}(x)}{\sqrt{1+3^{-15}}}\;\le\;(1-x)^{-1/2}\;\le\;\frac{P_{14}(x)}{\sqrt{1-3^{-15}}} .
 \]
-Since $\bigl(\frac{40824827623}{5\times10^{10}}\bigr)^2\cdot\frac32\,(1+3^{-15})\le1\le\bigl(\frac{40824830469}{5\times10^{10}}\bigr)^2\cdot\frac32\,(1-3^{-15})$ $(\ast)$, we obtain for all $t \in \R$,
-\[
-  \frac{40824827623}{5 \times 10^{10}}\, \cos^2 t\, P_{14}\!\left(\tfrac{1}{3}\cos 2t\right)
+By Computation~\ref{comp:gd}(2), $a_-\le\bigl(\frac32(1+3^{-15})\bigr)^{-1/2}$ and $\bigl(\frac32(1-3^{-15})\bigr)^{-1/2}\le a_+$. Since $(1+\sin^2t)^{-1/2}=(\frac32)^{-1/2}(1-x)^{-1/2}$, we obtain for all $t \in \R$,
+\begin{equation}\label{eq:gd-integrand}
+  a_-\, \cos^2 t\, P_{14}\!\left(\tfrac{1}{3}\cos 2t\right)
   \;\le\; \frac{\cos^2 t}{\sqrt{1 + \sin^2 t}}
-  \;\le\; \frac{40824830469}{5 \times 10^{10}}\, \cos^2 t\, P_{14}\!\left(\tfrac{1}{3}\cos 2t\right).
-\]
-Next, $\cos^2t=\frac12(1+\cos2t)$, and for every $k\ge0$ the reduction formula for $\int\cos^ku\,du$ shows that $\cos^ku-\mathsf{m}_k$ is the derivative of $\sin u$ times a polynomial in $\cos u$ with rational coefficients, where $\mathsf{m}_k:=\binom{k}{k/2}2^{-k}$ for even $k$ and $\mathsf{m}_k:=0$ for odd $k$. Hence $\cos^2 t\,P_{14}(\frac{1}{3}\cos 2t)$ has a primitive of the form $q_0\, t + \sin(2t)\, Q_{14}(\cos 2t)$ with a polynomial $Q_{14}$ with rational coefficients and
+  \;\le\; a_+\, \cos^2 t\, P_{14}\!\left(\tfrac{1}{3}\cos 2t\right).
+\end{equation}
+
+\emph{Step 2: the integral of the polynomial.} We have $\cos^2t=\frac12(1+\cos2t)$, and for every $k\ge0$ the reduction formula for $\int\cos^ku\,du$ shows that $\cos^ku-\mathsf{m}_k$ is the derivative of $\sin u$ times a polynomial in $\cos u$ with rational coefficients. Hence $\cos^2 t\,P_{14}(\frac{1}{3}\cos 2t)=\sum_{k=0}^{14}\mathsf{c}_k3^{-k}\cdot\frac12\bigl(\cos^k2t+\cos^{k+1}2t\bigr)$ has a primitive of the form $q_0\, t + \sin(2t)\, Q_{14}(\cos 2t)$ with a polynomial $Q_{14}$ with rational coefficients and with the number $q_0$ of Computation~\ref{comp:gd}. Since $\sin 0 = \sin \pi = 0$,
 \[
-  q_0 \;=\;\sum_{k=0}^{14}\frac{\mathsf{c}_k}{3^k}\cdot\frac{\mathsf{m}_k+\mathsf{m}_{k+1}}{2}\;=\; \frac{40545758045051663}{73040694872113152}\qquad(\ast).
+  \int_0^{\pi/2} \cos^2 t\, P_{14}\bigl(\tfrac{1}{3}\cos 2t\bigr)\,dt \;=\; q_0\, \frac{\pi}{2} .
 \]
-Since $\sin 0 = \sin \pi = 0$, we get $\int_0^{\pi/2} \cos^2 t\, P_{14}(\frac{1}{3}\cos 2t)\,dt = q_0\, \frac{\pi}{2}$. Combining this with the enclosure~\eqref{eq:pi} of $\pi$ yields
+
+\emph{Step 3: conclusion.} Integrating~\eqref{eq:gd-integrand} over $[0,\pi/2]$ and using Step~2, the bounds $\pi_-<\pi<\pi_+$ of~\eqref{eq:pi} and Computation~\ref{comp:gd}(3),
 \[
-  0.711958633\;<\;\frac{40824827623}{5 \times 10^{10}}\,q_0\,\frac\pi2\;\le\;\gd\;\le\;\frac{40824830469}{5 \times 10^{10}}\,q_0\,\frac\pi2\;<\;0.711958683\qquad(\ast).
+  0.711958633\;<\;a_-\,q_0\,\frac{\pi_-}2\;\le\;\gd\;\le\;a_+\,q_0\,\frac{\pi_+}2\;<\;0.711958683 .
 \]
-Finally, $140456 \times 711958683 = 99998868779448 < 10^{14}$ $(\ast)$, that is, $1.40456\times0.711958683<1$, whence $1.40456 < 1/\gd$.
+Finally, $1.40456\times0.711958683<1$ by Computation~\ref{comp:gd}(4), whence $1.40456 < 1/\gd$.
 \end{proof}
 
 \subsection{Proof of Theorem~\ref{thm:main}}
@@ -1240,7 +1275,7 @@ Then $\widetilde G$ is measurable, $\widetilde G(cz,cw)=c\,\widetilde G(z,w)$ fo
 \end{remark}
 
 \subsection{Computer assistance}
-The proof is computer-assisted in two ways. The certificate (the integer tables of the two cell maps, the sums-of-squares witnesses, the polynomials and the weights) was found by numerical optimization, with the assistance of AI systems; none of that search is part of the proof. The verification is the Lean~4 development of Appendix~\ref{app:lean}, which checks the whole proof of Theorem~\ref{thm:main}: the transfer lemma, the realization of each channel, the six-channel certificate with its finite computations, and the enclosure of $\gd$. AI systems are not authors of this paper; the author takes full responsibility for its content.
+The proof is computer-assisted in two ways. The certificate (the integer tables of the two cell maps, the sums-of-squares witnesses, the polynomials and the weights) was found by numerical optimization; none of that search is part of the proof, which only uses the properties of the resulting finite data stated in Section~\ref{sec:computations}. The verification is the Lean~4 development of Appendix~\ref{app:lean}, which checks the whole proof of Theorem~\ref{thm:main}: the transfer lemma, the realization of each channel, the six-channel certificate with its finite computations, and the enclosure of $\gd$. The role of AI systems in this work is described in the section ``Use of AI tools'' at the end of the paper.
 
 \appendix
 
@@ -1532,21 +1567,25 @@ Here \texttt{cCertQ} and \texttt{deltaCertQ} are the rational numbers $\ccert$ a
   \item \path{Haagerup/CellMap.lean}, \path{Haagerup/CellHermite.lean}: cell maps (\texttt{cellFn}, \texttt{measurable\_cellFn}, \texttt{cellFn\_rot2}, \texttt{norm\_cellFn\_le}; Lemmas~\ref{lem:cell-basic} and~\ref{lem:sos}), their Hermite coefficients (\texttt{integral\_H2\_cellFn\_charge\_one}; Lemma~\ref{lem:cell-hermite}), the reflected channel (\texttt{tig\_bivarKernel\_eq}; Lemma~\ref{lem:anti} and Proposition~\ref{prop:mu}), and the energy formula~\eqref{eq:energy-sm} (\texttt{smoothed\_energy\_eq}).
   \item \path{Haagerup/CellOverlapCore.lean}, \path{Haagerup/CellOverlap.lean}, \path{Haagerup/Smoothed*.lean}: soundness of the algorithms of Sections~\ref{app:laguerre}--\ref{app:smooth} (\texttt{lagTable1024\_sound}, \texttt{mem\_muTigOf}, \texttt{smoothedRowsCheck\_table\_sound}).
   \item \path{Haagerup/SchurGaussian.lean}: the pointwise bound (\texttt{norm\_HholPair\_sq\_le}; Lemma~\ref{lem:schur}).
-  \item \path{Haagerup/SchurHardy.lean}, \path{Haagerup/TaylorHardySound.lean}, \path{Haagerup/ContourChecks/}: holomorphy (\texttt{differentiableOn\_HholPair\_RtGen}; Lemma~\ref{lem:holo}), the reduction to the boundary (\texttt{kerPos\_on\_ball\_of\_reContractive\_Q1}; Lemmas~\ref{lem:kerpos} and~\ref{lem:maxprinc}), the identification for real $t$ (\texttt{hreal\_smoothed}, \texttt{hreal\_unsmoothed}; Lemmas~\ref{lem:real-cov} and~\ref{lem:six-corr}), the continuation and Parseval steps of Lemma~\ref{lem:hardy} (\texttt{hasSum\_odd\_of\_eqOn\_real}, \texttt{sum\_sq\_le\_of\_mean\_le}), soundness of the Taylor models of Section~\ref{app:taylor}, the tail bounds (\texttt{hardy\_smoothed\_channel\_tm}, \texttt{hardy\_phase\_channel\_tm}, \texttt{hardy\_anti\_channel\_tm}; Proposition~\ref{prop:tails}), and the twelve checks of Computations~\ref{comp:reg} and~\ref{comp:mean}.
+  \item \path{Haagerup/SchurHardy.lean}, \path{Haagerup/TaylorHardySound.lean}, \path{Haagerup/ContourChecks/}: holomorphy (\texttt{differentiableOn\_HholPair\_RtGen}; Lemma~\ref{lem:holo}), the reduction to the boundary (\texttt{kerPos\_on\_ball\_of\_reContractive\_Q1}; Lemmas~\ref{lem:kerpos} and~\ref{lem:maxprinc}), the identification for real $t$ (\texttt{hreal\_smoothed}, \texttt{hreal\_unsmoothed}; Lemmas~\ref{lem:real-cov} and~\ref{lem:six-corr}), the continuation and Parseval steps of Lemma~\ref{lem:hardy} (\texttt{hasSum\_odd\_of\_eqOn\_real}, \texttt{sum\_sq\_le\_of\_mean\_le}), soundness of the Taylor models of Section~\ref{app:taylor}, the mean-square bounds on the circles of radius $\varrho_p$ from which Proposition~\ref{prop:tails} follows (\texttt{hardy\_smoothed\_channel\_tm}, \texttt{hardy\_phase\_channel\_tm}, \texttt{hardy\_anti\_channel\_tm}), and the twelve checks of Computations~\ref{comp:reg} and~\ref{comp:mean}.
   \item \path{Haagerup/HeadCheck.lean}, \path{Haagerup/FastHeadSound.lean}: Computation~\ref{comp:head} and its soundness (Section~\ref{app:head}), and the combination of head and tails (\texttt{convex\_transfer\_head}).
   \item \path{Haagerup/GammaDagger.lean}: Lemma~\ref{lem:gd-upper} (\texttt{gammaDagger\_bounds}).
-  \item \path{Haagerup/CertCheck.lean}, \path{Haagerup/Parameters.lean}, \path{Haagerup/Data/}: the assembly (\texttt{isBound\_cert}), the parameters of Table~\ref{tab:cert}, the two cell tables with their witness tables, and the tables of Computations~\ref{comp:mu} and~\ref{comp:energies}.
+  \item \path{Haagerup/CertCheck.lean}, \path{Haagerup/Parameters.lean}, \path{Haagerup/Data/}: the tail bounds of Proposition~\ref{prop:tails} (by \texttt{hardy\_tail}, inside the proof of \texttt{isBound\_cert}), the assembly (\texttt{isBound\_cert}), the parameters of Table~\ref{tab:cert}, the two cell tables with their witness tables, and the tables of Computations~\ref{comp:mu} and~\ref{comp:energies}.
   \item \path{HaagerupKernel/}: the executable checkers (integer, interval, Taylor-model and fixed-point polynomial arithmetic), which do not import Mathlib.
-  \item \path{Axioms.lean}, \path{native.txt}: the axiom report of the public theorems and the list of the four facts evaluated by \texttt{native\_decide}.
-  \item \path{scripts/}: recomputations of the finite computations (\path{01_certificate_arithmetic.py}, \path{02_gamma_dagger.py}, \path{03_cell_maps.py}, \path{04_overlaps.py}, \path{05_head.py}, \path{06_tails.py}), of the alternating sums of Sections~\ref{sec:tiger}, \ref{sec:smooth} and~\ref{sec:remarks} (\path{07_alternating_sums.py}), and of Figure~\ref{fig:tiger-mu} (\path{make_figures.py}), with the shared module \path{common.py}, the driver \path{run_all.sh}, the recorded outputs in \path{expected_output/}, and \path{README.md}. Scripts 01, 02, 03, 05 and 07 use exact rational or integer arithmetic for the rational parts of the computations; script 04 uses high-precision floating-point arithmetic and script 06 a double-precision sample of the circle means, both without rigorous error control. The scripts are not part of the proof.
+  \item \path{Axioms.lean}, \path{native.txt}, \path{check_axioms.py}: the axiom report of the public theorems, the list of the four facts evaluated by \texttt{native\_decide}, and a script that compares the two.
+  \item \path{README.md}, \path{LICENSE}: the description of the package, and the license of the Lean code and of the scripts (Apache License~2.0); the text of the article is licensed separately, through arXiv.
+  \item \path{scripts/}: recomputations of the finite computations (\path{01_certificate_arithmetic.py}, \path{02_gamma_dagger.py}, \path{03_cell_maps.py}, \path{04_overlaps.py}, \path{05_head.py}, \path{06_tails.py}), of the alternating sums of Sections~\ref{sec:tiger}, \ref{sec:smooth} and~\ref{sec:remarks} (\path{07_alternating_sums.py}), and of Figure~\ref{fig:tiger-mu} (\path{make_figures.py}), with the shared module \path{common.py}, the driver \path{run_all.sh} with its test \path{test_run_all.sh}, the recorded outputs in \path{expected_output/}, the list of Python packages \path{requirements.txt}, and \path{README.md}. Scripts 01, 02, 03, 05 and 07 use exact rational or integer arithmetic for the rational parts of the computations; script 04 uses high-precision floating-point arithmetic and script 06 a double-precision sample of the circle means, both without rigorous error control. The scripts are not part of the proof.
 \end{itemize}
-With the pinned toolchain installed, \texttt{lake exe cache get} fetches Mathlib's compiled files, \texttt{lake build} checks the whole proof, and \texttt{lake env lean Axioms.lean} prints the axioms used. The build takes about one hour on one core, almost all of it in the module \path{Haagerup/Data/OverlapData.lean}.
+With the pinned toolchain installed, \texttt{lake exe cache get} fetches Mathlib's compiled files, \texttt{lake build} checks the whole proof, and \texttt{lake env lean Axioms.lean} prints the axioms used. The build takes between twenty minutes and one hour, depending on the machine, and 16\,GB of memory suffice; almost all of the time is spent in one data module, \path{Haagerup/Data/OverlapData.lean}, whose two \texttt{native\_decide} facts run on a single core (\path{README.md} records the measurements).
 
 \subsection{What is trusted}
 The axiom report lists Lean's three standard axioms (\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}) and four further facts, each asserting that a closed Boolean expression evaluates to \texttt{true} and each established by \texttt{native\_decide}, that is, by running Lean's evaluator rather than its kernel: \texttt{tig\_sos\_ok} and \texttt{tcell\_sos\_ok} (Computation~\ref{comp:sos}), \texttt{tig\_mu\_ok} (Computation~\ref{comp:mu}) and \texttt{tcell\_rows\_ok} (Computation~\ref{comp:energies}). For these four facts, that is, for Computations~\ref{comp:sos}--\ref{comp:energies}, the correctness of the evaluator is part of the trusted base. Everything else, including the head sum (\texttt{head\_sum\_ok}), the twelve checks on circles (\texttt{reg0\_ok}--\texttt{reg5\_ok}, \texttt{mean0\_ok}--\texttt{mean5\_ok}) and all rational comparisons, is checked by the kernel.
 
 \subsection{Differences between the paper and the formalization}
-The formal statements differ from those of the paper in the following inessential ways. The transfer lemma is stated with a center $c$ and a residual bound $|h_0-c|+\sum_{k\ge1}|h_k|\le\delta<c$, with conclusion $\texttt{IsBound}\,(1/(c-\delta))$; this is Lemma~\ref{lem:transfer} combined with~\eqref{eq:budget-split}. The functional $\Theta_{F,G}[\Gamma]$ is called \texttt{HholPair}, the matrices $\Gamma_p(t)$ are instances of \texttt{RtGen}, and $\Lambda_\beta$ is \texttt{gaussDenominator}; instead of the set $\Om$, the formalization works with the conclusion of Lemma~\ref{lem:kerpos} (\texttt{KerPos}). The smoothing~\eqref{eq:smooth-map} integrates over $\gCC$ with an unused coordinate. Lemma~\ref{lem:adm-omega} is not formalized: the formal counterpart of Lemma~\ref{lem:schur} assumes only $\beta>0$ and the positive definiteness of $\sZ$ and $\sT$, and establishes the convergence of the integrals directly. The error constants of Proposition~\ref{prop:head-sound} are smaller than those of the formal proof (Section~\ref{app:head}). The Laguerre polynomials carry the sign $(-1)^n$ (Section~\ref{app:laguerre}). Computation~\ref{comp:rat} is proved with inequalities where the paper states equalities that are not needed as such. The statements that are not used in the proof of Theorem~\ref{thm:main} are not formalized: Propositions~\ref{prop:nogo} and~\ref{prop:phase-ceiling}, Remark~\ref{rem:signs}, and the numerical values of alternating sums in Sections~\ref{sec:tiger}, \ref{sec:smooth} and~\ref{sec:remarks}.
+The formal statements differ from those of the paper in the following inessential ways. The transfer lemma is stated with a center $c$ and a residual bound $|h_0-c|+\sum_{k\ge1}|h_k|\le\delta<c$, with conclusion $\texttt{IsBound}\,(1/(c-\delta))$; this is Lemma~\ref{lem:transfer} combined with~\eqref{eq:budget-split}. The functional $\Theta_{F,G}[\Gamma]$ is called \texttt{HholPair}, the matrices $\Gamma_p(t)$ are instances of \texttt{RtGen}, and $\Lambda_\beta$ is \texttt{gaussDenominator}; instead of the set $\Om$, the formalization works with the conclusion of Lemma~\ref{lem:kerpos} (\texttt{KerPos}). The smoothing~\eqref{eq:smooth-map} integrates over $\gCC$ with an unused coordinate. Lemma~\ref{lem:adm-omega} is not formalized: the formal counterpart of Lemma~\ref{lem:schur} assumes only $\beta>0$ and the positive definiteness of $\sZ$ and $\sT$, and establishes the convergence of the integrals directly. The error constants of Proposition~\ref{prop:head-sound} are smaller than those of the formal proof (Section~\ref{app:head}). The Laguerre polynomials carry the sign $(-1)^n$ (Section~\ref{app:laguerre}). Computation~\ref{comp:rat} is proved with inequalities where the paper states equalities that are not needed as such. Lemma~\ref{lem:proj} has no public counterpart: it is the private lemma \texttt{map\_pairProj}, used in the proof of \texttt{rounding\_diskKernel}. The theorem \texttt{phase\_bivarKernel\_eq} is stated for the second polynomial $Q=0$ only, which is the only case in which Lemma~\ref{lem:phase-energy} is used. The formal \texttt{energy} of Definition~\ref{def:energy} sums over all multi-indices of the given bidegree, not only over those of charge one; the two sums agree for maps of charge one, by Lemma~\ref{lem:charge}. In Lemma~\ref{lem:maxprinc} the formal proof applies the maximum modulus principle to the functions $\exp(\pm v^{\mathsf{T}}\Gamma(t)v)$, where the paper applies the maximum principle to the harmonic functions $\pm u_v$. The three theorems \texttt{hardy\_smoothed\_channel\_tm}, \texttt{hardy\_phase\_channel\_tm} and \texttt{hardy\_anti\_channel\_tm} prove the mean-square bound $\sum_{k}\bigl(h^{(p)}_k\bigr)^2\varrho_p^{2(2k+1)}\le B_p$ of the proof of Proposition~\ref{prop:tails}; its last step, the Cauchy--Schwarz inequality of Lemma~\ref{lem:hardy} (\texttt{hardy\_tail}), is taken in \path{Haagerup/CertCheck.lean}. The statements that are not used in the proof of Theorem~\ref{thm:main} are not formalized: Propositions~\ref{prop:nogo} and~\ref{prop:phase-ceiling}, Remark~\ref{rem:signs}, and the numerical values of alternating sums in Sections~\ref{sec:tiger}, \ref{sec:smooth} and~\ref{sec:remarks}.
+
+\section*{Use of AI tools}
+This work was carried out with substantial assistance from large language model systems: Claude (Anthropic), GPT and Codex (OpenAI), and Gemini (Google). Working under the author's direction, these systems contributed to the proof strategy, to the numerical search for the certificate, to the Lean formalization, and to the text of this paper. For this reason the correctness of the result was not left to depend on reading alone: every step of the proof of Theorem~\ref{thm:main}, including the eight finite computations of Section~\ref{sec:computations}, is formalized in Lean~4 with Mathlib (Appendix~\ref{app:lean}). Lean's kernel checks all of it except four Boolean facts (Computations~\ref{comp:sos}--\ref{comp:energies}), which are evaluated by Lean's compiled evaluator through \texttt{native\_decide}; that the outcome of each computation implies the mathematical statement in which it is used is itself proved in Lean and checked by the kernel. The formal theorem has no hypotheses and depends only on Lean's three standard axioms and these four facts. The search that produced the certificate is not part of the proof. AI systems are not authors of this paper; the author takes full responsibility for its content.
 
 \begin{thebibliography}{99}
 

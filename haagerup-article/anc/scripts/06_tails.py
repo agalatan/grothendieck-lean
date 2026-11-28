@@ -12,8 +12,10 @@ Lean       : `Haagerup.reg0_ok` .. `reg5_ok` (positivity on the circle |t| = r_r
              sum_k (h_k^(p))^2 rho_p^(4k+2) <= B_p through `Haagerup.hardy_smoothed_channel_tm`,
              `hardy_phase_channel_tm`, `hardy_anti_channel_tm` (TaylorHardySound.lean), and the tail through
              `Haagerup.hardy_tail` (Transfer.lean).  The exact comparison of B_p with tau_p is in 01.
-Runtime    : about 30 seconds (most of it the exact head series for the Parseval sums).
+Runtime    : about 15 to 30 seconds (most of it the exact head series for the Parseval sums).
 Needs      : numpy.
+Prints     : per channel the sampled minima of the positivity conditions, the mean of 1/Lambda over the circle
+             (7 decimals) next to B_p, the Parseval sum of the head, and the tail bound next to tau_p.
 
 Notation of the paper (Lean names in brackets).  Gamma_p(t) [RtGen] is the complex symmetric 2 x 2 matrix
         Gamma_p(t) = M diag(t P_p(t^2), -t^3) M      for p = 0, 1, 5,
@@ -46,13 +48,12 @@ import sys
 sys.dont_write_bytecode = True  # leave no __pycache__ next to the scripts
 
 import math
-from fractions import Fraction
 
 import common
 from common import Report, dec, dec_up, sci
 
 
-def r_matrix(np, p: int, t):
+def gamma_matrix(p: int, t):
     """Gamma_p(t) as the three entries (a, b, c) of [[a, b], [b, c]], for a numpy array t of complex numbers."""
     par = common.parameters()
     P, Q = common.channel_polys(p)
@@ -71,13 +72,13 @@ def sym_min_eig(a, b, c):
     return (a + c) / 2 - (((a - c) / 2) ** 2 + b * b) ** 0.5
 
 
-def schur_bound(np, a, b, c, j: float):
+def schur_denominator(np, a, b, c, j: float):
     """(Lambda_beta(Gamma), min eigenvalue of Z, min eigenvalue of T) for Gamma = [[a, b], [b, c]], beta = j;
     the paper's definition of the Schur denominator, written out for symmetric 2 x 2 matrices."""
-    s11, s12, s22 = a * a + b * b, a * b + b * c, b * b + c * c
+    s11, s12, s22 = a * a + b * b, a * b + b * c, b * b + c * c              # Gamma^2
     det = (1 - s11) * (1 - s22) - s12 * s12
-    a11, a12, a22 = (1 - s22) / det, s12 / det, (1 - s11) / det            # A = (I - R^2)^-1
-    c11, c12, c22 = a * a11 + b * a12, a * a12 + b * a22, b * a12 + c * a22  # C = R A (symmetric)
+    a11, a12, a22 = (1 - s22) / det, s12 / det, (1 - s11) / det              # A = (I - Gamma^2)^-1
+    c11, c12, c22 = a * a11 + b * a12, a * a12 + b * a22, b * a12 + c * a22  # C = Gamma A (symmetric)
     z11, z12, z22 = a11.real - j, a12.real, a22.real - j
     zdet = z11 * z22 - z12 * z12
 
@@ -97,14 +98,14 @@ def schur_bound(np, a, b, c, j: float):
     return den, sym_min_eig(z11, z12, z22), sym_min_eig(t11, t12, t22)
 
 
-def schur_bound_second_form(np, a, b, c, j: float):
+def schur_denominator_second_form(np, a, b, c, j: float):
     """Lambda in the form in which the Lean checker evaluates it (the paper's appendix on Taylor models;
     HaagerupKernel/TaylorHardy.lean), with generic 2 x 2 linear algebra: G+- = Re (I -+ Gamma)^-1 - beta I,
     Z = (G+ + G-)/2, Cr = (G+ - G-)/2, Ci = Im((I - Gamma)^-1 - (I + Gamma)^-1)/2, T = G- Z^-1 G+,
     E = (Cr Z^-1 Cr + Ci Z^-1 Ci)/2, and |det(I - Gamma^2)|^2 = |det(I - Gamma)|^2 |det(I + Gamma)|^2."""
-    R = np.stack([np.stack([a, b], axis=-1), np.stack([b, c], axis=-1)], axis=-2)
+    gam = np.stack([np.stack([a, b], axis=-1), np.stack([b, c], axis=-1)], axis=-2)
     eye = np.eye(2)
-    inv_m, inv_p = np.linalg.inv(eye - R), np.linalg.inv(eye + R)
+    inv_m, inv_p = np.linalg.inv(eye - gam), np.linalg.inv(eye + gam)
     gp, gm = inv_m.real - j * eye, inv_p.real - j * eye
     z = (gp + gm) / 2
     cr = (gp - gm) / 2
@@ -113,14 +114,14 @@ def schur_bound_second_form(np, a, b, c, j: float):
     t = gm @ zi @ gp
     e = (cr @ zi @ cr + ci @ zi @ ci) / 2
     det = np.linalg.det
-    return (16 * j * j * np.abs(det(eye - R)) ** 2 * np.abs(det(eye + R)) ** 2 * det(z)
+    return (16 * j * j * np.abs(det(eye - gam)) ** 2 * np.abs(det(eye + gam)) ** 2 * det(z)
             * det(t + j * eye) * det(t + 2 * e + j * eye))
 
 
-def one_dim_factor(r, j: float):
+def one_dim_factor(g, j: float):
     """The paper's function lambda_beta of one complex variable: Lambda_beta(diag(g1, g2)) =
     16 beta^2 lambda_beta(g1) lambda_beta(g2)."""
-    x2, y2 = r.real ** 2, r.imag ** 2
+    x2, y2 = g.real ** 2, g.imag ** 2
     u = 1 - x2 + y2
     w = y2 / u
     return (1 - j - w) * (1 + y2 - j * u) / (1 - j * (u + 4 * x2 * w))
@@ -143,7 +144,7 @@ def main() -> int:
     for p in range(6):
         radii = float(reg[p]) * np.arange(1, 61) / 60.0
         t = (radii[:, None] * np.exp(1j * theta)[None, :])
-        a, b, c = r_matrix(np, p, t)
+        a, b, c = gamma_matrix(p, t)
         lam = np.minimum(sym_min_eig(1 - a.real, -b.real, 1 - c.real), sym_min_eig(1 + a.real, b.real, 1 + c.real))
         dets, inv_eig = [], []
         for sgn in (1, -1):
@@ -167,15 +168,15 @@ def main() -> int:
         vals = {}
         for n in (4096, 8192):
             t = float(rho[p]) * np.exp(2j * np.pi * np.arange(n) / n)
-            a, b, c = r_matrix(np, p, t)
-            den, zmin, tmin = schur_bound(np, a, b, c, j)
+            a, b, c = gamma_matrix(p, t)
+            den, zmin, tmin = schur_denominator(np, a, b, c, j)
             vals[n] = (float(np.mean(1.0 / den)), float(zmin.min()), float(tmin.min()), float(den.min()),
                        float((1.0 / den).max()))
         mean, zmin, tmin, dmin, umax = vals[8192]
         means.append(mean)
         tq = float(rho[p]) * (1 - sigma ** 2 + 2j * sigma) / (1 + sigma ** 2)
-        a, b, c = r_matrix(np, p, tq)
-        quarter = float(4 / np.pi * np.sum(weights / 2 / ((1 + sigma ** 2) * schur_bound(np, a, b, c, j)[0])))
+        a, b, c = gamma_matrix(p, tq)
+        quarter = float(4 / np.pi * np.sum(weights / 2 / ((1 + sigma ** 2) * schur_denominator(np, a, b, c, j)[0])))
         rep.info(f"  channel {p}: rho = {dec(rho[p], 4)}, beta = {dec(jq[p], 2)}: mean of 1/Lambda = {mean:.7f}, "
                  f"max = {umax:.5f}, B_p = {dec(B[p], 6)}, B_p / mean = {float(B[p]) / mean:.7f}")
         rep.check("floating point", f"channel {p}: admissible on the circle (Z and T positive definite), the "
@@ -184,14 +185,14 @@ def main() -> int:
                   zmin > 0 and tmin > 0 and dmin > 0 and abs(vals[4096][0] - mean) <= 1e-10 * mean
                   and abs(quarter - mean) <= 1e-10 * mean and mean <= float(B[p]))
         t = float(rho[p]) * np.exp(2j * np.pi * np.arange(8192) / 8192)
-        a, b, c = r_matrix(np, p, t)
-        second = schur_bound_second_form(np, a, b, c, j)
+        a, b, c = gamma_matrix(p, t)
+        second = schur_denominator_second_form(np, a, b, c, j)
         rep.check("floating point", f"channel {p}: Lambda agrees with its second form (through (I -+ Gamma)^-1, as "
                                     "the Lean checker evaluates it) to 1e-9 on the circle",
-                  bool(np.max(np.abs(second / schur_bound(np, a, b, c, j)[0] - 1)) <= 1e-9))
+                  bool(np.max(np.abs(second / schur_denominator(np, a, b, c, j)[0] - 1)) <= 1e-9))
         if p not in common.SMOOTHED:
             closed = 16 * j * j * one_dim_factor(a, j) * one_dim_factor(c, j)
-            den = schur_bound(np, a, b, c, j)[0]
+            den = schur_denominator(np, a, b, c, j)[0]
             rep.check("floating point", f"channel {p}: Lambda agrees with the closed form for diagonal matrices, "
                                         "16 beta^2 lambda(g1) lambda(g2), to 1e-9 on the circle",
                       bool(np.max(np.abs(closed / den - 1)) <= 1e-9))

@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
-"""02 - Haagerup's constant gamma-dagger and its rational enclosure.
+"""02 - Haagerup's constant gamma-dagger and its rational enclosure; Haagerup's bound 1/gamma_H.
 
 Arithmetic : (a) floating point, mpmath at 50 digits (quadrature, the alternating series, the hypergeometric
-             closed form);  (b) exact (`fractions.Fraction`) for the algebraic enclosure.
-Paper      : the definition of gamma-dagger in the introduction; the lemma "Enclosure of gamma-dagger" in the
-             proof of the main theorem, and the computation "Rational arithmetic for gamma-dagger".
+             closed form);  (b) exact (`fractions.Fraction`) for the algebraic enclosure;  (c) floating point,
+             mpmath at 50 digits, for Haagerup's constant gamma_H of 1987.
+Paper      : the definition of gamma-dagger and the decimal expansions of gamma-dagger, 1/gamma-dagger, gamma_H
+             and 1/gamma_H in the introduction (numerical evaluations, given there for orientation); the lemma
+             "Enclosure of gamma-dagger" in the proof of the main theorem, and the computation "Rational
+             arithmetic for gamma-dagger".
 Lean       : `Haagerup.gammaDagger_bounds` (GammaDagger.lean) proves 0.711958633 < gamma-dagger < 0.711958683;
              `Haagerup.inv_gammaDagger_gt` (Haagerup.lean) proves that the bound of the main theorem is below
              1/gamma-dagger.
 Runtime    : about 1 second.
-Needs      : mpmath for part (a) (part (b) is standard library; without mpmath part (a) is reported as failed).
+Needs      : mpmath for parts (a) and (c) (part (b) is standard library; without mpmath parts (a) and (c) are
+             reported as failed).
+Prints     : gamma-dagger and 1/gamma-dagger to 32 digits by three methods; the rational numbers of the lemma
+             and its bounds 0.711958633 < gamma-dagger < 0.711958683; gamma_H and 1/gamma_H to 20 digits.
 
 Part (b) recomputes the construction of the lemma instead of reading its numbers:
   * P_14(x) = sum_{k<=14} binom(2k,k) 4^-k x^k, and (1 - x) P_14(x)^2 = 1 - sum_{m=15}^{29} d_m x^m;
@@ -58,9 +64,9 @@ def part_a(rep: Report) -> None:
         s += (-1) ** k * r(k)
     lo, hi = sorted((s, s + r(2000)))
     rep.info(f"  partial sums S_1999 and S_2000 bracket it              : [{mp.nstr(lo, 12)}, {mp.nstr(hi, 12)}]")
-    tol = mp.mpf(10) ** -30
-    rep.check("floating point", "quadrature and hypergeometric form agree to 30 digits", abs(quad - hyp) < tol)
-    rep.check("floating point", "accelerated series and quadrature agree to 30 digits", abs(series - quad) < tol)
+    tol = mp.mpf(10) ** -40                # more than the 32 digits printed
+    rep.check("floating point", "quadrature and hypergeometric form agree to 40 digits", abs(quad - hyp) < tol)
+    rep.check("floating point", "accelerated series and quadrature agree to 40 digits", abs(series - quad) < tol)
     rep.check("floating point", "the quadrature value lies between the partial sums S_1999 and S_2000",
               lo < quad < hi)
     enc = common.gamma_dagger_enclosure()
@@ -99,16 +105,54 @@ def part_b(rep: Report) -> None:
     prod2 = head * Fraction(711958683, 10 ** 9)
     rep.info(f"  {dec(head, 5)} * 0.711958683 = {dec(prod2, 14)}  (140456 * 711958683 = {140456 * 711958683})")
     rep.check("exact", f"{dec(head, 5)} * 0.711958683 < 1, hence {dec(head, 5)} < 1/gamma-dagger", prod2 < 1)
+    inv_lo, inv_hi = 1 / Fraction(711958683, 10 ** 9), 1 / Fraction(711958633, 10 ** 9)
+    rep.check("exact", f"1.4045758 < 1/0.711958683 = {dec(inv_lo, 12)}... and 1/0.711958633 = {dec(inv_hi, 12)}... "
+                       "< 1.4045760, hence 1.4045758 < 1/gamma-dagger < 1.4045760",
+              Fraction(14045758, 10 ** 7) < inv_lo and inv_hi < Fraction(14045760, 10 ** 7))
     par = common.parameters()
     slope = par["cCertQ"] - par["deltaCertQ"]
     rep.check("exact", "the certified slope c - delta exceeds the upper bound of gamma-dagger "
                        f"(c - delta - upper = {common.sci(slope - hi, 6)})", slope > hi)
 
 
+def part_c(rep: Report) -> None:
+    rep.section("(c) Haagerup's bound of 1987, for orientation (floating point, mpmath, 50 digits)")
+    try:
+        import mpmath as mp
+    except ImportError:
+        rep.check("floating point", "mpmath is installed", False)
+        return
+    mp.mp.dps = 50
+
+    def phi(t):  # phi(t) = (pi/4) t 2F1(1/2, 1/2; 2; t^2) = sum_k r_k t^(2k+1)
+        return mp.pi / 4 * t * mp.hyp2f1(mp.mpf(1) / 2, mp.mpf(1) / 2, 2, t * t)
+
+    # gamma_H solves sum_k |b_k| gamma^(2k+1) = 1, where phi^-1(u) = sum_k b_k u^(2k+1).  Haagerup proved
+    # b_0 = 4/pi > 0 and b_k <= 0 for k >= 1 (this theorem is used here, not rechecked), so the equation reads
+    # (8/pi) gamma - phi^-1(gamma) = 1; with s = phi^-1(gamma):  phi(s) = pi (s + 1) / 8 and gamma_H = phi(s).
+    s = mp.findroot(lambda x: phi(x) - mp.pi * (x + 1) / 8, (mp.mpf("0.8"), mp.mpf("0.82")), solver="anderson")
+    gamma_h = phi(s)
+    rep.info(f"  s with phi(s) = pi (s + 1) / 8 : {mp.nstr(s, 20)}")
+    rep.info(f"  gamma_H = phi(s)               : {mp.nstr(gamma_h, 20)}")
+    rep.info(f"  1 / gamma_H                    : {mp.nstr(1 / gamma_h, 20)}")
+    rep.check("floating point", "the residual of the equation is below 1e-40, and 0 < s < 1",
+              abs(phi(s) - mp.pi * (s + 1) / 8) < mp.mpf(10) ** -40 and 0 < s < 1)
+    rep.check("floating point", "0.7117898066 < gamma_H < 0.7117898067 and 1.4049091327 < 1/gamma_H < 1.4049091328",
+              mp.mpf("0.7117898066") < gamma_h < mp.mpf("0.7117898067")
+              and mp.mpf("1.4049091327") < 1 / gamma_h < mp.mpf("1.4049091328"))
+    rep.check("floating point", "1.404898554746 < 1/gamma_H - 10^-5 (the upper bound of Heilman, Jones and "
+                                "Malavolta quoted in the paper)",
+              mp.mpf("1.404898554746") < 1 / gamma_h - mp.mpf(10) ** -5)
+    gd = mp.quad(lambda t: mp.cos(t) ** 2 / mp.sqrt(1 + mp.sin(t) ** 2), mp.linspace(0, mp.pi / 2, 9))
+    rep.check("floating point", f"gamma_H < gamma-dagger: 1/gamma_H - 1/gamma-dagger = {mp.nstr(1 / gamma_h - 1 / gd, 6)}",
+              gamma_h < gd)
+
+
 def main() -> int:
     rep = Report("02  gamma-dagger: numerical value and exact rational enclosure")
     part_a(rep)
     part_b(rep)
+    part_c(rep)
     return rep.finish()
 
 

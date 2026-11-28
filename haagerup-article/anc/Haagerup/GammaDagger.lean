@@ -1,11 +1,17 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.Statement
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 
-set_option warningAsError true
-
 /-!
-# Certified rational bounds on Haagerup's constant `γ†`
+# Rational bounds for Haagerup's integral `γ†`
+
+The enclosure `711958633 / 10⁹ < γ† < 711958683 / 10⁹` (`gammaDagger_bounds`; Lemma 8.1 of the article, of which the
+main theorem uses the upper bound), by the argument of the article, which uses no numerical quadrature; the
+rational arithmetic is Computation 8.
 
 Writing `1 + sin² t = (3/2) * (1 - cos(2t)/3)` puts `x = cos(2t)/3 ∈ [-1/3, 1/3]`. Let `P₁₄(x)` be
 the degree-14 binomial polynomial `∑_{k=0}^{14} C(2k, k) 4⁻ᵏ xᵏ`. Telescoping gives the exact
@@ -14,8 +20,9 @@ so `|1 - (1 - x) P₁₄(x)²| ≤ 3⁻¹⁵` on `|x| ≤ 1/3`. Integrating the 
 `q₀ t + sin(2t) Q(cos(2t))` of `cos² t * P₁₄(cos(2t)/3)` on `[0, π / 2]` certifies
 
   `711958633 / 10^9 < gammaDagger < 711958683 / 10^9`   (`gammaDagger_bounds`).
-
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -157,8 +164,10 @@ private lemma integrand_bounds (t : ℝ) :
           mul_le_mul_of_nonneg_left hub_inv (sq_nonneg _)
       _ = (40824830469 / 50000000000 : ℝ) * (Real.cos t ^ 2 * binomPoly14 x) := by ring
 
+/-- The coefficient `q₀` of `t` in the primitive `primF`: the mean of `cos² t * P₁₄(cos(2t)/3)` over a period. -/
 private def q0Val : ℝ := 40545758045051663 / 73040694872113152
 
+/-- The polynomial `Q` of the primitive `q₀ t + sin(2t) Q(cos(2t))` of `cos² t * P₁₄(cos(2t)/3)`. -/
 private def antiQ (u : ℝ) : ℝ :=
   (36346160416567 / 120680812707840 : ℝ) +
     (4025410608995087 / 146081389744226304 : ℝ) * u +
@@ -176,6 +185,7 @@ private def antiQ (u : ℝ) : ℝ :=
     (6871825 / 2995809750614016 : ℝ) * u ^ 13 +
     (37145 / 71328803586048 : ℝ) * u ^ 14
 
+/-- The derivative of the polynomial `antiQ`. -/
 private def antiQDeriv (u : ℝ) : ℝ :=
   (4025410608995087 / 146081389744226304 : ℝ) +
     2 * (1147590043447 / 241361625415680 : ℝ) * u +
@@ -211,6 +221,7 @@ private lemma hasDerivAt_antiQ (u : ℝ) : HasDerivAt antiQ (antiQDeriv u) u := 
     ((hasDerivAt_pow 14 u).const_mul _)).congr_deriv ?_
   unfold antiQDeriv; push_cast; ring
 
+/-- The primitive `q₀ t + sin(2t) Q(cos(2t))` of `cos² t * P₁₄(cos(2t)/3)` (`hasDerivAt_primF`). -/
 private def primF (t : ℝ) : ℝ :=
   q0Val * t + Real.sin (2 * t) * antiQ (Real.cos (2 * t))
 
@@ -241,13 +252,15 @@ private lemma hasDerivAt_primF (t : ℝ) :
   unfold q0Val antiQ antiQDeriv binomPoly14
   ring
 
+private lemma continuous_cos_sq_mul_binomPoly14 :
+    Continuous (fun t : ℝ => Real.cos t ^ 2 * binomPoly14 (Real.cos (2 * t) / 3)) := by
+  unfold binomPoly14; fun_prop
+
 private lemma integral_binomPoly14 :
     (∫ t in (0 : ℝ)..(Real.pi / 2), Real.cos t ^ 2 * binomPoly14 (Real.cos (2 * t) / 3)) =
       q0Val * (Real.pi / 2) := by
-  have hcont : Continuous (fun t : ℝ => Real.cos t ^ 2 * binomPoly14 (Real.cos (2 * t) / 3)) := by
-    unfold binomPoly14; fun_prop
   rw [integral_eq_sub_of_hasDerivAt (fun t _ => hasDerivAt_primF t)
-    (hcont.intervalIntegrable (μ := volume) _ _)]
+    (continuous_cos_sq_mul_binomPoly14.intervalIntegrable (μ := volume) _ _)]
   unfold primF
   have h2pi : 2 * (Real.pi / 2) = Real.pi := by ring
   simp only [h2pi, mul_zero, Real.sin_pi, Real.sin_zero]; ring
@@ -260,9 +273,7 @@ private lemma integrable_haagerup :
 /-- Haagerup's integral to seven decimals: `0.711958633 < γ† < 0.711958683`. -/
 theorem gammaDagger_bounds :
     (711958633 / 1000000000 : ℝ) < gammaDagger ∧ gammaDagger < (711958683 / 1000000000 : ℝ) := by
-  have hcont_P : Continuous (fun t : ℝ => Real.cos t ^ 2 * binomPoly14 (Real.cos (2 * t) / 3)) := by
-    unfold binomPoly14; fun_prop
-  have hint_P := hcont_P.intervalIntegrable (μ := volume) 0 (Real.pi / 2)
+  have hint_P := continuous_cos_sq_mul_binomPoly14.intervalIntegrable (μ := volume) 0 (Real.pi / 2)
   have hle : (0 : ℝ) ≤ Real.pi / 2 := by linarith [Real.pi_pos]
   have hlo_int : (40824827623 / 50000000000 : ℝ) * (q0Val * (Real.pi / 2)) ≤ gammaDagger := by
     rw [← integral_binomPoly14, ← intervalIntegral.integral_const_mul]

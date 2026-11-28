@@ -1,26 +1,40 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import HaagerupKernel.TaylorHardy
 import Haagerup.SchurHardy
 import Mathlib.Analysis.Complex.AbsMax
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 
-set_option warningAsError true
-
 /-!
-# Soundness of `HaagerupKernel.TaylorHardy`: TM-2 arithmetic, Maximum Principle, and Q1 Simpson quadrature
+# Soundness of the Taylor models on the circle, and the bounds on the circles for the six channels
 
-Connects the Mathlib-free 64-bit degree-2 Taylor-model checkers in `HaagerupKernel.TaylorHardy`
-to the master Hardy tail budgets required by `CertCheck.lean`:
-1. Soundness of 64-bit degree-2 Taylor-model arithmetic (`memTM2`, `tmMul`, residual-certified
-   `tmInvPos`, complex `TMC`, Horner evaluation, and half-angle circle chart `circleTM`);
-2. Harmonic Maximum Principle for complex symmetric `KerPos`: if `I ± Re(R(t)) ≻ 0` on the
-   first-quadrant boundary circle `|t| = r` (`s ∈ [0, 1]`), then `KerPos (R t)` holds on the
-   entire open disk `|t| < r`;
-3. Quarter-circle symmetry of `gaussDenominator`, singularity-free 1D diagonal reductions
-   (`diag(r, 0)` and `diag(-r, r)`), and TM-2 Simpson integral bounds;
-4. Master Hardy channel theorems `hardy_smoothed_channel_tm`, `hardy_phase_channel_tm`, and
-   `hardy_anti_channel_tm`.
+This file connects the executable checkers of `HaagerupKernel/TaylorHardy.lean` (Appendix A.6 (Taylor models on
+the circle) of the article) with the analytic statements of `SchurHardy.lean` and `SchurGaussian.lean`, and
+derives the Parseval bounds from which Proposition 7.11 (tail bounds) follows.
 
+1. Soundness of the Taylor-model arithmetic of Appendix A.6. `memTM2 f a` says that the quadruple `a` of integers is
+   a Taylor model of the real function `f` on `[-1, 1]` at scale `2⁻⁶⁴`; sum, product, halving and reciprocal
+   (`tmInvPos`) preserve it. `memTMC` and `memSCT` are the same for complex functions and for complex symmetric
+   `2 × 2` matrices; Horner's scheme and the chart `circleTM` are covered.
+2. Lemma 7.5 (reduction to the boundary), together with Lemma 7.1: `kerPos_on_ball_of_reContractive_Q1`. If
+   `I ± Re Γ(t)` are positive definite on the arc of the circle `|t| = r` in the first quadrant (abbreviated `Q1`
+   in names), then `KerPos (Γ(t))` holds for `|t| < r`; the proof applies the maximum modulus principle to the
+   functions `exp (± vᵀ Γ(t) v)`, `v ∈ ℝ²`.
+3. Soundness of Computation 5 (positivity on the outer circles): `kerPos_on_ball_of_regQ1SmoothedOK`,
+   `kerPos_on_ball_of_regQ1PhaseOK`, `kerPos_on_ball_of_regQ1AntiOK`.
+4. Lemma 7.9 (symmetries) (`gauss_symm_neg`, `gauss_symm_conj`), Lemma A.4 for the diagonal matrices of the
+   channels `2, 3, 4` (`gaussDen_diag_phase`, `gaussDen_diag_antisym`), the bound (A.9) of an integral by a Taylor
+   model of the integrand, and the soundness of Computation 6 (circle means): if a checker `meanQ1…OK` returns
+   `true`, the mean of `‖Θ[Γ_p(t)]‖²` over the circle `|t| = ρ` is at most the stated bound, by Lemma 7.8
+   (pointwise bound).
+5. The resulting bounds `∑_{n < J} hₙ² ρ^(2(2n+1)) ≤ B` for the channel series: `hardy_smoothed_channel_tm`
+   (channels `0, 1, 5`), `hardy_phase_channel_tm` (channel `2`), `hardy_anti_channel_tm` (channels `3, 4`). With
+   `hardy_tail` (`Transfer.lean`) they give Proposition 7.11 (tail bounds); this last step is in `CertCheck.lean`.
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -434,7 +448,8 @@ private lemma memTM2_absHi {f : ℝ → ℝ} {a : TM2} (hf : memTM2 f a) {u : �
         add_le_add h1 hp
     _ = _ := by ring
 
-/-- Residual-based soundness of `tmInvPos` (zero ULP casework on heuristic `(ic, d2, q2)`). -/
+/-- Soundness of the reciprocal `tmInvPos` (Appendix A.6): the proposed quadratic polynomial is certified through a
+Taylor model of the residual `1 - f * p`, whatever its origin. -/
 private lemma memTM2_invPos {f : ℝ → ℝ} {a b : TM2} (hf : memTM2 f a)
     (hi : tmInvPos a = some b) :
     (∀ u : ℝ, |u| ≤ 1 → 0 < f u) ∧ memTM2 (fun u => (f u)⁻¹) b := by
@@ -494,6 +509,8 @@ private lemma memTM2_invPos {f : ℝ → ℝ} {a b : TM2} (hf : memTM2 f a)
 
 /-! ### 3. Complex & `2 × 2` Taylor-model soundness -/
 
+/-- `memTMC f Z`: the pair `Z` of Taylor models encloses the complex function `f` on `[-1, 1]`, that is, its two
+components are Taylor models of `Re f` and of `Im f` (`memTM2`). -/
 def memTMC (f : ℝ → ℂ) (Z : TMC) : Prop :=
   memTM2 (fun u => (f u).re) Z.re ∧ memTM2 (fun u => (f u).im) Z.im
 
@@ -542,6 +559,8 @@ private lemma memTMC_evalOddPoly {x : ℝ → ℂ} {X : TMC} (hx : memTMC x X) (
       (evalOddPoly (pl.map ofRatTM) X) := by
   simpa only [evalOddPoly, sq] using memTMC_mul hx (memTMC_horner (memTMC_mul hx hx) pl)
 
+/-- `memSCT R RT`: the three complex Taylor models of `RT` enclose the three entries of the complex symmetric matrix
+`R u` for `u ∈ [-1, 1]`. -/
 def memSCT (R : ℝ → Sym2C) (RT : SCT) : Prop :=
   memTMC (fun u => (R u).a) RT.a ∧ memTMC (fun u => (R u).b) RT.b ∧ memTMC (fun u => (R u).c) RT.c
 
@@ -555,11 +574,11 @@ private lemma memSCT_evalRSmoothed {ctQ stQ seQ : ℚ} {pl ql : List ℚ} {t : �
   set m01Q : ℚ := ctQ * stQ * (1 - seQ)
   set m11Q : ℚ := stQ * stQ + seQ * ctQ * ctQ
   have hm00 : (m00Q : ℝ) = m00Sym (ctQ : ℝ) (stQ : ℝ) (seQ : ℝ) := by
-    simp [m00Q, m00Sym]; ring
+    simp only [Rat.cast_add, Rat.cast_mul, m00Sym, m00Q]; ring
   have hm01 : (m01Q : ℝ) = m01Sym (ctQ : ℝ) (stQ : ℝ) (seQ : ℝ) := by
     simp [m01Q, m01Sym]
   have hm11 : (m11Q : ℝ) = m11Sym (ctQ : ℝ) (stQ : ℝ) (seQ : ℝ) := by
-    simp [m11Q, m11Sym]; ring
+    simp only [Rat.cast_add, Rat.cast_mul, m11Sym, m11Q]; ring
   have hp := memTMC_evalOddPoly ht pl
   have hq := memTMC_evalOddPoly ht ql
   have hlc : ∀ {c1 c2 : ℚ} {a b : TM2} {pF qF : ℝ → ℂ} {pT qT : TMC},
@@ -634,9 +653,11 @@ private lemma memTMC_circleTM {rhoQ : ℚ} {sm h : ℤ} {tT : TMC} {onePs2T : TM
         Complex.ofReal_re, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_im,
         mul_zero, mul_one, zero_add, add_zero, div_eq_mul_inv]
 
-/-! ### 4. Harmonic Maximum Principle for `KerPos` on the open disk `|t| < r` -/
+/-! ### 4. Reduction to the boundary (Lemma 7.5): `KerPos` on the open disk `|t| < r` -/
 
+/-- The determinant `det (I - σ R)`; used with `σ = ±1`. -/
 private def dpm' (R : Sym2C) (σ : ℂ) : ℂ := (1 - σ * R.a) * (1 - σ * R.c) - (σ * R.b) ^ 2
+/-- The inverse `(I - σ R)⁻¹`, by the adjugate formula; used with `σ = ±1`. -/
 private def invImC' (R : Sym2C) (σ : ℂ) : Sym2C :=
   ⟨(1 - σ * R.c) / dpm' R σ, σ * R.b / dpm' R σ, (1 - σ * R.a) / dpm' R σ⟩
 
@@ -833,8 +854,10 @@ private lemma differentiable_odd_poly (P : ℝ[X]) :
     rw [this]; simp_rw [Polynomial.eval_eq_sum_range]; fun_prop
   exact differentiable_id.mul h2
 
-/-- **Harmonic Maximum Principle**: if `I ± Re(RtGen t) ≻ 0` on the Q1 boundary arc
-`{chartPt r false s | s ∈ [0, 1]}`, then `KerPos (RtGen t)` holds on the entire open disk `|t| < r`. -/
+/-- **Lemma 7.5 (reduction to the boundary)**, with Lemma 7.1: if `I ± Re (RtGen … t)` are positive definite on the
+arc `{chartPt r false s | s ∈ [0, 1]}` of the circle `|t| = r` in the first quadrant, then `KerPos (RtGen … t)`
+holds, with some constant, on the open disk `|t| < r`. The proof applies the maximum modulus principle to the
+functions `exp (± vᵀ Γ(t) v)`, `v ∈ ℝ²`. -/
 theorem kerPos_on_ball_of_reContractive_Q1 {m00 m01 m11 r : ℝ} {P Q : ℝ[X]} (hr : 0 < r)
     (hQ1 : ∀ s ∈ Set.Icc (0 : ℝ) 1,
       let R := RtGen m00 m01 m11 P Q (chartPt r false s)
@@ -1063,6 +1086,8 @@ private lemma ofListQ_map_neg' : ∀ l : List ℚ, ofListQ (l.map (- ·)) = -ofL
   | a :: l => by
     simp only [List.map_cons, ofListQ, ofListQ_map_neg' l, Rat.cast_neg, map_neg, mul_neg]; ring
 
+/-- Soundness of Computation 5 (positivity on the outer circles) for the channels `0, 1, 5`: if `regQ1SmoothedOK`
+returns `true` for the radius `regRQ`, then `KerPos (Γ(t))` holds, with some constant, for all `|t| < regRQ`. -/
 theorem kerPos_on_ball_of_regQ1SmoothedOK {ctQ stQ seQ : ℚ} {pl ql : List ℚ} {regRQ : ℚ}
     {k : ℕ} {steps : List ℕ} (hr : 0 < (regRQ : ℝ))
     (hok : regQ1SmoothedOK ctQ stQ seQ pl ql regRQ k steps = true) :
@@ -1108,6 +1133,8 @@ theorem kerPos_on_ball_of_regQ1SmoothedOK {ctQ stQ seQ : ℚ} {pl ql : List ℚ}
     have hpd := reContractive2x2_sound hRt hleaf hu
     simpa only [← hs'_eq] using hpd
 
+/-- Soundness of Computation 5 for channel `2`, where `Γ(t) = diag (t P(t²), 0)`: if `regQ1DiagOK` returns `true` for
+the radius `regRQ`, then `KerPos (Γ(t))` holds, with some constant, for all `|t| < regRQ`. -/
 theorem kerPos_on_ball_of_regQ1PhaseOK {pl : List ℚ} {regRQ : ℚ} {k : ℕ} {steps : List ℕ}
     (hr : 0 < (regRQ : ℝ)) (hok : regQ1DiagOK pl regRQ k steps = true) :
     ∀ t ∈ Metric.ball (0 : ℂ) (regRQ : ℝ),
@@ -1156,6 +1183,8 @@ theorem kerPos_on_ball_of_regQ1PhaseOK {pl : List ℚ} {regRQ : ℚ} {k : ℕ} {
     simp only [Complex.mul_re] at h1m h1p
     exact ⟨⟨by simpa using h1m, by simp [det]; linarith⟩, ⟨by simpa using h1p, by simp [det]; linarith⟩⟩
 
+/-- Soundness of Computation 5 for the channels `3, 4`, where `Γ(t) = diag (-t R(t²), t R(t²))`: if `regQ1DiagOK`
+returns `true` for the radius `regRQ`, then `KerPos (Γ(t))` holds, with some constant, for all `|t| < regRQ`. -/
 theorem kerPos_on_ball_of_regQ1AntiOK {rl : List ℚ} {regRQ : ℚ} {k : ℕ} {steps : List ℕ}
     (hr : 0 < (regRQ : ℝ)) (hok : regQ1DiagOK rl regRQ k steps = true) :
     ∀ t ∈ Metric.ball (0 : ℂ) (regRQ : ℝ),
@@ -1205,7 +1234,7 @@ theorem kerPos_on_ball_of_regQ1AntiOK {rl : List ℚ} {regRQ : ℚ} {k : ℕ} {s
     rw [hRt]
     exact ⟨⟨by simp; linarith, by simp [det]; nlinarith⟩, ⟨by simp; linarith, by simp [det]; nlinarith⟩⟩
 
-/-! ### 6. Quarter-circle symmetry, 1D singularity-free identities, and TM-2 Simpson quadrature -/
+/-! ### 6. Symmetries (Lemma 7.9), diagonal matrices (Lemma A.4), and the bound (A.9) of the circle means -/
 
 private lemma gauss_symm_neg (R : Sym2C) (j : ℝ) :
     let Rn : Sym2C := ⟨-R.a, -R.b, -R.c⟩
@@ -1332,7 +1361,8 @@ private lemma gaussDen_diag_phase (r : ℂ) {j : ℝ} (hj0 : 0 < j) (hj1 : j < 1
     dsimp only [za]; rw [hN_eq]; field_simp [hu'.ne', hs_pos.ne']
   have hza_pos : 0 < za := by rw [hza_eq]; exact div_pos hden hs_pos
   have hZ_PD : (Z (Bj R j)).PD := by
-    rw [hZ_eq]; exact ⟨hza_pos, by simp only [det, zero_pow two_ne_zero, sub_zero]; exact mul_pos hza_pos (sub_pos.2 hj1)⟩
+    rw [hZ_eq]
+    exact ⟨hza_pos, by simp only [det, zero_pow two_ne_zero, sub_zero]; exact mul_pos hza_pos (sub_pos.2 hj1)⟩
   have hZ_det : (Z (Bj R j)).det = za * (1 - j) := by rw [hZ_eq]; simp [det]
   have hKr_eq : Kr (Bj R j) R.Cmat = ⟨cra ^ 2 / za, 0, 0⟩ := by
     simp only [Kr, hZ_eq, hreC_eq, det, adj, sand, smul]
@@ -1371,7 +1401,8 @@ private lemma gaussDen_diag_phase (r : ℂ) {j : ℝ} (hj0 : 0 < j) (hj1 : j < 1
     have h1 : 0 < (za - cra ^ 2 / za) * za := by rw [hta_id]; exact div_pos (mul_pos ht hu') hN_pos
     exact (pos_iff_pos_of_mul_pos h1).2 hza_pos
   have hT_PD : (T (Bj R j) R.Cmat).PD := by
-    rw [hT_eq]; exact ⟨hta_pos, by simp only [det, zero_pow two_ne_zero, sub_zero]; exact mul_pos hta_pos (sub_pos.2 hj1)⟩
+    rw [hT_eq]
+    exact ⟨hta_pos, by simp only [det, zero_pow two_ne_zero, sub_zero]; exact mul_pos hta_pos (sub_pos.2 hj1)⟩
   refine ⟨hZ_PD, hT_PD, ?_⟩
   have hTJ_det : (shifted (T (Bj R j) R.Cmat) j).det = za - cra ^ 2 / za + j := by
     rw [hT_eq]; simp [shifted, det]
@@ -1699,7 +1730,8 @@ private lemma gauss2x2DenTM_sound {R : ℝ → Sym2C} {RT : SCT} {jQ : ℚ} {den
   set tcT := tmAdd (tmMul m10T gpbT) (tmMul m11T gpcT)
   set tdetT := tmSub (tmMul taT tcT) (tmMul tbT tbT)
   have hzia : memTM2 (fun u => (Z (Bj (R u) jR)).c * (Z (Bj (R u) jR)).det⁻¹) ziaT := memTM2_mul hzc' hzdi_tm
-  have hzib : memTM2 (fun u => -((Z (Bj (R u) jR)).b * (Z (Bj (R u) jR)).det⁻¹)) zibT := memTM2_neg (memTM2_mul hzb' hzdi_tm)
+  have hzib : memTM2 (fun u => -((Z (Bj (R u) jR)).b * (Z (Bj (R u) jR)).det⁻¹)) zibT :=
+      memTM2_neg (memTM2_mul hzb' hzdi_tm)
   have hzic : memTM2 (fun u => (Z (Bj (R u) jR)).a * (Z (Bj (R u) jR)).det⁻¹) zicT := memTM2_mul hza' hzdi_tm
   have hm00 := memTM2_add (memTM2_mul hgm_a hzia) (memTM2_mul hgm_b hzib)
   have hm01 := memTM2_add (memTM2_mul hgm_a hzib) (memTM2_mul hgm_b hzic)
@@ -1776,12 +1808,19 @@ private lemma gauss2x2DenTM_sound {R : ℝ → Sym2C} {RT : SCT} {jQ : ℚ} {den
   have hcic2 := memTM2_mul hcic hcic
   have hciab := memTM2_mul hcia hcib
   have hcibc := memTM2_mul hcib hcic
-  have hsa := memTM2_add (memTM2_add (memTM2_mul hzia hcia2) (memTM2_double (memTM2_mul hzib hciab))) (memTM2_mul hzic hcib2)
-  have hsb := memTM2_add (memTM2_add (memTM2_mul hzia hciab) (memTM2_mul hzib (memTM2_add (memTM2_mul hcia hcic) hcib2))) (memTM2_mul hzic hcibc)
-  have hsc := memTM2_add (memTM2_add (memTM2_mul hzia hcib2) (memTM2_double (memTM2_mul hzib hcibc))) (memTM2_mul hzic hcic2)
-  set saT := tmAdd (tmAdd (tmMul ziaT (tmMul ciaT ciaT)) (tmDouble (tmMul zibT (tmMul ciaT cibT)))) (tmMul zicT (tmMul cibT cibT))
-  set sbT := tmAdd (tmAdd (tmMul ziaT (tmMul ciaT cibT)) (tmMul zibT (tmAdd (tmMul ciaT cicT) (tmMul cibT cibT)))) (tmMul zicT (tmMul cibT cicT))
-  set scT := tmAdd (tmAdd (tmMul ziaT (tmMul cibT cibT)) (tmDouble (tmMul zibT (tmMul cibT cicT)))) (tmMul zicT (tmMul cicT cicT))
+  have hsa := memTM2_add (memTM2_add (memTM2_mul hzia hcia2) (memTM2_double (memTM2_mul hzib hciab)))
+      (memTM2_mul hzic hcib2)
+  have hsb := memTM2_add
+      (memTM2_add (memTM2_mul hzia hciab) (memTM2_mul hzib (memTM2_add (memTM2_mul hcia hcic) hcib2)))
+          (memTM2_mul hzic hcibc)
+  have hsc := memTM2_add (memTM2_add (memTM2_mul hzia hcib2) (memTM2_double (memTM2_mul hzib hcibc)))
+      (memTM2_mul hzic hcic2)
+  set saT := tmAdd (tmAdd (tmMul ziaT (tmMul ciaT ciaT)) (tmDouble (tmMul zibT (tmMul ciaT cibT))))
+      (tmMul zicT (tmMul cibT cibT))
+  set sbT := tmAdd (tmAdd (tmMul ziaT (tmMul ciaT cibT)) (tmMul zibT (tmAdd (tmMul ciaT cicT) (tmMul cibT cibT))))
+      (tmMul zicT (tmMul cibT cicT))
+  set scT := tmAdd (tmAdd (tmMul ziaT (tmMul cibT cibT)) (tmDouble (tmMul zibT (tmMul cibT cicT))))
+      (tmMul zicT (tmMul cicT cicT))
   set teaT := tmAdd (tmAdd zaT saT) (ofRatTM jQ)
   set tebT := tmAdd zbT sbT
   set tecT := tmAdd (tmAdd zcT scT) (ofRatTM jQ)
@@ -1790,30 +1829,44 @@ private lemma gauss2x2DenTM_sound {R : ℝ → Sym2C} {RT : SCT} {jQ : ℚ} {den
   have hTEJ_eq : ∀ u, |u| ≤ 1 →
       (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).a =
         (Z (Bj (R u) jR)).a +
-          (((Z (Bj (R u) jR)).c * (Z (Bj (R u) jR)).det⁻¹) * ((SchurKernel.im (R u).Cmat).a * (SchurKernel.im (R u).Cmat).a) +
-            2 * (-((Z (Bj (R u) jR)).b * (Z (Bj (R u) jR)).det⁻¹) * ((SchurKernel.im (R u).Cmat).a * (SchurKernel.im (R u).Cmat).b)) +
-            ((Z (Bj (R u) jR)).a * (Z (Bj (R u) jR)).det⁻¹) * ((SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).b)) + jR ∧
+          (((Z (Bj (R u) jR)).c * (Z (Bj (R u) jR)).det⁻¹) *
+              ((SchurKernel.im (R u).Cmat).a * (SchurKernel.im (R u).Cmat).a) +
+            2 * (-((Z (Bj (R u) jR)).b * (Z (Bj (R u) jR)).det⁻¹) *
+                ((SchurKernel.im (R u).Cmat).a * (SchurKernel.im (R u).Cmat).b)) +
+            ((Z (Bj (R u) jR)).a * (Z (Bj (R u) jR)).det⁻¹) *
+                ((SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).b)) + jR ∧
       (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).b =
         (Z (Bj (R u) jR)).b +
-          (((Z (Bj (R u) jR)).c * (Z (Bj (R u) jR)).det⁻¹) * ((SchurKernel.im (R u).Cmat).a * (SchurKernel.im (R u).Cmat).b) +
-            (-((Z (Bj (R u) jR)).b * (Z (Bj (R u) jR)).det⁻¹)) * ((SchurKernel.im (R u).Cmat).a * (SchurKernel.im (R u).Cmat).c +
+          (((Z (Bj (R u) jR)).c * (Z (Bj (R u) jR)).det⁻¹) *
+              ((SchurKernel.im (R u).Cmat).a * (SchurKernel.im (R u).Cmat).b) +
+            (-((Z (Bj (R u) jR)).b * (Z (Bj (R u) jR)).det⁻¹)) *
+                ((SchurKernel.im (R u).Cmat).a * (SchurKernel.im (R u).Cmat).c +
               (SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).b) +
-            ((Z (Bj (R u) jR)).a * (Z (Bj (R u) jR)).det⁻¹) * ((SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).c)) ∧
+            ((Z (Bj (R u) jR)).a * (Z (Bj (R u) jR)).det⁻¹) *
+                ((SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).c)) ∧
       (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).c =
         (Z (Bj (R u) jR)).c +
-          (((Z (Bj (R u) jR)).c * (Z (Bj (R u) jR)).det⁻¹) * ((SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).b) +
-            2 * (-((Z (Bj (R u) jR)).b * (Z (Bj (R u) jR)).det⁻¹) * ((SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).c)) +
-            ((Z (Bj (R u) jR)).a * (Z (Bj (R u) jR)).det⁻¹) * ((SchurKernel.im (R u).Cmat).c * (SchurKernel.im (R u).Cmat).c)) + jR := by
+          (((Z (Bj (R u) jR)).c * (Z (Bj (R u) jR)).det⁻¹) *
+              ((SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).b) +
+            2 * (-((Z (Bj (R u) jR)).b * (Z (Bj (R u) jR)).det⁻¹) *
+                ((SchurKernel.im (R u).Cmat).b * (SchurKernel.im (R u).Cmat).c)) +
+            ((Z (Bj (R u) jR)).a * (Z (Bj (R u) jR)).det⁻¹) *
+                ((SchurKernel.im (R u).Cmat).c * (SchurKernel.im (R u).Cmat).c)) + jR := by
     intro u _; simp only [shifted, T, E, Ki, add, smul, sand, adj]; refine ⟨by ring, by ring, by ring⟩
-  have htea : memTM2 (fun u => (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).a) teaT :=
+  have htea : memTM2 (fun u => (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).a)
+      teaT :=
     fun u hu => by dsimp only; rw [(hTEJ_eq u hu).1]; exact (memTM2_add (memTM2_add hza' hsa) hjTM) u hu
-  have hteb : memTM2 (fun u => (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).b) tebT :=
+  have hteb : memTM2 (fun u => (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).b)
+      tebT :=
     fun u hu => by dsimp only; rw [(hTEJ_eq u hu).2.1]; exact (memTM2_add hzb' hsb) u hu
-  have htec : memTM2 (fun u => (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).c) tecT :=
+  have htec : memTM2 (fun u => (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).c)
+      tecT :=
     fun u hu => by dsimp only; rw [(hTEJ_eq u hu).2.2]; exact (memTM2_add (memTM2_add hzc' hsc) hjTM) u hu
   have hdtj : memTM2 (fun u => (shifted (T (Bj (R u) jR) (R u).Cmat) jR).det) dtjT := by
-    simpa only [shifted, det, sq] using memTM2_sub (memTM2_mul (memTM2_add hta hjTM) (memTM2_add htc hjTM)) (memTM2_mul htb htb)
-  have hdtej : memTM2 (fun u => (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).det) dtejT := by
+    simpa only [shifted, det, sq] using memTM2_sub (memTM2_mul (memTM2_add hta hjTM) (memTM2_add htc hjTM))
+        (memTM2_mul htb htb)
+  have hdtej : memTM2 (fun u =>
+      (shifted (add (T (Bj (R u) jR) (R u).Cmat) (smul 2 (E (Bj (R u) jR) (R u).Cmat))) jR).det) dtejT := by
     simpa only [det, sq] using memTM2_sub (memTM2_mul htea htec) (memTM2_mul hteb hteb)
   injection hok with hden_eq; subst hden_eq
   refine ⟨fun u hu => ⟨hZPD u hu, hTPD u hu⟩, ?_⟩
@@ -1890,7 +1943,8 @@ private lemma gauss1DFactorTM_sound {r : ℝ → ℂ} {rT : TMC} {jQ : ℚ} {fT 
   refine ⟨fun u hu => ⟨hu_pos u hu, hden_pos u hu, pos_of_tmLo_pos htGateTM hgates.1.1 hu⟩, ?_⟩
   simpa only [div_eq_mul_inv] using memTM2_mul (memTM2_mul hnum1TM hnum2TM) hdeni_tm
 
-/-- Simpson integral upper bound for a single `TM2` leaf on `[a, b]`. -/
+/-- The bound (A.9): if a Taylor model `inv` bounds `g` from above on `[a, b]`, then
+`∫ g ≤ (b - a) (3 c + q + 3 r) / (3 * 2⁶⁴)`, the integral of the model polynomial plus its remainder. -/
 private lemma integral_le_tm2_simpson {g : ℝ → ℝ} {inv : TM2} {a b : ℝ} (hab : a ≤ b)
     (hg_cont : Continuous g)
     (hle : ∀ u : ℝ, |u| ≤ 1 → g ((a + b) / 2 + (b - a) / 2 * u) ≤
@@ -1960,7 +2014,8 @@ private lemma sumSimpsonPart_sound {k : ℕ} (g : ℝ → ℝ)
     ∀ (steps : List ℕ) (pos : ℕ) (acc0 out : ℤ),
       pos + sumNatList steps ≤ Nat.pow 2 k →
       sumSimpsonPart (Nat.div D64N (Nat.mul 2 (Nat.pow 2 k))) leafInv pos steps acc0 = some out →
-      ∫ s in ((pos : ℝ) / ((Nat.pow 2 k : ℕ) : ℝ))..(((pos + sumNatList steps : ℕ) : ℝ) / ((Nat.pow 2 k : ℕ) : ℝ)), g s ≤
+      ∫ s in ((pos : ℝ) / ((Nat.pow 2 k : ℕ) : ℝ))..(((pos + sumNatList steps : ℕ) : ℝ) / ((Nat.pow 2 k : ℕ) : ℝ)),
+          g s ≤
         ((out - acc0 : ℤ) : ℝ) / (3 * ((Nat.pow 2 k : ℕ) : ℝ) * (D64 : ℝ)) := by
   intro steps
   induction steps with
@@ -2044,7 +2099,8 @@ private lemma sumSimpsonPart_forall (unit : ℕ) (leafInv : ℤ → ℤ → Opti
         exact sumSimpsonPart_forall unit leafInv P hleaf (w2 :: rest) (pos + w) _ out
           (List.cons_ne_nil _ _) h s hms h2'
 
-/-- Master Q1 symmetry + `θ = 2 arctan s` change-of-variables bridge to `(2π)⁻¹ ∫₀^{2π} ‖HholPair‖²`. -/
+/-- From the arc in the first quadrant to the whole circle: by Lemma 7.9 (symmetries) and the substitution
+`θ = 2 arctan s`, a bound for the integral over `s ∈ [0, 1]` gives a bound for `(2π)⁻¹ ∫₀^{2π} ‖HholPair‖²`. -/
 private theorem hmean_of_Q1_upper {F : ℂ × ℂ → ℂ}
     (hFm : Measurable F) (hF1 : ∀ u, ‖F u‖ ≤ 1)
     {m00 m01 m11 : ℝ} {P Q : ℝ[X]} {rhoQ jQ budgetQ : ℚ} {r : ℝ}
@@ -2415,7 +2471,8 @@ private lemma hmean_of_meanQ1PhaseOK {F : ℂ × ℂ → ℂ}
         let R := RtGen 1 0 1 (ofListQ pl) (ofListQ []) (chartPt (rhoQ : ℝ) false s)
         (Z (Bj R (jQ : ℝ))).PD ∧ (T (Bj R (jQ : ℝ)) R.Cmat).PD)
       (G := fun s =>
-        ((1 + s ^ 2) * gaussDenominator (RtGen 1 0 1 (ofListQ pl) (ofListQ []) (chartPt (rhoQ : ℝ) false s)) (jQ : ℝ))⁻¹)
+        ((1 + s ^ 2) * gaussDenominator (RtGen 1 0 1 (ofListQ pl) (ofListQ []) (chartPt (rhoQ : ℝ) false s))
+            (jQ : ℝ))⁻¹)
       _ hbad.1 hbad.2 hp hok (fun pos w inv hli => by
         cases hc : circleTM (ofRatTM rhoQ) (Int.ofNat (Nat.mul (Nat.add (Nat.add pos pos) w) _))
             (Int.ofNat (Nat.mul w _)) with
@@ -2449,7 +2506,8 @@ private lemma hmean_of_meanQ1PhaseOK {F : ℂ × ℂ → ℂ}
                 let t := chartPt (rhoQ : ℝ) false (sFn u)
                 let rv := t * Polynomial.aeval (t ^ 2) (ofListQ pl)
                 (Z (Bj (RtGen 1 0 1 (ofListQ pl) (ofListQ []) t) (jQ : ℝ))).PD ∧
-                (T (Bj (RtGen 1 0 1 (ofListQ pl) (ofListQ []) t) (jQ : ℝ)) (RtGen 1 0 1 (ofListQ pl) (ofListQ []) t).Cmat).PD ∧
+                (T (Bj (RtGen 1 0 1 (ofListQ pl) (ofListQ []) t) (jQ : ℝ))
+                    (RtGen 1 0 1 (ofListQ pl) (ofListQ []) t).Cmat).PD ∧
                 gaussDenominator (RtGen 1 0 1 (ofListQ pl) (ofListQ []) t) (jQ : ℝ) =
                   16 * (jQ : ℝ) ^ 2 * (1 - (jQ : ℝ)) *
                     ((1 - (jQ : ℝ) - rv.im ^ 2 / (1 - rv.re ^ 2 + rv.im ^ 2)) *
@@ -2486,7 +2544,8 @@ private lemma hmean_of_meanQ1AntiOK {F : ℂ × ℂ → ℂ}
       KerPos (RtGen 1 0 1 (ofListQ (rl.map (- ·))) (ofListQ rl) t) l)
     (hok : meanQ1AntiOK rl rhoQ jQ budgetQ k steps = true) :
     (2 * Real.pi)⁻¹ * ∫ θ in (0 : ℝ)..2 * Real.pi,
-      ‖HholPair F F (RtGen 1 0 1 (ofListQ (rl.map (- ·))) (ofListQ rl) (((rhoQ : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤
+      ‖HholPair F F (RtGen 1 0 1 (ofListQ (rl.map (- ·))) (ofListQ rl)
+          (((rhoQ : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤
         (budgetQ : ℝ) := by
   have hnegQ : ofListQ (rl.map (- ·)) = -ofListQ rl := ofListQ_map_neg' rl
   unfold meanQ1AntiOK at hok; dsimp only at hok
@@ -2502,7 +2561,8 @@ private lemma hmean_of_meanQ1AntiOK {F : ℂ × ℂ → ℂ}
         let R := RtGen 1 0 1 (ofListQ (rl.map (- ·))) (ofListQ rl) (chartPt (rhoQ : ℝ) false s)
         (Z (Bj R (jQ : ℝ))).PD ∧ (T (Bj R (jQ : ℝ)) R.Cmat).PD)
       (G := fun s =>
-        ((1 + s ^ 2) * gaussDenominator (RtGen 1 0 1 (ofListQ (rl.map (- ·))) (ofListQ rl) (chartPt (rhoQ : ℝ) false s)) (jQ : ℝ))⁻¹)
+        ((1 + s ^ 2) * gaussDenominator
+            (RtGen 1 0 1 (ofListQ (rl.map (- ·))) (ofListQ rl) (chartPt (rhoQ : ℝ) false s)) (jQ : ℝ))⁻¹)
       _ hbad.1 hbad.2 hp hok (fun pos w inv hli => by
         cases hc : circleTM (ofRatTM rhoQ) (Int.ofNat (Nat.mul (Nat.add (Nat.add pos pos) w) _))
             (Int.ofNat (Nat.mul w _)) with
@@ -2559,10 +2619,12 @@ private lemma hmean_of_meanQ1AntiOK {F : ℂ × ℂ → ℂ}
             exact ⟨(hdiag u hu).1, (hdiag u hu).2.1⟩)
     exact hmean_of_Q1_upper hFm hF1 hρ0 hj0 hB0 hr hU hQ1_gates hH_int
 
-/-! ### 7. Master kernel-certified Hardy channel theorems -/
+/-! ### 7. The Parseval bounds for the three kinds of channels -/
 
-/-- Master Hardy budget theorem for any smoothed channel certified by `regQ1SmoothedOK` and
-`meanQ1SmoothedOK`. -/
+/-- The Parseval bound for a channel built from the smoothed map (channels `0, 1, 5`): if the checkers
+`regQ1SmoothedOK` (Computation 5, radius `regionRQ`) and `meanQ1SmoothedOK` (Computation 6, radius `rhoQ`, parameter
+`jQ`) return `true` and `1 < rhoQ < regionRQ`, then the channel series `h` satisfies
+`∑_{n < J} hₙ² rhoQ^(2(2n+1)) ≤ budgetQ` for all `J`. With `hardy_tail` this is Proposition 7.11 (tail bounds). -/
 theorem hardy_smoothed_channel_tm {ctQ stQ seQ ceQ : ℚ}
     (hd : ctQ ^ 2 + stQ ^ 2 = 1) (he : seQ ^ 2 + ceQ ^ 2 = 1)
     {F : ℂ × ℂ → ℂ} (hFm : Measurable F) (hF1 : ∀ v, ‖F v‖ ≤ 1)
@@ -2601,8 +2663,9 @@ theorem hardy_smoothed_channel_tm {ctQ stQ seQ ceQ : ℚ}
     Complex.norm_exp_ofReal_mul_I, mul_one, abs_of_pos (by linarith)]
   exact hrr
 
-/-- Master Hardy budget theorem for the 1D phase channel `R = diag(r, 0)` certified by
-`regQ1DiagOK` and `meanQ1PhaseOK`. -/
+/-- The Parseval bound for the phase channel (channel `2`, `Γ(t) = diag (t P(t²), 0)`): if `regQ1DiagOK` and
+`meanQ1PhaseOK` return `true` and `1 < rhoQ < regionRQ`, then the channel series `h` satisfies
+`∑_{n < J} hₙ² rhoQ^(2(2n+1)) ≤ budgetQ` for all `J`. -/
 theorem hardy_phase_channel_tm {G : ℂ × ℂ → ℂ}
     (hGm : Measurable G) (hG1 : ∀ u, ‖G u‖ ≤ 1)
     (hGch : ∀ c u, ‖c‖ = 1 → G (rot2 c u) = c * G u) (hGL : MemLp G 2 mu2)
@@ -2631,8 +2694,9 @@ theorem hardy_phase_channel_tm {G : ℂ × ℂ → ℂ}
     Complex.norm_exp_ofReal_mul_I, mul_one, abs_of_pos (by linarith)]
   exact hrr
 
-/-- Master Hardy budget theorem for an antisymmetric 1D channel `R = diag(-r, r)` certified by
-`regQ1DiagOK` and `meanQ1AntiOK`. -/
+/-- The Parseval bound for a reflected channel (channels `3, 4`, `Γ(t) = diag (-t R(t²), t R(t²))`): if
+`regQ1DiagOK` and `meanQ1AntiOK` return `true` and `1 < rhoQ < regionRQ`, then the channel series `h` satisfies
+`∑_{n < J} hₙ² rhoQ^(2(2n+1)) ≤ budgetQ` for all `J`. -/
 theorem hardy_anti_channel_tm {G : ℂ × ℂ → ℂ}
     (hGm : Measurable G) (hG1 : ∀ u, ‖G u‖ ≤ 1)
     (hGch : ∀ c u, ‖c‖ = 1 → G (rot2 c u) = c * G u) (hGL : MemLp G 2 mu2)

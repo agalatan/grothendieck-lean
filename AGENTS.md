@@ -163,6 +163,17 @@ build: Lake then compiles only what your branch changes.
 
 ## 6. Before EVERY push: combine with a fresh master
 
+**During a freeze of master, read "staging" for "master" everywhere.** A full build that rebuilds the node caps
+(the batch of the epic #786) freezes master for its whole landing check, about half a day. During that time a
+branch `staging` exists on GitHub, created from master by `claude-b9ee` and announced on #225; it is deleted when
+the freeze ends. While it exists: base new worktrees on `origin/staging`, merge `origin/staging` (not
+`origin/master`) into your branches, and open or retarget pull requests against it (`gh pr create --base staging`,
+`gh pr edit <n> --base staging`). `/land` lands only into master, so an approved, green PR is merged into
+`staging` by `claude-b9ee` (after checking the approval is at its head); ask on the PR. Land nothing on master.
+`scripts/sync_master.sh` detects the freeze by the existence of `origin/staging`: it fast-forwards the local
+`staging`, prints a banner, and audits your branches against `staging`. After the batch lands, `staging` goes to
+master through one ordinary pull request.
+
 Master moves several times an hour: other agents deliver, and the user merges by hand. A branch pushed on top of an
 old master wastes a CI run and usually conflicts. So before **every** push (and
 especially a re-push after a CI failure, a review or a conflict):
@@ -321,7 +332,7 @@ Also:
   commit's own result. Runs that really build the node caps (no verified cache, or `-f mode=caps`) are never cancelled
   either: hours of work.
 - **Where a check runs:** GitHub-hosted (4 vCPUs, 16 GB) unless it needs the heavy runners (`self-hosted, heavy`:
-  the droplet and the temporary big droplet): the node caps must be built (no verified cache), `-f mode=caps`, the
+  the droplet and, when they exist, the big and mega droplets, §12): the node caps must be built (no verified cache), `-f mode=caps`, the
   change **modifies or deletes** existing files under the kernel-heavy trees (`Grothe/UpperChaos/`, `Grothe/Upper/`,
   `GrotheKernel/`, `GrotheCapsKernel/`, the lake files: rebuilding the big kernel-checked modules kills a 16 GB VM),
   or the repository variable `FORCE_HEAVY` is `true` (emergency switch: everything heavy). A change that only adds
@@ -352,7 +363,7 @@ Also:
   lands) does not count. If you are at the limit, wait for a job to finish; a re-push of the same branch replaces
   its running check and does not add one.
 - **Cost:** the repository is public, so GitHub-hosted minutes are free; the heavy runners are ours (the droplet and
-  temporary big droplets, billed by the hour) and every check queues behind the others'. Push when a check helps
+  the temporary big and mega droplets, billed by the hour) and every check queues behind the others'. Push when a check helps
   you, not after every small commit; use `[skip ci]` otherwise.
 
 ## 9. Pull requests
@@ -458,16 +469,52 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 ## 12. Shared machines
 
 - **Where to build while developing (every AI, Claude and Codex alike):** prefer **small, targeted `lake build`s of
-  the modules you changed** (and what imports them) over pushing a WIP branch or starting a cloud job. Run them, in
-  this order, wherever there is CPU room: on **yo** (`ssh yo`, 8 vCPUs, 31 GB) if it has room; else on the **big
-  droplet** (`ssh big`, 48 vCPUs, 188 GB; temporary, while it exists) if it has room; else **locally** on the laptop.
+  the modules you changed** (and what imports them) over pushing a WIP branch or starting a cloud job. **Find usable
+  compute wherever it is:** look at every machine that is up and take the first with CPU room, in this order: **yo**
+  (`ssh yo`, 8 vCPUs, 31 GB); then the temporary droplets **big** (`ssh big`, 48 vCPUs, 94 GB) and **mega**
+  (`ssh mega`, 32 vCPUs, 251 GB), each only if it exists (see below); else **locally** on the laptop.
   "Room" means **at least 50 % of the machine's CPUs idle when you look**: `nproc` against the 1-minute load in
-  `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24), or `scripts/droplet_status.sh` for yo. Then use at most that
+  `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24; mega: load ≤ 16), or `scripts/droplet_status.sh` for yo. Then use at most that
   room (`taskset -c` a range of cores; Lake has no `-j`, so pin the cores), in your own signed folder (§2) with the
-  shared Mathlib packages linked (`~/grothe-caps/.lake/packages` on both droplets, symlink), in a process group
+  shared Mathlib packages linked (`~/grothe-caps/.lake/packages` on every droplet, symlink), in a process group
   (below), never in a runner workspace, and delete the folder when done (§14). Never run Lean on a droplet while a
   caps run's bounded builder is active there (its foreign-work guard aborts the run). A full proof check is what a
   push at a milestone is for (§8).
+- **Big and mega** (`ssh big`: 48 vCPUs, 94 GB RAM; `ssh mega`: 32 vCPUs, 251 GB RAM; Linux): temporary droplets,
+  billed by the hour, for computations that are too big for yo (scans, sharded scripts, builds of many modules) and,
+  first of all, for heavy CI: the rebuild of the node caps and of master's cache after an invalidation (§10). Each
+  exists only while a task needs it; either, both or neither may be up.
+  - **Test whether one exists** before planning on it: `ssh -o BatchMode=yes -o ConnectTimeout=5 mega true` (or
+    `big`) exits 0 when it is up. Use whichever is up and has room. If neither is up, use yo or a cloud job (§11);
+    if your task needs one, ask on the task's issue. Only the agent the user names (currently `claude-b9ee`)
+    creates and destroys them, from their snapshots, and it opens the second one when the first is full.
+  - **Never take all of one.** Half of each stays free for heavy CI: an agent uses **at most 8 cores, and 48 GB of memory on mega or 16 GB on big**,
+    and all agents' work together stays inside **one fixed half of the cores, the upper one**: cores 16–31 on mega,
+    24–47 on big. Pin every job to **8 cores inside that range**, never outside it (for example `taskset -c 16-23`
+    or `taskset -c 24-31` on mega, `taskset -c 24-31`, `32-39` or `40-47` on big; take a block that is idle in
+    `mpstat -P ALL 1 1` or `top`): the range, not the load, is what bounds everyone together (several agents can read the same low 1-minute
+    load and start at once, and a job that is still loading its input shows no load). Before you start, the
+    1-minute load in `cat /proc/loadavg` plus your own cores must still not exceed the half. `taskset` limits
+    cores only: the memory limit is for your whole process group, in KiB from
+    `ps -eo pgid=,rss= | awk -v pg="$(cat job.pid)" '$1 == pg { kb += $2 } END { print kb + 0 }'` (`ps -g` selects
+    by session on Linux and reports nothing for a job started with `set -m`). Stop your job if it grows past the
+    limit. As a conservative check for everyone together, do not start a job unless `free -g` shows more than half
+    the machine's memory available: that figure is machine-wide and includes CI. A larger share
+    for one task is granted by the agent that manages the droplets, on the task's issue, and only while no CI
+    runner job runs there.
+  - **CI comes first.** Run Lean (`lake`, `lean`) there only while that droplet's CI runner is **offline**
+    (`pgrep -x Runner.Listener` prints nothing) or in an interval that the agent managing the droplets announced on
+    the task's issue, and stop your Lean jobs before the runner is started again. A check that no job is running
+    now (`pgrep -x Runner.Worker`) is not enough: an idle runner takes a job at any moment, without an
+    announcement, and a caps run's foreign-work guard then pauses on your Lean processes (exit 75 of
+    `scripts/build_caps_batches.py`). Work that is not Lean may use the research half while the runner is up; if a
+    runner job is active, keep it within 8 cores in total. When a heavy CI job is announced on an issue, stop or
+    shrink your work when asked.
+  - **Everything else as on yo:** your own signed folder `~/<agent-id>-<topic>` with `job.pid` (§2), process groups
+    (below), never `~/actions-runner*`, the runner workspaces or `~/grothe-caps`, and never start, stop or
+    re-register a CI runner (its workspace may hold old node caps: a job there would rebuild all of them).
+  - **They are destroyed when idle.** Copy your results off (inputs to `data/`, research output to `handoff/`, §13)
+    as soon as they exist, and say on your issue when you are done: nothing on a droplet survives its deletion.
 - **Laptop:** 8 cores, shared by every agent. At most one heavy job at a time across all agents; no full builds (§5).
   Kill only your own processes, by pid or process group. Never `pkill -f` or `killall`: they kill other agents' work.
 - **Starting and stopping long jobs (builds, scans): always in their own process group.** Killing a `lake` process

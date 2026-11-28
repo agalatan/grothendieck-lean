@@ -20,6 +20,7 @@ git() {
     if [[ "$1" == -C ]]; then shift 2; fi
     case "$1" in
         fetch|config|worktree|-c) return 0 ;;
+        show-ref) [[ "$FROZEN" == 1 ]] ;;
         merge-base) return 1 ;;
         rev-parse) echo "$TIP" ;;
         rev-list) echo 0 ;;
@@ -44,7 +45,7 @@ source "$1"
 
 
 def audit(*, status="completed", conclusion="success", run_tip=TIP, pr_tip=TIP,
-          review=APPROVED, labels=(), hours=0):
+          review=APPROVED, labels=(), hours=0, frozen=False):
     created = datetime.now(timezone.utc) - timedelta(hours=hours)
     run = {"headBranch": BRANCH, "headSha": run_tip, "status": status, "conclusion": conclusion,
            "databaseId": 123, "createdAt": created.strftime("%Y-%m-%dT%H:%M:%SZ")}
@@ -54,7 +55,7 @@ def audit(*, status="completed", conclusion="success", run_tip=TIP, pr_tip=TIP,
     result = subprocess.run(
         ["bash", "-c", MOCKS, "bash", str(SCRIPT)],
         env={**os.environ, "AGENT_ID": "codex-abcd", "TIP": TIP, "PR_TIP": pr_tip, "BRANCH": BRANCH,
-             "RUNS": json.dumps([run] if run_tip else []), "PRS": json.dumps([pr]), "REVIEWS": reviews},
+             "RUNS": json.dumps([run] if run_tip else []), "PRS": json.dumps([pr]), "REVIEWS": reviews, "FROZEN": "1" if frozen else "0"},
         capture_output=True, text=True, timeout=10, check=True,
     )
     return result.stdout
@@ -86,6 +87,21 @@ class BranchAuditTests(unittest.TestCase):
                 self.assertIn("review: success [claude-1234]", result)
                 self.assertNotIn("-> ACTION:", result)
         self.assertIn("running or queued for 3h", audit(status="queued", conclusion="", hours=3))
+
+
+class FreezeTests(unittest.TestCase):
+    def test_without_staging_the_base_is_master(self):
+        result = audit()
+        self.assertNotIn("MASTER IS FROZEN", result)
+        self.assertIn("behind master", result)
+        self.assertIn("/land codex-abcd", result)
+
+    def test_with_staging_the_base_is_staging_and_land_is_not_advised(self):
+        result = audit(frozen=True)
+        self.assertIn("MASTER IS FROZEN", result)
+        self.assertIn("behind staging", result)
+        self.assertIn("gh pr edit 99 --base staging", result)
+        self.assertNotIn("/land codex-abcd", result)
 
 
 if __name__ == "__main__":

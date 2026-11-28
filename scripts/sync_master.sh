@@ -9,6 +9,9 @@
 #             snapshot .lake/master-cache that new worktrees clone (AGENTS.md §5). One job at a time (pid in
 #             $MAIN/.lake/master-build.pid, log in $MAIN/.lake/master-build.log).
 #   --status  only report the local build cache: which master commit it holds, and whether a build is running.
+# During a freeze of master (a branch `staging` exists on GitHub, docs/FULL_BUILD_BATCH.md): it also fast-forwards
+# the local `staging`, says so in a banner, and audits your branches against origin/staging instead of origin/master:
+# base new work on origin/staging, merge origin/staging into your branches, target pull requests at staging.
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/agent_ids.sh"
 MAIN=/Users/alingalatan/workspaces/grothe
@@ -38,6 +41,25 @@ status() {
   if running; then
     echo "master build running (pgid $(cat "$PIDF")), $(grep -oE '\[[0-9]+/[0-9]+\]' "$LOG" | tail -1)"
   fi
+}
+
+# The base branch: `staging` while master is frozen for a full build (it exists only then), else `master`.
+base_branch() {
+  if git -C "$MAIN" show-ref --verify --quiet refs/remotes/origin/staging 2>/dev/null; then echo staging; else echo master; fi
+}
+BASE=master
+
+freeze_banner() {
+  [ "$BASE" = staging ] || return 0
+  echo
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+  echo "!! MASTER IS FROZEN for a full build (docs/FULL_BUILD_BATCH.md on the batch branch; announcement on issue #225)."
+  echo "!! Until the freeze ends, use STAGING instead of master everywhere:"
+  echo "!!   - base new worktrees on origin/staging; merge origin/staging (not origin/master) into your branches;"
+  echo "!!   - pull requests target staging: gh pr create --base staging, or gh pr edit <n> --base staging;"
+  echo "!!   - /land does not work for staging: when your PR is approved at its head and green, ask claude-b9ee on the"
+  echo "!!     PR to merge it into staging. Do not land anything on master."
+  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 }
 
 # The agent whose branches the audit shows: AGENT_ID (e.g. AGENT_ID=claude-b9ee); empty = every agent.
@@ -86,15 +108,15 @@ audit() {
     [ -n "$AGENT" ] && [ "$own" != "$AGENT" ] && continue
     found=1
     tip=$(git -C "$MAIN" rev-parse "origin/$b")
-    if git -C "$MAIN" merge-base --is-ancestor "$tip" origin/master; then
-      echo "  $b [$own]: already in master"
+    if git -C "$MAIN" merge-base --is-ancestor "$tip" "origin/$BASE"; then
+      echo "  $b [$own]: already in $BASE"
       echo "      -> ACTION: delete it: git push origin --delete $b (and its local branch and worktree, §14)"
       todo=$((todo + 1)); continue
     fi
-    behind=$(git -C "$MAIN" rev-list --count "$tip..origin/master")
+    behind=$(git -C "$MAIN" rev-list --count "$tip..origin/$BASE")
     conflict=""
-    if ! git -C "$MAIN" -c merge.ours.driver=true merge-tree --write-tree origin/master "$tip" >/dev/null 2>&1; then
-      conflict=$(git -C "$MAIN" -c merge.ours.driver=true merge-tree --write-tree --name-only origin/master "$tip" \
+    if ! git -C "$MAIN" -c merge.ours.driver=true merge-tree --write-tree "origin/$BASE" "$tip" >/dev/null 2>&1; then
+      conflict=$(git -C "$MAIN" -c merge.ours.driver=true merge-tree --write-tree --name-only "origin/$BASE" "$tip" \
         2>/dev/null | sed -n '2,/^$/p' | grep -v '^$' | head -6 | tr '\n' ' ')
     fi
     line=$(echo "$runs" | awk -v b="$b" '$1 == b' | head -1)
@@ -120,12 +142,12 @@ audit() {
         state="GREEN (run $id)"
       else
         state="RED: $concl (run $id)"
-        action="read the log (gh run view $id --log-failed), merge origin/master, fix, push the same branch again"
+        action="read the log (gh run view $id --log-failed), merge origin/$BASE, fix, push the same branch again"
       fi
       [ "$sha" != "$tip" ] && state="$state, for an older commit"
     fi
     if [ -n "$conflict" ]; then
-      action="CONFLICT with master in: $conflict-> merge origin/master, resolve by understanding both sides, run python3 tools/gen_root_imports.py, push the same branch"
+      action="CONFLICT with $BASE in: $conflict-> merge origin/$BASE, resolve by understanding both sides, run python3 tools/gen_root_imports.py, push the same branch"
     elif [[ "$b" == ready/* ]] || [[ "$b" == work/* ]]; then
       action="old-style branch name: rename it to ${own:-<agent-id>}/<topic> and open a pull request to land it (AGENTS.md §3, §7)"
     elif [ -n "$prn" ]; then
@@ -146,7 +168,11 @@ audit() {
         action="PR #$prn has no reported check for its current head: run 'gh workflow run lean.yml --ref $b' when a CI slot is available"
       elif approved_reviewer "$own" "$rev" >/dev/null; then
         if [ "$st" = completed ] && [ "$concl" = success ]; then
-          action="PR #$prn is green and approved: land it with a comment '/land ${own}' (AGENTS.md §7)"
+          if [ "$BASE" = staging ]; then
+            action="PR #$prn is green and approved: master is frozen, so do not /land; target it at staging (gh pr edit $prn --base staging) and ask claude-b9ee on the PR to merge it into staging"
+          else
+            action="PR #$prn is green and approved: land it with a comment '/land ${own}' (AGENTS.md §7)"
+          fi
         fi
       elif [ -z "$action" ]; then
         action="PR #$prn waits for a review by a different agent family (AGENTS.md §7a); answer any comments"
@@ -154,9 +180,9 @@ audit() {
     elif [ -z "$action" ]; then
       action="no pull request: open one to land it (RFC/WIP labels if not finished), or delete the branch once it has served its purpose (§14)"
     fi
-    echo "  $b [$own]: $state, $behind behind master"
+    echo "  $b [$own]: $state, $behind behind $BASE"
     if [ -n "$action" ]; then echo "      -> ACTION: $action"; todo=$((todo + 1)); fi
-  done < <(git -C "$MAIN" branch -r --format='%(refname:short)' | sed -n 's#^origin/##p' | grep -vE '^(master|HEAD)$')
+  done < <(git -C "$MAIN" branch -r --format='%(refname:short)' | sed -n 's#^origin/##p' | grep -vE '^(master|staging|HEAD)$')
   if [ "$found" = 0 ]; then
     echo "  (no branches)"
   elif [ "$todo" -gt 0 ]; then
@@ -182,6 +208,19 @@ else
   exit 1
 fi
 echo "master = $(git -C "$MAIN" rev-parse --short master) (origin/master = $(git -C "$MAIN" rev-parse --short origin/master))"
+BASE=$(base_branch)
+if [ "$BASE" = staging ]; then
+  SWT=$(git -C "$MAIN" worktree list --porcelain | awk '/^worktree /{w=$2} /^branch refs\/heads\/staging$/{print w}')
+  if [ -z "$SWT" ]; then
+    git -C "$MAIN" fetch origin staging:staging || echo "local staging could not be fast-forwarded (diverged?): look at it" >&2
+  elif [ -z "$(git -C "$SWT" status --porcelain --untracked-files=no)" ]; then
+    git -C "$SWT" merge --ff-only origin/staging || echo "staging in $SWT could not be fast-forwarded: look at it" >&2
+  else
+    echo "staging is checked out in $SWT with local changes: not touching it" >&2
+  fi
+  echo "staging = $(git -C "$MAIN" rev-parse --short origin/staging) (the base while master is frozen)"
+fi
+freeze_banner
 if [ "${1:-}" = "--build" ]; then
   if running; then
     echo "master build job already running (pgid $(cat "$PIDF")); log $LOG"
@@ -192,3 +231,4 @@ if [ "${1:-}" = "--build" ]; then
   fi
 fi
 audit
+freeze_banner

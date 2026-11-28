@@ -1,18 +1,26 @@
 #!/usr/bin/env python3
-"""Regenerate the two figures of the article from the Lean data.
+"""Regenerate the figure of the article from the Lean data.
 
-Reads the cell map f_tig (Haagerup/Data/TigerData.lean) and the 251 certified intervals for mu_0..mu_250
-(tigMuList in Haagerup/Data/OverlapData.lean) with common.py, and writes
+Reads the 251 certified intervals for mu_0..mu_250 (tigMuList in Haagerup/Data/OverlapData.lean) with common.py
+and writes
 
-    ../../figures/tiger_mu.pdf      left: the overlaps mu_n (midpoints of the intervals); right: the alternating
-                                    partial sums S_K = sum_{n<=K} (-1)^n mu_n minus gamma-dagger
-    ../../figures/tiger_phase.pdf   the argument of f_tig as a function of (|z_2|, |z_1|) at four relative
-                                    phases psi = arg z_1 - arg z_2 (not included in the article at present)
+    ../../figures/tiger_mu.pdf      the article's figure.  Left: the overlaps mu_n (midpoints of the intervals);
+                                    right: the alternating partial sums S_K = sum_{n<=K} (-1)^n mu_n minus
+                                    gamma-dagger.
+
+With --phase it also reads the cell map f_tig (Haagerup/Data/TigerData.lean) and writes
+
+    tiger_phase.pdf                 the argument of f_tig as a function of (|z_2|, |z_1|) at four relative
+                                    phases psi = arg z_1 - arg z_2.  This picture is NOT in the article.
 
 Arithmetic : floating point (plots).  Not part of the proof.
 Needs      : numpy and matplotlib.
 Runtime    : about 5 seconds.
-Usage      : python3 make_figures.py [--out DIR]     (default DIR: the article's figures/ folder)
+Usage      : python3 make_figures.py [--out DIR] [--phase]     (default DIR: the article's figures/ folder)
+Prints     : S_250 - gamma-dagger (the number in the figure's caption and legend) and the files written.
+
+The PDF files record the version of matplotlib: with the version that made the article's figure (3.11.2) the
+file is reproduced byte for byte, with another version only the picture.
 """
 import sys
 
@@ -29,16 +37,11 @@ import matplotlib.pyplot as plt  # noqa: E402
 
 import common  # noqa: E402
 
-R_SHOW = 3.6  # radial range shown, out of [0, 6)
+R_SHOW = 3.6  # radial range shown in the phase picture, out of [0, 6)
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--out", default=str(common.FIGURES), help="output folder")
-    args = ap.parse_args()
-    out = args.out
-    gamma_dagger = float(common.gamma_dagger_tight()[0])
-
+def phase_figure(path: str) -> None:
+    """The argument of f_tig at four relative phases (not in the article)."""
     tab = common.cell_tables("tig")
     cre = np.array(tab["cre"], dtype=np.float64).reshape(36, 64, 64)
     cim = np.array(tab["cim"], dtype=np.float64).reshape(36, 64, 64)
@@ -57,8 +60,6 @@ def main() -> int:
     psi_vals = [0.0, 0.5 * np.pi, np.pi, 1.5 * np.pi]
     psi_labels = [r"$\psi = 0$", r"$\psi = \pi/2$", r"$\psi = \pi$", r"$\psi = 3\pi/2$"]
 
-    # ------------------------------------------------------------ figure: arg F at four relative phases
-    plt.rcParams.update({"font.size": 8})
     fig, axes = plt.subplots(1, 4, figsize=(7.2, 2.15), constrained_layout=True)
     for ax, psi, lbl in zip(axes, psi_vals, psi_labels):
         harm = np.exp(1j * ks * psi)[:, None, None]
@@ -73,8 +74,23 @@ def main() -> int:
     axes[0].set_ylabel(r"$r_1=|z_1|$")
     cb = fig.colorbar(im, ax=axes, shrink=0.85, ticks=[-np.pi, 0, np.pi])
     cb.ax.set_yticklabels([r"$-\pi$", "0", r"$\pi$"])
-    fig.savefig(os.path.join(out, "tiger_phase.pdf"), dpi=300, metadata={"CreationDate": None})
+    fig.savefig(path, dpi=300, metadata={"CreationDate": None})
     plt.close(fig)
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--out", default=str(common.FIGURES), help="output folder (default: the article's figures/)")
+    ap.add_argument("--phase", action="store_true", help="also write tiger_phase.pdf (not in the article)")
+    args = ap.parse_args()
+    out = args.out
+    os.makedirs(out, exist_ok=True)
+    written = ["tiger_mu.pdf"]
+    plt.rcParams.update({"font.size": 8})
+    if args.phase:
+        phase_figure(os.path.join(out, "tiger_phase.pdf"))
+        written.append("tiger_phase.pdf")
+    gamma_dagger = float(common.gamma_dagger_tight()[0])
 
     # ------------------------------------------------------------ figure: mu_n and partial sums
     pairs = common.tig_mu_intervals()
@@ -93,7 +109,7 @@ def main() -> int:
     a1.set_title(r"overlaps $\mu_n$ of the reflected pair $(f_{\mathrm{tig}}, g_{\mathrm{tig}})$")
     a2.plot(k[5:], S[5:] - gamma_dagger, lw=0.8, color="#2a5aa0", label=r"$S_K-\gamma^\dagger$")
     a2.axhline(w_excess, color="#c0392b", lw=0.8, ls="--",
-               label=r"$S_{250}-\gamma^\dagger \approx 9.43\times 10^{-4}$")
+               label=rf"$S_{{250}}-\gamma^\dagger \approx {w_excess * 1e4:.2f}\times 10^{{-4}}$")
     a2.axhline(0, color="0.6", lw=0.6)
     a2.set_xscale("log")
     a2.set_xlabel(r"$K$")
@@ -102,7 +118,7 @@ def main() -> int:
     fig.savefig(os.path.join(out, "tiger_mu.pdf"), metadata={"CreationDate": None})
     plt.close(fig)
     print(f"S_250 - gamma-dagger = {w_excess:.6e} (floating point)")
-    print("written: tiger_mu.pdf, tiger_phase.pdf in", os.path.abspath(out))
+    print(f"written: {', '.join(written)} in {os.path.abspath(out)}")
     return 0
 
 

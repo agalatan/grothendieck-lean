@@ -16,6 +16,8 @@ Lean       : `Haagerup.Data.tig_mu_ok` and `Haagerup.Data.tcell_rows_ok` (Overla
 Runtime    : default (mu_0..mu_40, E for d1 + 3 d2 <= 41) about 15 seconds;
              --all (mu_0..mu_250 and all 21,168 energies) about 12 minutes on one core (4 minutes with --jobs 3).
 Needs      : mpmath.
+Prints     : how many recomputed values lie inside their certified intervals, sample values to 36 decimals
+             (truncated), the largest interval widths, and one line per check; progress lines go to stderr.
 
 Method (different from the paper's algorithm, which Lean runs: there the cell integrals are propagated by
 three-term recurrences in n in interval arithmetic; here every Laguerre polynomial is expanded in monomials and
@@ -53,8 +55,8 @@ import sys
 sys.dont_write_bytecode = True  # leave no __pycache__ next to the scripts
 
 import argparse
+import importlib.util
 import math
-import os
 from fractions import Fraction
 from operator import mul
 
@@ -75,7 +77,6 @@ def laguerre_cell_integrals(n_max: int, bits: int):
     """J[a][n][i] = round-down of 2^bits * J(a, n, i), for a = 0..18, n = 0..n_max, i = 0..63."""
     import mpmath as mp
     mp.mp.prec = bits + 256
-    fact = [mp.mpf(math.factorial(j)) for j in range(n_max + 1)]
     sqrt_pi = mp.sqrt(mp.pi)
     table = []
     worst = mp.mpf(0)
@@ -304,9 +305,7 @@ def main() -> int:
     if not (0 <= n_mu <= 250 and 1 <= e_max <= 501):
         ap.error("need 0 <= n-mu <= 250 and 1 <= e-max <= 501")
     rep = Report(f"04  Overlaps recomputed from the cell maps: mu_0..mu_{n_mu}, E(d1, d2) for d1 + 3 d2 <= {e_max}")
-    try:
-        import mpmath  # noqa: F401
-    except ImportError:
+    if importlib.util.find_spec("mpmath") is None:
         rep.check("floating point", "mpmath is installed", False)
         return rep.finish()
 

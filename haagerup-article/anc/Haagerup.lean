@@ -1,11 +1,16 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.Statement
 import Haagerup.GammaDagger
 import Haagerup.CertCheck
 
-set_option warningAsError true
-
 /-!
 # The complex Grothendieck constant is strictly below Haagerup's value
+
+The theorems of the package. The last four are Theorem 1.1 of the article; `isBound_cert` is the last assertion of
+Theorem 5.1 (six-channel certificate).
 
 Notation (all defined in `Haagerup/Statement.lean`): for a finite complex matrix `A`, `C(A)` is the supremum of
 `|∑ᵢⱼ aᵢⱼ conj(εᵢ) δⱼ|` over unimodular scalars and `V(A)` the supremum of `|∑ᵢⱼ aᵢⱼ ⟪xᵢ, yⱼ⟫|` over unit vectors of
@@ -26,10 +31,13 @@ The public theorems, all without hypotheses:
   `K_G^ℂ ≤ 1.40456 < 1 / γ† = 1.4045759346…`.
 -/
 
+set_option warningAsError true
+
 namespace Haagerup
 
-/-- **The value of the certificate.** With the centre `c = cCertQ` and the error budget `δ = deltaCertQ` of
-`Haagerup/Parameters.lean`, `1 / (c − δ)` is the rational number `10²⁴ / 711968053274152967940951 = 1.4045574031…`. -/
+/-- **The value of the certificate** (Computation 7, part 4, of the article). With the centre `c = cCertQ` and the
+error budget `δ = deltaCertQ` of `Haagerup/Parameters.lean`, `1 / (c − δ)` is the rational number
+`10²⁴ / 711968053274152967940951 = 1.4045574031…`. -/
 theorem certificate_value :
     1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)) = 10 ^ 24 / 711968053274152967940951 := by
   norm_num [cCertQ, deltaCertQ, d12Q]

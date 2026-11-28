@@ -16,7 +16,14 @@ read alone:
   type `ι`;
 - `IsBound K`: `V(A) ≤ K · C(A)` for every finite complex matrix `A`;
 - `complexGrothendieckConstant` (`K_G^ℂ`): the infimum of all `K` with `IsBound K`;
-- `gammaDagger` (`γ†`): Haagerup's integral `∫₀^{π/2} cos² t / √(1 + sin² t) dt`.
+- `gammaDagger` (`γ†`): Haagerup's integral `∫₀^{π/2} cos² t / √(1 + sin² t) dt`; Haagerup's value is `1/γ†`.
+
+These are the quantities `C(A)`, `V(A)`, `K_G^ℂ` and `γ†` of equations (1.1), (1.2) and (1.4) of the article. The
+article defines the two optima with `|εᵢ| ≤ 1` and `‖xᵢ‖ ≤ 1` in an arbitrary Hilbert space and notes that the
+restrictions to modulus one and to `ℂ^ι` do not change them. All suprema and the infimum are taken over nonempty
+bounded sets of real numbers (`scalarValues_bddAbove`, `vectorValues_bddAbove`, `vectorValues_nonempty` in
+`Haagerup/Transfer.lean`; `bounds_bddBelow` in `Haagerup/Statement.lean`; `isBound` below), so Lean's `sSup` and
+`sInf` have their usual meaning.
 
 The six public theorems (namespace `Haagerup`; the first is in `Haagerup/CertCheck.lean`, the others in
 [`Haagerup.lean`](Haagerup.lean)):
@@ -39,8 +46,8 @@ theorem constant_lt_inv_gammaDagger :
 
 In words: the six-channel certificate proves the bound `1/(c − δ)`, where `c = cCertQ` and `δ = deltaCertQ` are the
 rational numbers of `Haagerup/Parameters.lean`; this number is `10²⁴/711968053274152967940951 = 1.4045574031…`;
-rounded up, `K_G^ℂ ≤ 1.40456`; and `1.40456 < 1/γ† = 1.4045759346…`. The last theorem is the main theorem of the
-article.
+rounded up, `K_G^ℂ ≤ 1.40456`; and `1.40456 < 1/γ† = 1.4045759346…`. The last four theorems are Theorem 1.1 of the
+article, and `isBound_cert` is the last assertion of its Theorem 5.1.
 
 ## Build
 
@@ -53,12 +60,27 @@ lake build                                             # every module of the pac
 lake env lean Axioms.lean | python3 check_axioms.py    # the axiom report and its check
 ```
 
-The build takes about one hour and 8 GB of memory. Almost all of that time is one module,
-`Haagerup/Data/OverlapData.lean`, whose two `native_decide` facts run for about 50 minutes on a single core; the rest
-builds in about ten minutes on 8 cores.
+These commands work in a plain copy of this folder; nothing else is needed. `lake exe cache get` downloads
+Mathlib's sources and compiled files into `.lake/` (about 8 GB on disk).
 
-All files set `warningAsError`, so a successful build is free of warnings; no file contains `sorry`, a declared
-axiom, `implemented_by`, `extern` or `unsafe` code.
+The build takes between 20 minutes and one hour, depending on the machine. Almost all of that time is one module,
+`Haagerup/Data/OverlapData.lean`, whose two `native_decide` facts run on a single core; the other modules compile
+in parallel meanwhile. The largest Lean process uses 6 GB of memory, and 16 GB suffice for the whole build.
+Measured:
+
+| machine | `lake exe cache get` | `lake build` | of which `OverlapData` |
+|---|---|---|---|
+| cloud server: 3 cores of an 8-core AMD virtual machine, 31 GB, Linux (from a fresh copy) | 4 min | 52 min | 48 min |
+| the CI job: GitHub-hosted runner, 4 cores, 16 GB, Linux | 1.5 min | 20 min | not timed separately |
+
+Without `OverlapData` and the three modules that import it, the package builds in about six minutes on three cores.
+The other two `native_decide` facts (`TCellData`, `TigerData`) take one to two minutes each. The checks that the
+kernel evaluates (`decide +kernel`) take 45 seconds for the head sum (`HeadCheck`) and up to 100 seconds for each
+channel (`ContourChecks`).
+
+Every module sets `warningAsError`, so a successful build is free of warnings (`lake build --wfail`, which the CI
+job uses, is therefore equivalent); no file contains `sorry`, a declared axiom, `implemented_by`, `extern` or
+`unsafe` code, and no module raises `maxHeartbeats`.
 
 ## The axiom report: what is trusted
 
@@ -111,10 +133,22 @@ which do not import Mathlib.
 | the theorems | `Haagerup.lean` |
 | the interval type shared by the checkers | `HaagerupKernel/Basic.lean` |
 
+Every Lean file begins with a description of its contents that names the lemmas, propositions and computations of
+the article to which it corresponds; Appendix B of the article gives the same correspondence from the article's
+side. The three files of `Haagerup/Data/` consist of data (the integer tables of the two cell maps with their
+sum-of-squares witnesses, and the two tables of intervals) together with the four `native_decide` facts; their
+headers describe the encoding and the origin of the data.
+
 Other files: `lakefile.toml`, `lean-toolchain`, `lake-manifest.json` (the package and its pinned versions);
-`Axioms.lean`, `native.txt`, `check_axioms.py` (the axiom report).
+`Axioms.lean`, `native.txt`, `check_axioms.py` (the axiom report); `LICENSE`.
 
 ## `scripts/`
 
 The Python scripts in `scripts/` reproduce the figures and some numbers quoted in the article from the data of this
 package. They are not part of the proof: Lean does not run them, and no theorem depends on their output.
+
+## License
+
+The Lean code of this package and the scripts in `scripts/` are released under the Apache License, Version 2.0; see
+[`LICENSE`](LICENSE). Copyright 2026 Alin Galatan. The text of the article is not part of this package and is
+licensed separately, through arXiv.

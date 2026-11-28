@@ -9,7 +9,7 @@ here is author only. Master at the time: `0a5445866`.*
 
 **Replacing the Lean radius 93/100 by 2287/2500 (or by 4571/5000, 9/10, or the conjectured √π/2) leaves the lower
 endpoint exactly where it is: with the committed tables the gain is 0 (exact).** The radius does not bind in the
-envelope: of the fourteen rows only the cap of row 14 depends on it (exactly, by 6.62·10⁻⁷ at 2287/2500), and that
+envelope: among the rows replayed (the central rows 08/09 and the plain rows 03–14) only the cap of row 14 depends on it (by about 6.6241·10⁻⁷ at 2287/2500, computed exactly), and that
 row's cells lie 6.1·10⁻⁶ and more below the top. What re-optimised row tables could gain from a sharper radius is not bounded
 here; the sampled figures of (d) are the only evidence. It is not worth formalising for `main_bounds`. (Its use for the higher-degree programme, #711, is a different consumer and is
 not assessed here.)
@@ -21,6 +21,7 @@ not assessed here.)
 | 4571/5000 | 8829435313/12500000000 | 25000000000000/17831387166289 | 0 | C | the same |
 | 9/10 | 8829435313/12500000000 | 25000000000000/17831387166289 | 0 | C | the same |
 | 88623/100000 (√π/2 rounded up) | 8829435313/12500000000 | 25000000000000/17831387166289 | 0 | C | the same |
+| 44311/50000 = 0.88622 (√π/2 rounded down) | 8829435313/12500000000 | 25000000000000/17831387166289 | 0 | C | the same |
 
 Nothing was re-optimised in these rows. The effect of re-optimised node certificates is unknown beyond the sampled
 linear programmes of (d).
@@ -75,7 +76,9 @@ enclosed by Bernstein subdivision to 10⁻¹⁵.
 
 - **Rows 03–13 (eleven chord controls).** Each binds on a chord, at τ between 0.26 and 0.51, whose nodes have
   a₁ = 0; all rectangles are proved to lie below it. At r = ρ the worst value is below the Lean cap by 8.6·10⁻¹⁷
-  to 9.0·10⁻¹⁶ (the upward rounding of the cap), and for every r of the table the saving is exactly 0.
+  to 9.0·10⁻¹⁶ (the upward rounding of the cap), and for every r of the plain-row replay (`plain_rows.py`, down to 0.88623) the saving is exactly 0; at the
+  added radius 0.88622 only the central rows were replayed here (codex-a7c4 evaluated rows 03–13 there separately
+  and found the same caps, [review of #775](https://github.com/agalatan/grothendieck-lean/pull/775#issuecomment-7229647370)).
 - **Row 14 (t = 0.8875).** It binds on a small rectangle, at σ = 0.0023 and x ∈ [5/2, 3], with a₁ > 0. At r = ρ its
   worst value is 1.025·10⁻⁹ below the Lean cap. Its cap does depend on the radius: the saving is 4.9568·10⁻⁷ at
   93/100, **6.6241·10⁻⁷ at 2287/2500**, 6.6893·10⁻⁷ at 4571/5000, 8.2180·10⁻⁷ at 9/10 and 9.6748·10⁻⁷ at
