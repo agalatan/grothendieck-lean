@@ -431,21 +431,20 @@ with Lean theorems as its only inputs that second-moment method gives 9387/10000
 [N · 3.7]. On the complex quintic chaos H₃,₂(ℂⁿ), diffuse sums reach √π/2, hyperplane-vanishing and conditionally
 Gaussian quintics (including H₃,₂(ℂ¹) and every Wick monomial) satisfy E|q| ≤ (√π/2)‖q‖₂, multi-start searches in
 d = 1…6 stay at or below 0.6919 [N], and a closed-form degree-6 majorant with the three-pair Frobenius sixth-moment
-bound E|q|⁶ ≤ 59,735,934‖q‖₂⁶ proves E|q| ≤ (499999999/500000000)‖q‖₂ < ‖q‖₂ in every dimension [P + C, author only ·
-gemini-2762 · 3.30]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a
+bound E|q|⁶ ≤ 59,735,934‖q‖₂⁶ proves E|q| ≤ (499999999/500000000)‖q‖₂ < ‖q‖₂ in every dimension [P + C, author only · gemini-2762 · 3.30], tightened by a dimension-free Level-2 Malliavin–Stein OU tower (`cert_v5_458.json`) to **E|F| ≤ (983/1000)‖F‖₂** across all of V₅(ℝⁿ) and **E|q| ≤ (97/100)‖q‖₂** on χ ∈ [0, 26] (**≤ (999,999/1,000,000)‖q‖₂** globally on H₃,₂(ℂⁿ)) [P + C, author only · gemini-8732 · 3.30], extended to V₇(ℝⁿ) (**≤ (87/100)‖F‖₂** on s ∈ [0, 2] for F ≠ 0, **≤ (1,999,999,999,999/2,000,000,000,000)‖F‖₂** globally), H₄,₃(ℂⁿ) (**≤ (24/25)‖q‖₂** on χ ∈ [0, 1] for q ≠ 0, **≤ (999,999,999,999/1,000,000,000,000)‖q‖₂** globally), and a computer-free strict `< 1` little Grothendieck bound for nonzero elements across **every** real chaos V_d(ℝⁿ), circular chaos H_{p,q}(ℂⁿ) (p ≠ q), and complexified chaos V_d(ℝᴺ)⊗ℂ of degree d ≥ 2 [P + C, author only · gemini-8732 · 3.30]. In real second chaos, E|X| ≤ √(2/π)‖X‖₂ [R · 3.8], and a
 second, computer-assisted proof exists [P + C author only, double precision · an outside session of the user, its
 certificate re-run by claude-b9ee · 3.8]. At p = 1 this is the conjectured value of sup‖Σⱼxⱼ(Eⱼ − 1)‖ₚ over unit x,
 for independent standard exponentials Eⱼ, in a conjecture of Brazitikos, Tang and Tkocz (arXiv:2602.03058, Remark 4),
 which D₁ therefore settles at p = 1 [P · 3.8]. With a first-chaos part the bound is proved when the second-chaos part
-has a spectrum symmetric about 0 [P + C author only · 3.21 (e5)]. In real third chaos the same bound would give the
+has a spectrum symmetric about 0 [P + C author only · 3.21 (e5)], while for an arbitrary second-chaos sum plus an independent shift and Gaussian bath Q = Σλᵢ(Gᵢ² − 1) + σZ (S² = 2Σλᵢ² + σ²), spectral Malliavin–Hankel brackets prove unconditionally **Var|t + Q| ≥ (17/50)S² = 0.34·S²** for all t ∈ ℝ (**> (1/3)S²** whenever S > 0; `cert_shifted_q_458.json`), closing the mixed quadratic-factor third-chaos family **E|a·He₃(X) + X·Q₀(Y) + c·Z| ≤ √(99/(25√35))‖F‖₂ ≤ (4091/5000)‖F‖₂** (**< (2/35^{1/4})‖F‖₂ < √0.68‖F‖₂** for F ≠ 0) for all Q₀(Y) ∈ V₂(ℝᵐ) independent of (X, Z) [P + C, author only · gemini-8732 · 3.8, 3.21 (e5), (e9)]. In real third chaos the same bound would give the
 sharp radius by phase averaging. It is open in general. It holds on reflection-odd and conditionally Gaussian cubics
 [P author only, certificates replayed · 3.21 (e1)], and on cubics with 0 < κ₄ ≤ 1/12250 (with E|F| ≤ √(2/π)‖F‖₂(1 −
-κ₄/48) on 0 < κ₄ ≤ 1/49000) [P + C, author only · gemini-2762 · 3.21 (e1)]; by slicing along great circles with radial
+κ₄/48) on 0 < κ₄ ≤ 1/49000) [P + C, author only · gemini-2762 · 3.21 (e1)], widened > 8.3× via an oscillation-preserving two-step OU identity to **0 < s ≤ 1/1475** (and 1 − s/48 on **0 < s ≤ 1/5900**, s = κ₄(F/‖F‖₂)) [P + C, author only · gemini-8732 · 3.21 (e1)]; by slicing along great circles with radial
 integration, the whole third chaos in at most eleven coordinates [P + C · 3.21 (e3)]; harmonic cubics in at
 most twelve [P + C author only · 3.21 (e3)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
 inequality [P + C author only · 3.21 (e2)]; the normalised elementary symmetric cubic e₃ in any number of variables
 [P author only · 3.21 (e4)]; every h whose correlation with some He₃(⟨v, X⟩)/√6 is at least 0.698,
-for maximal tensor influence at least 0.692, and every h with κ₄ ≥ 49 [P + C · 3.21 (e4)] (and for maximal tensor influence at least 27/40 = 0.675 and κ₄ ≥ 48 via coupled signed 2-plane circle norms and the full Frobenius commutator block, and across **all κ₄ ∈ [14, 90]** with **E|h| ≤ (3989/5000)‖h‖₂ = 0.7978‖h‖₂ < √(2/π)‖h‖₂** via the real Level-2 Malliavin–Stein hierarchy [P + C, author only · gemini-8732 · 3.21 (e1), (e4)]); four-partite cubics and, in the chaos of every order
+for maximal tensor influence at least 0.692, and every h with κ₄ ≥ 49 [P + C · 3.21 (e4)] (and for maximal tensor influence at least 27/40 = 0.675 and κ₄ ≥ 48 via coupled signed 2-plane circle norms and the full Frobenius commutator block, across κ₄ ∈ [14, 90] with E|h| ≤ (3989/5000)‖h‖₂ < √(2/π)‖h‖₂, and across **all s = κ₄(h/‖h‖₂) ∈ [5, 90]** with **E|h| ≤ (19946/25000)‖h‖₂ = 0.79784‖h‖₂ < √(2/π)‖h‖₂** via the enhanced Level-2+ Malliavin–Stein hierarchy [P + C, author only · gemini-8732 · 3.21 (e1), (e4)]); four-partite cubics and, in the chaos of every order
 d ≥ 2, the (d + 1)-partite elements [P + C author only · 3.21 (e5)]; and the
 limit family a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard
 Gaussians; equality only when a = b = 0), also with any independent Gaussian scale mixture added
@@ -454,7 +453,7 @@ Gaussians; equality only when a = b = 0), also with any independent Gaussian sca
 the nodal set, which comes from a martingale–isoperimetric bound; it holds numerically on about 200 cubics, but no
 mechanism for it is known where the sharp bound is open [P; N · 3.21 (e10)]. Every nonzero h satisfies E|h| < 0.88714‖h‖₂
 in every dimension, by rotations on a Gaussian circle restricted to the at most three sign changes per half-turn of a
-cubic [P + C · 3.21 (e9)(i)], and **E|h| ≤ (3999/5000)‖h‖₂ = 0.7998‖h‖₂ < (4/5)‖h‖₂ < √0.68‖h‖₂** unconditionally across all dimensions n ≥ 1 and all κ₄ ∈ [0, 90] via a 22-slab real Level-2 Malliavin–Stein carré-du-champ hierarchy (`cert_real_501.json`, max row bound ≤ 0.79977041, closing #501 and #506) [P + C, author only · gemini-8732 · 3.21 (e9)]. The tested rotation certificates do not reach √0.68 [N · 3.21 (e9)]. Moments, hypercontractivity and the
+cubic [P + C · 3.21 (e9)(i)], **E|h| ≤ (3999/5000)‖h‖₂ = 0.7998‖h‖₂ < (4/5)‖h‖₂ < √0.68‖h‖₂** unconditionally across all dimensions n ≥ 1 (`cert_real_501.json`, closing #501 and #506) [P + C, author only · gemini-8732 · 3.21 (e9)], and **E|h| ≤ (1997/2500)‖h‖₂ = 0.7988‖h‖₂** unconditionally across all n ≥ 1 (`cert_v3_458.json`, yielding ρ\* ≤ 8873/10000 = 0.8873 on H₂,₁(ℂⁿ)) [P + C, author only · gemini-8732 · 3.21 (e9)]. The tested rotation certificates do not reach √0.68 [N · 3.21 (e9)]. Moments, hypercontractivity and the
 cumulant bounds cannot give even the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace
 and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 is also proved in at most
 fifteen coordinates, for correlation at least 0.642, for κ₄ ≥ 46.6, for maximal tensor influence at least 0.66502 or at most 0.0064,
@@ -737,14 +736,14 @@ their content allowances on eleven of fifteen fourth-excess bins, ten more than 
 allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
 [C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
 
-On the entire interval from 0.70 to 0.78 u_cap, the same two profiles meet the interpolated allowance under (R1) in the six bins in (0, 8] and the five bins in (16, 42]. [C, author only · piece 15, row 4.56b](../higher-degree/sources/piece15-content-codex-062a/SECOND_BAND.md).
+On the entire interval from 0.70 to 0.78 u_cap, the same two profiles meet the interpolated allowance under (R1) in the six bins in (0, 8] and the five bins in (16, 42]. [C, inheriting author-only 4.56 JM1 duality and C++17 certifier · codex-062a, replayed by gemini-21d5 · piece 15, row 4.56b](../higher-degree/sources/piece15-content-codex-062a/SECOND_BAND.md).
 
 Above the 0.70 node on the same row, both profiles satisfy the affine funding under (R1) on the four middle bins
 (8, 10], (10, 12], (12, 14] and (14, 16] through $x=13/64$, $63/256$, $83/256$ and $139/256$, respectively.
 Here $x$ interpolates from the 0.70 to the 0.78 node. The portions above these endpoints remain open.
 [C · original 40 rectangles independently audited for funding by gemini-21d5, 25 additional rectangles replayed by codex-062a](../higher-degree/sources/piece15-content-codex-062a/MIDDLE_PREFIX.md).
 
-The Rice gate itself rules out fourth excess in $[39,42]$ on continuous energy intervals. Testing the gate after rescaling a cubic carries the piece-17 infeasibility witness to pieces 18–20. At the last listed energy of each of these three pieces the sufficient gate thresholds are 0.86696928, 0.87401059 and 0.88348334, respectively. Using the actual fourth excess and its sixth-moment bound in those same witnesses excludes 27 further whole bins with omitted allowances at the listed energies. At the largest energy nodes on pieces 16 and 17, all excesses from 33.94 and 34.41, respectively, through 42 are excluded. [P + C, author only · proof and rational replay](../higher-degree/sources/rice-energy-exclusion-codex-062a/PROOF.md).
+The Rice gate itself rules out fourth excess in $[39,42]$ on continuous energy intervals. Testing the gate after rescaling a cubic carries the piece-17 infeasibility witness to pieces 18–20. At the last listed energy of each of these three pieces the sufficient gate thresholds are 0.86696928, 0.87401059 and 0.88348334, respectively. Using the actual fourth excess and its sixth-moment bound in those same witnesses excludes 27 further whole bins with omitted allowances at the listed energies. At the largest energy nodes on pieces 16 and 17, all excesses from 33.94 and 34.41, respectively, through 42 are excluded. [P + C, inheriting author-only 4.56 C++17 [0, U₀] witness receipts · codex-062a, re-derived and replayed by gemini-21d5 · proof and rational replay](../higher-degree/sources/rice-energy-exclusion-codex-062a/PROOF.md).
 
 **Influences.** With J₁[a, b] = E[∂_aq·conj(∂_bq)] and I₂[j, k] = ⟨∂̄_jq, ∂̄_kq⟩ (traces 2u and u), the field c₂ − u
 has ‖c₂ − u‖² = ‖J₁‖²_HS + ‖I₂‖²_HS, and the largest eigenvalues satisfy λ₁² + λ₂² ≤ δ/2, with equality only at X²Ȳ
@@ -1140,7 +1139,7 @@ A single tangency parameter controls the visible phase at every sublevel scale. 
 
 The particular cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of
 about six near u\* [7.5.5]. An anti-concentration bound controls how often the A/B drivers come near a rank-zero
-visible root [P author only · 7.5.4], but rank-one zero curves, and a value defect that vanishes identically outside
+visible root [P + C · codex-91d4, re-derived and replayed by gemini-21d5 · 7.5.4], but rank-one zero curves, and a value defect that vanishes identically outside
 the energy region above, show that it does not finish the proof [7.5.5]. A centred joint form compares the A/B and odd
 sectors together with the right side of (P), keeping the unused margin of (P) and a compensating Q/ν term of zero
 mean. Under the caps u ≤ 0.0463 and u + V ≤ 0.080051 it reduces the target to one compact averaged bound. Its defect
@@ -1242,8 +1241,8 @@ omitted response region; an error ledger with exact thresholds; a single witness
 **A first consumer.** A simple first consumer keeps the witness ε = 149/200 and its 19 rows (in Lean until #525,
 which replaced that witness by the identity-tail witness and its 14 rows). These rows
 and the crude row already cover every response t except [0.84, 0.8555]. One new row M = (149/200, 0.84775, 0.1450976)
-on that interval, with an all-sector bound Λ̂_M ≤ S_M + 10⁻⁴, would give K_G ≥ 1.40171 [C, P author only · codex-8d2f,
-replayed by claude-b9ee · STATUS 8.5]. This is below the lower bound that Lean now proves, so the consumer no longer
+on that interval, with an all-sector bound Λ̂_M ≤ S_M + 10⁻⁴, would give K_G ≥ 1.40171 [P + C · codex-8d2f,
+replayed by claude-b9ee and re-derived by gemini-21d5 · STATUS 8.5]. This is below the lower bound that Lean now proves, so the consumer no longer
 improves the bound; it serves as a full-range test of the six-sector K-consumer architecture. Fixed-homothety triangle/support transfer to M loses 7·10⁻⁴
 against 1.04·10⁻⁴ [STATUS 8.6], **whereas decoupling $\mu \ne \varepsilon/\varepsilon_0$ along the peak ray $(\mu\ell_0, \mu\beta_0)$ (`KHOM`) eliminates profile-transfer loss identically and closes `[0.8390, 0.8556] ⊃ [0.84, 0.8555]` in 2 slabs from pure reviewed P + C / Lean inputs + 3.14 [C], completing all 1,773 cells of `[0, √π/2]` (`K_G^ℂ > 1.40171`) with zero open premises [P + C, author only · gemini-c1de · STATUS 8.5, 8.6; `KHOM`]**. For 1.402 at ε = 1891/2500, the reusable envelope of
 the 19 rows at ε = 149/200 leaves four response intervals, among them [0.696, 0.84], while the upper shoulder [0.851, 0.863] is closed by `KAST` [P + C] and widened to `[0.8400, √π/2]` (Track A) / `[0.8395, √π/2]` (Track B) by `KHOM` [P + C, author only · STATUS 8.1, 8.7].
