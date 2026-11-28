@@ -6,12 +6,12 @@ bound by family and module pattern, and those of the upper bound. The complete a
 required declarations in `data/axioms/required.txt`; CI checks it on every pushed branch, and on the merged tree before
 a pull request lands.
 
-The proof-check workflow also audits `scratch/UpperAxioms.lean` against the required six-channel
-allowlist. It covers the two cell witnesses and both overlap-table checks of the library
+The proof-check workflow also audits `scratch/UpperAxioms.lean` against the allowlist of the upper proof
+alone. It covers the two cell witnesses and both overlap-table checks of the library
 `Grothe/Upper/`, and from the certificate `Grothe/Upper/Certificate/` the contour checks of the first
 channel and the head check with the six linear floors. The disk and circle checks of the other five
 channels and the rational tail comparisons reduce in the kernel.
-[Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper.native.txt).
+[Run the upper-only audit](../README.md#building) · [Upper allowlist](../data/axioms/modes/upper.native.txt).
 
 ## Lower bound
 

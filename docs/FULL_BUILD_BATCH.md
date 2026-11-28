@@ -69,24 +69,36 @@ Mathlib are then upgraded to the latest stable versions in the same build.
    checked tree. Nothing has to be rebuilt. Any other refusal message ("workflow-unexplained" or "another reason")
    is not this case: stop and find the cause. Then (AGENTS.md §9):
    1. The operator reads the landing run's `merge-info` artifact: `tree=` (the checked tree, also the name of the
-      `lean-build-tree-<tree hash>` artifact, kept one day) and `base=` (the master commit the check merged with).
-      Master must still be `base`; the freeze guarantees it.
-   2. The user merges #787 by hand with GitHub's **Create a merge commit** at the reviewed head commit (no squash,
-      no rebase, no push in between). Because the branch was merged with master before the `/land` and
-      `tools/gen_root_imports.py` had nothing to change, that merge has exactly the checked tree.
+      `lean-build-tree-<tree hash>` artifact, kept one day), `base=` (the master commit the check merged with) and
+      `source=` (the reviewed head of #787). Master must still be `base`; the freeze guarantees it.
+   2. The user merges #787 by hand, pinned to the reviewed head:
+      `gh pr merge 787 --merge --match-head-commit "$source"` (a merge commit; GitHub refuses if the head moved).
+      Because the branch was merged with master before the `/land` and `tools/gen_root_imports.py` had nothing to
+      change, that merge has exactly the checked tree.
    3. The operator records the merge receipt, `M=$(gh pr view 787 --json mergeCommit --jq .mergeCommit.oid)`, and
-      verifies, before anything else lands: `git fetch origin master`; `git rev-parse "$M^{tree}"` equals the
-      checked `tree=`; `git rev-parse "$M^1"` equals `base=`; `git merge-base --is-ancestor "$M" origin/master`.
-      Master may already be one commit further: since `docs/overview.tex` changes, `overview.yml` can push a
-      generated `OVERVIEW.pdf` commit on top of `M`; `git diff --name-only "$M" origin/master` must then list
-      `OVERVIEW.pdf` only. Compare with `M`, never with master's head. If any check fails, stop and report it.
-   4. Master's own check of `M` replays the finished build from the artifact `lean-build-tree-<tree hash>` instead
-      of building the node caps again (AGENTS.md §10). The operator verifies that a `lean.yml` run exists at `M`
-      (`gh api "repos/agalatan/grothendieck-lean/actions/workflows/lean.yml/runs?head_sha=$M" --jq .total_count`)
-      and that its result is green. If none started, the operator dispatches `gh workflow run lean.yml --ref master`
-      within the artifact's one-day lifetime. That runs master's head: `M` itself, or the PDF commit whose tree differs
-      from the artifact's by `OVERVIEW.pdf`. The latter misses the handoff and builds on the heavy runner whose
-      workspace holds the landing build (minutes), so keep that runner online until master's check is green.
+      verifies, before anything else lands: `git fetch origin master`; `git rev-parse "$M^{tree}"` equals `tree=`;
+      `git rev-parse "$M^1"` equals `base=`; `git rev-parse "$M^2"` equals `source=` (an empty commit pushed after the
+      review would give the same tree and first parent, but another second parent);
+      `git merge-base --is-ancestor "$M" origin/master`. Master may already be one commit further: since
+      `docs/overview.tex` changes, `overview.yml` can push a generated `OVERVIEW.pdf` commit on top of `M`;
+      `git diff --name-only "$M" origin/master` must then list `OVERVIEW.pdf` only. Compare with `M`, never with
+      master's head. If any check fails, stop and report it.
+   4. The operator finds master's proof run of exactly `M`: a `lean.yml` run with `event` `push` or
+      `workflow_dispatch` and `head_sha` = `M` (the weekly `schedule` keepalive shares the workflow and is green with
+      every proof job skipped: it never counts),
+      `gh api "repos/agalatan/grothendieck-lean/actions/workflows/lean.yml/runs?head_sha=$M" --jq '.workflow_runs[] | select(.event == "push" or .event == "workflow_dispatch") | .id'`.
+      In that run, the `build` job must have concluded `success` with its steps "Build Grothe (everything, node caps
+      included)", "Axiom report" and "Upper axiom report" concluded `success` (not `skipped`):
+      `gh api "repos/agalatan/grothendieck-lean/actions/runs/<id>/jobs" --jq '.jobs[] | select(.name == "build") | [.conclusion, (.steps[] | select(.name | test("^(Build Grothe|Axiom report|Upper axiom report)")) | .conclusion)]'`.
+      That run replays the finished build from `lean-build-tree-<tree hash>` (AGENTS.md §10).
+      If no such run exists and master's head is still `M`, the operator dispatches `gh workflow run lean.yml --ref master`
+      within the artifact's one-day lifetime. If master's head is already the PDF commit, that run's tree differs from
+      the artifact's by `OVERVIEW.pdf` and misses the handoff. The operator then dispatches it onto the machine whose
+      persistent workspace holds the landing build, `gh workflow run lean.yml --ref master -f mode=caps -f runner=mega`
+      (the runner that ran the landing check, read from the `runner_name` of that run's `build` job; for the planned
+      cold build `mega-droplet-3`, labels `heavy,mega`: Lake replays the node caps there in minutes, in the workspace
+      `ws-<key>` of this manifest). A generic `heavy` label could pick another machine and rebuild them. The freeze ends only
+      after this run is green with those steps run.
    5. Since CI did not land the PR, the operator also closes the `Closes #n` issues by hand, deletes the branch and
       its build caches, and lifts the freeze (next section).
 
@@ -94,13 +106,26 @@ Mathlib are then upgraded to the latest stable versions in the same build.
 
 The batch changes `lake-manifest.json` (Mathlib v4.34.1 → v4.36.0: all nine packages at other revisions). Lake checks
 out, inside `.lake/packages`, the revisions that the consumer's manifest pins, so a packages tree shared between a
-v4.34 user and a v4.36 user on one machine can change under a running build. The self-hosted steps of `lean.yml`
-(the heavy build and the cap shards) therefore run `scripts/package_store.sh`: it links `.lake/packages` to
-`~/grothe-caps/packages-<first 16 hex of sha256(lake-manifest.json)>`, created on first use with
-`lake exe cache get` (Mathlib's compiled files, a minute), shared only by checkouts with exactly that manifest, and
-leaves a workspace's own (non-symlinked) packages directory alone. The old tree `~/grothe-caps/.lake/packages` is not
-touched and keeps serving v4.34 work until master moves. A keyed store needs no exclusivity check: every user of it
-pins the same revisions. Tests: `scripts/test_package_store.py`.
+v4.34 user and a v4.36 user can change under a running build. During the freeze both generations run: `staging`
+still carries the v4.34 workflow. Two measures keep them apart without editing the old workflow:
+
+- **One persistent workspace per manifest on the runners.** The route job names the workspace `ws-<first 16 hex of
+  sha256(lake-manifest.json)>`; the build and shard jobs check out into it and run every step there. The v4.34
+  workflow keeps using the runner's root checkout, whose `.lake/packages` stays linked to `~/grothe-caps/.lake/packages`;
+  the v4.36 jobs never touch the root checkout, and the old ones never see `ws-<key>`.
+- **One package store per manifest** (`scripts/package_store.sh`): `.lake/packages` of a new workspace links to
+  `packages-<key>` (on the droplets under `~/grothe-caps`, on the laptop under
+  `/Users/alingalatan/workspaces/grothe-packages`). The store records the manifest's full sha256 and refuses any other
+  one. Mathlib's compiled files are fetched with `lake exe cache get` unless a stamp records a successful fetch for
+  exactly this manifest and toolchain, and the Mathlib checkout must be at the pinned revision. That also holds for
+  a private (non-symlinked) packages directory, which is refreshed when its manifest changes. The old shared trees
+  are never touched.
+
+On the laptop the master builder (`scripts/master_build_job.sh`) selects the store of every target commit it checks
+out, and `scripts/clone_master_build.sh` gives a new worktree the store of its own manifest. The main checkout's
+`.lake/packages` stays as it is for the worktrees already linked to it. Tests: `scripts/test_package_store.py` (old →
+new → old → new on one runner with two workspaces, a moved or foreign store refused, a private directory refreshed)
+and `scripts/test_laptop_packages.py` (the builder across a manifest change, existing and new worktrees).
 
 ## Freeze and staging (the user's decision, 28 November 2026)
 

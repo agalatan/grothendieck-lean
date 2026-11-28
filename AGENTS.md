@@ -126,7 +126,7 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
 /Users/alingalatan/workspaces/grothe/scripts/sync_master.sh --build    # fetch; refresh the local master build
 git -C /Users/alingalatan/workspaces/grothe worktree add -b codex-7f3a/<topic> \
     /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic> origin/master
-# give the worktree master's compiled build (links the shared packages, clones the snapshot)
+# give the worktree master's compiled build (the packages of its manifest, then the snapshot)
 /Users/alingalatan/workspaces/grothe/scripts/clone_master_build.sh /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>
 ```
 
@@ -148,7 +148,9 @@ build: Lake then compiles only what your branch changes.
   (`data/local-build-exclude.txt`), and whatever imports them. Its `built-commit` file names the master
   commit. It is produced in the dedicated worktree `/Users/alingalatan/workspaces/grothe-master-build` (detached):
   never edit, build in or remove that worktree, and never clone its live `.lake/build`.
-- **Use it:** `scripts/clone_master_build.sh <worktree>` links the shared packages and clones the snapshot with
+- **Use it:** `scripts/clone_master_build.sh <worktree>` links the packages of the worktree's own manifest
+  (`scripts/package_store.sh`: a store per `lake-manifest.json` under `/Users/alingalatan/workspaces/grothe-packages`;
+  the main checkout's `.lake/packages` stays for the worktrees already linked to it) and clones the snapshot with
   `cp -c` (APFS copy-on-write: instant, no extra disk until files diverge). An older snapshot is fine.
 - **Refresh** a worktree whose build is far behind: `scripts/clone_master_build.sh --replace <worktree>`.
 - **Check it:** `scripts/sync_master.sh --status` (which master the snapshot holds; whether its build job runs).
@@ -353,11 +355,12 @@ Also:
 - **Force the droplet** for a pushed branch: `gh workflow run lean.yml --ref <branch> -f mode=caps` (it occupies the
   single runner for hours if the caps really changed; do it on purpose only).
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
-  stop/remove). Its jobs link `.lake/packages` to a package store keyed by `lake-manifest.json`
-  (`scripts/package_store.sh`: `~/grothe-caps/packages-<first 16 hex of the manifest's sha256>`, created on first
-  use with `lake exe cache get`), so checkouts with different Mathlib versions never share a checkout that Lake
-  would switch under a running build. The older shared tree `~/grothe-caps/.lake/packages` stays for other work;
-  never delete either.
+  stop/remove). Its build and shard jobs check out into a workspace of their manifest's own, `ws-<first 16 hex of
+  sha256(lake-manifest.json)>`, whose `.lake/packages` links to the package store of the same key
+  (`scripts/package_store.sh`: `~/grothe-caps/packages-<key>`, created on first use with `lake exe cache get`). So
+  jobs of different Lean/Mathlib generations never share a workspace or a packages checkout that Lake would switch
+  under a running build. The older shared tree `~/grothe-caps/.lake/packages` stays for the root checkout of older
+  workflows and other work; never delete any of them (docs/FULL_BUILD_BATCH.md, "Package store").
   **A heavy runner needs a warm workspace:** a fresh droplet cannot restore the 14 GB build cache (measured on
   16 November 2026: 0.4 MB/s per connection from the droplet to the cache storage, and the download link expires
   after ten minutes), and its job would then compile everything from nothing. Start a new heavy runner from a
