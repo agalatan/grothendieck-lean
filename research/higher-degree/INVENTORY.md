@@ -512,3 +512,35 @@ Row 4.18r uses the [common sector constraints](sources/quintic-sector-frontier-c
 | `sources/quintic-sector-frontier-codex-a7c4/POINT.md` | 3,175 | `79c2b7acd3c5b87b8238e3a906a5a6508bdceb4792579d6371a315e9ef1590c4` |
 | `sources/quintic-sector-frontier-codex-a7c4/RANK_ONE.md` | 3,502 | `94d279e969526b7298050e49da04a428639acc7fbc177925e8df4dc2855883e5` |
 | `sources/quintic-sector-frontier-codex-a7c4/SHOULDER.md` | 5,594 | `af07439d24d49df02a3228a91b3687d1d32764073665834dfbabb62ec2813267` |
+
+## Two carrier amplitudes and the real Stein profile (codex-a7c4, #870)
+
+Row 4.18s uses the [shape-conditioned proof](sources/quintic-double-ellipse-codex-a7c4/PROOF.md), [remote test](sources/quintic-double-ellipse-codex-a7c4/REMOTE.md) and [two-amplitude extension](sources/quintic-double-ellipse-codex-a7c4/TILTED.md). From the repository root run the six entry points with Python's standard library and optimization enabled.
+
+```sh
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/remote_debit.py
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/shape_radius.py
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/tilt_cover.py
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/gaussian_block.py
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/diagonal.py
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/direct.py
+```
+
+| Path under this directory | Bytes | SHA-256 |
+|---|---:|---|
+| `code/quintic-double-ellipse-codex-a7c4/carrier_tilt.py` | 2,699 | `4773919d80880a4603dc8eb958a6da1baf0f69a90f8940987968996b854c558f` |
+| `code/quintic-double-ellipse-codex-a7c4/diagonal.py` | 2,775 | `0502d6f0c1dfb446cecb86a378a5c6f6ad499a0eb8a28e111749d6f65ac7f8da` |
+| `code/quintic-double-ellipse-codex-a7c4/direct.py` | 10,067 | `d471e446c9745053b8905feb055ae84e42b7cf88365db74caa072690bd10b182` |
+| `code/quintic-double-ellipse-codex-a7c4/gaussian_block.py` | 4,975 | `1889020c3b6525c9ef17fcbaeeb71210a109141eccb92f6e22efe52f189cbea4` |
+| `code/quintic-double-ellipse-codex-a7c4/mixed.json` | 246 | `37381adcd42c8181181a44ef5b22214d7b922e72079d15c88792c626ae6a1672` |
+| `code/quintic-double-ellipse-codex-a7c4/remote_debit.py` | 2,908 | `921bd9863de43e8e8d6a90c1b3bdc75bb04dc2effe6f366550c248e02e16a221` |
+| `code/quintic-double-ellipse-codex-a7c4/retuned.json` | 294 | `d151a938d69538e39d3fb297cbaee0d0666103f0b8a6884f25385e2e6528e94a` |
+| `code/quintic-double-ellipse-codex-a7c4/shape_radius.py` | 10,645 | `e9bd5a8ef31b10b0990a422955a965ffcd912fd20f507daa17f4efdfeda61df9` |
+| `code/quintic-double-ellipse-codex-a7c4/tilt_cover.py` | 1,968 | `6707888331d1798fcd40575b080db4b294f4670b26b3072bf5b756b717652b2d` |
+| `code/quintic-double-ellipse-codex-a7c4/unmixed.json` | 247 | `95cdd89dd709cb14736bbf2727e5e0f23f9a8776824c73339882f513d3a2ce98` |
+| `sources/quintic-double-ellipse-codex-a7c4/DIAGONAL.md` | 5,286 | `b552b28ddf8f2896ed9acab4f75cc3c664d58c8a84c4cadc1cdf1f7881f5772c` |
+| `sources/quintic-double-ellipse-codex-a7c4/DIRECT.md` | 4,406 | `e8fcd425d642d3876d8d8f4ea9842930ea86a1493217f572e57a512a24e6ff1c` |
+| `sources/quintic-double-ellipse-codex-a7c4/GAUSSIAN_BLOCK.md` | 6,988 | `c144b3d57dd9689178897c47504b0eeb842772e48e150062e220331b6d2a16c4` |
+| `sources/quintic-double-ellipse-codex-a7c4/PROOF.md` | 8,330 | `4c05d91ae743fa5ac672c316088b80a902814c60ebdf1043c8bb59731d4fa996` |
+| `sources/quintic-double-ellipse-codex-a7c4/REMOTE.md` | 2,803 | `1f6b4b790db2c8f50faf3c3e18010c4266daf76474587f4955bffe18f8ceeee1` |
+| `sources/quintic-double-ellipse-codex-a7c4/TILTED.md` | 3,700 | `c05251123d592022670efa17653f3d6ca5b737a2e2925f0502c31f3a1e7a9caf` |
