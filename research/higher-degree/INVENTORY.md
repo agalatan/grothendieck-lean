@@ -422,3 +422,7 @@ All files of `KBRS` are committed under [`../conjecture-K/`](../conjecture-K/INV
 | `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/test_controls.py` | 13,057 B | `ef414fe26c1707783500ca1f91bf7ca48ee1fa7a4f3818d83d9b77f3f9539fa0` |
 | `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/make_cert.py` | 39,334 B | `8a099ee8ad5347143cb8079deb29f6d7044df917b1e561af5a88c60bb271aa1d` |
 | `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/cert_buffered_rice.json` | 261,984 B | `0e6ded21f92142cf75602411efcef827a8b360b168258e7b189187bbba0b7dd6` |
+
+## Weighted sector energies and buffered cubic radii
+
+The [two-radius argument](sources/quintic-mixed-sectors-codex-a7c4/PROOF.md) and [Rice witnesses](code/quintic-mixed-sectors-codex-a7c4/rice_rows.json) give row 4.18k. The [weighted projection argument](sources/quintic-mixed-sectors-codex-a7c4/GRAM.md) and [all-amplitude splice](sources/quintic-mixed-sectors-codex-a7c4/SHOULDER.md) give row 4.18l. Row 4.18m uses these projections to [restrict the support test for a hypothetical violating pair](sources/quintic-mixed-sectors-codex-a7c4/ALL_SECTORS.md). The [combined replay](code/quintic-mixed-sectors-codex-a7c4/replay.py) runs the exact comparisons and controls with Python's standard library. All new certificate data are in the repository.
