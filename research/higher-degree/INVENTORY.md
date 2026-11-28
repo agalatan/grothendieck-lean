@@ -401,3 +401,7 @@ All files of `CONTCELL` are committed in the repository (< 220 KB per file), wit
 | `code/degree5-content-cells-gemini-c1de/dual_certs_6.json` | 212,073 B | `ae4eddaa67df26decdbb906df5d644772cd8820c823837047750a9a02853aecd` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_7.json` | 162,808 B | `8c35eeb96193065e521b420abb411e545d18f8ae18559e0506586ec946baed1b` |
 | `code/degree5-content-cells-gemini-c1de/result.json` | 52,299 B | `142a0604f6c9dff42a09cf8d6e0aba1a66957c68ce5da940a4ba68bfeead2e8b` |
+
+## Conditional cubic and quintic response moments
+
+The [proof](sources/quintic-conditional-debit-codex-a7c4/PROOF.md), [integral checker](code/quintic-conditional-debit-codex-a7c4/joint_integral.py) and [payoff replay](code/quintic-conditional-debit-codex-a7c4/verify.py) give ledger row 4.18k. Both scripts use Python’s standard library. The buffered endpoints needed for the conditional statement are explicit rational inputs.
