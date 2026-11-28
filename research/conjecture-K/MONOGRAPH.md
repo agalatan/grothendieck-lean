@@ -1197,6 +1197,8 @@ bound, not a claim of odd-sector monotonicity.
 
 Varying the radial weight gives a family of simultaneous energy constraints. For any nonnegative test direction, its best bound within this family is a one-dimensional integral of the square root of a cubic polynomial in the visible squared radius. At ε = .752, every actual response with t ≥ .826 and remote energy at least .04 has total even energy below .04031, for any odd energy and arbitrary sharing. At t = .826 and remote energy .04, the single ellipsoid 2.12b permits even energy above .05747. [P + C, author only · 2.12h · proof and exact replay](sources/radial-response-weights-codex-a7c4/PROOF.md)
 
+The two disk constraints also control the part of the difference response parallel to the visible Gaussian phase. Keeping that term yields an explicit six-sector energy ellipsoid for every amplitude. The regularized weights reduce the preceding even-energy cap from .04031 to **.03168** at the same ε, visible amplitude and remote energy. The first-chaos penalty remains available for a payoff trial. [2.12i, **P + C, author only** · proof and exact replay](sources/radial-response-weights-codex-a7c4/TWO_DISKS.md)
+
 At ε = 1891/2500, for t ≥ 0.84 the remote cap is 0.046266 [P + C · codex-a7c4, re-derived by claude-b9ee · 2.12a].
 Combining it with the stronger ellipsoid gives total energy below 0.080051; the total is below 0.070564 for t ≥ 0.8456
 and below 0.061366 for t ≥ 0.851 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 2.12b]. Without a
@@ -1264,7 +1266,7 @@ all-energy odd-sector estimate at the same remote cubic. The response ellipsoid 
 energy of the second even driver in both trials. The physical clearance exceeds 1.017792
 millionths. On [.826,.82815], rescaling the same odd field between the two arms gives a harmonic
 odd-energy price. Supplemental radial duals at energy .06 cover the middle fourth-excess
-range [.1,27]. The adaptive trials cover both closed outer ranges. The radial-weight constraints of 2.12h enter the payoff on [.8255,.82815]: they bound both the odd energy and the second even driver of the same response, while the linear even price is retained when completing the squares. This gives clearance greater than one tenth of a millionth for every fourth excess. [8.13e · proof and exact replay](sources/uncapped-peak-consumer-codex-a7c4/WEIGHTED_SHOULDER.md)
+range [.1,27]. The adaptive trials cover both closed outer ranges. On [.8255,.82815] the proof incorporates the linear even price before completing the squares, tries five additional visible prices and continues the score estimate above normalized energy .06. These give clearance greater than one tenth of a millionth for every fourth excess with 2.12b alone. Adding the optional 2.12h bounds on the odd and second even energies shortens the replay. [8.13e · proof and exact replay](sources/uncapped-peak-consumer-codex-a7c4/WEIGHTED_SHOULDER.md)
 
 On [.825,.8255] the odd-sector price depends on the remote energy and fourth excess. A concave majorant of the 320 conditional matrix bounds allows the remote and odd fields to share coordinates. After averaging the centered compensation term, the same visible trials clear the cap by more than $10^{-7}$ across all six sectors. [8.13f · odd-sector comparison](sources/uncapped-peak-consumer-codex-a7c4/ODD_RESPONSE.md)
 

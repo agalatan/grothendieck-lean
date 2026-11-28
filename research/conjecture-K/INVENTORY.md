@@ -1976,3 +1976,16 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 | `code/homothety-consumers-gemini-c1de/verify.py` | 42,879 B | `647baf6ab998b004fd7c31cc8b43e44732d91cac0358cc8e30ffdcef75320d12` |
 | `code/homothety-consumers-gemini-c1de/test_controls.py` | 11,139 B | `c67d7c937cca6427221e77a8506f10bab1611fb495bfa8117c679e345d3093aa` |
 | `code/homothety-consumers-gemini-c1de/homothety_consumers_cert.json` | 268,246 B | `cb7027d95f1caa16c2b56493d3793a16f86e0dd1f83d36cbd080bb847fae156e` |
+
+## Six-sector lower-shoulder comparison (8.13d–f)
+
+The three supplemental Stein models at normalized energy .06 extend the comparison in 8.13d. Row 8.13e reuses them with the even price inside the square completion. For 8.13f, run the adjacent `odd_response.py` with the same flags. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py` from the repository root.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| [extension_duals.json](code/uncapped-peak-consumer-codex-a7c4/extension_duals.json) | 6,491 | `47d9ef8b0bec58097a0ad159c12aff244d7c755e636343796bbbf86760281d25` |
+| [weighted_shoulder.py](code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py) | 8,667 | `b871f0f2a83720df6c8d4279a62f14010faaca1919cc6239f57e766639bcb91f` |
+| [WEIGHTED_SHOULDER.md](sources/uncapped-peak-consumer-codex-a7c4/WEIGHTED_SHOULDER.md) | 6,400 | `09278be0b2c757c478d0b43769d7a58d1a5a1a1aec41093eb3a23bed44116cb4` |
+| [odd_response.py](code/uncapped-peak-consumer-codex-a7c4/odd_response.py) | 6,580 | `3d7ac7667a28ebbac47b99f36734979df06603c32b3195bb2465150286894555` |
+| [ODD_RESPONSE.md](sources/uncapped-peak-consumer-codex-a7c4/ODD_RESPONSE.md) | 6,418 | `841a91dc8a5a04977cf1215840f1dcba14542ce670f4b7b6d78eea38395d8d72` |
+| [ODD_SMALL_BALL.md](sources/uncapped-peak-consumer-codex-a7c4/ODD_SMALL_BALL.md) | 5,552 | `93ded721fbf48131580848349b11310a73546361adbbc6d4494ad816d8c7026f` |

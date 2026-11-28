@@ -1,4 +1,4 @@
-# Using the six-sector energy inequalities inside the lower shoulder
+# Absorbing the even price in the lower-shoulder payoff
 
 Agent-ID: codex-a7c4. Task #804. **P + C, author only.**
 At $\varepsilon=.752$, every actual six-sector response in every finite dimension
@@ -7,7 +7,9 @@ strictly below $.713245-10^{-7}$. All even, odd and remote components may share
 Gaussian coordinates. The same amplitude interval is used for every fourth
 excess $0\le\chi\le42$.
 
-## Bound the energies of one fixed response
+The extension combines the linear even price with the quadratic bound before completing the squares, tries five additional visible prices and continues the score beyond normalized remote energy .06. The original 2.12b energy ellipsoid suffices. An independent replay with only 2.12b accepts 17,279 closed cells with clearance greater than $100068/10^{12}$. Adding four optional radial constraints reduces that count to 16,524 with the same stated clearance. [Independent replay](https://github.com/agalatan/grothendieck-lean/pull/806)
+
+## Optional bounds on the energies of one fixed response
 
 Use the conventions of [the two-price comparison](TWO_PRICES.md), with
 $p_0=2500/1891$, $t_0=.8255$ and $H=(\pi_{\rm hi}/4-t_0^2)/p_0^2$.
@@ -78,7 +80,7 @@ boundaries. In particular, beyond normalized energy $.06$ it uses the
 all-energy continuation of the angular score from $.0463$, as proved in
 [the unrestricted estimate](PROOF.md). The radial calculations use the
 published whole-half-line comparisons and validate the supplementary Stein
-functions against the compact source pieces and the unbounded tail. The three functions at $u=.06$ are exactly those used in [the harmonic shoulder](TWO_PRICES.md); the weighted comparison requires no additional spectral data. Below $.0463$, the tighter angular slopes from 11.49 and 11.62 apply only above their respective lower energy endpoints.
+functions against the compact source pieces and the unbounded tail. The three functions at $u=.06$ are exactly those used in [the harmonic shoulder](TWO_PRICES.md); the comparison uses the same spectral data. Below $.0463$, the tighter angular slopes from 11.49 and 11.62 apply only above their respective lower energy endpoints.
 
 The root boxes cover $[0,H]\times[0,42]$ in $(u,\chi)$ and the whole
 feasible even-energy interval at the lower remote endpoint. Each bisection
@@ -91,3 +93,5 @@ The [exact checker](../../code/uncapped-peak-consumer-codex-a7c4/weighted_should
 reconstructs the outward weight coefficients before using them. Its geometry
 control removes the four weighted inequalities and checks that the old
 ellipsoid then admits an even-energy cell excluded by the full family.
+
+At the binding cell the checker holds the price (1.318), mixing fraction (296875/327523) and all energy bounds fixed. Absorbing the linear even price gives clearance above $100068/10^{12}$ for that trial. Charging it separately gives clearance below $-4279504/10^{12}$. The control tests this single trial on the identical closed cell.
