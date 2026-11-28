@@ -304,7 +304,7 @@ theorem, and it does not give same-variance domination D(q) ≥ 0.
 Around the peak:
 
 - **Tube.** With λ = ε/(1891/2500), Λ(q) < S + 8.1·10⁻⁵ for ε ∈ [0.74, 0.76] and
-  |a − λ·699/1250| + (3/2)|b − λ·179/1250| ≤ λ/50000 [P + C · codex-a7c4, checked by gemini-21d5 · 3.11].
+  |a − λ·699/1250| + (3/2)|b − λ·179/1250| ≤ λ/50000 [P + C · codex-a7c4, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) · 3.11].
 - **One-sided rectangle.** ε ∈ [0.74, 0.76], 0 ≤ a/λ − 0.5592 ≤ 1/2000 and 0 ≤ b/λ − 0.1432 ≤ 1/625 give
   Λ(q) < S + 9.934·10⁻⁵ [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 3.15].
 - **Convex cells.** Caps at the vertices of a convex cell of profiles transfer to the cell through a concave lower
@@ -403,7 +403,7 @@ with every Gaussian buffer for 0 < χ ≤ 1/72000 (3.18), for all multi-driver c
 (m ≥ 1) plus any independent circular Gaussian scale mixture Q_mix with quantitative margin ≥ (1/20)(Σ u_j²)/(u + v_mix + v)^{3/2}
 [P + C, author only · gemini-21d5 · 3.5, 3.6, 3.25], strictly without a buffer for 0 < χ ≤ 1/18000 and across the
 high-kurtosis regime **χ ∈ [28/3, 42]**, where **E|q| ≤ (4431/5000)‖q‖₂ = 0.8862‖q‖₂ < (√π/2)‖q‖₂** (`cert_real_501.json`, widened from [25, 42] with 443/500 in `cert_912.json` and [26, 42] in `cert_915.json`) [P + C, author only ·
-gemini-8732 and gemini-2762; the [25, 42] bound of gemini-4c4c is P + C · 3.6, 3.7], as well as on hyperplane-vanishing cubics [P · 3.25] and on P₃,₁(q²) = 0 [P + C · 3.24].
+gemini-8732 and gemini-2762; the [25, 42] bound of gemini-4c4c is P + C · 3.6, 3.7], as well as on hyperplane-vanishing cubics [P · [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) · 3.25] and on P₃,₁(q²) = 0 [P + C · [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) · 3.24].
 Without a buffer, (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer,
 radius domination holds for one two-variable family around the known counterexample to the stronger Laplace comparison
 [author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (2221/2500)‖q‖₂ =
@@ -489,10 +489,10 @@ Then E f(|q|²) − f(0) = E[J·f′(|q|²)] for every smooth f of polynomial gr
 growth put D_φ(q) = E φ(uτ) − E φ(|q|²), with τ a standard exponential variable independent of q; for
 φ(v) = 2E|L + √v|, the expectation being over z₁, this is the deficit D(q) of 1.8. Then D_φ(q) = −Cov(J, K_φ′(|q|²))
 with K_φ(v) = E φ(v + uτ), and the Laplace order, the buffer deficits and the smoothing sign are positive functionals
-of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C · a research worker of claude-b9ee, checked by gemini-21d5 · 3.23]. Two classes follow.
+of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C · a research worker of claude-b9ee, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) · 3.23]. Two classes follow.
 - If P₃,₁(q²) = 0 (equivalently Σ_j ∂_jq·∂̄_jq ≡ 0; every decoupled cubic), then |q|² is exponential conditionally
   on |∂̄q|². So D_φ(q) ≥ 0 for every concave profile, and every content of q vanishes
-  [P + C · a research worker of claude-b9ee, checked by gemini-21d5 · 3.24].
+  [P + C · a research worker of claude-b9ee, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) · 3.24].
   Fixed unitary decoupling requires the stronger two-point identity $DF(z)F(z')=0$.
   In at most four complex coordinates the two conditions agree. In five,
   $q=x^2\bar u+xy\bar v+(xv-yu)\bar w$ satisfies the diagonal identity and violates the two-point one.
@@ -507,7 +507,7 @@ of the single function N(λ) = (1 + λu)·E e^{−λ|q|²} − 1 [P + C · a res
 - If q vanishes on a complex hyperplane {X = 0}, then for every Gaussian buffer σ ≥ 0,
   √π·√(σ² + u) − 2E|σW + q| ≥ |α|²a_σ + ‖ℓ‖²b_σ with a_σ, b_σ > 0, where α and ℓ are the coefficients of X(|X|² − 2)
   and of X². In particular E|q| ≤ (√π/2)·√(u − |α|²/4 − ‖ℓ‖²/2). The class contains every one-driver cubic, in every
-  dimension [P · a research worker of claude-b9ee, checked by gemini-21d5 · 3.25].
+  dimension [P · a research worker of claude-b9ee, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) · 3.25].
 
 The proof of the second class conditions on one coordinate. A component free of that coordinate enters with the wrong
 sign, so that conditioning method covers two variables numerically and not three [N · 3.25, item 94]; for arbitrary m ≥ 1
@@ -528,7 +528,7 @@ whose combined energy equals that of a rank-one core.
 [Independent blocks, P + C · 6.3.42a](sources/quadratic-spectrum-codex-a7c4/INDEPENDENT_BLOCKS.md).
 At the peak row all three terms
 are nonnegative on every cubic tested; a proof of the sign of the two contractions would give D(q) ≥ 0 there in every
-dimension [P + C for the identity, N for the signs · a research worker of claude-b9ee, checked by gemini-21d5 · 3.26]. For √v itself this split and that of 2.5 each have
+dimension [P + C for the identity, N for the signs · a research worker of claude-b9ee, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) · 3.26]. For √v itself this split and that of 2.5 each have
 a term of the wrong sign on explicit cubics [N · chapter 4, item 92].
 
 ### 2.2 Disjoint drivers (L2)
@@ -699,7 +699,7 @@ constants 0.10, 0.15 or 11/50 = 0.22 of the diagonal and adverse joint A/B assem
 
 A second, local form removes the field c₂ − u: E[ȳ_e q h(V)] = E[ȳ_e(∂_vk·q̄a + ∂_ck·b)], with k(v, c) = E h(v + cτ),
 F = ∂̄q and b = Σ_k conj(F_k)·(F·∇)F_k. The content is then linear in the pair (a, DF·F), whose budget is
-‖P₂,₀(q²)‖² + ½‖P₃,₁(q²)‖² [P + C · a research worker of claude-b9ee, checked by gemini-21d5 · 6.3.26]. Its Cauchy–Schwarz bound is 0.128·D at the cubic above and at
+‖P₂,₀(q²)‖² + ½‖P₃,₁(q²)‖² [P + C · a research worker of claude-b9ee, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) · 6.3.26]. Its Cauchy–Schwarz bound is 0.128·D at the cubic above and at
 least 0.162·D on searched two-variable inputs, already above 0.15 (while this two-variable lower bound on the supremum lies below 11/50 = 0.22 and 6/25 = 0.24 of 7.4.17, the supremum itself is uncertified and could still exceed either target) [N · item 93].
 
 The transverse radius in 3.24b gives $D(q)>u^2/[8(n-1)]$ for a zero-contraction core of energy $u$ below
@@ -822,7 +822,7 @@ D(q) ≥ η/(1 − κ) = 5673/30305000 ≈ 1.87·10⁻⁴. [lemma P + C · codex
 
 For u ≤ 0.021 a separate certificate gives more, Λ̂(q + (T − 1)r) < S − 69/25000000, strictly below S
 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 11.47]; on u + V ≤ 0.080051, `KAST` extends strict exact retained K (`Λ̂ < S`) to joint A + B via 7.4.16 across u ∈ [0, 0.03] (`D_+` 11.61) and u ∈ [0, 0.0354] ∪ [0.0456, 0.0463] (signed 11.61), and across all six sectors by 7.5.13 [P + C · gemini-c1de · 11.47]. Two special cases of the lemma,
-0.03 ≤ u ≤ 0.0463 with χ ≤ 7/100, and χ ≤ 1/4, have certificates of their own, independent of step 3 [P + C · 11.46, 11.48].
+0.03 ≤ u ≤ 0.0463 with χ ≤ 7/100, and χ ≤ 1/4, have certificates of their own, independent of step 3 [P + C · 11.46; P + C · [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) and claude-b9ee · 11.48].
 
 **Around the peak.** With λ = ε/(1891/2500), ε ∈ [0.74, 0.76], 0 ≤ a/λ − 0.5592 ≤ 1/2500 and
 0 ≤ b/λ − 0.1432 ≤ 1/800,
@@ -909,7 +909,7 @@ finite-amplitude joint A/B costs (both raw and retained) are proved in 2.8.
 at the three rows, for arbitrary jointly distributed remote r_A, r_B [P + C · codex-a7c4, re-derived and replayed by
 claude-b9ee · 7.3.1]. The sharp least local eigenvalues are 0.298364651634117… (peak), 0.32315284787… (flank) and
 0.32771589719… (upper), each attained along a genuine cubic Gaussian-driver direction [P + C, N ·
-codex-a7c4, checked by gemini-21d5, and replayed and recomputed to 40 digits by claude-b9ee · 7.4.9]; along
+codex-a7c4, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204), and replayed and recomputed to 40 digits by claude-b9ee · 7.4.9]; along
 (r_A, r_B) ∝ (1, −1/5) the peak value is 0.298526… [P + C · 7.4.8]. So no global common A/B cost can exceed these
 numbers.
 
@@ -1050,7 +1050,7 @@ unrounded coefficients are sharp on the Q- and d-axes, and they are row-specific
 Λ̂ = Λ there [P + C · 5.4b]; the retained functional keeps the Q cost and improves k₃ [P + C · 5.4c].
 
 **One coordinate (n = 1).** On the whole box Λ(d·z₁(T − 2)) ≤ 2E|L| − k_\*‖d·z₁(T − 2)‖² with the sharp uniform cost
-k_\* = 0.151676198434561…, so sup Λ on H₂,₁(ℂ) is 2E|L|, attained only at G = 0 [P + C · codex-a7c4, checked by gemini-21d5 and claude-b9ee · 2.6]; for Λ̂ the
+k_\* = 0.151676198434561…, so sup Λ on H₂,₁(ℂ) is 2E|L|, attained only at G = 0 [P + C · codex-a7c4, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/902#issuecomment-7236842204) and claude-b9ee · 2.6]; for Λ̂ the
 sharp cost is 0.392424545003417… [P + C · 2.6a].
 
 **Remote core.** Over every remote q, each of z₁Q and z̄₁P separately has uniform cost 0.01, 0.03, 0.04 at the peak,
