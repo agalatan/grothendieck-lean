@@ -3491,16 +3491,9 @@ import Grothe.UpperBivar.Bound
 import Grothe.UpperBivar.ContourChecks
 import Grothe.UpperBivar.ContourChecks.Channel0
 import Grothe.UpperBivar.ContourChecks.Channel1
-import Grothe.UpperBivar.ContourChecks.Channel10
-import Grothe.UpperBivar.ContourChecks.Channel11
 import Grothe.UpperBivar.ContourChecks.Channel2
 import Grothe.UpperBivar.ContourChecks.Channel3
 import Grothe.UpperBivar.ContourChecks.Channel4
-import Grothe.UpperBivar.ContourChecks.Channel5
-import Grothe.UpperBivar.ContourChecks.Channel6
-import Grothe.UpperBivar.ContourChecks.Channel7
-import Grothe.UpperBivar.ContourChecks.Channel8
-import Grothe.UpperBivar.ContourChecks.Channel9
 import Grothe.UpperBivar.Head
 import Grothe.UpperBivar.Parameters
 import Grothe.UpperBivar.SubArc

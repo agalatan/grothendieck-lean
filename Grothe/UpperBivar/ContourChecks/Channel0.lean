@@ -14,22 +14,20 @@ namespace Haagerup.UpperBivar
 open HaagerupKernel.TaylorHardy
 
 def newRegSteps0 : List Nat := [
-  2, 1, 1, 2, 2, 4, 4, 16
+  16, 12, 17, 34, 49
 ]
 
 def newMeanSteps0 : List Nat := [
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4,
-  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16
+  11, 11, 9, 10, 12, 15, 18, 23, 30, 43, 74
 ]
 
 theorem newReg0_ok :
-    regQ1DiagOK newP0 (newRegRQ (⟨0, by decide⟩ : Fin 12)) 5 newRegSteps0 = true := by
+    regQ1DiagOK newP0 (newRegRQ (⟨0, by decide⟩ : Fin 5)) 7 newRegSteps0 = true := by
   decide +kernel
 
 theorem newMean0_ok :
-    meanQ1AntiOK newP0 (newRhoQ (⟨0, by decide⟩ : Fin 12))
-      (newJCertQ (⟨0, by decide⟩ : Fin 12)) (newBudgetQ (⟨0, by decide⟩ : Fin 12))
+    meanQ1AntiOK newP0 (newRhoQ (⟨0, by decide⟩ : Fin 5))
+      (newJCertQ (⟨0, by decide⟩ : Fin 5)) (newBudgetQ (⟨0, by decide⟩ : Fin 5))
       8 newMeanSteps0 = true := by
   decide +kernel
 
