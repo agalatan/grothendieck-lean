@@ -46,42 +46,46 @@ def sqrt_interval(n):
     return Q(k,PRECISION),Q(k+1,PRECISION)
 
 
-def derivatives(x, mu):
+def derivatives(x, mu, *, terms=49, precision=PRECISION):
     """Enclose G and its first five derivatives using the beta integral."""
+    require(terms > 0 and terms % 2 == 1, "odd Taylor truncation")
     result=[]
     for n in range(6):
-        l=h=PRECISION
-        low_sum=high_sum=PRECISION
-        for k in range(49):
+        l=h=precision
+        low_sum=high_sum=precision
+        for k in range(terms):
             num=x.numerator*(2*n+2*k+1)
             den=x.denominator*2*(k+1)*(n+k+2)
             l,h=l*num//den,-(-h*num//den)
             if k%2==0:
                 low_sum-=h
-                if k<48:
+                if k<terms-1:
                     high_sum-=l
             else:
                 low_sum+=l
                 high_sum+=h
         moment=prod((Q(2*j+1,2*(2+j)) for j in range(n)),start=Q(1))
         require(0<=low_sum<=high_sum,"alternating Taylor enclosure")
-        result.append(scale((-1)**n*moment,(mu[0]*low_sum/PRECISION,mu[1]*high_sum/PRECISION)))
+        result.append(scale((-1)**n*moment,(mu[0]*low_sum/precision,mu[1]*high_sum/precision)))
     return result
 
+
+def coefficient_bounds(p,q,a,ds):
+    interval=(Q(0),Q(0))
+    for j in range(min(p,q+1)+1):
+        multiplier=comb(p,j)*factorial(q+1)//factorial(q+1-j)
+        interval=add(interval,scale(multiplier*a**(p+q+1-2*j),ds[p+q-j]))
+    # 1/sqrt(n) = sqrt(n)/n
+    n=factorial(p)*factorial(q)
+    l,h=sqrt_interval(n)
+    endpoints=[u*v/n for u in interval for v in (l,h)]
+    return min(endpoints),max(endpoints)
 
 def ordinates(y,mu):
     a=LAM*y
     ds=derivatives(a*a,mu)
     def coefficient(p,q):
-        interval=(Q(0),Q(0))
-        for j in range(min(p,q+1)+1):
-            multiplier=comb(p,j)*factorial(q+1)//factorial(q+1-j)
-            interval=add(interval,scale(multiplier*a**(p+q+1-2*j),ds[p+q-j]))
-        # 1/sqrt(n) = sqrt(n)/n
-        n=factorial(p)*factorial(q)
-        l,h=sqrt_interval(n)
-        endpoints=[u*v/n for u in interval for v in (l,h)]
-        return min(endpoints),max(endpoints)
+        return coefficient_bounds(p,q,a,ds)
     h_upper=sum(square(coefficient(p,q))[1] for p,q in ((0,1),(1,2),(3,0),(3,2)))
     for p,q,center in ((1,0,M1),(2,1,M3)):
         h_upper+=square(add(coefficient(p,q),(-center,-center)))[1]

@@ -1,5 +1,6 @@
 import QuinticResearch.FifthClip
 import QuinticResearch.GaussianBlockEmbedding
+import QuinticResearch.JointCubicAlgebra
 import QuinticResearch.JointVisibleBudget
 import QuinticResearch.PhaseIteration
 import QuinticResearch.QuinticAsymmetricEllipse

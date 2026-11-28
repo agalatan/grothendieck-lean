@@ -5,6 +5,10 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.H32_le_orthogonal
 #print axioms Grothe.LowerAnalytic.H32_starProjection_Cop
 #print axioms Grothe.LowerAnalytic.H32_unitPhaseL_ae
+#print axioms Grothe.LowerAnalytic.JointCubic.absorb_even
+#print axioms Grothe.LowerAnalytic.JointCubic.density_polynomials
+#print axioms Grothe.LowerAnalytic.JointCubic.reflected_cost
+#print axioms Grothe.LowerAnalytic.JointCubic.shared_projection_budget
 #print axioms Grothe.LowerAnalytic.RadialExpBounds.down_le
 #print axioms Grothe.LowerAnalytic.RadialExpBounds.down_nonneg
 #print axioms Grothe.LowerAnalytic.RadialExpBounds.expBounds_enclose
