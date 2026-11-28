@@ -35,8 +35,13 @@ def remote(src, index, p, ul, uh, cl, ch, mixed):
     return max(upper)
 
 
+def shape_interval(slab, mixed):
+    edge = Q(slab[1])
+    return (Q(0), edge) if mixed else (edge, Q(42))
+
+
 def run(src, tree, slab, mixed=False):
-    t, chi_min = map(Q,slab)
+    t = Q(slab[0])
     G = fixed.PI/4-t*t
     tangent = 4*Q('.432306903')*(Q('.886762780')-t)
     X = min(tangent, 2*G)
@@ -103,7 +108,7 @@ def run(src, tree, slab, mixed=False):
         need(gap>0,'adaptive row clearance')
         return 1,gap
 
-    return visit(tree,[(Q(0),X),(Q(0),3*G/2),((Q(0),chi_min) if mixed else (chi_min,Q(42)))])
+    return visit(tree,[(Q(0),X),(Q(0),3*G/2),shape_interval(slab, mixed)])
 
 
 def verify(src, data):
