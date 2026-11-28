@@ -43,13 +43,27 @@ class MiddlePrefixTest(unittest.TestCase):
         self.assertIsNone(next(cells, None))
 
     def test_published_endpoints_and_stream(self):
-        self.assertEqual([g["through"] for g in self.groups], ["51/256", "13/64", "37/128", "43/256"])
+        self.assertEqual([g["through"] for g in self.groups], ["13/64", "63/256", "83/256", "139/256"])
         cells = mid.bind(self.groups)
         cfg = mid.replay.original.load_full_cfg(str(mid.replay.SOURCE / "dual_certs.json"))
         with tempfile.TemporaryDirectory() as directory:
             data = Path(directory) / "middle.dat"
             stream = mid.replay.original.emit_dat_from_json(dict(cfg, cells=cells), data)
             self.assertEqual(data.read_bytes(), stream)
+        self.assertEqual(hashlib.sha256(stream).hexdigest(),
+                         "c0b585465ceb78f96395ba22a93d7be566500e20b0b77a6bbb3dbbc145d8cd4a")
+
+    def test_original_40_rectangles_and_extension_sources(self):
+        original = deepcopy(self.groups)
+        donors = set()
+        for group, count in zip(original, [15, 11, 7, 7]):
+            for _, _, a, b in group["intervals"][count:]:
+                donors.update([a, b])
+            group["intervals"] = group["intervals"][:count]
+            group["through"] = group["intervals"][-1][0]
+        self.assertEqual(donors, set(mid.load_fits()))
+        cfg = mid.replay.original.load_full_cfg(str(mid.replay.SOURCE / "dual_certs.json"))
+        stream = mid.replay.original.emit_dat_bytes(dict(cfg, cells=mid.bind(original)))
         self.assertEqual(hashlib.sha256(stream).hexdigest(),
                          "d5f214e862f259850007d5946ef2233ec12edc54ba3b62e853ecd2d4a3306c5b")
 
