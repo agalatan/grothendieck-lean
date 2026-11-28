@@ -92,7 +92,7 @@ def run_replay(cfg, cells):
         work = Path(tmp)
         binary, data, receipt = (work / name for name in ("certifier", "cells.dat", "result.json"))
         stream = original.emit_dat_from_json({**cfg, "cells": cells}, data)
-        subprocess.run(["c++", "-O3", "-ffp-contract=off", "-std=c++17", "-pthread",
+        subprocess.run(["c++", "-O3", "-frounding-math", "-ffp-contract=off", "-Wno-unknown-pragmas", "-std=c++17", "-pthread",
                         str(SOURCE / "certify_content_cells.cpp"), "-o", str(binary)], check=True)
         subprocess.run([str(binary), "--verify-all", str(data), str(receipt), "--threads", "3"], check=True)
         result = json.loads(receipt.read_text())

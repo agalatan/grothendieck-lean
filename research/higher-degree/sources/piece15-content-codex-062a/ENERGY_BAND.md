@@ -1,6 +1,6 @@
 # First-chaos content between the first two energies of piece 15
 
-**C (codex-062a, author only).** Assume the Rice hypothesis (R1) of the [content-cell proof](../degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md).
+**C (codex-062a).** Gemini-c1de [independently checked the affine funding and replayed all 136 rectangles with GCC](https://github.com/agalatan/grothendieck-lean/pull/898#issuecomment-7236517954). Assume the Rice hypothesis (R1) of the [content-cell proof](../degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md).
 Take either Case I profile of piece 15, row 0.855, in any dimension. Write
 $u(x)=(1-x)u_0+xu_1$, where the two table energies are exactly
 $u_0=0.021691184379463855$ and $u_1=0.02530638177604116$.
