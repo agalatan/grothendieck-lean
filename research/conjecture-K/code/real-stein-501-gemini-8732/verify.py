@@ -62,6 +62,46 @@ DEFAULT_CERT = HERE / 'cert_real_501.json'
 C6_CPLX = Fr(4045313, 100000)
 S_REAL_COVER = Fr(90)
 KNG505_SLOPE = Fr(26449, 5000000)
+GRAM_COEFF = Fr(3, 16)
+WICK6_NEG_COEFF = 4320
+
+
+def verify_structural_constants(gram_coeff=None, wick6_neg_coeff=None):
+    """Tie GRAM_COEFF (3/16) and WICK6_NEG_COEFF (4320) to zero-slack concrete chaos witnesses:
+    1. F(X) = X_1 X_2 X_3 in V_3(R^3) at X = (1, 1, 1): tau = eta = 1, w_tau = 16/3, w_eta = 4/3,
+       sigma_r = 2, nu_r = 1; at M_w = I_2 and (l_A, L_nu) = (-16/3, -8/3), the Gram cone equals
+       -20/3 + (320/9) * gram_coeff, which is >= 0 iff gram_coeff >= 3/16 (rejecting e.g. 3/20).
+    2. F(X_1) = (X_1^3 - 3 X_1)/sqrt(6) in V_3(R^1) (s = 90, x = 1): E[F^6] computed directly from
+       Gaussian moments E[X^{2k}] = (2k - 1)!! equals 53,745, and the sixth-moment upper bound at
+       (s = 90, x = 1) equals 15 + 15*90 + P_6(1) - wick6_neg_coeff = 58,065 - wick6_neg_coeff,
+       which is >= E[F^6] iff wick6_neg_coeff <= 4320 (rejecting e.g. 5000)."""
+    gc = GRAM_COEFF if gram_coeff is None else Fr(gram_coeff)
+    wn = WICK6_NEG_COEFF if wick6_neg_coeff is None else wick6_neg_coeff
+    # Witness 1: F = X_1 X_2 X_3 at X = (1, 1, 1):
+    df = (Fr(1), Fr(1), Fr(1))
+    d2f = ((Fr(0), Fr(1), Fr(1)), (Fr(1), Fr(0), Fr(1)), (Fr(1), Fr(1), Fr(0)))
+    tau_w = sum(x * x for x in df) / 3
+    dtau = tuple(Fr(2, 3) * sum(d2f[i][j] * df[j] for j in range(3)) for i in range(3))
+    deta = (Fr(2, 3), Fr(2, 3), Fr(2, 3))
+    w_tau = sum(x * x for x in dtau)
+    w_eta = sum(x * x for x in deta)
+    sig_r = sum(df[i] * dtau[i] for i in range(3)) / 2
+    nu_r = sum(df[i] * deta[i] for i in range(3)) / 2
+    lA_w, Lnu_w = -Fr(16, 3), -Fr(8, 3)
+    gram_val = w_tau + w_eta + lA_w * sig_r + Lnu_w * nu_r + gc * (lA_w * lA_w + Lnu_w * Lnu_w) * tau_w
+    require(gram_val >= 0, 'unsound GRAM_COEFF < 3/16 violated by X_1 X_2 X_3 at (1, 1, 1)')
+
+    # Witness 2: F = (X_1^3 - 3 X_1)/sqrt(6), exact Gaussian sixth moment E[(X^3 - 3X)^6] / 216:
+    p_h3 = [Fr(0), Fr(-3), Fr(0), Fr(1)]
+    p2 = pmul(p_h3, p_h3)
+    p6_raw = pmul(p2, pmul(p2, p2))
+    dfact = [Fr(1)]
+    for k in range(1, 10):
+        dfact.append(dfact[-1] * (2 * k - 1))
+    ev3_h3 = sum(p6_raw[2 * k] * dfact[k] for k in range(len(p6_raw) // 2 + 1) if 2 * k < len(p6_raw)) / 216
+    P6_at_1 = Fr(32400 + 9720 + 14580)
+    ub_h3 = Fr(15 + 15 * 90) + P6_at_1 - Fr(wn)
+    require(ub_h3 >= ev3_h3, 'unsound WICK6_NEG_COEFF > 4320 violated by E[h_3(X)^6] = 53745')
 
 
 def require(cond, msg='verification condition failed'):
@@ -233,6 +273,7 @@ def positive_on(p, a, b=None):
 # PART 2: REAL LEVEL-2 MALLIAVIN-STEIN SLAB ROW VERIFIER
 # ==============================================================================
 def verify_row(row):
+    verify_structural_constants()
     s_lo, s_hi = Fr(row['s_lo']), Fr(row['s_hi'])
     require(0 <= s_lo < s_hi <= S_REAL_COVER, f'invalid slab [{s_lo}, {s_hi}]')
     B_bound = Fr(row['bound'])
@@ -336,7 +377,7 @@ def verify_row(row):
                 psub(pscale(pmul(lA_p, lA_p), mu11), pscale(pmul(lA_p, Lnu), 2 * mu01)),
                 pscale(pmul(Lnu, Lnu), mu00),
             )
-            T3_exact = pscale(q_form, Fr(3) / (16 * Dw))
+            T3_exact = pscale(q_form, GRAM_COEFF / Dw)
 
             p_w1 = pscale([-a_lo, Fr(1)], Fr(1) / (b_hi - a_lo))
             T3_p, pw = [], [Fr(1)]
@@ -418,7 +459,7 @@ def verify_row(row):
     for tag, s_ep, sig_ep, ssq_ep in (('lo', s_lo, sig_lo, ssq_lo), ('hi', s_hi, sig_hi, ssq_hi)):
         Nx = padd(
             psub(pscale(qx2, B_bound - C0 - s_ep * Cs), pmul([s_ep * Cm, Fr(0), s_ep * Cu], qx)),
-            [4320 * lam3 * ssq_ep],
+            [WICK6_NEG_COEFF * lam3 * ssq_ep],
         )
         require(positive_on(Nx, x_lo, Fr(1)), f'moment N_{tag}(x) <= 0 on [{x_lo}, 1]')
         diff_x = psub(pmul(Nx, Nx), pscale(P6sq_q, (lam3 * sig_ep) ** 2))

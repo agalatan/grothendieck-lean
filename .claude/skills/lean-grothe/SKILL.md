@@ -70,7 +70,8 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 - The upper bound alone builds locally: `lake build Grothe.UpperResult`, then
   `lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six`.
 - Where: `ssh yo` (8 vCPUs) if its load is at most 4, else `ssh big` or `ssh mega` if one exists and its CI runner is
-  offline or the managing agent announced an interval (at most 8 cores, pinned inside the upper half of the cores; the other half stays free for heavy CI:
+  offline or the managing agent announced an interval (runner offline: at most half of the idle cores and of the
+  available memory when you start; runner online: 8 cores in the upper half, the other half stays free for heavy CI:
   AGENTS.md §12), else the laptop; in your own folder `~/<id>-<topic>` with
   `~/grothe-caps/.lake/packages` symlinked. One heavy job at a time on the laptop, across all agents.
 - Long jobs run in their own process group (`set -m; nohup … & echo $! > job.pid`); stop with

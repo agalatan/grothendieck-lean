@@ -22,13 +22,13 @@ row 19 [L2]  s in [    49,     61]  K=40  PASS  bound <= 0.7777766100
 row 20 [L2]  s in [    61,     75]  K=40  PASS  bound <= 0.7691282100
 row 21 [L2]  s in [    75,     90]  K=40  PASS  bound <= 0.7504554000
 Real Level-2 Sturm [0, 90]: all 22 rows PASS, worst row = 6, max bound <= 0.7997704100
-GLOBAL REAL CLAIM (#501, #506)  E|F| <= 3999/5000 ||F||_2 < sqrt(17/25) ||F||_2  on ALL V_3(R^n):  VERIFIED  [2329 ms, zero floats]
+GLOBAL REAL CLAIM (#501, #506)  E|F| <= 3999/5000 ||F||_2 < sqrt(17/25) ||F||_2  on ALL V_3(R^n):  VERIFIED  [2386 ms, zero floats]
 SHARP GAUSSIAN CLAIM (#458)     E|F| <= 3989/5000 ||F||_2 < sqrt(2/pi) ||F||_2  on kappa_4 in [14, 90]:  VERIFIED (max <= 0.7977422500)
 COMPLEX CUBIC RADIUS (3.6, 3.7) E|q| <= 2221/2500 ||q||_2 globally;  <= 4431/5000 ||q||_2 < (sqrt(pi)/2)||q||_2 on chi in [28/3, 42]:  VERIFIED
 DOWNSTREAM CONSEQUENCES VERIFIED: deg7_cap=6250000000/6920775923, deg5_cap=3125000000/3457921541, 4.18a=160633/500000, 4.18e=(45041147/100000000, 45406137/100000000, 45016597/100000000), 4.18f_pure=45287/100000 (1881 boxes), 4.18f_kng=11331/25000 (490 boxes)
 === python3 -IB -O verify.py --quiet ===
 Real Level-2 Sturm [0, 90]: all 22 rows PASS, worst row = 6, max bound <= 0.7997704100
-GLOBAL REAL CLAIM (#501, #506)  E|F| <= 3999/5000 ||F||_2 < sqrt(17/25) ||F||_2  on ALL V_3(R^n):  VERIFIED  [2334 ms, zero floats]
+GLOBAL REAL CLAIM (#501, #506)  E|F| <= 3999/5000 ||F||_2 < sqrt(17/25) ||F||_2  on ALL V_3(R^n):  VERIFIED  [2354 ms, zero floats]
 SHARP GAUSSIAN CLAIM (#458)     E|F| <= 3989/5000 ||F||_2 < sqrt(2/pi) ||F||_2  on kappa_4 in [14, 90]:  VERIFIED (max <= 0.7977422500)
 COMPLEX CUBIC RADIUS (3.6, 3.7) E|q| <= 2221/2500 ||q||_2 globally;  <= 4431/5000 ||q||_2 < (sqrt(pi)/2)||q||_2 on chi in [28/3, 42]:  VERIFIED
 DOWNSTREAM CONSEQUENCES VERIFIED: deg7_cap=6250000000/6920775923, deg5_cap=3125000000/3457921541, 4.18a=160633/500000, 4.18e=(45041147/100000000, 45406137/100000000, 45016597/100000000), 4.18f_pure=45287/100000 (1881 boxes), 4.18f_kng=11331/25000 (490 boxes)
@@ -56,20 +56,20 @@ row 19 [Bernstein+Sym8]  s in [    49,     61]  leaves= 324 (d<= 8)  PASS  bound
 row 20 [Bernstein+Sym8]  s in [    61,     75]  leaves= 323 (d<= 9)  PASS  bound <= 0.7691282100
 row 21 [Bernstein+Sym8]  s in [    75,     90]  leaves= 317 (d<= 9)  PASS  bound <= 0.7504554000
 Bernstein + 8-Var Symbolic [0, 90]: all 22 rows PASS (7186 leaves, max_depth=10, 4.18e_leaves=3), max <= 0.7997704100
-INDEPENDENT BERNSTEIN + SYMBOLIC VERIFICATION COMPLETE  [3986 ms, zero floats]
+INDEPENDENT BERNSTEIN + SYMBOLIC VERIFICATION COMPLETE  [3751 ms, zero floats]
 === python3 -IB -O verify_bernstein.py --quiet ===
 Bernstein + 8-Var Symbolic [0, 90]: all 22 rows PASS (7186 leaves, max_depth=10, 4.18e_leaves=3), max <= 0.7997704100
-INDEPENDENT BERNSTEIN + SYMBOLIC VERIFICATION COMPLETE  [3719 ms, zero floats]
+INDEPENDENT BERNSTEIN + SYMBOLIC VERIFICATION COMPLETE  [3684 ms, zero floats]
 === python3 -IB check_identities_exact.py ===
 [Part 1-2] Exact OU tower, chaos split, (m, u) moment table & rank-6 Wick6 across 8 tensors: PASS
 [Part 3]   Exact zero-mean Stein brackets (39 checks), 150 rational cone points & {F=0} nodal checks (22 cert rows): PASS
 [Part 4]   Exact U(1) phase transfer kappa_4(F_theta) == (3/2) chi(q) (9 phase-tensor checks): PASS
-ALL EXACT IDENTITY CHECKS PASSED  [2362 ms, zero floats]
+ALL EXACT IDENTITY CHECKS PASSED  [2427 ms, zero floats]
 === python3 -IB -O test_controls.py ===
 [1] Zero-float & zero-assert AST audit across 4 stdlib scripts: PASS
-[2] Row-level controls (Sturm + Bernstein + 8-Var Symbolic): 54 checks ALL REJECTED
+[2] Row-level & structural-constant controls (Sturm + Bernstein + 8-Var Symbolic): 58 checks ALL REJECTED
 [3] Top-level cover & U(1) transfer controls: 20 checks ALL REJECTED
 [4] Downstream consequence overclaim & sign controls: 10 checks ALL REJECTED
-ALL EXACT IDENTITY CHECKS PASSED  [2392 ms, zero floats]
+ALL EXACT IDENTITY CHECKS PASSED  [2646 ms, zero floats]
 [5] Isolated `python3 -IB -O` CLI parity across verify.py, verify_bernstein.py, check_identities_exact.py: PASS
-ALL 91 ADVERSARIAL, AST & -O PARITY CONTROLS PASSED  [14600 ms, zero floats]
+ALL 95 ADVERSARIAL, AST & -O PARITY CONTROLS PASSED  [15285 ms, zero floats]

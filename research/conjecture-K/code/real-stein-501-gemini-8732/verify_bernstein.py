@@ -261,6 +261,10 @@ MV_TAU, MV_ETA, MV_SIG, MV_NU, MV_WT, MV_WTE, MV_WE = (mv_var(i) for i in range(
 # INDEPENDENT BERNSTEIN + SYMBOLIC MULTIVARIATE ROW VERIFIER
 # ==============================================================================
 def verify_row_bernstein(row):
+    try:
+        V1.verify_structural_constants()
+    except ValueError as exc:
+        raise VerificationError(str(exc)) from exc
     stats = {'leaves': 0, 'max_depth': 0}
     s_lo, s_hi = Fr(row['s_lo']), Fr(row['s_hi'])
     require(0 <= s_lo < s_hi <= V1.S_REAL_COVER, f'invalid slab [{s_lo}, {s_hi}]')
@@ -387,7 +391,7 @@ def verify_row_bernstein(row):
             Lsig = 2 * (g2 + ps4)
             Lnu = 2 * (g3 + ps7)
             lA_p = Lsig - lb_p
-            T3_exact = Fr(3) / (16 * Dw) * (mu11 * lA_p * lA_p - 2 * mu01 * lA_p * Lnu + mu00 * Lnu * Lnu)
+            T3_exact = (V1.GRAM_COEFF / Dw) * (mu11 * lA_p * lA_p - 2 * mu01 * lA_p * Lnu + mu00 * Lnu * Lnu)
 
             p_w1 = Poly([-a_lo, Fr(1)]) * (Fr(1) / (b_hi - a_lo))
             T3_p = Poly()
@@ -480,7 +484,7 @@ def verify_row_bernstein(row):
     P6sq_q = P6x * P6x * qx
 
     for tag, s_ep, sig_ep, ssq_ep in (('lo', s_lo, sig_lo, ssq_lo), ('hi', s_hi, sig_hi, ssq_hi)):
-        Nx = (B_bound - C0 - s_ep * Cs) * qx2 - Poly([s_ep * Cm, Fr(0), s_ep * Cu]) * qx + (4320 * lam3 * ssq_ep)
+        Nx = (B_bound - C0 - s_ep * Cs) * qx2 - Poly([s_ep * Cm, Fr(0), s_ep * Cu]) * qx + (V1.WICK6_NEG_COEFF * lam3 * ssq_ep)
         require(pos_on_segment(Nx, x_lo, Fr(1), stats), f'Bernstein N_{tag} failed')
         diff_x = Nx * Nx - ((lam3 * sig_ep) ** 2) * P6sq_q
         require(pos_on_segment(diff_x, x_lo, Fr(1), stats), f'Bernstein diff_x {tag} failed')

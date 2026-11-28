@@ -112,7 +112,21 @@ def main():
     check_both_rows(low_row, lambda r: r.__setitem__('x_lo', '1/10'), 'nonzero x_lo when s_lo <= 36')
     check_both_rows(high_row, lambda r: r.__setitem__('x_lo', '999/1000'), 'overstated x_lo with 36 + 54 x_lo^2 > s_lo')
     check_both_rows(low_row, lambda r: r.__setitem__('bound', str(Fr(r['bound']) - Fr(1, 100))), 'overclaimed slab bound')
-    print(f'[2] Row-level controls (Sturm + Bernstein + 8-Var Symbolic): {n_row_ctrl} checks ALL REJECTED')
+
+    def check_const_tamper(attr, bad_val, desc):
+        nonlocal n_row_ctrl
+        orig = getattr(V1, attr)
+        try:
+            setattr(V1, attr, bad_val)
+            expect_reject(lambda: V1.verify_row(low_row), 'Sturm: ' + desc)
+            expect_reject(lambda: VB.verify_row_bernstein(low_row), 'Bernstein: ' + desc)
+            n_row_ctrl += 2
+        finally:
+            setattr(V1, attr, orig)
+
+    check_const_tamper('GRAM_COEFF', Fr(3, 20), 'unsound GRAM_COEFF = 3/20 < 3/16')
+    check_const_tamper('WICK6_NEG_COEFF', 5000, 'unsound WICK6_NEG_COEFF = 5000 > 4320')
+    print(f'[2] Row-level & structural-constant controls (Sturm + Bernstein + 8-Var Symbolic): {n_row_ctrl} checks ALL REJECTED')
 
     # 3. Top-level contiguity, coverage, & U(1) transfer controls on BOTH verifiers:
     n_top_ctrl = 0
