@@ -138,14 +138,19 @@ def parse_frac(s):
     return Fraction(int(s), 1)
 
 
-def fmt_dec(iv_val, digits=5):
+def fmt_bound(value, digits, *, upper=False):
+    """Round an endpoint outward from its integer value in units of 1/S."""
     scale = 10 ** digits
-    neg = iv_val < 0
-    v = -iv_val if neg else iv_val
-    scaled = (v * scale + S // 2) // S
-    whole, frac = divmod(scaled, scale)
-    sign = "-" if neg else "+"
-    return f"{sign}{whole}.{str(frac).zfill(digits)}"
+    numerator = value * scale
+    rounded = -(-numerator // S) if upper else numerator // S
+    whole, frac = divmod(abs(rounded), scale)
+    sign = "-" if rounded < 0 else "+"
+    return f"{sign}{whole}.{frac:0{digits}d}"
+
+
+def fmt_interval(bounds, digits):
+    lower, upper = bounds
+    return f"[{fmt_bound(lower, digits)},{fmt_bound(upper, digits, upper=True)}]"
 
 
 def iv_add(a, b):
@@ -1807,11 +1812,11 @@ def verify_certificate(cert_data, repo_root, only_row=None, jobs=0, quiet=False,
             min_lam_lo = min(l[0] for l in res["sos_lams"])
             print(
                 f"  [OK] {rid:10s} ({res['elapsed_ms']:5d} ms) | "
-                f"kd=[{fmt_dec(res['kappa_D'][0], 6)},{fmt_dec(res['kappa_D'][1], 6)}] | "
-                f"plain=[{fmt_dec(res['plain_e21'][0], 4)},{fmt_dec(res['plain_e21'][1], 4)}] | "
-                f"no_cmm=[{fmt_dec(res['no_cmm_5sc'][0], 4)},{fmt_dec(res['no_cmm_5sc'][1], 4)}] | "
-                f"ret_all_dim=[{fmt_dec(res['retained_all_dim'][0], 5)},{fmt_dec(res['retained_all_dim'][1], 5)}] < {rspec['cap_upper']} | "
-                f"min_lam={fmt_dec(min_lam_lo, 5)} | min_conc={fmt_dec(res['min_concav_lo'], 4)}"
+                f"kd={fmt_interval(res['kappa_D'], 6)} | "
+                f"plain={fmt_interval(res['plain_e21'], 4)} | "
+                f"no_cmm={fmt_interval(res['no_cmm_5sc'], 4)} | "
+                f"ret_all_dim={fmt_interval(res['retained_all_dim'], 5)} | cap={rspec['cap_upper']} | "
+                f"min_lam>={fmt_bound(min_lam_lo, 5)} | min_conc>={fmt_bound(res['min_concav_lo'], 4)}"
             )
 
     return results
