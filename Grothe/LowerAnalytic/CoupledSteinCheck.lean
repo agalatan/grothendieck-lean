@@ -162,29 +162,4 @@ theorem discount_le {stop : ℚ} {left right : List Chord} {l r : Chord}
   rw [hk] at htop
   linarith only [htop,h₈,h₉]
 
-/-- Interpolate two rational endpoint discounts at fixed actual shape, scale and row values.
-The caller may use a sharper real gate gain at the intermediate weight via its concavity. -/
-theorem discount_chord_le {stop : ℚ} {left right : List Chord} {l r : Chord}
-    (hl : l ∈ left) (hr : r ∈ right) {s σ v8 v9 : ℝ} (hlc : l.Covers s σ)
-    (hrc : r.Covers s σ) (hstop : σ ≤ stop)
-    (h8 : v8 ≤ l.eval σ) (h9 : v9 ≤ r.eval σ)
-    (w z k8 k9 cap8 cap9 delta gainW gainZ : ℚ)
-    (hw₀ : 0 ≤ w) (hw₁ : w ≤ 1) (hz₀ : 0 ≤ z) (hz₁ : z ≤ 1)
-    {x G : ℝ} (hx₀ : 0 ≤ x) (hx₁ : x ≤ 1)
-    (hg : (1-x)*(gainW : ℝ)+x*(gainZ : ℝ) ≤ G) :
-    let θ := (1-x)*(w : ℝ)+x*(z : ℝ)
-    let ps := overlay stop left right
-    (1-x)*(discount ps w k8 k9 cap8 cap9 delta gainW : ℝ) +
-      x*(discount ps z k8 k9 cap8 cap9 delta gainZ : ℝ) ≤
-      (1-θ)*((cap8 : ℝ)+(k8 : ℝ)*σ^2-v8) + θ*((cap9 : ℝ)+(k9 : ℝ)*σ^2-v9) +
-        G/(delta : ℝ)^2*σ^2 := by
-  have hw := discount_le hl hr hlc hrc hstop h8 h9 w k8 k9 cap8 cap9 delta gainW hw₀ hw₁
-  have hz := discount_le hl hr hlc hrc hstop h8 h9 z k8 k9 cap8 cap9 delta gainZ hz₀ hz₁
-  have hlower := add_le_add (mul_le_mul_of_nonneg_left hw (sub_nonneg.mpr hx₁))
-    (mul_le_mul_of_nonneg_left hz hx₀)
-  have hgain := mul_le_mul_of_nonneg_right hg (div_nonneg (sq_nonneg σ) (sq_nonneg (delta : ℝ)))
-  dsimp only
-  simp only [div_eq_mul_inv] at hlower hgain ⊢
-  linarith only [hlower, hgain]
-
 end Grothe.LowerAnalytic.CoupledStein

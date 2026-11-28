@@ -3396,7 +3396,6 @@ import Grothe.LowerAnalytic.KSide
 import Grothe.LowerAnalytic.LowerBoundTight
 import Grothe.LowerAnalytic.MassRowFrame
 import Grothe.LowerAnalytic.MixedChaos
-import Grothe.LowerAnalytic.MomentLemma
 import Grothe.LowerAnalytic.Moments
 import Grothe.LowerAnalytic.NodeListParse
 import Grothe.LowerAnalytic.Pieces

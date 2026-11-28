@@ -24,7 +24,6 @@ import Grothe
 #print axioms Grothe.Lower.ResponsePenalty.v_block
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.pairGain_strongChord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.twoScale_chord
-#print axioms Grothe.Lower.SharedGate.WeightedSchur.gain_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 #print axioms Grothe.Lower.SparseEnvelope.endpoint_eq
 #print axioms Grothe.Lower.SparseEnvelope.profile_bound
@@ -105,7 +104,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Circular.tensorFacts
 #print axioms Grothe.LowerAnalytic.CircularCellNodeBounds.chord
 #print axioms Grothe.LowerAnalytic.CoupledStein.Grid.worst_le
-#print axioms Grothe.LowerAnalytic.CoupledStein.discount_chord_le
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
@@ -163,7 +161,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.filtered_pieceAt_eq
 #print axioms Grothe.LowerAnalytic.first_moment_le_93
 #print axioms Grothe.LowerAnalytic.first_moment_lt_93
-#print axioms Grothe.LowerAnalytic.first_moment_lt_rho
 #print axioms Grothe.LowerAnalytic.fluctuation_bound
 #print axioms Grothe.LowerAnalytic.fn_eq_sum
 #print axioms Grothe.LowerAnalytic.gE_SU
@@ -193,8 +190,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.kside
 #print axioms Grothe.LowerAnalytic.majEll_le_psiT_of_le
 #print axioms Grothe.LowerAnalytic.massRow_frame
-#print axioms Grothe.LowerAnalytic.moment_lemma
-#print axioms Grothe.LowerAnalytic.moments_of_three
 #print axioms Grothe.LowerAnalytic.nodeCapNu_of_rangeOK
 #print axioms Grothe.LowerAnalytic.nodeCapNu_of_ranges
 #print axioms Grothe.LowerAnalytic.nodeCaps_of_vertexCapsNu

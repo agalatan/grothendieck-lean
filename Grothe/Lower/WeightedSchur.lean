@@ -221,36 +221,6 @@ theorem gain_at_min (w : ι → ℝ) (r : ι → Row) (hw : ∀ i, 0 ≤ w i)
   simp only [gain, mul_sub, Finset.sum_sub_distrib, ← form_mix]
   rw [at_min _ (mix_pos w _ hw ht fun i ↦ pos_of_row _ (hr i))]
 
-/-- Rational endpoint prices give a lower chord on the full real weight segment. -/
-theorem gain_chord (w z : ι → ℝ) (r : ι → Row) (hw : ∀ i, 0 ≤ w i) (hz : ∀ i, 0 ≤ z i)
-    (htw : 0 < ∑ i, w i) (htz : 0 < ∑ i, z i) (hr : ∀ i, gateOK (r i).N = true)
-    (θ : ℝ) (h0 : 0 ≤ θ) (h1 : θ ≤ 1) :
-    (1-θ) * gain w r + θ * gain z r ≤ gain (fun i ↦ (1-θ)*w i + θ*z i) r := by
-  let m := fun i ↦ (1-θ)*w i + θ*z i
-  have hleft := sub_nonneg.mpr h1
-  have hm (i) : 0 ≤ m i := add_nonneg (mul_nonneg hleft (hw i)) (mul_nonneg h0 (hz i))
-  have htm : 0 < ∑ i, m i := by
-    simp only [m, Finset.sum_add_distrib, ← Finset.mul_sum]
-    rcases eq_or_lt_of_le h1 with h | h
-    · simpa [h] using htz
-    · exact add_pos_of_pos_of_nonneg (mul_pos (sub_pos.mpr h) htw) (mul_nonneg h0 htz.le)
-  let g := mix m (fun i ↦ ofRow (r i))
-  let f := fun i ↦ form (ofRow (r i)) 1 (minU g) (minV g) - (baseline (r i) : ℝ)
-  have hwm : gain w r ≤ ∑ i, w i * f i := gain_support w r hw htw hr _ _
-  have hzm : gain z r ≤ ∑ i, z i * f i := gain_support z r hz htz hr _ _
-  have hmm : gain m r = ∑ i, m i * f i := gain_at_min m r hm htm hr
-  change _ ≤ gain m r
-  rw [hmm]
-  calc (1-θ) * gain w r + θ * gain z r
-      ≤ (1-θ)*(∑ i, w i * f i) + θ*(∑ i, z i * f i) :=
-        add_le_add (mul_le_mul_of_nonneg_left hwm hleft) (mul_le_mul_of_nonneg_left hzm h0)
-    _ = ∑ i, m i * f i := by
-      rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
-      apply Finset.sum_congr rfl
-      intro i _
-      dsimp [m]
-      ring
-
 end WeightedSchur
 
 end Grothe.Lower.SharedGate
