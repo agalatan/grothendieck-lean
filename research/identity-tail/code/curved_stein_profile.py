@@ -55,7 +55,7 @@ def curvature(i, j):
     return lower
 
 
-def weighted_profile(src, prices, curve):
+def weighted_profile(src, prices, curve, *, central_endpoints=None):
     maxima = []
     outer_maxima = []
     for n,(lo,hi,i,j,old_weight) in enumerate(src.cells):
@@ -76,6 +76,8 @@ def weighted_profile(src, prices, curve):
         for l,h,w,z in affine_pieces(rows,i,j,lo,hi,old_weight):
             dw,dz = price(w),price(z)
             extra = curve(w,z) if (i,j)==(8,9) else Q(0)
+            if (i,j)==(8,9) and central_endpoints is not None:
+                dw,dz,extra = central_endpoints(n,l,h,w,z)
             def f(x):
                 t,theta = l+x*(h-l),w+x*(z-w)
                 return (t**2-2*((1-theta)*el+theta*er)*t+(1-theta)*C+theta*D
