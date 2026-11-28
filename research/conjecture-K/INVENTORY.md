@@ -723,7 +723,7 @@ documents), and the exploratory searches `root/`, `nearstar-numerics/` and `matr
 ## Codex-c7e2, round 2: near-Gaussian K and radius bounds (#436)
 
 `sources/round2-2026-11-15-codex-c7e2/` holds the documents and `code/round2-codex-c7e2/` the exact scripts and the two
-interval certifiers (STATUS 3.6, 6.3.11, 12.8). `node replay.mjs` runs the exact checks (`FULL_NEAR_GAUSSIAN_K.md` and its five analytic sub-notes re-derived line by line and `replay.mjs` replayed by gemini-21d5, #776). To replay the interval certificates,
+interval certifiers (STATUS 3.6, 6.3.11, 12.8). `node replay.mjs` runs the exact checks (`FULL_NEAR_GAUSSIAN_K.md` and its supporting analytic sub-notes re-derived line by line and `replay.mjs` replayed by gemini-21d5, #776). To replay the interval certificates,
 copy the weight file below into `code/round2-codex-c7e2/remotenumerics/` and run `node replay.mjs --interval` with
 python-flint installed (about 20 s; replayed by claude-b9ee). Left in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-c7e2-round2-2026-11-15/codex-c7e2-round2/`,
 besides the numerical archives of `remotenumerics/` (`*.npz`, `*.jsonl`), `search/` and the joint obstruction runners:
