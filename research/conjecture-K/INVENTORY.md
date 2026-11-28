@@ -2067,3 +2067,24 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 | `code/chaos-stein-458-gemini-8732/test_controls.py` | 15,327 B | `c70ff8cb830bb9cfc395a1dbb374416c6dc56b84b8bcf7e16591fa1558c559db` |
 | `code/chaos-stein-458-gemini-8732/make_certs.py` | 60,987 B | `24e8e05aa49c638074681fd461d4dfe902749254390f3dcfc6c943ea837efe8f` |
 | `code/chaos-stein-458-gemini-8732/REPLAY.log` | 8,466 B | `5682fb88ef2e9b8c78890492a9cf3d8d0984f98c912d826f6461c9fda27ac374` |
+
+## Energy-cap-free global six-sector closures at the Peak and off-peak central Rows 7 & 6, and lower-central obstructions (gemini-c1de, #826)
+
+- [Self-contained proof and replay instructions](sources/uncapped-offpeak-six-sector-gemini-c1de/PROOF.md) and
+  [C++17 outward-rounded interval certifier, four sub-272 KB `std::hexfloat` certificates, zero-float zero-`assert` stdlib verifier, and 24-check AST/corruption/`-DNDEBUG`/live-hotspot control suite](code/uncapped-offpeak-six-sector-gemini-c1de/) (tag `KUOS`; `STATUS.md` 7.5.17, 8.13; **P + C, author only**). Every file is strictly below 300 KB (`cert_peak.json` 271,073 B; `cert_row7.json` 271,067 B; `cert_row6.json` 270,883 B; `cert_obstructions.json` 1,267 B) and committed in the repository with zero external files left outside.
+- **Replay (pure Python 3 standard library only, zero floating-point operations, zero `assert` statements, `-IB` and `-IB -O` identical):**
+  - Primary 220-bit zero-float rational audit across `peak`, `row7`, `row6`, all four Peak uncapped corollaries, and Rows 1–4 obstructions (< 3 s): `python3 -IB -O research/conjecture-K/code/uncapped-offpeak-six-sector-gemini-c1de/verify.py`
+  - Static AST zero-float/zero-`assert` audit, `-IB` vs `-IB -O` parity check, and 22 certificate-corruption, `-DNDEBUG`, and live C++ false-hotspot controls (24 controls total, ~6 s): `python3 -IB -O research/conjecture-K/code/uncapped-offpeak-six-sector-gemini-c1de/test_controls.py`
+  - Full C++17 regeneration from source + zero-float audit: `python3 -IB -O research/conjecture-K/code/uncapped-offpeak-six-sector-gemini-c1de/verify.py --replay-cpp`
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/uncapped-offpeak-six-sector-gemini-c1de/PROOF.md` | 24,172 B | `d8f0875b2888960ff92d8c887a016d7f0faf560bbf63292b754e3905672ad20c` |
+| `code/uncapped-offpeak-six-sector-gemini-c1de/README.md` | 5,046 B | `2efdb054a9319def89879989139a5029a157e3facffb047f6f47ed394b3ef34b` |
+| `code/uncapped-offpeak-six-sector-gemini-c1de/certify_uncapped_offpeak.cpp` | 170,568 B | `316d7915d7fdf6087020d74615a7230288f7ec0b75308ddfa06209e23bc35b60` |
+| `code/uncapped-offpeak-six-sector-gemini-c1de/verify.py` | 63,164 B | `58fed2b6c67ef4b3166f2c535672f80e2526e63be5922081809fa9bccecd12db` |
+| `code/uncapped-offpeak-six-sector-gemini-c1de/test_controls.py` | 11,945 B | `6c1a5ba4a624ac589716639f2b0f84635e2c41b00963b0c1de135fee78bc5153` |
+| `code/uncapped-offpeak-six-sector-gemini-c1de/cert_peak.json` | 271,073 B | `f3a3629dc45ed19cd7a6739d6b1b55da70e440f3fc06fa550603287ac9c1da4f` |
+| `code/uncapped-offpeak-six-sector-gemini-c1de/cert_row7.json` | 271,067 B | `68014a21038f1fa5b94c232c1d5768aaebad1dbb9d50c92fa6d76d3aff73967e` |
+| `code/uncapped-offpeak-six-sector-gemini-c1de/cert_row6.json` | 270,883 B | `56ba36f186ffd058ef6041b987d7e789a45b61ad3644ab9728f801f68801c805` |
+| `code/uncapped-offpeak-six-sector-gemini-c1de/cert_obstructions.json` | 1,267 B | `cc0a22603a0c35af51a979021b47c22dc6eb8739392ab4fd29c050673123d4ac` |
