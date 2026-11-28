@@ -117,3 +117,29 @@ also satisfies the 1.4023 absolute-payoff test. At $d=1/50$ the sufficient
 support deficit is $2.18\cdot 10^{-8}$; at $d=47/2000$ it is
 $3.03\cdot10^{-8}$. The comparison controls phase changes in both arguments.
 [Support deficit and exact Gram estimate](EXPOSED_DRIVER.md)
+
+The two positive shifts of the signed operator also bound the complex absolute
+payoff directly using the overlap of the original phases and their two
+diagonal values. At $d=1/50$ a phase distance at most .03670465 suffices
+for the 1.4023 test, with all chaos sectors free. A product of diagonal values
+at most −.25547 suffices for any overlap. [Two-vector proof and exact replay](SPECTRAL_PAIR.md)
+
+Scaling the joint cubic and fifth projection tests strengthens the five-cell
+sufficient threshold to .06734 at $d=1/50$. This threshold applies to the
+net cubic energy after subtracting the actual first-chaos and complementary
+energies of the half-difference. The two narrower bands permit .07151 and
+.06940. The unscaled calculation also covers every phase pair above
+$t=.88577726$ at the same debit. [Scaled central price](SCALED_VISIBLE.md) ·
+[All-sector low and high amplitudes](VISIBLE_PAIR_BUDGET.md)
+
+The controlled driver family also admits unbalanced remote orientations
+under its stated constant-energy hypotheses. A separate graded Gaussian
+stress test gives numerical payoff .7131189957 at $d=.0235$ on its 192-node
+grid, above the target $10000/14023$. It gives .7130938040 at $d=.02$.
+These two quadrature values still require error enclosures. A separate disk-valued step pair, certified by exact interval moments and lifted to finite-dimensional unimodular pairs, gives physical payoff at least .7131156728 at $w=0$, $d=.0235$. It excludes $d\ge.0232912$ at $w=0$. For all nonnegative first-chaos mixing weights and fifth debits the two-test reciprocal ceiling is 1.40257113. [Exact physical obstruction](GRADED_STEP.md) [Unbalanced orientations](UNBALANCED_DRIVER.md) ·
+[Graded transfer](GRADED_LIFT.md) · [Stress test](GRADED_PAIR_PROBE.md)
+
+
+At $d=1/50$ the conditional Gaussian response family also permits arbitrary
+measurable coefficient vectors with unit total squared norm. Its reciprocal
+absolute-payoff cap exceeds 1.40340. [Variable Gaussian coefficients](VARIABLE_GAUSSIAN_PHASES.md)

@@ -37,7 +37,32 @@ def main():
             require(base+error-reduction+(E-NU)*q < Q(10000,14023), "actual Qk energy range")
             print(f"d={debit}, t in [{lo}, {hi}], squared cubic energy ≤ {q}: signed real payoff < 10000/14023")
         print(f"d={debit}: all diagonal pairs have reciprocal cap above {target}")
-    print("Uniform diagonal cap minus visible-phase value is below 3e-52.")
+    low = Q(".22436282")
+    require(NU+(1-NU)*low**2+(E-NU)*Q(".93")**2 < Q(10000,14023),
+            "all-sector low-amplitude cap")
+    for debit,left in [(Q(1,50),Q(".88577726")), (NU,Q(".88569774"))]:
+        a, b = 2*E-NU-1, 3*E-1+3*debit/4
+        require(b>a>0, "high profile decreases throughout the physical interval")
+        price = cap_at_one(debit,PI_HI/4)+Q(3,10**52)+(MU_HI-left)*(a*left+b*MU_HI)
+        require(price < Q(10000,14023), "unrestricted high signed real cap")
+        print(f"d={debit}: all sectors and t≥{left} pass the 1.4023 real-payoff test")
+    exp_upper = Q(2718282,10**6)
+    # From the first omitted term 1/12!, successive ratios are at most 1/13.
+    require(sum(Q(1,factorial(j)) for j in range(12)) + Q(13,12*factorial(12))
+            < exp_upper, "upper bound for exp(1)")
+    for debit, left, lower_gain in [(Q(1,50),180,Q(3,10**77)), (NU,151,Q(8,10**65))]:
+        right = left+1
+        lag = 3-3*left+Q(left**2,2)
+        sign = 1-NU + (E+NU)*(right-2)/4-debit*lag/8
+        require(left > 12**2 and right < 15**2 and sign < 0, "sign of radial flip")
+        require(15*(right-2) < 3000 and 15*(3-3*right+Q(right**2,2)) < 300000,
+                "radial projection coefficients on the shell")
+        require(4*((E+NU)*3000**2 + debit*300000**2)*Q(1,2**left) < 1,
+                "quadratic loss of the flip")
+        gain = (-4*MU_LO*12*sign-1)/(2*exp_upper**left)
+        require(gain > lower_gain, "strict gain above the single visible phase")
+        print(f"d={debit}: radial flip in [{left},{right}] strictly raises the diagonal payoff")
+    print("Uniform diagonal cap minus visible-phase value is positive for d>0 and below 3e-52.")
 
 
 if __name__ == "__main__":
