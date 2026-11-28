@@ -6,7 +6,7 @@ exactly `0.02530638177604116` and `0.02819853969330301`. Denote them by $u_1$ an
 $u(x)=(1-x)u_1+xu_2$ for $0\le x\le1$. At each fourth-excess bin endpoint the design specifies an
 affine interpolation of its two allowances. The directed-rounding replay verifies the interpolated allowances for both Case I profiles at
 every $u(x)$ on the eleven bins ending at 1, 2, 3, 4, 6, 8, 20, 24, 30, 36 and 42. Across these
-bins, 46 pairs of multipliers cover 162 rectangles. The [middle-bin replay](MIDDLE_PREFIX.md) covers each intervening bin from $x=0$ to its listed endpoint. Combined, the two replays cover all fifteen bins through $x=43/256$.
+bins, 46 pairs of multipliers cover 162 rectangles. The [middle-bin replay](MIDDLE_PREFIX.md) covers each intervening bin from $x=0$ to its listed endpoint. Combined, the two replays cover all fifteen bins through $x=13/64$.
 
 | Fourth excess | Smallest bin allowance at $u_1$ | Smallest bin allowance at $u_2$ | Energy rectangles | Pairs of profile witnesses |
 |---|---:|---:|---:|---:|
