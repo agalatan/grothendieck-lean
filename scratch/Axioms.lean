@@ -152,7 +152,11 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.coupled_circular
 #print axioms Grothe.LowerAnalytic.covariance_order
 #print axioms Grothe.LowerAnalytic.coverOK_sound
+#print axioms Grothe.LowerAnalytic.cubicFirstMomentRadius_93
 #print axioms Grothe.LowerAnalytic.cubicTrace_circular
+#print axioms Grothe.LowerAnalytic.cubic_energy_ellipse_of_lift
+#print axioms Grothe.LowerAnalytic.cubic_support_ball
+#print axioms Grothe.LowerAnalytic.cubic_support_of_lift
 #print axioms Grothe.LowerAnalytic.cumulant_bound
 #print axioms Grothe.LowerAnalytic.energy_identity
 #print axioms Grothe.LowerAnalytic.exists_Cop_eq
@@ -197,7 +201,9 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.nodeCapNu_of_ranges
 #print axioms Grothe.LowerAnalytic.nodeCaps_of_vertexCapsNu
 #print axioms Grothe.LowerAnalytic.nodeList_eq_of_capsChars
+#print axioms Grothe.LowerAnalytic.nonremote_energy_of_cubic_support
 #print axioms Grothe.LowerAnalytic.normQk_le_93
+#print axioms Grothe.LowerAnalytic.normQk_le_of_cubicFirstMomentRadius
 #print axioms Grothe.LowerAnalytic.normQk_le_rho
 #print axioms Grothe.LowerAnalytic.norm_pairVal_quinticWitness
 #print axioms Grothe.LowerAnalytic.norm_pairVal_witness
@@ -215,8 +221,14 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.qf_nonneg_of_ldlOK
 #print axioms Grothe.LowerAnalytic.quartic_identity
 #print axioms Grothe.LowerAnalytic.quinticPayoff_energy_envelope
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_cubic_energy_ellipse
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_cubic_radius_30629
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_elliptic_lift_29082
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_elliptic_lift_44974
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_nonremote_price
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_smallAmplitude
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_smallCubic
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_two_cubic_supports
 #print axioms Grothe.LowerAnalytic.quinticPayoff_mass_envelope
 #print axioms Grothe.LowerAnalytic.quinticPayoff_projection_envelope
 #print axioms Grothe.LowerAnalytic.quintic_projection_energy_le

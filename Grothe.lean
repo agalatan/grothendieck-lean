@@ -3401,6 +3401,7 @@ import Grothe.LowerAnalytic.NodeListParse
 import Grothe.LowerAnalytic.Pieces
 import Grothe.LowerAnalytic.Potential
 import Grothe.LowerAnalytic.PotentialReg
+import Grothe.LowerAnalytic.QuinticEllipse
 import Grothe.LowerAnalytic.QuinticSmallAmplitude
 import Grothe.LowerAnalytic.QuinticSpectralCuts
 import Grothe.LowerAnalytic.QuinticWitness
