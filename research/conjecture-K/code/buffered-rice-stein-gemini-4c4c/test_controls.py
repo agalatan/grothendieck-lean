@@ -66,14 +66,11 @@ def run_corruption_controls(base_cert):
 
     # 2b. Gap between OU slab reach and lowest Stein tile chi_lo on [1/6, 5/24] (tests strip sweep directly):
     c = copy.deepcopy(base_cert)
-    c["ou_slabs"][0]["chi_hi"] = "1/50"  # 0.020 >= 11/2000, but [1/6, 5/24] Stein tiles start at 3/100 = 0.030
+    c["ou_slabs"][0]["chi_hi"] = "1/50"
     expect_reject(c, "ou_to_stein_strip_gap")
 
     # 3. Chi sliver inside sharp_tiles:
     c = copy.deepcopy(base_cert)
-    s0 = Fr(c["sharp_tiles"][0]["s_lo"])
-    s1 = Fr(c["sharp_tiles"][0]["s_hi"])
-    # Raise chi_lo on all tiles touching the top band [10, 42] on [1/6, 1/3] from 10 to 12:
     for t in c["sharp_tiles"]:
         if Fr(t["chi_lo"]) == Fr(10):
             t["chi_lo"] = "12"
@@ -125,14 +122,14 @@ def run_corruption_controls(base_cert):
     c["pars"]["unused_999999"] = copy.deepcopy(c["pars"][first_pid])
     expect_reject(c, "unused_par_entry")
 
-    # 11. Over-optimistic remote-energy frontier threshold below sqrt(2*pi/13) = 0.6952137...:
+    # 11. Over-optimistic remote-energy frontier threshold below sqrt(2*pi/13) = 0.6952135979...:
     c = copy.deepcopy(base_cert)
-    c["t_frontier_ub"] = "139042/200000"  # 0.695210 < sqrt(2*pi/13), even if schema allowed it:
+    c["t_frontier_ub"] = "139042/200000"
     expect_reject(c, "false_frontier_below_sqrt_2pi_13")
 
     # 12. Over-optimistic Gaussian cap on mid-t s=1 buffered Rice node:
     c = copy.deepcopy(base_cert)
-    c["midt_nodes"][0]["r_buf"] = "12534/10000"  # 1.2534 < certified ~1.25394
+    c["midt_nodes"][0]["r_buf"] = "12534/10000"
     expect_reject(c, "midt_false_gaussian_cap")
 
     # 13. Extending P3 remote closure across the Gaussian barrier to t = 62/100:
@@ -142,24 +139,51 @@ def run_corruption_controls(base_cert):
         {"t_lo": "61/100", "t_hi": "62/100", "mode": "buffered_rice", "s": "5/8"}
     )
     expect_reject(c, "p3_breach_gaussian_barrier")
-    return 14
+
+    # 14. Weakening s=17/16 cap from 1273809/10^6 to 1274309/10^6 so P3 reserve drops to ~0.000638 < 10^-3:
+    c = copy.deepcopy(base_cert)
+    c["midt_nodes"][1]["r_buf"] = "1274309/1000000"
+    expect_reject(c, "p3_reserve_below_1e_3")
+
+    # 15. Weakening s=9/2 cap by +1/10^6 (keeps P3 reserve > 10^-3, but violates advertised Theorem 2.1 node cap):
+    c = copy.deepcopy(base_cert)
+    c["midt_nodes"][-1]["r_buf"] = "2145170/1000000"
+    expect_reject(c, "midt_exceeds_advertised_node_cap")
+
+    # 16. Tampering with hardcoded C6 = 40 (must be caught by Lean source check against Grothe/Lower/Moment.lean):
+    orig_c6 = VF.C6
+    try:
+        VF.C6 = Fr(40)
+        expect_reject(base_cert, "c6_tampered_vs_lean_source")
+    finally:
+        VF.C6 = orig_c6
+
+    # 17. Tampering with hardcoded CHI_MAX = 41 (must be caught by Lean source check against CircularFourth.lean):
+    orig_chi = VF.CHI_MAX
+    try:
+        VF.CHI_MAX = Fr(41)
+        expect_reject(base_cert, "chi_max_tampered_vs_lean_source")
+    finally:
+        VF.CHI_MAX = orig_chi
+
+    return 17
 
 
 def verify_p3_witnesses_and_false_cap_control(cert):
     """Verify #628 ATK P3 §§6-7 mandatory controls & explicit remote driver pairs in zero-float Fraction arithmetic:
-       (a) §6 mandatory negative control: target 31/50 = 0.62 at t = 3/10 = 0.30 is strictly rejected across all s,
-           and explicitly exceeded by f_c = ph(z_1 + c W), g_c = ph(z_1 - c W) at c = 11/4 (t ~ 0.3029, V ~ 0.6324 > 0.62);
-       (b) §7 items 1 & 3: exact orthogonal-rotation formula for f_c = ph(z_1 + c W), g_c = ph(z_1 - c W):
-             alpha^2 = 1/(1+c^2), beta^2 = c^2/(1+c^2), t(c) = (sqrt(pi)/2)*alpha,
-             V(c) = (pi/4) * [ alpha^2 - eps*(alpha^6/8 - beta^2) + eta*(3*alpha^10/64 - 3*alpha^4*beta^2/8) ]
-           reproduces every entry of the §3 item 4 benchmark table to all printed digits, satisfies V < 500/701,
-           and lies strictly below our certified piecewise-quadratic upper bound on [0, 61/100].
+       (a) §6 mandatory negative control: target 31/50 = 0.62 at exact t = 3/10 = 0.30 is strictly rejected across all s,
+           and explicitly exceeded AT EXACT AMPLITUDE t = 3/10 by setting alpha^2 = t^2 / (pi/4) = 9 / (25*pi) in the
+           Gaussian remote driver payoff formula (V(0.30) > 0.6319 > 0.62, realized in finite dimension via STATUS 3.5a),
+           as well as at rational c = 11/4 (t ~ 0.3029, V > 0.6323 > 0.62);
+       (b) §7 items 1 & 3: exact orthogonal-rotation formula for f_c = ph(z_1 + c W), g_c = ph(z_1 - c W) reproduces
+           every entry of the §3 item 4 benchmark table to all printed digits, satisfies V < 500/701, and lies strictly
+           below our certified piecewise-quadratic upper bound on [0, 61/100].
     """
     pi_lo, pi_hi, R0_lo, R0_hi = VF.verify_pi_and_r0()
     eps, eta, tau = Fr(39, 50), Fr(779, 10000), Fr(500, 701)
     rho_rev = Fr(2287, 2500)
 
-    # (a) Mandatory §6 negative control: false cap tau_false = 31/50 = 0.62 at t = 3/10 = 0.30
+    # (a) Mandatory §6 negative control: false cap tau_false = 31/50 = 0.62 at exact t = 3/10 = 0.30
     tau_false = Fr(31, 50)
     t_test = Fr(3, 10)
     rbuf_map = {Fr(5, 8): VF.ceil_dec(R0_hi * VF.sqrt_bounds(1 + Fr(5, 8))[1], 10**10)}
@@ -172,9 +196,19 @@ def verify_p3_witnesses_and_false_cap_control(cert):
         v_sj = (1 - eta) * (t_test**2) + eta + ((eps - eta) / sj) * ((rb - t_test) ** 2)
         VF.require(v_sj > tau_false, f"P3 §6 control: s={sj} bound unexpectedly <= 0.62 at t=0.30")
 
-    # Also verify Gaussian floor itself exceeds 0.62 at t = 0.30:
-    v_gauss_030 = (1 - eta) * (t_test**2) + eta + (eps - eta) * (pi_lo / 4 - t_test**2)
-    VF.require(v_gauss_030 > Fr(648, 1000) > tau_false, "Gaussian floor at t=0.30 check failed")
+    # Exact amplitude t = 3/10 witness via alpha^2 = (3/10)^2 / (pi/4) = 9 / (25 * pi) = 0.36 / pi:
+    a2_030_lo = Fr(9, 25) / pi_hi
+    a2_030_hi = Fr(9, 25) / pi_lo
+    b2_030_lo = 1 - a2_030_hi
+    b2_030_hi = 1 - a2_030_lo
+    coef_030_lo = (
+        a2_030_lo
+        - eps * ((a2_030_hi**3) / 8 - b2_030_lo)
+        + eta * (3 * (a2_030_lo**5) / 64 - 3 * (a2_030_hi**2) * b2_030_hi / 8)
+    )
+    v_exact_030_lo = (pi_lo / 4) * coef_030_lo
+    VF.require(v_exact_030_lo > Fr(6319, 10000) > tau_false,
+               "Exact t=0.30 Gaussian driver payoff check failed")
 
     # (b) Exact rational enclosures of #628 ATK P3 §3 item 4 & §7 items 1, 3:
     def driver_bounds(c_val):
@@ -194,12 +228,12 @@ def verify_p3_witnesses_and_false_cap_control(cert):
     v_inf_lo, v_inf_hi = eps * pi_lo / 4, eps * pi_hi / 4
     VF.require(Fr(612610, 10**6) < v_inf_lo < v_inf_hi < Fr(612611, 10**6) < tau, "P3 §7(3) c->oo endpoint check failed")
 
-    # Explicit witness near t = 0.30 exceeding 0.62: c = 11/4 gives t in (0.3028, 0.3029) and V > 0.6323 > 0.62:
+    # Rational parameter c = 11/4 (t ~ 0.3029, V > 0.6323 > 0.62):
     t114_l, t114_h, v114_l, _ = driver_bounds(Fr(11, 4))
     VF.require(Fr(3028, 10000) < t114_l < t114_h < Fr(3029, 10000) and v114_l > Fr(6323, 10000) > tau_false,
                "Explicit driver witness at c=11/4 failed")
 
-    # Full 7-column benchmark table from #628 ATK P3 §3 item 4 (rounded to 4 / 5 decimals in problem statement):
+    # Full 7-column benchmark table from #628 ATK P3 §3 item 4:
     table_s3 = [
         (Fr(3, 5), Fr(7599, 10000), Fr(70655, 100000)),
         (Fr(4, 5), Fr(6920, 10000), Fr(69752, 100000)),
@@ -217,7 +251,6 @@ def verify_p3_witnesses_and_false_cap_control(cert):
                    f"P3 §3 table mismatch at c={c_q}")
         VF.require(vh < tau, f"driver V >= 500/701 at c={c_q}")
         if th <= Fr(61, 100):
-            # Locate enclosing segment in p3_remote_closure and check certified upper bound strictly dominates vh:
             matched = False
             for seg in segs:
                 ta, tb = Fr(seg["t_lo"]), Fr(seg["t_hi"])

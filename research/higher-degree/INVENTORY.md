@@ -351,6 +351,10 @@ All files of `LAWREP` are committed in the repository, with zero external workin
 
 Row 4.16c uses the g84 row data shipped with Stage 0. The [proof](sources/finite-spike-codex-a7c4/PROOF.md) derives a global curvature bound on three quintic fields and compares them with the freely optimized visible quintic. The [standard-library checker](code/finite-spike-codex-a7c4/verify.py) verifies the polynomial majorants and row hash in rational arithmetic. The [NumPy/SciPy evaluator](code/finite-spike-codex-a7c4/explore.py) computes the finite-amplitude paired norms numerically.
 
+## Capped physical rows and the degree-five node pilot (codex-a7c4, #829)
+
+The [shape-resolved mass proof](sources/capped-spiked-mass-codex-a7c4/PROOF.md) and its [stdlib replay](code/capped-spiked-mass-codex-a7c4/verify.py) use the committed P7 Sturm certificate and Lean witness data. The [physical proofs and node plan](sources/quintic-node-pilot-codex-a7c4/ROADMAP.md) use the [pilot checkers](code/quintic-node-pilot-codex-a7c4/), including one shared MPFR interval integrator for the g84 model and capped Gaussian benchmark. The input row files are already in the degree-five design and Stage 0 directories.
+
 ## The fifth-chaos projection of 23 October 2026, moved from the archive (claude-b9ee, #764)
 
 `sources/quintic-projection-2026-10-23/` and `code/quintic-projection-2026-10-23/` hold the study that
@@ -398,19 +402,19 @@ All files of `CONTCELL` are committed in the repository (< 220 KB per file), wit
 | `code/degree5-content-cells-gemini-c1de/dual_certs_7.json` | 162,808 B | `8c35eeb96193065e521b420abb411e545d18f8ae18559e0506586ec946baed1b` |
 | `code/degree5-content-cells-gemini-c1de/result.json` | 52,299 B | `142a0604f6c9dff42a09cf8d6e0aba1a66957c68ce5da940a4ba68bfeead2e8b` |
 
-## Sharp Gaussian-buffered cubic radius through s <= 5/8 and remote mid-t P3 closure on [0, 61/100] (gemini-4c4c, 28 November 2026, #784; STATUS 4.18h, tag KBRS)
+## Sharp Gaussian-buffered cubic radius through s <= 5/8 and remote mid-t P3 closure on [0, 61/100] (gemini-4c4c, 28 November 2026, #784; STATUS 4.18j, tag KBRS)
 
 All files of `KBRS` are committed under [`../conjecture-K/`](../conjecture-K/INVENTORY.md) (`cert_buffered_rice.json` is 261,984 B < 300 KB, zero external dependencies in `verify.py` and `test_controls.py`):
-- [`../conjecture-K/sources/buffered-rice-stein-gemini-4c4c/PROOF.md`](../conjecture-K/sources/buffered-rice-stein-gemini-4c4c/PROOF.md): self-contained proofs of Theorem 1 ($0 \le s \le 5/8$), Corollary 1a (exact remote cubic energy frontier $\sqrt{2\pi/13} \le t \le \sqrt{\pi}/2$ covering all 19 rationalised degree-5 rows `0.70`–`0.886`), and Theorem 2 (certified buffered Rice constants $R_{\mathrm{buf}}(s_j)$ closing `#628` `ATK P3` §5 across $t \in [0, 61/100]$ with reserve $> 10^{-3}$ and certifying the `0.6177` Gaussian barrier).
+- [`../conjecture-K/sources/buffered-rice-stein-gemini-4c4c/PROOF.md`](../conjecture-K/sources/buffered-rice-stein-gemini-4c4c/PROOF.md): self-contained proofs of Theorem 1 ($0 \le s \le 5/8$), Corollary 1a (exact remote cubic energy frontier $\sqrt{2\pi/13} \le t \le \sqrt{\pi}/2$ so the uninflated remote energy cap applies at all 19 rationalised degree-5 row amplitudes `0.70`–`0.886`), and Theorem 2 (certified buffered Rice constants $R_{\mathrm{buf}}(s_j)$ closing `#628` `ATK P3` §5 below $500/701 - 10^{-3}$ across $t = \lVert P_{1,0}\frac{f+g}{2}\rVert_2 \in [0, 61/100]$ and certifying finite-dimensional tightness at $t = 618/1000, A = 2017/5000$).
 - [`../conjecture-K/code/buffered-rice-stein-gemini-4c4c/`](../conjecture-K/code/buffered-rice-stein-gemini-4c4c/):
-  - `python3 -IB research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/verify.py` (and `python3 -IB -O ... --quiet`, ~21 s): zero-float, zero-`assert` stdlib verifier.
-  - `python3 -IB research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/test_controls.py` (and `python3 -IB -O ...`, ~22 s): AST self-audit, 14 corruption controls, mandatory `P3` §6 false-cap `0.62` rejection at `t = 0.30`, and exact rational verification of all 7 `P3` §3 / §7 Gaussian driver benchmarks.
+  - `python3 -IB research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/verify.py` (and `python3 -IB -O ... --quiet`, ~21 s): zero-float, zero-`assert` stdlib verifier tying `C₆` and `χ ≤ 42` to their Lean sources.
+  - `python3 -IB research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/test_controls.py` (and `python3 -IB -O ...`, ~22 s): AST self-audit, 17 corruption controls, mandatory `P3` §6 false-cap `0.62` rejection at exact $t = 0.30$ ($\alpha^2 = \frac{9}{25\pi}$, plus rational $c = 11/4$), and exact rational verification of all 7 `P3` §3 / §7 Gaussian driver benchmarks.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `../conjecture-K/sources/buffered-rice-stein-gemini-4c4c/PROOF.md` | 36,535 B | `bb831eee288e2d0b408c7474405e9fea91306e0350c3f63f3c41d1c29b42de46` |
-| `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/README.md` | 3,136 B | `fcb5f3d2dbad77ee0da2b5515f7bcbb1251238572125a55594cba9c58f8a6224` |
-| `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/verify.py` | 56,144 B | `63f9cf7414fbecb2e9a4e0330fa731bdbb224161c86ce37f6b1ae2d06e090232` |
-| `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/test_controls.py` | 12,206 B | `7b064b824a6b5ef1c06783d694c2ef434726d7c829ca2c635adc0f9e8cfad049` |
+| `../conjecture-K/sources/buffered-rice-stein-gemini-4c4c/PROOF.md` | 42,514 B | `3a2181ce5e50d4c64e554685c02015a97220ea074e5667bc29b4198bfa7a8d08` |
+| `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/README.md` | 3,535 B | `b565626b13af8a841b2f0ff649afde83a000c24d76d6c045a758db75565b43b2` |
+| `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/verify.py` | 60,886 B | `0b65a4e764b5097bd52fa14b0f0f8feccf08df4e43f73f02e57c0eaccd8ffc07` |
+| `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/test_controls.py` | 13,057 B | `ef414fe26c1707783500ca1f91bf7ca48ee1fa7a4f3818d83d9b77f3f9539fa0` |
 | `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/make_cert.py` | 39,334 B | `8a099ee8ad5347143cb8079deb29f6d7044df917b1e561af5a88c60bb271aa1d` |
 | `../conjecture-K/code/buffered-rice-stein-gemini-4c4c/cert_buffered_rice.json` | 261,984 B | `0e6ded21f92142cf75602411efcef827a8b360b168258e7b189187bbba0b7dd6` |

@@ -496,20 +496,28 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
     `big`) exits 0 when it is up. Use whichever is up and has room. If neither is up, use yo or a cloud job (§11);
     if your task needs one, ask on the task's issue. Only the agent the user names (currently `claude-b9ee`)
     creates and destroys them, from their snapshots, and it opens the second one when the first is full.
-  - **Never take all of one.** Half of each stays free for heavy CI: an agent uses **at most 8 cores, and 48 GB of memory on mega or 16 GB on big**,
-    and all agents' work together stays inside **one fixed half of the cores, the upper one**: cores 16–31 on mega,
-    24–47 on big. Pin every job to **8 cores inside that range**, never outside it (for example `taskset -c 16-23`
-    or `taskset -c 24-31` on mega, `taskset -c 24-31`, `32-39` or `40-47` on big; take a block that is idle in
-    `mpstat -P ALL 1 1` or `top`): the range, not the load, is what bounds everyone together (several agents can read the same low 1-minute
-    load and start at once, and a job that is still loading its input shows no load). Before you start, the
-    1-minute load in `cat /proc/loadavg` plus your own cores must still not exceed the half. `taskset` limits
-    cores only: the memory limit is for your whole process group, in KiB from
-    `ps -eo pgid=,rss= | awk -v pg="$(cat job.pid)" '$1 == pg { kb += $2 } END { print kb + 0 }'` (`ps -g` selects
-    by session on Linux and reports nothing for a job started with `set -m`). Stop your job if it grows past the
-    limit. As a conservative check for everyone together, do not start a job unless `free -g` shows more than half
-    the machine's memory available: that figure is machine-wide and includes CI. A larger share
-    for one task is granted by the agent that manages the droplets, on the task's issue, and only while no CI
-    runner job runs there.
+  - **How much you may take depends on the droplet's CI runner** (`pgrep -x Runner.Listener` prints nothing when
+    it is offline).
+    - **Runner offline (the usual case): no fixed cap.** Take at most **half of what is free when you start**:
+      half of the idle cores (`nproc` minus the 1-minute load in `cat /proc/loadavg`) and half of the available
+      memory (`free -g`). If the machine is more than half free, that is a large share; the next agent then finds
+      the other half, and the one after that half of what remains, so agents that start at the same moment never
+      overcommit the machine between them. Pin your job to that many idle cores (`taskset -c`, a block that is
+      idle in `mpstat -P ALL 1 1` or `top`) and stay within what you measured: the memory limit is for your
+      whole process group, in KiB from
+      `ps -eo pgid=,rss= | awk -v pg="$(cat job.pid)" '$1 == pg { kb += $2 } END { print kb + 0 }'` (`ps -g`
+      selects by session on Linux and reports nothing for a job started with `set -m`); stop your job if it grows
+      past it. Do not start a job at all unless at least a quarter of the cores and of the memory is free.
+    - **Runner online: half stays for heavy CI.** An agent uses **at most 8 cores, and 48 GB of memory on mega or
+      16 GB on big**, and all agents' work together stays inside **one fixed half of the cores, the upper one**:
+      cores 16–31 on mega, 24–47 on big. Pin every job to 8 cores inside that range (for example
+      `taskset -c 16-23` on mega, `taskset -c 24-31`, `32-39` or `40-47` on big): the range, not the load, bounds
+      everyone together (several agents can read the same low load and start at once, and a job still loading its
+      input shows no load). Before you start, the 1-minute load plus your own cores must not exceed the half, and
+      `free -g` must show more than half the machine's memory available.
+    - When the agent that manages the droplets is about to start a runner, it announces it on #225 and the task
+      issues of the jobs running there; shrink your jobs to the runner-online limits before it starts. A larger
+      share for one task while a runner is online is granted by that agent on the task's issue.
   - **CI comes first.** Run Lean (`lake`, `lean`) there only while that droplet's CI runner is **offline**
     (`pgrep -x Runner.Listener` prints nothing) or in an interval that the agent managing the droplets announced on
     the task's issue, and stop your Lean jobs before the runner is started again. A check that no job is running

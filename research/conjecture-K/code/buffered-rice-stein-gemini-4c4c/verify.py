@@ -26,15 +26,15 @@ What this script verifies from first principles + reviewed `Lean` / `P` / `P + C
            on [0, oo) built from positive-term Bessel series, whole-half-line integer Sturm verification of Level-2
            Matrix Stein models in v = |q|^2, 5-scalar Lean Gram LP dual verification, and curvature-compensated
            s-chord interpolation across gap-free 2D tiles.
-  2. Corollary 1a (Exact Remote-Energy Frontier on [sqrt(2*pi/13), sqrt(pi)/2] = [0.6952137..., 0.8862269...]):
-       Verifies sqrt(2*pi/13) < 139043/200000 = 0.695215 < 7/10, covering 100% of [0.751, 0.8205] in 8.13/#769
-       and all 19 rationalised degree-5 rows 0.70..0.886 (#453, #751).
+  2. Corollary 1a (Exact Remote-Energy Frontier on [sqrt(2*pi/13), sqrt(pi)/2] = [0.6952135979..., 0.8862269254...]):
+       Verifies sqrt(2*pi/13) < 139043/200000 = 0.695215 < 7/10, so the exact remote cubic energy cap applies across
+       100% of [0.751, 0.8205] in 8.13/#769 and at all 19 rationalised degree-5 row amplitudes 0.70..0.886 (#453, #751).
   3. Theorem 2 (Quantitative Buffered Rice Curve for s > 5/8 and Remote Mid-t Closure on [0, 61/100], #628 ATK P3 §5):
        Verifies rational buffered Rice upper bounds R_buf(s_j) at s_j in {1, 17/16, 5/4, 3/2, 2, 3, 9/2} across all chi in [0, 42]
        (combining Part 1b on [0, chi_OU(s_j)] with Level-2 Matrix Stein on [chi_OU(s_j), 42]), and proves
-       V(f, g) <= (1 - eta)t^2 + eta + (eps - eta)*Q_rem(t) < 500/701 across the entire continuum t in [0, 61/100] = [0, 0.610]
+       V(f, g) <= (1 - eta)t^2 + eta + (eps - eta)*Q_rem(t) < 500/701 - 1/1000 across t = ||P_{1,0} h||_2 in [0, 61/100]
        for every unimodular pair with remote P_{2,1} k (using reviewed rho_* <= 2287/2500 on [0, 1/5] and quadratic
-       response pieces on [1/5, 61/100]).
+       response pieces on [1/5, 61/100]), plus finite-dimensional barrier verification at t = 618/1000, A = 2017/5000.
 """
 import bisect
 from fractions import Fraction as Fr
@@ -45,11 +45,22 @@ import sys
 import time
 
 HERE = pathlib.Path(__file__).resolve().parent
+REPO_ROOT = HERE.parents[3]
 DEFAULT_CERT = HERE / "cert_buffered_rice.json"
 
 C6 = Fr(4045313, 100000)
 CHI_MAX = Fr(42)
 S_SHARP_MAX = Fr(5, 8)
+ADVERTISED_P3_RESERVE = Fr(1, 1000)
+ADVERTISED_MIDT_NODES = [
+    (Fr(1), Fr(627047, 500000)),
+    (Fr(17, 16), Fr(1273809, 1000000)),
+    (Fr(5, 4), Fr(1350873, 1000000)),
+    (Fr(3, 2), Fr(1409699, 1000000)),
+    (Fr(2), Fr(77577, 50000)),
+    (Fr(3), Fr(904813, 500000)),
+    (Fr(9, 2), Fr(2145169, 1000000)),
+]
 SCALE_DYAD = 1 << 100
 S_CAP_DEN = 10**16
 
@@ -62,6 +73,78 @@ PMAX = [Fr(1, 32), Fr(1, 8), Fr(1, 32), Fr(1, 96), Fr(3, 64)]
 def require(cond, msg="verification condition failed"):
     if not cond:
         raise ValueError(msg)
+
+
+def _parse_lean_rat_rhs(line, marker):
+    idx = line.find(marker)
+    require(idx >= 0, f"missing marker {marker!r} in Lean source line")
+    rhs = line[idx + len(marker):].split(":=")[0].strip()
+    if ":=" in line[idx:]:
+        rhs = line[idx + len(marker):].strip()
+    rhs = rhs.split("--")[0].strip()
+    if "/" in rhs:
+        parts = rhs.split("/")
+        require(len(parts) == 2, f"malformed rational {rhs!r} in Lean source")
+        n_s = "".join(ch for ch in parts[0].strip() if ch.isdigit())
+        d_s = "".join(ch for ch in parts[1].strip().split()[0] if ch.isdigit())
+        require(bool(n_s) and bool(d_s), f"empty rational digits in {rhs!r}")
+        return Fr(int(n_s), int(d_s))
+    n_s = "".join(ch for ch in rhs.split()[0] if ch.isdigit())
+    require(bool(n_s), f"missing integer digits in {rhs!r}")
+    return Fr(int(n_s))
+
+
+def verify_lean_moment_constants(repo_root=None):
+    """Tie C6 and CHI_MAX directly to their Lean source definitions in Grothe/."""
+    root = pathlib.Path(repo_root) if repo_root is not None else REPO_ROOT
+    moment_lean = root / "Grothe" / "Lower" / "Moment.lean"
+    moments_lean = root / "Grothe" / "LowerAnalytic" / "Moments.lean"
+    circ4_lean = root / "Grothe" / "LowerAnalytic" / "CircularFourth.lean"
+    require(moment_lean.is_file() and moments_lean.is_file() and circ4_lean.is_file(),
+            "missing Lean moment source files under Grothe/")
+
+    c6_def = None
+    for ln in moment_lean.read_text(encoding="utf-8").splitlines():
+        s = ln.strip()
+        if s.startswith("def C6 : ℚ :="):
+            c6_def = _parse_lean_rat_rhs(s, "def C6 : ℚ :=")
+            break
+    require(c6_def is not None, "could not locate `def C6 : ℚ :=` in Grothe/Lower/Moment.lean")
+
+    c6_lem = None
+    for ln in moments_lean.read_text(encoding="utf-8").splitlines():
+        s = ln.strip()
+        if s.startswith("lemma C6_eq : C6 ="):
+            rhs = s.split("lemma C6_eq : C6 =", 1)[1].split(":=", 1)[0].strip()
+            c6_lem = _parse_lean_rat_rhs("= " + rhs, "= ")
+            break
+    require(c6_lem is not None, "could not locate `lemma C6_eq` in Grothe/LowerAnalytic/Moments.lean")
+    require(C6 == c6_def == c6_lem, f"C6={C6} does not match Lean source C6={c6_def} / {c6_lem}")
+
+    m4_val = None
+    chi_val = None
+    c4_lines = circ4_lean.read_text(encoding="utf-8").splitlines()
+    for i, ln in enumerate(c4_lines):
+        s = ln.strip()
+        if s.startswith("theorem Circular.fourth_moment_le_44") and "E (radU a b ^ 2) ≤" in s:
+            m4_val = _parse_lean_rat_rhs(s, "E (radU a b ^ 2) ≤")
+        if s.startswith("theorem Circular.gaussian_x_le_sqrt42"):
+            window = " ".join(c4_lines[i:i + 6])
+            pos = window.find("≤ √")
+            require(pos >= 0, "missing `≤ √` in Circular.gaussian_x_le_sqrt42")
+            tail = window[pos + len("≤ √"):].strip()
+            digits = ""
+            for ch in tail:
+                if ch.isdigit():
+                    digits += ch
+                else:
+                    break
+            require(bool(digits), "missing √chi digits in CircularFourth.lean")
+            chi_val = Fr(int(digits))
+    require(m4_val is not None and chi_val is not None,
+            "could not locate fourth-moment theorems in Grothe/LowerAnalytic/CircularFourth.lean")
+    require(CHI_MAX == chi_val == m4_val - 2,
+            f"CHI_MAX={CHI_MAX} does not match Lean fourth-moment bound {m4_val} - 2 = {chi_val}")
 
 
 def fmt_dec(q, digits=8):
@@ -1062,6 +1145,7 @@ _MODEL_CACHE = {}
 def verify_certificate(cert, quiet=False):
     t_start = time.monotonic()
     require(isinstance(cert, dict), "certificate must be a JSON object")
+    verify_lean_moment_constants()
     require(Fr(cert["s_sharp_max"]) == S_SHARP_MAX, "s_sharp_max must equal 5/8")
 
     e_lb = sum(Fr(1, factorial(k)) for k in range(6))
@@ -1243,12 +1327,24 @@ def verify_certificate(cert, quiet=False):
         min_p3_margin = m_seg if min_p3_margin is None else min(min_p3_margin, m_seg)
         cur_t = tb
     require(cur_t == t_p3_max, "p3 segments must reach 61/100")
+    require(
+        min_p3_margin is not None and min_p3_margin > ADVERTISED_P3_RESERVE,
+        f"p3 minimum reserve {fmt_dec(min_p3_margin or 0, 8)} does not exceed advertised {ADVERTISED_P3_RESERVE}",
+    )
 
-    # Also verify Gaussian barrier of (2)+(3) fails by t = 618/1000 = 0.618 (tightness check):
-    # At t = 618/1000, pi_lo/4 - t^2 > c_need(t):
+    # Enforce exact Theorem 2.1 node list and rational R_buf(s_j) bounds:
+    cert_node_list = [Fr(nrow["s"]) for nrow in midt_nodes_raw]
+    adv_node_list = [sj for sj, _ in ADVERTISED_MIDT_NODES]
+    require(cert_node_list == adv_node_list, f"midt_nodes s-list {cert_node_list} != {adv_node_list}")
+    for sj, r_adv in ADVERTISED_MIDT_NODES:
+        require(rbuf_map[sj] <= r_adv, f"r_buf({sj}) = {rbuf_map[sj]} exceeds advertised {r_adv}")
+
+    # Verify finite-dimensional unimodular barrier witness at t = 618/1000, A = 2017/5000 (STATUS 3.5a):
     t_fail = Fr(618, 1000)
-    c_need_fail = ((tau_d5 - eta_d5) - (1 - eta_d5) * (t_fail**2)) / (eps_d5 - eta_d5)
-    require(pi_lo / 4 - t_fail**2 > c_need_fail, "Gaussian barrier tightness check at t=0.618 failed")
+    a_fail = Fr(2017, 5000)
+    require(t_fail**2 + a_fail < pi_lo / 4, "barrier point (0.618, 0.4034) is not strictly inside pi/4 disk")
+    v_rhs_fail = (1 - eta_d5) * (t_fail**2) + eta_d5 + (eps_d5 - eta_d5) * a_fail
+    require(v_rhs_fail > tau_d5, "finite-dimensional barrier tightness check at t=0.618, A=0.4034 failed")
 
     elapsed_ms = int((time.monotonic() - t_start) * 1000)
     if not quiet:
