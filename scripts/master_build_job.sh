@@ -13,12 +13,11 @@
 #      files), swapped in by rename. Worktrees clone the snapshot (scripts/clone_master_build.sh).
 # If master moved during the round, it starts another round; otherwise it exits.
 set -euo pipefail
-MAIN=/Users/alingalatan/workspaces/grothe
-BUILDER=/Users/alingalatan/workspaces/grothe-master-build
+MAIN=${GROTHE_MAIN:-/Users/alingalatan/workspaces/grothe}
+BUILDER=${GROTHE_BUILDER:-/Users/alingalatan/workspaces/grothe-master-build}
 if [ ! -d "$BUILDER" ]; then
   git -C "$MAIN" worktree add --detach "$BUILDER" origin/master
   mkdir -p "$BUILDER/.lake"
-  ln -s "$MAIN/.lake/packages" "$BUILDER/.lake/packages"
   # seed from the newest build available, so the first round is incremental too
   if [ -d "$MAIN/.lake/master-cache" ]; then cp -c -R "$MAIN/.lake/master-cache" "$BUILDER/.lake/build"
   elif [ -d "$MAIN/.lake/build" ]; then cp -c -R "$MAIN/.lake/build" "$BUILDER/.lake/build"; fi
@@ -31,6 +30,10 @@ while true; do
     echo "master cache already current for $TARGET"; exit 0
   fi
   git checkout -q --detach "$TARGET"
+  # the packages of THIS target's manifest, chosen again on every target (a new Mathlib gets a new store; the main
+  # checkout's .lake/packages is never switched under the worktrees still linked to it)
+  if [ -f scripts/package_store.sh ]; then bash scripts/package_store.sh ${PACKAGE_STORE_ROOT:+"$PACKAGE_STORE_ROOT"}
+  elif [ ! -e .lake/packages ]; then ln -s "$MAIN/.lake/packages" .lake/packages; fi   # a target before the stores
   rm -f .lake/build/built-commit
   echo "building master $TARGET"
   # shellcheck disable=SC2046

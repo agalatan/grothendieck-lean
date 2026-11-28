@@ -620,6 +620,18 @@ class ChangeFilterTests(unittest.TestCase):
                 self.assertTrue(re.search(pattern, path), path)
         self.assertFalse(re.search(pattern, "scratch/UpperSixAxioms.lean"))
 
+    def test_ci_helpers_and_their_tests_are_routed_and_run(self):
+        """A change of the package store or the landing-refusal helper runs the proof check, which runs their tests."""
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/lean.yml").read_text()
+        pattern = re.search(r"LEAN_PATHS='([^']+)'", workflow).group(1)
+        for name in ("package_store", "land_push_refusal"):
+            for path in (f"scripts/{name}.sh", f"scripts/test_{name}.py"):
+                with self.subTest(path=path):
+                    self.assertTrue((root / path).is_file(), path)
+                    self.assertTrue(re.search(pattern, path), path)
+            self.assertIn(f"python3 scripts/test_{name}.py", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()
