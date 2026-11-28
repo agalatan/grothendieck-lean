@@ -23,3 +23,33 @@ The finite cover uses the $p_0$ coordinates to label each response just once. In
 ```sh
 python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/lower_shoulder.py
 ```
+
+## Continuation to $t=.826$
+
+Task #802.
+
+For $.826\le t\le .82815$, every actual six-sector response satisfies the same
+$.713245$ witness bound with physical clearance greater than $10^{-8}$. For the
+middle range $.1\le\chi\le27$, retain the same $q$ in both arms and send $sO$ to
+the joint trial and $rO$ to the odd-only trial. Set
+$$
+h=(\theta/p_0+(1-\theta)/b)^{-1},\qquad s=h/p_0,\qquad r=h/b.
+$$
+Then $\theta s+(1-\theta)r=1$, so the convex combination recovers the original
+odd field, including its dependence on the other sectors. The weighted odd
+quadratic cost is $(\theta p_0s^2+(1-\theta)br^2)W=hW$. The two even fields
+remain in the joint arm at scale $1/\theta$. Its trial now includes the
+rescaled odd driver, and $\mu\theta^2\|\xi\|^2\le\theta\|\xi\|^2$ still holds.
+The displayed normalized contribution above therefore holds with odd coefficient
+$h-p$. At $p=p_1$, the choice $\theta=p_0(p_1-b)/(p_1(p_0-b))$ gives $h=p_1$.
+
+The middle-shape replay sets $H_p=(\pi_{\rm hi}/4-.826^2)/p^2$. It uses the
+additional published content coefficients from 11.49 and 11.62 and checks
+three supplemental Stein rows at the single energy $u=3/50$ against every
+public radial cap, including the ray. Each row uses the original knot vector.
+The three-way cover has closed endpoints. On $0\le\chi\le.1$ the adaptive
+trial covers $[.826,.833]$ with physical clearance greater than
+$372985/10^{12}$. On $27\le\chi\le42$ it covers $[.826,.8393]$ with clearance
+greater than $14774073/10^{12}$. The command above also replays these two
+outer certificates. It rejects a corrupted dual; deleting any one of the three
+supplementary rows makes the middle cover fail. [11.49 and 11.62](../../STATUS.md) · [11.62 content proof](../ab-sector-2026-11-15-codex-91d4/route2/a_content/A_CONTENT_PROOF.md) · [Outer shape ranges](../uncapped-six-sector-codex-a7c4/ADAPTIVE.md)
