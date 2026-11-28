@@ -31,6 +31,22 @@ def kernel_moments(m):
     return first, second
 
 
+def quadratic_dimension(m):
+    return comb(m + 1, 2)
+
+
+def slice_dimension(pair):
+    p, q = pair
+    return quadratic_dimension(p) * quadratic_dimension(q)
+
+
+def projective_pair(n):
+    k = n & -n  # Largest power of two dividing n.
+    if k == n:
+        return None
+    return k + 1, n - k + 1
+
+
 def lower_bound(c):
     if c < 2:
         raise ValueError("expected complex dimension at least two")
@@ -39,13 +55,32 @@ def lower_bound(c):
     baseline = F(2*c, c + 1)
     if r > n:
         return baseline
-    mean_r, norm_r = kernel_moments(r)
-    mean_n, norm_n = kernel_moments(n)
-    # Center the product of the two kernels. Its square integrates to D-1.
-    centered_norm = norm_r * norm_n - 2 * mean_r * mean_n + 1
-    dimension = comb(r + 1, 2) * comb(n + 1, 2)
-    require(centered_norm == dimension - 1, "centered evaluation norm")
+    pair = (r, n)
+    rectangle = projective_pair(n)
+    if rectangle is not None:
+        pair = min(pair, rectangle, key=slice_dimension)
+    mean_p, norm_p = kernel_moments(pair[0])
+    mean_q, norm_q = kernel_moments(pair[1])
+    centered_norm = norm_p * norm_q - 2 * mean_p * mean_q + 1
+    require(centered_norm == slice_dimension(pair) - 1, "centered evaluation norm")
     return baseline * (1 + 1 / centered_norm)
+
+
+def check_slice_choice(n):
+    # Independent exhaustive check via integer binomial coefficients.
+    candidates = [(j + 1, n - j + 1) for j in range(1, n) if comb(n, j) % 2]
+    rectangle = projective_pair(n)
+    if not candidates:
+        require(rectangle is None, f"spurious parity obstruction at n={n}")
+        return
+    require(rectangle in candidates, f"missing odd coefficient at n={n}")
+    require(slice_dimension(rectangle) == min(map(slice_dimension, candidates)),
+            f"nonoptimal projective pair at n={n}")
+    one_input = slice_dimension((rho(n) + 1, n))
+    if n % 16:
+        require(slice_dimension(rectangle) < one_input, f"expected a strict gain at n={n}")
+    else:
+        require(slice_dimension(rectangle) > one_input, f"expected the vector-field bound at n={n}")
 
 
 def check_real_part(c):
@@ -63,14 +98,17 @@ def check_real_part(c):
 
 def main():
     expected = {
-        2: F(4, 3), 3: F(189, 125), 4: F(8, 5), 5: F(550, 329),
-        6: F(14040, 8183), 7: F(2205, 1258), 8: F(119680, 67311),
+        2: F(4, 3), 3: F(135, 89), 4: F(8, 5), 5: F(450, 269),
+        6: F(4050, 2359), 7: F(1911, 1090), 8: F(119680, 67311),
+        12: F(41310, 22373), 24: F(620928, 323395),
     }
     for c, want in expected.items():
         actual = lower_bound(c)
         require(actual == want, f"lower bound at c={c}: {actual} != {want}")
         check_real_part(c)
         print(f"c={c}: lower bound {actual}, gap {actual - F(2*c, c+1)}")
+    for n in range(4, 257, 2):
+        check_slice_choice(n)
     # Include higher 2-adic valuations and odd multiples of powers of two.
     for n, expected_rho in [(12, 4), (16, 9), (32, 10), (64, 12), (128, 16), (256, 17), (768, 17)]:
         require(rho(n) == expected_rho, f"incorrect Radon-Hurwitz number at {n}")
