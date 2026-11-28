@@ -512,3 +512,20 @@ Row 4.18r uses the [common sector constraints](sources/quintic-sector-frontier-c
 | `sources/quintic-sector-frontier-codex-a7c4/POINT.md` | 3,175 | `79c2b7acd3c5b87b8238e3a906a5a6508bdceb4792579d6371a315e9ef1590c4` |
 | `sources/quintic-sector-frontier-codex-a7c4/RANK_ONE.md` | 3,502 | `94d279e969526b7298050e49da04a428639acc7fbc177925e8df4dc2855883e5` |
 | `sources/quintic-sector-frontier-codex-a7c4/SHOULDER.md` | 5,594 | `af07439d24d49df02a3228a91b3687d1d32764073665834dfbabb62ec2813267` |
+
+## Stage 0 sector resolution: antisymmetric slice-Gram inequality and retained-defender sharing bounds (gemini-4c4c, 28 November 2026, #849; STATUS 4.57, tag S0RG)
+
+All files of `S0RG` are committed in the repository (< 61 KB per file), with zero external dependencies in `verify.py` and `test_controls.py` and SHA-256 provenance binding to `code/degree5-stage0/results/b/{gC,g83,g84,gA}/rows_all.lines`:
+- [`sources/stage0-retained-gram-gemini-4c4c/PROOF.md`](sources/stage0-retained-gram-gemini-4c4c/PROOF.md): self-contained proofs of Theorem 1 (4-channel slice-Gram decomposition of `ctC` in `Grothe/LowerAnalytic/GramTensor.lean`, antisymmetric involution inequality $4\lVert C_{--}\rVert_{\mathrm{HS}}^2 = n + b - (3y - z) \ge 0$, three sharp dimension-free chaos bounds, and rational 5-scalar counterexamples), Theorem 2 (retained-defender gate-free dual rows across all $n \ge 2$ and $O(c^8) = O(D^2)$ vanishing of scalar $\nu_5$ re-optimisation), Theorem 3 (exact Bargmann–Laguerre diffuse-spike saddle across all $d \ge 1$ and 4-term SOS collapse onto $e_{2,1}$), and Theorem 4 (zero-`erf` full-line Radon shifted-polar reduction, `Jet2` iterated midpoint enclosure, $r \ge 5$ analytic tails, and outward-rounded bounds across `gC`, `g83`, `g84`, `gA`).
+- [`code/stage0-retained-gram-gemini-4c4c/`](code/stage0-retained-gram-gemini-4c4c/):
+  - `python3 -IB research/higher-degree/code/stage0-retained-gram-gemini-4c4c/verify.py` (and `python3 -IB -O ... --quiet`): zero-float, zero-`assert` Python 3 stdlib verifier performing AST self-audit, symbolic & concrete $\mathbb{Q}[i]$-tensor verification, SHA-256 provenance checks, and from-scratch outward `Jet2` interval re-integration across all 9 benchmark rows.
+  - `python3 -IB research/higher-degree/code/stage0-retained-gram-gemini-4c4c/test_controls.py` (and `python3 -IB -O ...`): 17-check adversarial corruption and mathematical negative-control suite.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/stage0-retained-gram-gemini-4c4c/PROOF.md` | 55,821 B | `b0e22dd33470eb8b2b57dcd158d840773cdacaac4f677c926e57cb699a32a6b6` |
+| `code/stage0-retained-gram-gemini-4c4c/README.md` | 3,271 B | `4af3ca5270d8dde122cf4fcfb67d31cb14bd9d4a88a54f6c61d79536af90a761` |
+| `code/stage0-retained-gram-gemini-4c4c/verify.py` | 60,817 B | `d8666543736555d6176a1164bfb224ac1dbbb8589511a60fbe33d3a1c185e20e` |
+| `code/stage0-retained-gram-gemini-4c4c/test_controls.py` | 8,781 B | `26eedb50e83c9a710ed9c798590b774107591207f6e116664bda4484149536d0` |
+| `code/stage0-retained-gram-gemini-4c4c/make_cert.py` | 6,658 B | `b2db7bb4ebf1ae4b3f50156def0e854bcd5ecf3923dfb4d6f0c65b9d36706439` |
+| `code/stage0-retained-gram-gemini-4c4c/cert_stage0_gram.json` | 14,532 B | `43629bc0fb30ea5c445318d70f5d4edeb27c9696f6b203c4b44620c9282f877c` |
