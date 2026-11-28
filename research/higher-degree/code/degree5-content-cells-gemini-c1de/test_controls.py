@@ -196,7 +196,7 @@ def main():
         dat_false = os.path.join(tmpd, "false_own070.dat")
         res_false = os.path.join(tmpd, "res_false.json")
         subprocess.run(
-            ["c++", "-O3", "-ffp-contract=off", "-std=c++17", "-Wall", "-Wextra", "-Werror",
+            ["c++", "-O3", "-frounding-math", "-ffp-contract=off", "-std=c++17", "-Wall", "-Wextra", "-Werror",
              "-Wno-unknown-pragmas", "-pthread", cpp_src, "-o", bin_path],
             check=True
         )
@@ -204,11 +204,29 @@ def main():
         c_false = copy.deepcopy(cfg0)
         own_cell = copy.deepcopy(own)
         own_cell["F_claimed"] = 0.085  # False claim on own-row 0.70!
-        c_false["cells"] = [own_cell]
+        # Multiple cells on this control row need only the three low-energy control profiles.
+        c_false["cells"] = [own] * 6 + [own_cell]
         verify.emit_dat_from_json(c_false, dat_false)
         proc = subprocess.run([bin_path, "--verify-all", dat_false, res_false, "--threads", n_thr],
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         check(proc.returncode != 0, "C++ certifier accepted false F_claimed = 0.085 on own-row 0.70!")
+        check("[Part 1] Enclosing 3 rows " in proc.stderr and
+              "1 cell certificate(s) failed continuous verification" in proc.stderr,
+              "expected one failed cell and only three enclosed rows for the seven-cell input")
+        unknown = dict(own, row_tag="unknown_test_row")
+        dat_unknown = os.path.join(tmpd, "unknown.dat")
+        verify.emit_dat_from_json({**cfg0, "cells": [unknown]}, dat_unknown)
+        # Neither an unknown tag nor a dump-only selector may bypass a required row.
+        for data, options, diagnostic in [
+            (dat_unknown, [], "unknown row tag unknown_test_row"),
+            (dat_false, ["--only-row", "0.700_own"], "--only-row is for --dump-rows"),
+        ]:
+            output = os.path.join(tmpd, "unexpected_receipt.json")
+            rejected = subprocess.run([bin_path, "--verify-all", data, output, *options],
+                                      capture_output=True, text=True)
+            check(rejected.returncode == 2 and diagnostic in rejected.stderr and
+                  "[Part 1]" not in rejected.stderr and not os.path.exists(output),
+                  f"expected an early rejection without a receipt: {diagnostic}")
         print(f"  [PASS] Control 15 (live C++17 binary test): rejected false F=0.085 on own-row 0.70 (rc={proc.returncode})")
 
         # Control 16: Live C++17 binary rejection test on energy-independent constant (row 0.800 at u=1/128 claiming F=1.139!)

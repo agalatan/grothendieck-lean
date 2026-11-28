@@ -397,11 +397,11 @@ All files of `CONTCELL` are committed in the repository (< 220 KB per file), wit
 | file | size | SHA-256 |
 |---|---:|---|
 | `sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md` | 37,592 B | `cdbb3ed041e94b7496518ac38f482a3257ed0ed06f897512c6a3b51c798dd72f` |
-| `code/degree5-content-cells-gemini-c1de/README.md` | 3,803 B | `ec39f2c1bbc44aefb1c2106b15e8d35ca4ebc7746d695a27874a26580c3dc1d2` |
-| `code/degree5-content-cells-gemini-c1de/certify_content_cells.cpp` | 166,692 B | `6b301b218eb075fb365cc6fab6732a249021eb73d6e145078bd641290323723e` |
+| `code/degree5-content-cells-gemini-c1de/README.md` | 4,880 B | `f581bb5d5d6bc070ab423cab05022c789a3180fd1d0804430dc0b07f19a071d0` |
+| `code/degree5-content-cells-gemini-c1de/certify_content_cells.cpp` | 167,042 B | `5a62c27cd2975816e31233fcdd3d2c43f22b426bf7de15b3ece7bcc435f7422c` |
 | `code/degree5-content-cells-gemini-c1de/generate_certificates.py` | 60,974 B | `037db9afd0aaa5f9994e2b0d2b399d023aa5c2c6b2bda0df2163f877c7164590` |
-| `code/degree5-content-cells-gemini-c1de/verify.py` | 43,203 B | `5c031c5d75c7534264793d47580b9cd254c7c7550cbf3161390dbc30b1d75e97` |
-| `code/degree5-content-cells-gemini-c1de/test_controls.py` | 23,107 B | `5b794948a6ce206f7abdc2eddb3c0b2c769c8abd48f8c76077d0819d88afdead` |
+| `code/degree5-content-cells-gemini-c1de/verify.py` | 47,698 B | `5b86fef882b2107f097e01d3555d32368e452727cb2b86de002719e872ba1d67` |
+| `code/degree5-content-cells-gemini-c1de/test_controls.py` | 26,563 B | `05b4f55f9c6abd52907a640c1dd39ace1a7b8bc77890ac752c01d1613faa3b57` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs.json` | 1,735 B | `3ac783ea4065bfb3e19ad31fa980992564a5b430e921361afe30368b65dd2c50` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_1.json` | 213,360 B | `8ea096c5d2c7d6db8b4bfb96cc6dbb3b3e0c919307660d413f3472b072bb2057` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_2.json` | 219,824 B | `1227be0f609a04d131725b83a369d38577f9338346bf709f94e360446a25c258` |
@@ -410,7 +410,7 @@ All files of `CONTCELL` are committed in the repository (< 220 KB per file), wit
 | `code/degree5-content-cells-gemini-c1de/dual_certs_5.json` | 210,811 B | `bf6f184bda076e499e1520f963cb4beda0a86f0aee9737517c649ecb39e78710` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_6.json` | 212,073 B | `ae4eddaa67df26decdbb906df5d644772cd8820c823837047750a9a02853aecd` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_7.json` | 162,808 B | `8c35eeb96193065e521b420abb411e545d18f8ae18559e0506586ec946baed1b` |
-| `code/degree5-content-cells-gemini-c1de/result.json` | 52,299 B | `142a0604f6c9dff42a09cf8d6e0aba1a66957c68ce5da940a4ba68bfeead2e8b` |
+| `code/degree5-content-cells-gemini-c1de/result.json` | 52,299 B | `e3493305301253f6250c563a297b0953bef8f9221b9b24cb6110b8a56ebca172` |
 
 ## Conditional cubic and quintic response moments
 

@@ -517,7 +517,7 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
             out_res = result_path if update_result else os.path.join(tmpd, "result_replay.json")
             emit_dat_from_json(cfg, dat_path)
             subprocess.run(
-                ["c++", "-O3", "-ffp-contract=off", "-std=c++17", "-Wall", "-Wextra", "-Werror",
+                ["c++", "-O3", "-frounding-math", "-ffp-contract=off", "-std=c++17", "-Wall", "-Wextra", "-Werror",
                  "-Wno-unknown-pragmas", "-pthread", cpp_src, "-o", bin_path],
                 check=True
             )
