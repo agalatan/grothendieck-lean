@@ -47,7 +47,7 @@ V_3 row 17  s in [    39,     49]  K=40  PASS  bound <= 0.7750404400
 V_3 row 18  s in [    49,     61]  K=40  PASS  bound <= 0.7679021300
 V_3 row 19  s in [    61,     75]  K=40  PASS  bound <= 0.7589977300
 V_3 row 20  s in [    75,     90]  K=40  PASS  bound <= 0.7426660900
-[Sturm V_3] cert_v3_458.json: all 21 rows PASS, max <= 0.7987630000 <= 1997/2500; sharp [>=5] <= 0.7978066100 <= 19946/25000 < sqrt(2/pi); complex H_{2,1} <= 8873/10000 (sharp [>=10/3] <= 4431/5000) [25313 ms]
+[Sturm V_3] cert_v3_458.json: all 21 rows PASS, max <= 0.7987630000 <= 1997/2500; sharp [>=5] <= 0.7978066100 <= 19946/25000 < sqrt(2/pi); complex H_{2,1} <= 8873/10000 (sharp [>=10/3] <= 4431/5000) [23712 ms]
 V_5 row  0  s in [     0,    1/2]  K=51  PASS  bound <= 0.8093071700
 V_5 row  1  s in [   1/2,      2]  K=51  PASS  bound <= 0.8170583300
 V_5 row  2  s in [     2,      6]  K=51  PASS  bound <= 0.8313694900
@@ -64,7 +64,7 @@ H32 row  1  s in [   1/2,      2]  PASS  slice_real <= 0.8124607200
 H32 row  2  s in [     2,      6]  PASS  slice_real <= 0.8267616900
 H32 row  3  s in [     6,     15]  PASS  slice_real <= 0.8458963600
 H32 row  4  s in [    15,     39]  PASS  slice_real <= 0.8720710300
-[Sturm V_5] cert_v5_458.json: all 11 V_5 rows PASS, max <= 0.9824849600 <= 983/1000; H_{3,2} [0, 26] <= 97/100, global <= 999999/1000000 [5446 ms]
+[Sturm V_5] cert_v5_458.json: all 11 V_5 rows PASS, max <= 0.9824849600 <= 983/1000; H_{3,2} [0, 26] <= 97/100, global <= 999999/1000000 [6320 ms]
 
 [Bern V_3] row  0  [     0,    2/5]  PASS  leaves= 356  bound <= 0.7982422200
 [Bern V_3] row  1  [   2/5,   9/10]  PASS  leaves= 435  bound <= 0.7985116300
@@ -87,7 +87,7 @@ H32 row  4  s in [    15,     39]  PASS  slice_real <= 0.8720710300
 [Bern V_3] row 18  [    49,     61]  PASS  leaves= 559  bound <= 0.7679021300
 [Bern V_3] row 19  [    61,     75]  PASS  leaves= 558  bound <= 0.7589977300
 [Bern V_3] row 20  [    75,     90]  PASS  leaves= 535  bound <= 0.7426660900
-[Bernstein + Symbolic 8-var] cert_v3_458.json (v3_enhanced): PASS (10658 Bernstein leaves, max_depth=10, 47931 ms)
+[Bernstein + Symbolic 8-var] cert_v3_458.json (v3_enhanced): PASS (10658 Bernstein leaves, max_depth=10, 46663 ms)
 [Bern V_5] row  0  [     0,    1/2]  PASS  leaves= 337  bound <= 0.8093071700
 [Bern V_5] row  1  [   1/2,      2]  PASS  leaves= 332  bound <= 0.8170583300
 [Bern V_5] row  2  [     2,      6]  PASS  leaves= 329  bound <= 0.8313694900
@@ -99,17 +99,17 @@ H32 row  4  s in [    15,     39]  PASS  slice_real <= 0.8720710300
 [Bern V_5] row  8  [   900,   1800]  PASS  leaves= 248  bound <= 0.9823791400
 [Bern V_5] row  9  [  1800,   3000]  PASS  leaves= 252  bound <= 0.9824849600
 [Bern V_5] row 10  [  3000,   4650]  PASS  leaves= 244  bound <= 0.9801315100
-[Bernstein + Symbolic 8-var] cert_v5_458.json (v5_tower): PASS (4922 Bernstein leaves, max_depth=15, 20493 ms)
+[Bernstein + Symbolic 8-var] cert_v5_458.json (v5_tower): PASS (4922 Bernstein leaves, max_depth=15, 19877 ms)
 
 [Part 1] Enhanced V_3(R^n): E[nu^2], E[(eta-1)^3,4], op-norm (140 pts) & nodal (21 rows) across 7 tensors: PASS
 [Part 2] Fifth chaos V_5(R^n): L tau_1=8(tau_2-tau_1), a_k moments, 35 Br, 100 cones, 9 Frob & nodal (16 rows): PASS
-[Part 3] Complex quintic H_{3,2}(C^d): F_theta in V_5, kappa_4=(3/2)chi, E[F_theta^6]=(5/2)E|q|^6 (6 checks): PASS
-ALL EXACT IDENTITY CHECKS PASSED  [62222 ms, zero floats, zero asserts]
+[Part 3] Complex quintic H_{3,2}(C^d): F_theta in V_5, kappa_4=(3/2)chi, E[F_theta^6]=(5/2)E|q|^6 (12 checks): PASS
+ALL EXACT IDENTITY CHECKS PASSED  [33301 ms, zero floats, zero asserts]
 
 [1] Zero-float & zero-assert AST audit across 5 stdlib scripts: PASS
 [2] Part I oscillation-preserving OU cone controls (2 checks): PASS
 [3] Part II enhanced V_3 & downstream controls (Sturm + Bernstein + 8-var): 100 checks ALL REJECTED
 [4] Part III V_5 & H_{3,2} controls (Sturm + Bernstein + 8-var): 46 checks ALL REJECTED
-ALL EXACT IDENTITY CHECKS PASSED  [18472 ms, zero floats, zero asserts]
+ALL EXACT IDENTITY CHECKS PASSED  [19544 ms, zero floats, zero asserts]
 [5] Isolated `python3 -IB -O` CLI parity across all 4 verifiers: PASS
-ALL 157 ADVERSARIAL, AST & -O PARITY CONTROLS PASSED  [114687 ms, zero floats, zero asserts]
+ALL 157 ADVERSARIAL, AST & -O PARITY CONTROLS PASSED  [116779 ms, zero floats, zero asserts]

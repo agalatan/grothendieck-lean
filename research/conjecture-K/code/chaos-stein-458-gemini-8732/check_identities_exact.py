@@ -882,6 +882,94 @@ def verify_h32_phase_transfer():
             ef6 = qp_expect(qp_mul(F4, F2))
             require(ef6 == Fr(5, 2) * eq6, f"{label}: E[F_theta^6] != (5/2) E|q|^6")
             n_checks += 1
+
+    # Also verify 3-pair conjugate Frobenius submultiplicativity |val_pi(A)|^2 <= ||A||_HS^12
+    # on loopless directed (3, 2) bipartite matchings for a multi-coordinate complex tensor in C^2:
+    d_c = 2
+    A_c = {}
+    for idx in itertools.product(range(d_c), repeat=5):
+        h_s, a_s = sum(idx[:3]), sum(idx[3:])
+        if (h_s, a_s) == (0, 0):
+            A_c[idx] = QComplex(2, 1)
+        elif (h_s, a_s) == (1, 1):
+            A_c[idx] = QComplex(-1, 2)
+        elif (h_s, a_s) == (3, 1):
+            A_c[idx] = QComplex(1, -1)
+        elif (h_s, a_s) == (2, 2):
+            A_c[idx] = QComplex(3, 0)
+        else:
+            A_c[idx] = QComplex(0, 1)
+    hs2_A = sum(v.re * v.re + v.im * v.im for v in A_c.values())
+
+    # Vertices 0, 2, 4 are u_1, u_2, u_3 (A, slots 0..2 are '+', slots 3..4 are '-');
+    # Vertices 1, 3, 5 are w_1, w_2, w_3 (conj(A), slots 3..4 are '+', slots 0..2 are '-').
+    plus_he = [(2 * a, s) for a in range(3) for s in (0, 1, 2)] + [(2 * a + 1, s) for a in range(3) for s in (3, 4)]
+    minus_he = [(2 * a, s) for a in range(3) for s in (3, 4)] + [(2 * a + 1, s) for a in range(3) for s in (0, 1, 2)]
+    require(len(plus_he) == 15 and len(minus_he) == 15, "bad H_{3,2} half-edge counts")
+
+    # Build 6 distinct loopless directed matchings via deterministic shifts & permutations:
+    rng_c = random.Random(45832)
+    tested_c = 0
+    while tested_c < 6:
+        perm_m = list(minus_he)
+        rng_c.shuffle(perm_m)
+        if any(p[0] == m[0] for p, m in zip(plus_he, perm_m)):
+            continue
+        edges = list(zip(plus_he, perm_m))
+        # Contract inside each conjugate pair P_a = {2*a, 2*a+1} first, then contract external edges:
+        int_edges = {0: [], 1: [], 2: []}
+        ext_edges = []
+        for idx_e, (p_h, m_h) in enumerate(edges):
+            if p_h[0] // 2 == m_h[0] // 2:
+                int_edges[p_h[0] // 2].append((idx_e, p_h, m_h))
+            else:
+                ext_edges.append((idx_e, p_h, m_h))
+        # Check Lemma 4.3 structural invariant: internal edges in P_a touch u_a once and w_a once!
+        for a in range(3):
+            for _, p_h, m_h in int_edges[a]:
+                require({p_h[0], m_h[0]} == {2 * a, 2 * a + 1}, "self-loop in P_a")
+
+        # Compute K^{(a)} on external edge assignments of P_a and verify ||K^{(a)}||_F^2 <= ||A||_HS^4:
+        ext_by_pair = {0: [], 1: [], 2: []}
+        for idx_e, p_h, m_h in ext_edges:
+            ext_by_pair[p_h[0] // 2].append((idx_e, p_h))
+            ext_by_pair[m_h[0] // 2].append((idx_e, m_h))
+        K_tables = {}
+        for a in range(3):
+            ext_list = ext_by_pair[a]
+            int_list = int_edges[a]
+            K_a = {}
+            for ext_vals in itertools.product(range(d_c), repeat=len(ext_list)):
+                slot_map = {}
+                for ( _, h_), val in zip(ext_list, ext_vals):
+                    slot_map[h_] = val
+                acc = QComplex(0, 0)
+                for int_vals in itertools.product(range(d_c), repeat=len(int_list)):
+                    for (_, ph, mh), val in zip(int_list, int_vals):
+                        slot_map[ph] = val
+                        slot_map[mh] = val
+                    u_tup = tuple(slot_map[(2 * a, s)] for s in range(5))
+                    w_tup = tuple(slot_map[(2 * a + 1, s)] for s in range(5))
+                    acc = acc + A_c[u_tup] * A_c[w_tup].conj()
+                K_a[ext_vals] = acc
+            frob2_Ka = sum(v.re * v.re + v.im * v.im for v in K_a.values())
+            require(frob2_Ka <= hs2_A * hs2_A, "||K^{(a)}||_F^2 > ||A||_HS^4")
+            K_tables[a] = (ext_list, K_a)
+
+        # Contract external edges across P_0, P_1, P_2:
+        val_pi = QComplex(0, 0)
+        ext_ids = [idx_e for idx_e, _, _ in ext_edges]
+        for glob_ext in itertools.product(range(d_c), repeat=len(ext_ids)):
+            emap = dict(zip(ext_ids, glob_ext))
+            prod = QComplex(1, 0)
+            for a in range(3):
+                ext_list, K_a = K_tables[a]
+                key_a = tuple(emap[idx_e] for idx_e, _ in ext_list)
+                prod = prod * K_a[key_a]
+            val_pi = val_pi + prod
+        require(val_pi.re * val_pi.re + val_pi.im * val_pi.im <= hs2_A ** 6, "H_{3,2} |val_pi|^2 > ||A||_HS^12")
+        tested_c += 1
+        n_checks += 1
     return n_checks
 
 

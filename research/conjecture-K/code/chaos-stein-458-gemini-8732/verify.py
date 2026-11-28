@@ -380,6 +380,15 @@ def verify_structural_constants_v5(gram_c=None, sig_c=None, m6_real=None, m6_cpl
     ev6_q1 = exp_ev(pmul(v_q1, pmul(v_q1, v_q1)))
     require(ev6_q1 == 59735934 and m6c >= ev6_q1, "unsound M6_CPLX_H32 < 59735934 violated by q_1(z)")
 
+    # 5) Exact combinatorial verification of V_5 Wiener-Ito chaos-projection coefficients c_{1,k} and c_{2,k}:
+    nck = lambda n_, k_: fact[n_] // (fact[k_] * fact[n_ - k_]) if 0 <= k_ <= n_ else Fr(0)
+    for kc in (1, 2, 3, 4):
+        j_norm = Fr(fact[5 - kc] * (nck(5, 5 - kc) ** 2), 120)
+        tau1_num = Fr(5, 120) * fact[4 - kc] * (nck(4, 4 - kc) ** 2)
+        tau2_num = Fr(20, 120) * fact[3 - kc] * (nck(3, 3 - kc) ** 2) if kc <= 3 else Fr(0)
+        require(tau1_num / j_norm == Fr(5 - kc, 5), f"V_5 c_{{1,{kc}}} combinatorial check failed")
+        require(tau2_num / j_norm == Fr((5 - kc) * (4 - kc), 20), f"V_5 c_{{2,{kc}}} combinatorial check failed")
+
 
 # ==============================================================================
 # PART 3: ENHANCED V_3(R^n) ROW VERIFIER (`cert_v3_458.json`)

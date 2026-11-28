@@ -174,6 +174,18 @@ def bernstein_positive_on_segment(p, a, b, max_depth=32):
 
 def verify_symbolic_identities():
     """Exact rational polynomial checks of all algebraic steps in the oscillation-preserving IBP proof."""
+    # 0) Exact Gaussian Hermite Stein coefficients for |Z| (Z ~ N(0, 1), E[|Z| Z^{2m}]/E|Z| = 2^m m!)
+    #    and exact s^{-1/2} ds vs unweighted ds moments of h_4(s) = (s^2 - 6 s + 3) exp(-s/2):
+    abs_z_mom = {2 * m: Fr((2 ** m) * factorial(m)) for m in range(4)}  # ratios E[|Z| Z^{2m}] / c
+    he4_coeff = (abs_z_mom[4] - 6 * abs_z_mom[2] + 3 * abs_z_mom[0]) / factorial(4)
+    he6_coeff = (abs_z_mom[6] - 15 * abs_z_mom[4] + 45 * abs_z_mom[2] - 15 * abs_z_mom[0]) / factorial(6)
+    require(he4_coeff == Fr(-1, 24) and he6_coeff == Fr(1, 240), "Stein Hermite coefficients for |Z| failed")
+    # Weighted integral int_0^oo s^{-1/2} h_4(s) ds / sqrt(2*pi) == E[He_4(Z)] == 3 - 6*1 + 3*1 == 0,
+    # whereas unweighted int_0^oo h_4(s) ds == 2^3*2! - 6*2^2*1! + 3*2^1*0! == 16 - 24 + 6 == -2:
+    h4_weighted_gauss = Fr(3) - Fr(6) * Fr(1) + Fr(3) * Fr(1)
+    h4_unweighted_ds = Fr(8 * factorial(2)) - Fr(6 * 4 * factorial(1)) + Fr(3 * 2 * factorial(0))
+    require(h4_weighted_gauss == 0 and h4_unweighted_ds == -2, "h_4 moment check failed")
+
     # 1) Check 4 * r^{1/2} * d^2/dr^2 [ r^{3/2} * exp(-a * r) ] == (4 a^2 r^2 - 12 a r + 3) * exp(-a * r)
     #    with a = x^2 / 2: 4*(x^2/2)^2 r^2 - 12*(x^2/2) r + 3 = r^2 x^4 - 6 r x^2 + 3 = h_4(r x^2) * exp(r x^2/2),
     #    and at x = 0 (a = 0): 4 * r^{1/2} * (3/4) r^{-1/2} == 3!

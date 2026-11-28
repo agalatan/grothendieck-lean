@@ -2047,23 +2047,23 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 - [Self-contained proof and replay instructions](sources/chaos-stein-458-gemini-8732/PROOF.md) and
   [oscillation-preserving IBP cone verifier, two exact rational certificates, two independent zero-float stdlib verifiers, symbolic multivariate & `{F = 0}` nodal checks, 157 adversarial/AST/`-O` controls, generator, and replay log](code/chaos-stein-458-gemini-8732/) (tag `KCS458`; `STATUS.md` 3.6, 3.7, 3.18, 3.21, 3.21 (e1), 3.21 (e9), 3.30; `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C, author only**). Every file is strictly below 300 KB (`cert_v3_458.json` is 169,848 B; `cert_v5_458.json` is 87,311 B) and committed in the repository with zero external dependencies left outside.
 - **Replay (pure Python 3 standard library only, zero floating-point operations or float clocks, zero `assert` statements, `-IB` and `-IB -O` identical):**
-  - Oscillation-preserving two-step Ornstein–Uhlenbeck near-Gaussian cone (`R_* <= 21/20 = 1.05` in 1 Bernstein leaf; real `κ_0 = 1/5900`, `κ_1 = 1/1475`; complex `χ_0 = 1/8300`, `χ_1 = 1/2075`, < 1 s): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/verify_ibp_cone.py`
-  - Primary integer Sturm + 4-corner `(s_*, θ_*)` envelope + 8-vertex `V_5` simplex + `U(1)` transfer + downstream degree-5/7 verifier (~31 s across both certificates): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/verify.py`
+  - Oscillation-preserving two-step Ornstein–Uhlenbeck near-Gaussian cone (`R_* <= 21/20 = 1.05` in 1 Bernstein leaf; exact Hermite Stein moments `-1/24` and `+1/240` and `s^{-1/2}` vs unweighted `h_4` moment checks; real `κ_0 = 1/5900`, `κ_1 = 1/1475`; complex `χ_0 = 1/8300`, `χ_1 = 1/2075`, < 1 s): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/verify_ibp_cone.py`
+  - Primary integer Sturm + 4-corner `(s_*, θ_*)` envelope + 8-vertex relaxed `V_5` simplex + `U(1)` transfer + downstream degree-5/7 verifier (~31 s across both certificates): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/verify.py`
   - Second independent verifier — exact integer Bernstein subdivision (`10,658` `V_3` leaves + `4,922` `V_5`/`H_{3,2}` leaves) + generic recursive Laplace `det_mat()` + exact 8-variable symbolic polynomial expansion across all `21 × 41 + 16 × 52 = 1,693` intervals (~68 s): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/verify_bernstein.py`
-  - Exact multivariate polynomial verification over `ℚ[X_1, ..., X_n]` of `E[ν^2]`, `E[(η - 1)^{3,4}]`, `L τ_1 = 8(τ_2 - τ_1)`, `a_k` chaos-norm moments, 35 fifth-chaos Stein brackets, 9 loopless 5-regular Frobenius matchings, `{F = 0}` nodal states (including `ℚ(√10)`), and `H_{3,2}` `U(1)` transfer (~62 s): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/check_identities_exact.py`
+  - Exact multivariate polynomial verification over `ℚ[X_1, ..., X_n]` of `E[ν^2]`, `E[(η - 1)^{3,4}]`, `L τ_1 = 8(τ_2 - τ_1)`, `a_k` chaos-norm moments, 35 fifth-chaos Stein brackets, 9 loopless 5-regular real & 6 loopless `(3, 2)` complex Frobenius matchings, `{F = 0}` nodal states (including `ℚ(√10)`), and `H_{3,2}` `U(1)` transfer (~62 s): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/check_identities_exact.py`
   - Static AST zero-float/zero-`assert` audit + 157 negative, corruption, structural-constant, overclaim, and isolated `-IB -O` subprocess parity controls (~115 s): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/test_controls.py`
   - Offline certificate regeneration (`numpy`, `scipy`, `clarabel`): `/usr/local/bin/python3 research/conjecture-K/code/chaos-stein-458-gemini-8732/make_certs.py`
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/chaos-stein-458-gemini-8732/PROOF.md` | 51,382 B | `5a6afa332adf8c6afd8a4d8aeec10e6a67d8e9a93aeacfb26ba74bba9a3a6313` |
-| `code/chaos-stein-458-gemini-8732/README.md` | 4,404 B | `0e1a9cf7fd0cf6ffd73d38173f456a9fa47a3fa76d9e9ed59e6f2461f728a6d4` |
+| `sources/chaos-stein-458-gemini-8732/PROOF.md` | 58,667 B | `a2a7f7d34097aab9499cefd433cc3dd4e84d4ea27ecf9238b32da94d1dcc2c25` |
+| `code/chaos-stein-458-gemini-8732/README.md` | 4,456 B | `37b107823ff8eb63012442da567a4396b646bbf9f448887e2a879518d03480ae` |
 | `code/chaos-stein-458-gemini-8732/cert_v3_458.json` | 169,848 B | `9bec677ebe3709087c298155c1fbc5333785835fff4a8b64bfe624b71887b76d` |
 | `code/chaos-stein-458-gemini-8732/cert_v5_458.json` | 87,311 B | `703bd0a8de0bf7b3ff3299fa2fe7a0e6726c516160ceabb61316b619361b9618` |
-| `code/chaos-stein-458-gemini-8732/verify_ibp_cone.py` | 26,711 B | `2e1759c2d8bc49d131675bc833932adee90cba3bc908b73f463b001826beed70` |
-| `code/chaos-stein-458-gemini-8732/verify.py` | 56,761 B | `201a5a269998f16193306054eb7475d4333e3601fbabebcbf1138f44ca4c7da6` |
+| `code/chaos-stein-458-gemini-8732/verify_ibp_cone.py` | 27,758 B | `4516670b308ade9e5bc220a6c69f915a17da3e6b5955167fd98b7fd992c39fe7` |
+| `code/chaos-stein-458-gemini-8732/verify.py` | 57,431 B | `168a1b16399a89ec2d77fc65677f54274ddf58a09f3b99b072a6f1af0ae8b147` |
 | `code/chaos-stein-458-gemini-8732/verify_bernstein.py` | 34,917 B | `ee0255ddb9dd79cb70a8f8ae610b90a6eed9c1a5035d791d6146ba8d2ae231f5` |
-| `code/chaos-stein-458-gemini-8732/check_identities_exact.py` | 40,920 B | `0a04c8a4aec9a0e24be485896c9fae2427544db8fd519e49722e53aa27bb23c5` |
+| `code/chaos-stein-458-gemini-8732/check_identities_exact.py` | 45,226 B | `7c8f0a0b9718b8ff964928b9dbfca68aefdca8f48eb052864f0cd65ba93266fe` |
 | `code/chaos-stein-458-gemini-8732/test_controls.py` | 15,327 B | `c70ff8cb830bb9cfc395a1dbb374416c6dc56b84b8bcf7e16591fa1558c559db` |
 | `code/chaos-stein-458-gemini-8732/make_certs.py` | 60,987 B | `24e8e05aa49c638074681fd461d4dfe902749254390f3dcfc6c943ea837efe8f` |
-| `code/chaos-stein-458-gemini-8732/REPLAY.log` | 8,465 B | `4a8e0d540e763a96553e0fa45365f2eb7d0b7ab07920e9d47b6d05f279d16d02` |
+| `code/chaos-stein-458-gemini-8732/REPLAY.log` | 8,466 B | `5682fb88ef2e9b8c78890492a9cf3d8d0984f98c912d826f6461c9fda27ac374` |
