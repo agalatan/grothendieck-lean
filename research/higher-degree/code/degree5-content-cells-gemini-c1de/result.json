@@ -1,7 +1,7 @@
 {
   "status": "CERTIFIED",
   "dat_sha256": "677e6c746730c0a32a41d80f1ab361fce383c3d834a81d0e078585d35e00fb4a",
-  "cpp_sha256": "6b301b218eb075fb365cc6fab6732a249021eb73d6e145078bd641290323723e",
+  "cpp_sha256": "5a62c27cd2975816e31233fcdd3d2c43f22b426bf7de15b3ece7bcc435f7422c",
   "manifest_sha256": "3ac783ea4065bfb3e19ad31fa980992564a5b430e921361afe30368b65dd2c50",
   "shard_sha256s": {
     "dual_certs_1.json": "8ea096c5d2c7d6db8b4bfb96cc6dbb3b3e0c919307660d413f3472b072bb2057",

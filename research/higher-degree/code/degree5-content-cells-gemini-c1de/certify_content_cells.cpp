@@ -20,6 +20,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <set>
 #include <sstream>
 #include <string>
 #include <thread>
@@ -3066,17 +3067,25 @@ int main(int argc, char** argv) {
     }
 
     auto specs = get_all_15_rows();
-    if (!only_row.empty()) {
+    if (mode == "verify") {
+        if (!only_row.empty()) {
+            std::fprintf(stderr, "FATAL: --only-row is for --dump-rows; verification selects all required rows.\n");
+            return 2;
+        }
+        std::set<std::string> needed{"0.700_own", "0.800", "0.865"};  // Low-energy controls.
+        for (const auto& cell : cfg.cells) needed.insert(cell.row_tag);
+        std::vector<RowSpec> selected;
+        for (const auto& spec : specs) {
+            if (needed.erase(spec.tag)) selected.push_back(spec);
+        }
+        if (!needed.empty()) {
+            std::fprintf(stderr, "FATAL: unknown row tag %s\n", needed.begin()->c_str());
+            return 2;
+        }
+        specs.swap(selected);
+    } else if (!only_row.empty()) {
         std::vector<RowSpec> filt;
         for (const auto& sp : specs) if (sp.tag == only_row) filt.push_back(sp);
-        specs = filt;
-    } else if (mode == "verify" && cfg.cells.size() <= 6) {
-        std::vector<RowSpec> filt;
-        for (const auto& sp : specs) {
-            bool needed = (sp.tag == "0.700_own" || sp.tag == "0.800" || sp.tag == "0.865");
-            for (const auto& c : cfg.cells) if (c.row_tag == sp.tag) needed = true;
-            if (needed) filt.push_back(sp);
-        }
         specs = filt;
     }
     std::vector<RowProfileEnclosure> row_encs(specs.size());

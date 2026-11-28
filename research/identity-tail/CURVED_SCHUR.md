@@ -67,8 +67,13 @@ quotient $g=N/D$ against the two original headers, differentiates it twice,
 and certifies the sign of the numerator of $(g+k\theta^2)''$ throughout the
 closed unit interval. Its two-scale lemma transfers the curvature to the
 common physical scale. The [price checker](../../Grothe/LowerAnalytic/SparseSteinPrices.lean)
-certifies both sets of nine prices. Rounding both sets down to multiples of
-$10^{-13}$ preserves the displayed cap and its maximizing cell. The
+checks the whole-scale and small-scale prices. Bisect the affine weight path on the
+amplitude interval $[3429/4096,8577/10240]$. At the midpoint the two discounts,
+rounded down to multiples of $10^{-13}$, are $10853361/10^{12}$ and $251609893/10^{13}$.
+With these ten weights the normalized cap is $70635481227/10^{11}$ and the
+matrix lower endpoint is $200000000000000/142651094836331=1.40202218727776025\ldots$
+for the original identity-tail witness in the rational replay. Removing the midpoint recovers
+the original nine-weight result above. The
 [curvature-adjusted rows](../../Grothe/LowerAnalytic/SparseSteinRows.lean)
 and these numerical checks use only `propext`, `Classical.choice`, and
 `Quot.sound`.
@@ -77,8 +82,8 @@ From the repository root, run
 `python3 -IBO research/identity-tail/code/curved_stein_profile.py`
 and `python3 -IBO tools/gen_strong_schur.py --check`.
 The first script checks the signed curvature, both rounded price tables, the
-affine control, the curved maximum and the ceilings for the fixed outer segments and central weight path;
-the [coefficient generator](../../tools/gen_strong_schur.py) reproduces and checks the generated block of `StrongSchur.lean` from `RowData08.lean` and `RowData09.lean`.
+affine control, the curved maximum and the ceilings for the fixed outer segments and central weight path.
+The production tables also contain the six extra weights of the [retuned first-chaos cover](FIRST_CHAOS_RETUNING.md). The replay checks the entries against their physical chord deductions. The [coefficient generator](../../tools/gen_strong_schur.py) reproduces and checks the generated block of `StrongSchur.lean` from `RowData08.lean` and `RowData09.lean`.
 
 The implementation and reproducibility discussion are tracked in [issue #696](https://github.com/agalatan/grothendieck-lean/issues/696).
 

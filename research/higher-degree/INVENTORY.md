@@ -382,7 +382,11 @@ from `tools/` by commit `d84c3fdfc` (`git show 8115260f8:tools/<name>`); and the
 
 ## Certified continuous-law first-chaos content bounds per (u, χ) cell (gemini-c1de, 26 November 2026, #623; STATUS 4.56, tag CONTCELL)
 
-The [piece-15 extension](sources/piece15-content-codex-062a/PROOF.md) uses the same profiles and certifier. Its two new [dual witnesses and replay](code/piece15-content-codex-062a/) and the reused χ = 20 multipliers cover ten additional funded bins at 0.78 u_cap (4.56a). Four further witnesses cover [all fifteen bins at each of the first two energies](sources/piece15-content-codex-062a/FIRST_ENERGIES.md), including seventeen bins with an active allowance.
+The [piece-15 extension](sources/piece15-content-codex-062a/PROOF.md) uses the same profiles and certifier. Its two new [dual witnesses and replay](code/piece15-content-codex-062a/) and the reused χ = 20 multipliers cover ten additional funded bins at 0.78 u_cap (4.56a). Four further witnesses cover [all fifteen bins at each of the first two energies](sources/piece15-content-codex-062a/FIRST_ENERGIES.md), including seventeen bins with an active allowance. On the [whole closed interval between those energies](sources/piece15-content-codex-062a/ENERGY_BAND.md), 34 pairs of witnesses certify the affine allowances on all fifteen bins for both profiles under (R1). The [replay](code/piece15-content-codex-062a/energy_band.py) verifies all 136 rectangles and can regenerate the multipliers. On the [next energy interval](sources/piece15-content-codex-062a/SECOND_BAND.md), the [second-band verifier](code/piece15-content-codex-062a/second_band.py) reads 46 pairs of multipliers and checks all 162 rectangles. The coverage in row 4.56b extends from 0.70 to 0.78 u_cap on eleven bins.
+The [middle-bin manifest](code/piece15-content-codex-062a/middle_prefix.json) names the published multipliers for the four bins in (8, 16] above the 0.70 energy node. The [replay note](sources/piece15-content-codex-062a/MIDDLE_PREFIX.md) gives its energy endpoints, input digest and verification command.
+
+
+The [continuous Rice exclusion proof](sources/rice-energy-exclusion-codex-062a/PROOF.md) and its [rational verifier](code/rice-energy-exclusion-codex-062a/verify.py) reuse all 19 infeasibility receipts.
 
 All files of `CONTCELL` are committed in the repository (< 220 KB per file), with zero external working-folder artefacts:
 - [`sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md`](sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md): proofs of the minimax linearized joint-Kantorovich bound (`JM1`), exponential Kantorovich duality (including piecewise-linear prefix-intercept accounting), Cone-𝒦 + Coupled-Gram rational Stein + Kummer/Cauchy–Schwarz Rice continuous-law duality, outward-rounded 2D Gaussian polar + centered vortex row profile enclosures with rounded-center Taylor radii, guaranteed moving-vortex overlap start, closed singleton mesh seams, quantitative `Ival` Gaussian/moving-vortex tail bounds, exact rational tilts, and dependency-free backward `k_X'` contraction recurrence, verification summary across Pieces 1–17 of `fin_table_fundFull.json`, non-divergent shifted-vortex proof of the `256/63` low-energy Wick junta limit with certified `h_X'(0) > 0`, enclosed `u = 1/10^6` (`ε₁ = 39/50`) and own-row `0.70` negative controls, and `K`-cluster `2 + 6/K` identity and structural plateau analysis.
@@ -393,11 +397,11 @@ All files of `CONTCELL` are committed in the repository (< 220 KB per file), wit
 | file | size | SHA-256 |
 |---|---:|---|
 | `sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md` | 37,592 B | `cdbb3ed041e94b7496518ac38f482a3257ed0ed06f897512c6a3b51c798dd72f` |
-| `code/degree5-content-cells-gemini-c1de/README.md` | 3,803 B | `ec39f2c1bbc44aefb1c2106b15e8d35ca4ebc7746d695a27874a26580c3dc1d2` |
-| `code/degree5-content-cells-gemini-c1de/certify_content_cells.cpp` | 166,692 B | `6b301b218eb075fb365cc6fab6732a249021eb73d6e145078bd641290323723e` |
+| `code/degree5-content-cells-gemini-c1de/README.md` | 4,880 B | `f581bb5d5d6bc070ab423cab05022c789a3180fd1d0804430dc0b07f19a071d0` |
+| `code/degree5-content-cells-gemini-c1de/certify_content_cells.cpp` | 167,042 B | `5a62c27cd2975816e31233fcdd3d2c43f22b426bf7de15b3ece7bcc435f7422c` |
 | `code/degree5-content-cells-gemini-c1de/generate_certificates.py` | 60,974 B | `037db9afd0aaa5f9994e2b0d2b399d023aa5c2c6b2bda0df2163f877c7164590` |
-| `code/degree5-content-cells-gemini-c1de/verify.py` | 43,203 B | `5c031c5d75c7534264793d47580b9cd254c7c7550cbf3161390dbc30b1d75e97` |
-| `code/degree5-content-cells-gemini-c1de/test_controls.py` | 23,107 B | `5b794948a6ce206f7abdc2eddb3c0b2c769c8abd48f8c76077d0819d88afdead` |
+| `code/degree5-content-cells-gemini-c1de/verify.py` | 47,698 B | `5b86fef882b2107f097e01d3555d32368e452727cb2b86de002719e872ba1d67` |
+| `code/degree5-content-cells-gemini-c1de/test_controls.py` | 26,563 B | `05b4f55f9c6abd52907a640c1dd39ace1a7b8bc77890ac752c01d1613faa3b57` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs.json` | 1,735 B | `3ac783ea4065bfb3e19ad31fa980992564a5b430e921361afe30368b65dd2c50` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_1.json` | 213,360 B | `8ea096c5d2c7d6db8b4bfb96cc6dbb3b3e0c919307660d413f3472b072bb2057` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_2.json` | 219,824 B | `1227be0f609a04d131725b83a369d38577f9338346bf709f94e360446a25c258` |
@@ -406,7 +410,7 @@ All files of `CONTCELL` are committed in the repository (< 220 KB per file), wit
 | `code/degree5-content-cells-gemini-c1de/dual_certs_5.json` | 210,811 B | `bf6f184bda076e499e1520f963cb4beda0a86f0aee9737517c649ecb39e78710` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_6.json` | 212,073 B | `ae4eddaa67df26decdbb906df5d644772cd8820c823837047750a9a02853aecd` |
 | `code/degree5-content-cells-gemini-c1de/dual_certs_7.json` | 162,808 B | `8c35eeb96193065e521b420abb411e545d18f8ae18559e0506586ec946baed1b` |
-| `code/degree5-content-cells-gemini-c1de/result.json` | 52,299 B | `142a0604f6c9dff42a09cf8d6e0aba1a66957c68ce5da940a4ba68bfeead2e8b` |
+| `code/degree5-content-cells-gemini-c1de/result.json` | 52,299 B | `e3493305301253f6250c563a297b0953bef8f9221b9b24cb6110b8a56ebca172` |
 
 ## Conditional cubic and quintic response moments
 
@@ -548,3 +552,20 @@ python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/dir
 | `sources/quintic-double-ellipse-codex-a7c4/PROOF.md` | 8,330 | `4c05d91ae743fa5ac672c316088b80a902814c60ebdf1043c8bb59731d4fa996` |
 | `sources/quintic-double-ellipse-codex-a7c4/REMOTE.md` | 2,803 | `1f6b4b790db2c8f50faf3c3e18010c4266daf76474587f4955bffe18f8ceeee1` |
 | `sources/quintic-double-ellipse-codex-a7c4/TILTED.md` | 3,700 | `c05251123d592022670efa17653f3d6ca5b737a2e2925f0502c31f3a1e7a9caf` |
+
+## Antisymmetric slice-Gram inequality and $c \to 0^+$ retained-defender saddle bounds (gemini-4c4c, 28 November 2026, #849; STATUS 4.57, tag S0RG)
+
+All files of `S0RG` are committed in the repository (< 80 KB per file), with zero external dependencies in `verify.py` and `test_controls.py` and SHA-256 provenance + exact `(id, game, t_key, e1, eta, cap_upper)` binding to `code/degree5-stage0/results/b/{gC,g83,g84,gA}/rows_all.lines`:
+- [`sources/stage0-retained-gram-gemini-4c4c/PROOF.md`](sources/stage0-retained-gram-gemini-4c4c/PROOF.md): self-contained proofs of Theorem 1 (4-channel slice-Gram decomposition of `ctC` in `Grothe/LowerAnalytic/GramTensor.lean`, antisymmetric involution inequality $4\lVert C_{--}\rVert_{\mathrm{HS}}^2 = n + b - (3y - z) \ge 0$, three sharp dimension-free chaos bounds, and rational 5-scalar counterexamples), Theorem 2 (retained-defender gate-free dual rows across all $n \ge 2$ and $O(c^8) = O(D^2)$ vanishing of scalar $\nu_5$ re-optimisation), Theorem 3 (exact Bargmann–Laguerre 5-shell odd-visible $c \to 0^+$ quadratic/local diffuse-spike saddle at $\sigma = \sigma_*$ across all $d \ge 1$ and 4-term SOS collapse onto $e_{2,1}$), and Theorem 4 (zero-`erf` full-line Radon shifted-polar reduction, `Jet2` iterated midpoint enclosure, $r \ge 5$ analytic tails, and outward-rounded $c \to 0^+$ bounds at 9 Stage 0 sample rows; finite gate points $c > 0$ and off-peak $\sigma \ne \sigma_*$ remain open, so Stage 0's stop rule is not yet discharged).
+- [`code/stage0-retained-gram-gemini-4c4c/`](code/stage0-retained-gram-gemini-4c4c/):
+  - `python3 -IB research/higher-degree/code/stage0-retained-gram-gemini-4c4c/verify.py` (and `python3 -IB -O ... --quiet`): zero-float, zero-`assert` Python 3 stdlib verifier performing AST self-audit, symbolic, $\mathbb{Q}[i]$-tensor, physical Gaussian Wick polynomial & 1-direction Hessian normalisation verification, SHA-256 + row/weight/cap/flag pinning across all 9 sample rows, and from-scratch outward `Jet2` interval re-integration.
+  - `python3 -IB research/higher-degree/code/stage0-retained-gram-gemini-4c4c/test_controls.py` (and `python3 -IB -O ...`): 24-check adversarial corruption and mathematical negative-control suite.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/stage0-retained-gram-gemini-4c4c/PROOF.md` | 70,111 B | `593534a33e83c09ecb0d8ceb79bab4ada02f95af711a9fff767b7c3181ffd7a8` |
+| `code/stage0-retained-gram-gemini-4c4c/README.md` | 4,479 B | `8f0478fd1dee576c8c527ae761728f03b3b10f19d579deb770577692f7bd9749` |
+| `code/stage0-retained-gram-gemini-4c4c/verify.py` | 79,108 B | `deb9a1a486471fbfe9e2cd08279a40e94cddbbf2b785050b1cb85e47b635b920` |
+| `code/stage0-retained-gram-gemini-4c4c/test_controls.py` | 12,200 B | `6d78e7c159daf8a57fe473a03f1cb12b2119fa0485fe71ec6173aa80be1b0aed` |
+| `code/stage0-retained-gram-gemini-4c4c/make_cert.py` | 6,542 B | `147dd4ce44b7e7291987de1e3d2ce377ae291ea7dd88f4230ccef45a4a2435b1` |
+| `code/stage0-retained-gram-gemini-4c4c/cert_stage0_gram.json` | 14,532 B | `43629bc0fb30ea5c445318d70f5d4edeb27c9696f6b203c4b44620c9282f877c` |

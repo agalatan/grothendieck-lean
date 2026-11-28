@@ -11,6 +11,8 @@ Grothe.Haag.measurable_phaseLaplaceKernel
 Grothe.Haag.norm_phaseLaplaceKernel_le
 Grothe.Haag.ph_eq_phaseLaplace
 Grothe.Haag.phaseMoment_weighted
+Grothe.Lower.FirstChaos.endpoint_eq
+Grothe.Lower.FirstChaos.rounded_lt
 Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 Grothe.Lower.SparseEnvelope.endpoint_eq
 Grothe.Lower.SparseEnvelope.profile_bound
@@ -91,8 +93,8 @@ Grothe.LowerAnalytic.tenH_le_tenS
 Grothe.LowerAnalytic.tenS_le_sq_sum
 Grothe.LowerAnalytic.transferInputs_of_witnessCap
 Grothe.Statement.constant_lt_tight_upper
+Grothe.Statement.first_chaos_endpoint
 Grothe.Statement.main_bounds
-Grothe.Statement.sparse_stein_endpoint
 Grothe.Statement.upper_below_tight
 Grothe.Statement.upper_bound_tight
 Grothe.Upper.BandComparison.compare
