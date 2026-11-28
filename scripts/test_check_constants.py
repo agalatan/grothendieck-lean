@@ -30,7 +30,7 @@ GOOD = ("We prove 1.40191 < K ≤ 1.40456, that is `140191 / 100000` and `140456
 def make(root: Path, main=MAIN, statement=STATEMENT, upper=UPPER, endpoint=ENDPOINT, docs=None):
     files = {rel: GOOD for rel in cc.QUOTING}
     files.update({"Grothe/MainResult.lean": main, "Grothe/Statement.lean": statement,
-                  "Grothe/UpperResult.lean": upper, ENDPOINT_FILE: endpoint})
+                  "Grothe/Upper/Result.lean": upper, ENDPOINT_FILE: endpoint})
     files.update(docs or {})
     for rel, text in files.items():
         if text is None:
@@ -96,7 +96,7 @@ class CheckConstants(unittest.TestCase):
 
     def test_constants_page_needs_the_exact_values_digit_for_digit(self):
         _, problems = self.run_check(docs={"docs/CONSTANTS.md": GOOD.replace("711969", "7119691")})
-        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSeven.bound"])
+        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact upper bound of Grothe.Upper.bound"])
         _, problems = self.run_check(docs={"docs/CONSTANTS.md": GOOD.replace("14019101 /", "14019102 /")})
         self.assertEqual(
             problems, ["docs/CONSTANTS.md: does not state the exact lower endpoint (endpoint_eq)"]
@@ -166,7 +166,7 @@ class CheckConstants(unittest.TestCase):
     def test_truncated_exact_values_are_allowed_only_with_an_ellipsis(self):
         _, problems = self.run_check(upper=UPPER + "-- exactly 1.40455553… and 1.4019101.\n")
         self.assertEqual(len(problems), 1)
-        self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean:4: quotes 1.4019101, which is neither"))
+        self.assertTrue(problems[0].startswith("Grothe/Upper/Result.lean:4: quotes 1.4019101, which is neither"))
         _, problems = self.run_check(upper=UPPER + "-- exactly 1.40455554… here.\n")
         self.assertEqual(len(problems), 1)
 
@@ -186,7 +186,7 @@ class CheckConstants(unittest.TestCase):
         _, problems = self.run_check(statement=STATEMENT + "-- `IsBound ((10 : ℝ) ^ 6 / 711968)`\n")
         self.assertEqual(
             problems,
-            ["Grothe/Statement.lean:2: IsBound (10 ^ 6 / 711968) is not the exact upper bound of Grothe.UpperSeven.bound"],
+            ["Grothe/Statement.lean:2: IsBound (10 ^ 6 / 711968) is not the exact upper bound of Grothe.Upper.bound"],
         )
         _, problems = self.run_check(statement=STATEMENT + "-- `IsBound (1.40456)`\n")
         self.assertEqual(problems, ["Grothe/Statement.lean:2: the numeric argument of IsBound was not recognised"])
@@ -255,17 +255,17 @@ class CheckConstants(unittest.TestCase):
         self.assertEqual(
             problems,
             [
-                "Grothe/UpperResult.lean: constant_le states 14046 / 10000, main_bounds 140456 / 100000",
-                "Grothe/UpperResult.lean:3: quotes 14046 / 10000, which is not a current bound",
+                "Grothe/Upper/Result.lean: constant_le states 14046 / 10000, main_bounds 140456 / 100000",
+                "Grothe/Upper/Result.lean:3: quotes 14046 / 10000, which is not a current bound",
             ],
         )
         _, problems = self.run_check(upper=UPPER.replace("theorem constant_le", "theorem constant_le'"))
         self.assertEqual(len(problems), 1)
-        self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean: the statement of constant_le was not recognised"))
+        self.assertTrue(problems[0].startswith("Grothe/Upper/Result.lean: the statement of constant_le was not recognised"))
 
     def test_exact_upper_bound_is_required(self):
         _, problems = self.run_check(upper=UPPER.replace("theorem bound :", "theorem bound' :"))
-        self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean: the exact upper bound `theorem bound :"))
+        self.assertTrue(problems[0].startswith("Grothe/Upper/Result.lean: the exact upper bound `theorem bound :"))
         # without it, nothing in the file can be accepted as the exact value
         self.assertEqual(len(problems), 3)
 
@@ -330,7 +330,7 @@ class CheckConstants(unittest.TestCase):
         for weak in ("Statement.IsBound ((10 : ℝ) ^ 6 / 711969 + 1) :=", "Statement.IsBound ((10 : ℝ) ^ 6 / 711969) ∨ True :="):
             with self.subTest(weak=weak):
                 _, problems = self.run_check(upper=UPPER.replace("Statement.IsBound ((10 : ℝ) ^ 6 / 711969) :=", weak))
-                self.assertTrue(problems[0].startswith("Grothe/UpperResult.lean: the exact upper bound `theorem bound :"))
+                self.assertTrue(problems[0].startswith("Grothe/Upper/Result.lean: the exact upper bound `theorem bound :"))
 
     def test_statements_in_comments_are_not_read(self):
         hidden = "/- theorem constant_le : Statement.complexGrothendieckConstant ≤ 140456 / 100000 := by -/\n"

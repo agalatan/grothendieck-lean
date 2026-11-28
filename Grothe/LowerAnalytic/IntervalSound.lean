@@ -10,7 +10,7 @@ shown to preserve membership; interval lists represent real polynomials coeffici
 (`memB N p L`: coefficients of index `< N`).
 -/
 
-namespace Grothe.Upper
+namespace Grothe.Interval
 
 open GrotheKernel Polynomial
 
@@ -210,4 +210,4 @@ lemma absSum_le {N : ℕ} {p : ℝ[X]} {L : List Ival} (h : memB N p L) :
         simpa [add_comm] using ih N
   exact_mod_cast key L N
 
-end Grothe.Upper
+end Grothe.Interval

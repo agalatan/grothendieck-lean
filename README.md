@@ -16,12 +16,12 @@ value.
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
 | lower bound | $1.4020221627 < K_G^{\mathbb C}$ | `14020221627 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
-| upper bound | $K_G^{\mathbb C} \le 1.404556392$ | `1404556392 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSeven.constant_le` |
-| Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperSeven.constant_lt_inv_gammaDagger` |
+| upper bound | $K_G^{\mathbb C} \le 1.404556392$ | `1404556392 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.Upper.constant_le` |
+| Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | the article's package [`haagerup-article/anc`](haagerup-article/anc), `Haagerup.constant_lt_inv_gammaDagger` |
 
 The two bounds are 0.00253 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
 parameters behind it and the other numbers that appear in the repository (earlier bounds, thresholds, targets).
-Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's value](Grothe/UpperResult.lean) ·
+Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound](Grothe/Upper/Result.lean) ·
 [the definitions they are stated with](Grothe/Statement.lean).
 
 ## History of the bounds
@@ -91,15 +91,15 @@ definitions, so reading it is enough to know what the theorems say:
 - `Grothe.Statement.main_bounds`: the two bounds of the table above, as the rationals given there. Since
   $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds, the first part says that every $K$ with `IsBound K`
   is above the lower bound.
-- `Grothe.UpperSeven.bound : IsBound ((10 : ℝ) ^ 27 / 711968565817136711740669035)`: for every finite complex matrix
+- `Grothe.Upper.bound : IsBound ((10 : ℝ) ^ 27 / 711968565817136711740669035)`: for every finite complex matrix
   $A$, $V(A) \le 1.4045563919697\ldots \cdot C(A)$. This is what the upper bound means for a single matrix;
-  `Grothe.UpperSeven.constant_le` restates it, rounded up to nine decimals, as $K_G^{\mathbb C} \le 1.404556392$.
-- `Grothe.UpperSeven.constant_lt_inv_gammaDagger`: $K_G^{\mathbb C} < 1/\gamma^\dagger$. Lean proves
-  $\gamma^\dagger < 0.711958683$ from rational bounds on the integral, and $1.404556392 \cdot 0.711958683 < 1$.
+  `Grothe.Upper.constant_le` restates it, rounded up to nine decimals, as $K_G^{\mathbb C} \le 1.404556392$.
+- $K_G^{\mathbb C} < 1/\gamma^\dagger$ is proved in the article's own Lean package ([`haagerup-article/anc`](haagerup-article/anc), `Haagerup.constant_lt_inv_gammaDagger`), not in
+  this target.
 - `Grothe.Statement.sparse_stein_endpoint`: $K_G^{\mathbb C}$ is at least an exact rational, the reciprocal of the
   bound $B$ below; the lower bound of `main_bounds` is this rational rounded strictly downward.
 
-[Statement](Grothe/Statement.lean) · [Upper bound](Grothe/UpperResult.lean) · [Both bounds](Grothe/MainResult.lean).
+[Statement](Grothe/Statement.lean) · [Upper bound](Grothe/Upper/Result.lean) · [Both bounds](Grothe/MainResult.lean).
 
 ### The lower bound
 
@@ -143,7 +143,7 @@ $\nu = 47/2000$ and an exact rational $\hat B$ (`SparseEnvelope.cap`); $1/B$ is 
 
 The certificate mixes seven Gaussian rounding channels. Three smoothed cell channels, one phase channel and two reflected tiger channels retain their certified interval heads and Hardy tail caps. The seventh channel combines an angular selector at `17/100` with the signed preprocessor `23/25 − (2/25)X`.
 
-Lean computes the selector’s 251-entry signed head and a bound on the total absolute coefficient error. The transfer takes absolute values after summing all seven heads, then adds their weighted allowances. The resulting factor is `10^27 / 711968565817136711740669035`. [Selector and mixture](Grothe/UpperSelector/Bound.lean) · [Exact parameters and budgets](docs/CONSTANTS.md#behind-the-upper-bound).
+Lean computes the selector’s 251-entry signed head and a bound on the total absolute coefficient error. The transfer takes absolute values after summing all seven heads, then adds their weighted allowances. The resulting factor is `10^27 / 711968565817136711740669035`. [Selector and mixture](Grothe/Upper/Selector/Bound.lean) · [Exact parameters and budgets](docs/CONSTANTS.md#behind-the-upper-bound).
 
 ### What the computer checks and what is trusted
 
@@ -179,8 +179,8 @@ Lean computes the selector’s 251-entry signed head and a bound on the total ab
 | path | content |
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
-| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorem `main_bounds` with both bounds; the seven-channel upper bound and the comparison with Haagerup's value |
-| `Grothe/UpperSix/`, `Grothe/UpperSix/Certificate/` | the six-channel upper proof: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
+| `Grothe/MainResult.lean`, `Grothe/Upper/Result.lean` | the theorem `main_bounds` with both bounds; the upper bound |
+| `Grothe/Upper/`, `Grothe/Upper/Certificate/` | the six-channel upper proof: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
 | `haagerup-article/` | the article, frozen, with its own Lean package under `anc/` |
 | `Grothe/Transfer.lean` | `IsGrothendieckBound`, dominated kernels, the transfer inequality |
 | `Grothe/Lower/` | the lower certificate: its checker in exact rational arithmetic with the soundness of rows, Stein cuts, the mass row and the envelope; the generated row data; the transfer to finite matrices |
@@ -189,7 +189,7 @@ Lean computes the selector’s 251-entry signed head and a bound on the total ab
 | `Grothe.lean`, `GrotheCapsKernel.lean` | the root import files, generated by `tools/gen_root_imports.py` |
 | `data/` | inputs of the generated modules (certificates, recipes, plans, tables); `data/axioms/` holds the lists read by the axiom check |
 | `tools/` | generators of the data modules, replay scripts and numerical cross-checks |
-| `scratch/Axioms.lean`, `scratch/UpperSixAxioms.lean`, `scripts/check_axioms.py` | repository-wide and six-channel axiom reports and their checker |
+| `scratch/Axioms.lean`, `scratch/UpperAxioms.lean`, `scripts/check_axioms.py` | repository-wide and six-channel axiom reports and their checker |
 | `scripts/`, `.github/workflows/`, `AGENTS.md` | CI, its helper scripts, and the working rules of the agents that maintain the repository |
 | `docs/` | `LEAN_DETAILS.md` (inventory), `overview.tex` (source of `OVERVIEW.pdf`), and design and status notes, each describing the state at its date |
 | `research/` | organised records of the open problems behind the bounds (Conjecture K, higher-degree games), with their status ledgers; not built or checked |
@@ -211,11 +211,11 @@ From a fresh checkout, run `lake exe cache get` to download compiled Mathlib dep
 
 ```bash
 set -o pipefail
-lake build Grothe.UpperResult
-lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six
+lake build Grothe.Upper.Result
+lake env lean scratch/UpperAxioms.lean | python3 scripts/check_axioms.py --upper
 ```
 
-`Grothe.UpperResult` builds the upper proof independently of the lower node caps. The separate six-channel audit checks its inherited library and named computations. The repository-wide audit covers the seventh channel’s additional comparison. [Required theorems](data/axioms/modes/upper-six.required.txt) · [Six-channel native allowlist](data/axioms/modes/upper-six.native.txt).
+`Grothe.Upper.Result` builds the upper proof independently of the lower node caps. The separate six-channel audit checks its inherited library and named computations. The repository-wide audit covers the seventh channel’s additional comparison. [Required theorems](data/axioms/modes/upper.required.txt) · [Six-channel native allowlist](data/axioms/modes/upper.native.txt).
 
 ### Full proof check
 
@@ -245,6 +245,6 @@ al., *New lower and upper bounds for the Grothendieck constant*, [arXiv:2608.111
 ## How this was made
 
 The numerical constructions and certificates were produced in a collaboration between several AI research
-systems; this Lean development checks them. The six-channel cell arrays and overlap tables are Lean literals in `Grothe/UpperSix/Haagerup/Data/`.
+systems; this Lean development checks them. The six-channel cell arrays and overlap tables are Lean literals in `Grothe/Upper/Rounding/Data/`.
 Other certificates have inputs in `data/` and generators and replay scripts in `tools/`; both folders hold only what an existing Lean module was generated from. Search records are in `research/` and in git history. No step of
 the two proofs rests on a certificate that is checked outside Lean.

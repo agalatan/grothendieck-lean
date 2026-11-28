@@ -2,13 +2,13 @@
 r"""Check that the documents quote the bounds that Lean states.
 
 The two bounds are read from the Lean sources: the theorem `main_bounds` in Grothe/MainResult.lean. Each is a
-rounding of an exact value that Lean also states: the upper bound of `Grothe.UpperSeven.bound`
-(Grothe/UpperResult.lean, `IsBound ((10 : ℝ) ^ p / D)`), and the lower endpoint `endpoint_eq` of the certificate
+rounding of an exact value that Lean also states: the upper bound of `Grothe.Upper.bound`
+(Grothe/Upper/Result.lean, `IsBound ((10 : ℝ) ^ p / D)`), and the lower endpoint `endpoint_eq` of the certificate
 whose rounding lemma the proof of `main_bounds` uses (`Grothe.Lower.<Name>.rounded_lt`, in
 Grothe/Lower/Cert/<Name>.lean; the script does not fix the name). The script checks that
 
 * the upper bound of `main_bounds` is the exact upper value rounded up to its number of decimals, and
-  `Grothe.UpperSeven.constant_le` states the same rational;
+  `Grothe.Upper.constant_le` states the same rational;
 * the lower bound of `main_bounds` is the exact lower endpoint rounded strictly downward;
 * every document of QUOTING states the bounds asked of it, in decimal form;
 * docs/CONSTANTS.md also states both rationals as Lean writes them, and both exact values;
@@ -48,12 +48,12 @@ QUOTING = {
     ".claude/skills/lean-grothe/SKILL.md": BOTH,
     # the docstrings of the Lean files that state the theorems
     "Grothe/MainResult.lean": BOTH,
-    "Grothe/UpperResult.lean": ("upper",),
+    "Grothe/Upper/Result.lean": ("upper",),
 }
 # The Lean files that state the theorems and the definitions. In them (code and docstrings alike, whitespace and
 # line breaks ignored) the role checks of `check_lean_file` apply. Grothe/Statement.lean holds no number at all.
-LEAN_STATEMENT_FILES = ["Grothe/Statement.lean", "Grothe/MainResult.lean", "Grothe/UpperResult.lean"]
-UPPER_FILE = "Grothe/UpperResult.lean"
+LEAN_STATEMENT_FILES = ["Grothe/Statement.lean", "Grothe/MainResult.lean", "Grothe/Upper/Result.lean"]
+UPPER_FILE = "Grothe/Upper/Result.lean"
 # the certificate of the lower endpoint: the proof of main_bounds names its rounding lemma
 ROUNDING_LEMMA = re.compile(r"\bGrothe\.Lower\.(\w+)\.rounded_lt\b")
 BOUND_RATIONAL = re.compile(r"(?<![\d.])(14\d{2,})\s*/\s*(10{3,})(?!\d)")
@@ -289,7 +289,7 @@ def check_constants_page(root, lower, upper, exact_upper, exact_lower, problems)
         # A typo in a long denominator can leave the rounded bound unchanged: ask for the full fraction.
         numerator = rf"10\^(?:\{{{power}\}}|{power}(?!\d))"
         if re.search(rf"(?<!\d)(?:{numerator}/{den}(?!\d)|\\frac\{{{numerator}\}}\{{{den}\}})", text) is None:
-            problems.append("docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSeven.bound")
+            problems.append("docs/CONSTANTS.md: does not state the exact upper bound of Grothe.Upper.bound")
     if exact_lower is not None:
         p, q = exact_lower
         if re.search(rf"(?<!\d){p}/{q}(?!\d)", text) is None:
@@ -361,7 +361,7 @@ def check_lean_file(rel, text, lower, upper, exact_upper, exact_lower, problems)
         if m[1] == "IsBound" and power:
             shown = f"IsBound (10 ^ {power[1]} / {power[2]})"
             ok = int(power[2]) != 0 and Fraction(10 ** int(power[1]), int(power[2])) == exact_up
-            what = "the exact upper bound of Grothe.UpperSeven.bound"
+            what = "the exact upper bound of Grothe.Upper.bound"
         elif plain:
             shown = f"IsBound ({plain[1]} / {plain[2]})"
             ok = int(plain[2]) != 0 and Fraction(int(plain[1]), int(plain[2])) == up

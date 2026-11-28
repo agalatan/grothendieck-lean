@@ -789,7 +789,7 @@ lemma im_mem {z : ℂ} {B : CBall} (h : CBall.mem z B) : (B.im : ℝ) - B.rad �
 
 lemma mulQ_sound {x y : ℝ} {X Y : ℚ × ℚ} (hx : (X.1 : ℝ) ≤ x ∧ x ≤ X.2) (hy : (Y.1 : ℝ) ≤ y ∧ y ≤ Y.2) :
     ((mulQ X Y).1 : ℝ) ≤ x * y ∧ x * y ≤ (mulQ X Y).2 := by
-  simp only [mulQ]; exact_mod_cast Grothe.Upper.mul_bounds hx hy
+  simp only [mulQ]; exact_mod_cast Grothe.Interval.mul_bounds hx hy
 
 lemma trig_mod {N : ℕ} (hN : 0 < N) (p : ℕ) :
     Real.sin (2 * π * p / N) = Real.sin (2 * π * (p % N : ℕ) / N) ∧

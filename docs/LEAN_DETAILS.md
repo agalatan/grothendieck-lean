@@ -2,11 +2,11 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-`Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) proves `1.4020221627 < K_G^ℂ ≤ 1.404556392` (in Lean `14020221627/10000000000` and `1404556392/1000000000`), without hypotheses. The lower half is the exact endpoint `sparse_stein_endpoint` rounded strictly downward; the upper half is `Grothe.UpperSeven.constant_le`. The upper-only module `Grothe/UpperResult.lean` has three theorems: `Grothe.UpperSeven.bound` ($V(A)\le[10^{27}/711968565817136711740669035]\,C(A)$ for every finite complex matrix $A$; the factor is $1.4045563919697\ldots$), `constant_le` (the same, rounded up to nine decimals, for the constant) and `constant_lt_inv_gammaDagger` ($K_G^{\mathbb C}<1/\gamma^\dagger$). The scalar and vector suprema of the six-channel library are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/UpperResult.lean) · [Combined statement](../Grothe/MainResult.lean).
+`Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) proves `1.4020221627 < K_G^ℂ ≤ 1.404556392` (in Lean `14020221627/10000000000` and `1404556392/1000000000`), without hypotheses. The lower half is the exact endpoint `sparse_stein_endpoint` rounded strictly downward; the upper half is `Grothe.Upper.constant_le`. The upper-only module `Grothe/Upper/Result.lean` has three theorems: `Grothe.Upper.bound` ($V(A)\le[10^{27}/711968565817136711740669035]\,C(A)$ for every finite complex matrix $A$; the factor is $1.4045563919697\ldots$), `constant_le` (the same, rounded up to nine decimals, for the constant) and `constant_lt_inv_gammaDagger` ($K_G^{\mathbb C}<1/\gamma^\dagger$). The scalar and vector suprema of the six-channel library are definitionally equal to those in `Grothe.Statement`. [Upper entrypoint](../Grothe/Upper/Result.lean) · [Combined statement](../Grothe/MainResult.lean).
 
-The seventh channel and its proof are in `Grothe/UpperSelector/`. The Gaussian field gives a dominated radial kernel in `Transfer.lean`. The recurrence for signed Fourier moments, the clipped binomial preprocessor and the phase masses feed `PhysicalColumn.lean`, which bounds error in the whole Wiener series. `NumericWitness.lean` evaluates the mixed head and selector allowance from Lean definitions in one native comparison. `Bound.lean` combines this with the six analytic tail bounds and proves `Haagerup.AngularSelector.isBound`.
+The seventh channel and its proof are in `Grothe/Upper/Selector/`. The Gaussian field gives a dominated radial kernel in `Transfer.lean`. The recurrence for signed Fourier moments, the clipped binomial preprocessor and the phase masses feed `PhysicalColumn.lean`, which bounds error in the whole Wiener series. `NumericWitness.lean` evaluates the mixed head and selector allowance from Lean definitions in one native comparison. `Bound.lean` combines this with the six analytic tail bounds and proves `Grothe.Upper.Selector.isBound`.
 
-The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/UpperSix/Haagerup/Transfer.lean`. The finite data are checked against the evaluators in `Grothe/UpperSix/HaagerupKernel/`. The certificate for these six channels is `Grothe/UpperSix/Certificate/`. `Parameters.lean` holds the polynomial of the first channel, the target slope and the caps. `Head.lean` checks the weighted head together with six lower bounds on the linear coefficients: the phase channel contributes 321 coefficients, from exact Haagerup moments, and each of the five cell channels 251. `Contour.lean` checks disk positivity and the circle mean for the first channel. `Bound.lean` subtracts the squared contributions of the linear coefficients from the Hardy estimates, which gives the tail caps, and proves `Haagerup.SixChannel.isBound`.
+The smoothed cell, phase and reflected tiger channels share the analytic transfer in `Grothe/Upper/Rounding/Transfer.lean`. The finite data are checked against the evaluators in `Grothe/Upper/Kernel/`. The certificate for these six channels is `Grothe/Upper/Certificate/`. `Parameters.lean` holds the polynomial of the first channel, the target slope and the caps. `Head.lean` checks the weighted head together with six lower bounds on the linear coefficients: the phase channel contributes 321 coefficients, from exact Haagerup moments, and each of the five cell channels 251. `Contour.lean` checks disk positivity and the circle mean for the first channel. `Bound.lean` subtracts the squared contributions of the linear coefficients from the Hardy estimates, which gives the tail caps, and proves `Grothe.Upper.Channels.isBound`.
 
 The article `haagerup-article/` is frozen and has its own Lean package under `haagerup-article/anc`, which proves the article's statement; they do not quote the bounds of this repository. [Article's Lean package](../haagerup-article/anc/README.md).
 
@@ -21,7 +21,7 @@ import closure of `Grothe/MainResult.lean`. A module called
 modules that later work would reuse are kept in `abandonware/`, and the others
 are in git history only (`abandonware/README.md` lists both, with the commits).
 
-**Different head lengths in a mixture.** A channel with a list of length $m$ encloses its true coefficients up to index $m-1$. The finite head sum pads that list with zeros. The error between the polynomial and the true kernel costs at most the channel’s absolute tail from $m$, multiplied by its mixture weight. The theorem also covers an empty list. [Lean transfer theorem](../Grothe/UpperSix/Certificate/VariableCutoff.lean).
+**Different head lengths in a mixture.** A channel with a list of length $m$ encloses its true coefficients up to index $m-1$. The finite head sum pads that list with zeros. The error between the polynomial and the true kernel costs at most the channel’s absolute tail from $m$, multiplied by its mixture weight. The theorem also covers an empty list. [Lean transfer theorem](../Grothe/Upper/Certificate/VariableCutoff.lean).
 
 **Shared proof foundations.** `LowerAnalytic/ComplexGaussianCore.lean` contains
 `gaussC`, its planar presentation, rotation invariance and radial-moment reduction.
@@ -31,7 +31,7 @@ imports `ComplexGaussianCore` only, and the lower fibre symmetries (`CapSymmetry
 `LowerAnalytic/IntervalSound.lean` proves the soundness of the fixed-point interval arithmetic of
 `GrotheCapsKernel/Basic.lean`, for the cap checker (`CapCheckSound`, `CapTables`). The modules of the
 lower bound import nothing of the upper proof (the existence of one admissible bound enters in
-`Grothe/MainResult.lean`, as `Grothe.UpperSix.bound`), and the upper proof imports nothing of the lower bound.
+`Grothe/MainResult.lean`, as `Grothe.Upper.bound`), and the upper proof imports nothing of the lower bound.
 
 `Lower/Stein.lean` derives `spec_of_inputs` from `gspec_of_vr` with zero shifts.
 `Lower/Law.lean` proves `node_fn_of_cut` for any integrable cut with nonnegative
@@ -93,13 +93,14 @@ The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sou
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`). That file is the
 complete list; the facts fall into the following groups. The six-channel upper proof
-uses the `Haagerup.Data` cell-witness and overlap-table facts (`Haagerup.Data.tcell_rows_ok`,
-`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`) and, from its certificate `Grothe/UpperSix/Certificate/`, the weighted head with
-the linear floors and the contour checks of the first channel (`Haagerup.SixChannel.head_and_floors_ok`,
-`region_ok`, `mean_ok`). The disk and circle checks of the other five channels (`Haagerup.reg1_ok`–`reg5_ok`,
-`Haagerup.mean1_ok`–`mean5_ok`) and the rational tail comparisons reduce directly in the kernel. The upper-six
-allowlist is `data/axioms/modes/upper-six.native.txt`. The seven-channel root theorem adds the native
-comparison `Haagerup.AngularSelector.NumericWitness.budgets_ok` for the signed mixed head and the full selector allowance.
+uses the `Grothe.Upper.Data` cell-witness and overlap-table facts (`Grothe.Upper.Data.tcell_rows_ok`,
+`tcell_sos_ok`, `tig_mu_ok`, `tig_sos_ok`) and, from its certificate `Grothe/Upper/Certificate/`, the weighted head with
+the linear floors and the contour checks of the first channel (`Grothe.Upper.Channels.head_and_floors_ok`,
+`region_ok`, `mean_ok`). The disk and circle checks of the other five channels (`Grothe.Upper.reg1_ok`–`reg5_ok`,
+`Grothe.Upper.mean1_ok`–`mean5_ok`) and the rational tail comparisons reduce directly in the kernel. The root theorem
+of the mixture adds the native comparison `Grothe.Upper.Selector.NumericWitness.budgets_ok` for the signed mixed
+head and the full selector allowance. The upper audit (`scratch/UpperAxioms.lean`, `check_axioms.py --upper`) allows
+exactly these eight facts: `data/axioms/modes/upper.native.txt`.
 The lower-bound native facts are the row checks `Grothe.Lower.certRowSS`
 and the node-cap facts in `Grothe.LowerAnalytic`: the range facts `rowKKAnchorRangeJJ`
 of the whole-fibre nodes, the coverage facts `pieceCover_KKx<i>` and the piece facts

@@ -23,7 +23,7 @@ encloses it (`bounds_matINu`), and the exact piece checks are sound for any such
 those of the checker without a tail (`capCover_sound`, `Jpot_le_of_mem_symOrbit`).
 -/
 
-open MeasureTheory Finset GrotheKernel Grothe.Lower Grothe.Upper
+open MeasureTheory Finset GrotheKernel Grothe.Lower Grothe.Interval
 
 namespace Grothe.LowerAnalytic
 

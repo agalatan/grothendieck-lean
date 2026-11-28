@@ -10,7 +10,7 @@ import Grothe.LowerAnalytic.CapGridOK
 `tablesOK_mk` proves `TablesOK Nr N h (mkTables Nr N h)` (radius `Nr h ≤ 8`, `4 ≤ N ≤ 4096`).
 -/
 
-open MeasureTheory Real Set Finset GrotheKernel Grothe.Upper
+open MeasureTheory Real Set Finset GrotheKernel Grothe.Interval
 
 namespace Grothe.LowerAnalytic
 

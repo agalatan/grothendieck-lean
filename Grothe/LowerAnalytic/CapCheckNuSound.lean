@@ -25,7 +25,7 @@ The integer data of a cell live at the common scale `s = den(ν)·2⁵⁰` (`cel
 `*_scaled` are the corresponding identities of real numbers.
 -/
 
-open GrotheKernel Grothe.Upper
+open GrotheKernel Grothe.Interval
 
 namespace Grothe.LowerAnalytic
 

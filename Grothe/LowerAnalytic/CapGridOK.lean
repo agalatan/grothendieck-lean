@@ -10,7 +10,7 @@ correction coefficients are floors of `8/D` with the rounded-up ring bound — s
 never has to run `gridOK` (the `Float` steps only choose the numerators).
 -/
 
-open GrotheKernel Grothe.Upper
+open GrotheKernel Grothe.Interval
 
 namespace Grothe.LowerAnalytic
 

@@ -1,0 +1,30 @@
+import Grothe.Upper.Selector.MixedPhysical
+import Grothe.Upper.Selector.NumericWitness
+import Grothe.Upper.Certificate.Bound
+
+/-! # Complex Grothendieck bound of the channel mixture with the Gaussian angular selector -/
+
+set_option warningAsError true
+
+namespace Grothe.Upper.Selector
+
+open Channels NumericWitness
+
+/-- The bound of the complete mixture, angular selector included, for every finite complex matrix. -/
+theorem isBound : Optima.IsBound ((10 : ℝ)^27 / 711968565817136711740669035) := by
+  obtain ⟨h, hs, hd, hm, he⟩ := exists_certified_channels
+  have hlen (p : Fin 6) : (headIntervals p).length ≤ 320 + 1 := by
+    rw [head_length]
+    simp only [lastIndex]
+    split <;> decide
+  have ht := mixed_isBound (N := 320) (w := weight) (h := h) (I := headIntervals)
+    (caps := phaseTailCap) (col := Certificate.production) (δ := residual)
+    weight_nonneg weight_sum hs hd hlen
+    (by rw [Certificate.production_head_size]; decide) hm he Certificate.production_sound
+    selector_budget_ok head_ok (le_refl _) residual_lt_center
+  have hv : 1 / (1 - (residual : ℝ)) = (10 : ℝ)^27 / 711968565817136711740669035 := by
+    rw [residual_eq]
+    norm_num
+  rwa [← hv]
+
+end Grothe.Upper.Selector

@@ -17,10 +17,12 @@ version plus what the rulebook does not say.
 - Lower bound: `14020221627 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
   (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
   The bound is the exact endpoint `sparse_stein_endpoint` rounded strictly downward.
-- Upper bound: `1404556392 / 1000000000`, weak (≤). Seven Gaussian rounding channels. The selector is in `Grothe/UpperSelector/`, on the six certified channels of `Grothe/UpperSix/` (their certificate is `Grothe/UpperSix/Certificate/`). `Grothe/UpperResult.lean` has exactly three theorems:
-  `Grothe.UpperSeven.bound` (the exact value, for every finite matrix), `constant_le` (rounded up) and
-  `constant_lt_inv_gammaDagger`.
-- `1/γ†` is Haagerup's proposed value; K is strictly below it.
+- Upper bound: `1404556392 / 1000000000`, weak (≤). A mixture of Gaussian rounding channels, named by role, never by
+  count: the cell and phase channels in `Grothe/Upper/Rounding/` and `Grothe/Upper/Kernel/` with their certificate
+  `Grothe/Upper/Certificate/`, the angular selector in `Grothe/Upper/Selector/`. `Grothe/Upper/Result.lean` has
+  exactly two theorems: `Grothe.Upper.bound` (the exact value, for every finite matrix) and `constant_le` (rounded up).
+- `1/γ†` is Haagerup's proposed value; K is strictly below it. That comparison is proved in the article's own
+  package (`haagerup-article/anc`, `Haagerup.constant_lt_inv_gammaDagger`), not in the main target.
 
 **`docs/CONSTANTS.md` is the page that states every constant exactly.** Read the current values from the Lean
 statement or from `python3 scripts/check_constants.py --print`, never from memory or from an old note.
@@ -44,11 +46,11 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | path | what |
 |---|---|
 | `Grothe/Statement.lean` | definitions only (imports only Mathlib): `scalarOpt`, `vectorOpt`, `IsBound`, `complexGrothendieckConstant`, `UpperBelow` |
-| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorems |
+| `Grothe/MainResult.lean`, `Grothe/Upper/Result.lean` | the theorems |
 | `Grothe/Lower/` | lower certificate: exact rational checker, rows, Stein cuts, mass row, envelope, transfer to matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis for the lower bound; the node caps (`Cap*.lean`, `CapRowKK`, `CapPieces/`, `CapNodes`) |
-| `Grothe/UpperSelector/` | the angular selector, seven-channel mixed head and transfer |
-| `Grothe/UpperSix/` | the six-channel upper proof: the library, and under `Certificate/` the certificate of the bound |
+| `Grothe/Upper/Selector/` | the angular selector, the mixed head and transfer of the mixture |
+| `Grothe/Upper/` | the upper proof: `Rounding/` and `Kernel/` (the channels' library), `Certificate/` (their certificate), `Selector/`, `Result.lean` |
 | `GrotheCapsKernel/` | the Mathlib-free checker program of the node caps, a precompiled library |
 | `Grothe.lean`, `GrotheCapsKernel.lean` | generated roots (`python3 tools/gen_root_imports.py`); never edit by hand |
 | `data/` | inputs of generated modules; `data/axioms/` the lists the axiom check reads |
@@ -65,8 +67,8 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 - **Before every local build, check the import closure**: if the module imports `Grothe.LowerAnalytic.CapNodes`
   (directly or through `Grothe.MainResult`), do not build it locally. `Grothe/MainResult.lean` is edited without
   a local build.
-- The upper bound alone builds locally: `lake build Grothe.UpperResult`, then
-  `lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six`.
+- The upper bound alone builds locally: `lake build Grothe.Upper.Result`, then
+  `lake env lean scratch/UpperAxioms.lean | python3 scripts/check_axioms.py --upper`.
 - Where: `ssh yo` (8 vCPUs) if its load is at most 4, else `ssh big` or `ssh mega` if one exists and its CI runner is
   offline or the managing agent announced an interval (at most 8 cores, pinned inside the upper half of the cores; the other half stays free for heavy CI:
   AGENTS.md §12), else the laptop; in your own folder `~/<id>-<topic>` with

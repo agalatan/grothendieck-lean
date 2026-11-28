@@ -6,7 +6,7 @@ import Mathlib
 
 This file holds the definitions of the claim. It imports only Mathlib and contains only definitions, no proofs:
 reading it is enough to know what the theorems `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`) and
-`Grothe.UpperSeven.bound` (`Grothe/UpperResult.lean`) assert, without reading any of the proof modules. The numbers
+`Grothe.Upper.bound` (`Grothe/Upper/Result.lean`) assert, without reading any of the proof modules. The numbers
 are in those two theorems, not here.
 
 For a complex `m × n` matrix `A` (a function `Fin m → Fin n → ℂ`):

@@ -80,7 +80,7 @@ class Repository(unittest.TestCase):
             self.assertIn(needed, t)
         for skipped in ['Grothe.LowerAnalytic.CapNodes', 'Grothe.MainResult']:
             self.assertNotIn(skipped, t)
-        self.assertFalse([m for m in targets if '.CapPieces.' in m or m.startswith('Grothe.UpperSix.Haagerup.ContourChecks.')])
+        self.assertFalse([m for m in targets if '.CapPieces.' in m or m.startswith('Grothe.Upper.Rounding.ContourChecks.')])
         self.assertLess(len(targets), 1000)
 
 

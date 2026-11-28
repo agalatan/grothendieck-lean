@@ -490,10 +490,10 @@ jobs:
           lake env lean scratch/Axioms.lean | tee axioms.txt
           python3 scripts/check_axioms.py < axioms.txt
 
-      - name: Six-channel upper axiom report
+      - name: Upper axiom report
         if: env.LEAN == 'true'
         shell: bash
-        run: lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six
+        run: lake env lean scratch/UpperAxioms.lean | python3 scripts/check_axioms.py --upper
 
       - name: Mark the node caps as verified for these sources (droplet, after the build and the report)
         if: env.LEAN == 'true' && env.DROPLET == 'true'

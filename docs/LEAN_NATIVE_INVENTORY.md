@@ -6,12 +6,12 @@ bound by family and module pattern, and those of the upper bound. The complete a
 required declarations in `data/axioms/required.txt`; CI checks it on every pushed branch, and on the merged tree before
 a pull request lands.
 
-The proof-check workflow also audits `scratch/UpperSixAxioms.lean` against the required six-channel
+The proof-check workflow also audits `scratch/UpperAxioms.lean` against the required six-channel
 allowlist. It covers the two cell witnesses and both overlap-table checks of the library
-`Grothe/UpperSix/`, and from the certificate `Grothe/UpperSix/Certificate/` the contour checks of the first
+`Grothe/Upper/`, and from the certificate `Grothe/Upper/Certificate/` the contour checks of the first
 channel and the head check with the six linear floors. The disk and circle checks of the other five
 channels and the rational tail comparisons reduce in the kernel.
-[Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper-six.native.txt).
+[Run the upper-only audit](../README.md#building) · [Six-channel allowlist](../data/axioms/modes/upper.native.txt).
 
 ## Lower bound
 
@@ -39,6 +39,6 @@ piece facts; CI replays them from a verified build cache. No per-fact timing is 
 ## Upper bound
 
 The upper bound of `main_bounds`, `K ≤ 1.404556392`, comes from the seven-channel proof. It uses the six-channel
-native comparisons listed above (`data/axioms/modes/upper-six.native.txt`) and
-`Haagerup.AngularSelector.NumericWitness.budgets_ok` (`Grothe/UpperSelector/NumericWitness.lean`), which evaluates
+native comparisons listed above (`data/axioms/modes/upper.native.txt`) and
+`Grothe.Upper.Selector.NumericWitness.budgets_ok` (`Grothe/Upper/Selector/NumericWitness.lean`), which evaluates
 the signed mixed head and the selector allowance in one comparison.

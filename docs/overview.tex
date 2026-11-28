@@ -43,11 +43,11 @@ The upper certificate adds a Gaussian angular selector to three smoothed cell ch
 two reflected tiger channels. The six original channels retain their certified interval heads and Hardy tails.
 At angle $17/100$ with preprocessor $23/25-(2/25)X$, Lean computes the selector's signed head and a bound
 on its full absolute coefficient error. The weighted sum is formed before taking absolute values.
-The theorem \lean{Grothe.UpperSeven.bound} gives
-$V(A)\le[10^{27}/711968565817136711740669035]\,C(A)$ for every finite complex matrix $A$. Its factor is $1.4045563919697\ldots$, and \lean{Grothe.UpperSeven.constant\_le} states $K_G^{\mathbb C}\le1.404556392$.
+The theorem \lean{Grothe.Upper.bound} gives
+$V(A)\le[10^{27}/711968565817136711740669035]\,C(A)$ for every finite complex matrix $A$. Its factor is $1.4045563919697\ldots$, and \lean{Grothe.Upper.constant\_le} states $K_G^{\mathbb C}\le1.404556392$.
 
-The companion theorem \lean{Grothe.UpperSeven.constant\_lt\_inv\_gammaDagger}
-compares the infimum with the reciprocal phase integral.
+The comparison of the infimum with the reciprocal phase integral is proved in the article's own Lean package
+(\path{haagerup-article/anc}, \lean{Haagerup.constant\_lt\_inv\_gammaDagger}).
 
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
@@ -99,9 +99,9 @@ Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020221627}$ & $\mathbf{1.404556
 The upper bound is $1404556392/1000000000$ (the seven-channel transfer factor $1/(c-\delta)$ rounded up).
 For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
-a separate estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404556392<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
-$1/\gamma^\dagger$, the value that Haagerup proposed for $\KG$ in 1987
-(\lean{Grothe.UpperSeven.constant\_lt\_inv\_gammaDagger}).
+an estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404556392<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
+$1/\gamma^\dagger$, the value that Haagerup proposed for $\KG$ in 1987 (proved in the article's own Lean package,
+\path{haagerup-article/anc}, \lean{Haagerup.constant\_lt\_inv\_gammaDagger}).
 For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 
@@ -117,11 +117,11 @@ independently of the lower row certificates.
 \subsection{Upper bounds by rounding}
 
 The six original channels, their data and their checker are in
-\path{Grothe/UpperSix/}, and their certificate is in \path{Grothe/UpperSix/Certificate/}. Cell-map energies for the three smoothed channels
+\path{Grothe/Upper/}, and their certificate is in \path{Grothe/Upper/Certificate/}. Cell-map energies for the three smoothed channels
 and the two reflected channels feed interval coefficients. The phase channel
 uses its analytic Hermite coefficients. The finite check takes absolute values
 after mixing the signed coefficients. Each infinite tail is controlled by a
-mean on its own circle. The seventh channel, in \path{Grothe/UpperSelector/}, adds a Gaussian angular selector.
+mean on its own circle. The seventh channel, in \path{Grothe/Upper/Selector/}, adds a Gaussian angular selector.
 A finite Fourier sum and the scalar phase expansion give its signed head and its full Wiener allowance.
 The advertised rational bound follows from the reciprocal
 gap in the transfer theorem. The production theorem applies to every finite
@@ -261,10 +261,10 @@ The six-channel proof checks the Hardy-space disk and circle-mean contours of fi
 Lean's kernel. \lean{native\_decide} is used for the two bounded cell-map
 norm witnesses and their overlap tables, for the weighted head with the six
 lower bounds of the linear coefficients, and for the contour of the first channel
-(\path{Grothe/UpperSix/Certificate/}). Their soundness is proved in Lean.
+(\path{Grothe/Upper/Certificate/}). Their soundness is proved in Lean.
 The seven-channel proof adds one \lean{native\_decide} comparison for the mixed head and selector allowance.
 The physical meaning and the error budget of each integer are proved in the kernel.
-The six-channel report is in \path{scratch/UpperSixAxioms.lean}.
+The six-channel report is in \path{scratch/UpperAxioms.lean}.
 The discussion below records the lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
