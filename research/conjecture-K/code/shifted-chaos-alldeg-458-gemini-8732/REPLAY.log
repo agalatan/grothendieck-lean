@@ -1,0 +1,14 @@
+Verifying KADS458 exact zero-float Sturm & rational certificates...
+  [OK] All-Degree Real & Complex Wiener Chaos Strict `< 1` & Near-Gaussian Theorem verified!
+  [OK] Shifted Second-Chaos Certificate (`cert_shifted_q_458.json`): 16 t-knots, 124 cells, Sturm + Secant + |t|>=16/5 SOS verified -> Var|t + Q| >= 17/50 S^2 > (1/3) S^2 (knot min = 0.34296544) & mixed cubic <= 4091/5000 ||F||_2!
+  [OK] Seventh-Chaos Certificate (`cert_v7_458.json`): V_7 low <= 87/100 on [0, 2], global <= 1999999999999/2000000000000; H_{4,3} low <= 24/25 on [0, 1], global <= 999999999999/1000000000000!
+ALL KADS458 PRIMARY STURM VERIFICATIONS PASSED IN 19866 ms (0 floats, 0 asserts).
+  [OK] Bernstein + Symbolic Q[x][M_0,M_1,M_2] check of `cert_shifted_q_458.json` passed (20779 Bernstein leaves, max depth 8)!
+  [OK] Bernstein check of `cert_v7_458.json` passed (1418 Bernstein leaves, max depth 20)!
+ALL KADS458 SECONDARY BERNSTEIN VERIFICATIONS PASSED IN 34228 ms (0 floats, 0 asserts).
+Running exact symbolic Q[...] polynomial & Wick identity checks (KADS458)...
+  [OK] Shifted second-chaos Stein-Hankel brackets (Br_0, Br_1, Br_2, Br_quad), joint moments, and Markov-Krein m_3 bounds verified!
+  [OK] Seventh Wiener chaos V_7(R^3) OU generator L tau_1 = 12(tau_2 - tau_1), operator cone, and non-critical nodal point verified!
+  [OK] Exact loopless Wick matching enumeration & Frobenius submultiplicativity |val_pi(T)| <= 1 verified!
+ALL KADS458 EXACT SYMBOLIC IDENTITY CHECKS PASSED IN 2876 ms (0 floats, 0 asserts).
+ALL 96 ADVERSARIAL NEGATIVE CONTROLS REJECTED DETERMINISTICALLY IN 268637 ms (0 floats, 0 asserts)!
