@@ -3388,6 +3388,7 @@ import Grothe.LowerAnalytic.Fluctuation
 import Grothe.LowerAnalytic.Frame
 import Grothe.LowerAnalytic.Gaussian
 import Grothe.LowerAnalytic.GaussianRadial
+import Grothe.LowerAnalytic.GaussianRice
 import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.GramSpectral
 import Grothe.LowerAnalytic.GramTensor
