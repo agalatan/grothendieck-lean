@@ -96,7 +96,7 @@ class CheckConstants(unittest.TestCase):
 
     def test_constants_page_needs_the_exact_values_digit_for_digit(self):
         _, problems = self.run_check(docs={"docs/CONSTANTS.md": GOOD.replace("711969", "7119691")})
-        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperSeven.bound"])
+        self.assertEqual(problems, ["docs/CONSTANTS.md: does not state the exact upper bound of Grothe.UpperBivar.bound"])
         _, problems = self.run_check(docs={"docs/CONSTANTS.md": GOOD.replace("14019101 /", "14019102 /")})
         self.assertEqual(
             problems, ["docs/CONSTANTS.md: does not state the exact lower endpoint (endpoint_eq)"]
@@ -186,7 +186,7 @@ class CheckConstants(unittest.TestCase):
         _, problems = self.run_check(statement=STATEMENT + "-- `IsBound ((10 : ℝ) ^ 6 / 711968)`\n")
         self.assertEqual(
             problems,
-            ["Grothe/Statement.lean:2: IsBound (10 ^ 6 / 711968) is not the exact upper bound of Grothe.UpperSeven.bound"],
+            ["Grothe/Statement.lean:2: IsBound (10 ^ 6 / 711968) is not the exact upper bound of Grothe.UpperBivar.bound"],
         )
         _, problems = self.run_check(statement=STATEMENT + "-- `IsBound (1.40456)`\n")
         self.assertEqual(problems, ["Grothe/Statement.lean:2: the numeric argument of IsBound was not recognised"])

@@ -9,6 +9,7 @@ Grothe\.LowerAnalytic\.CapRow[0-9]+(\..*)?
 # The upper-bound trees (large kernel-checked modules and the energy-table facts, about ten hours each).
 Grothe\.UpperChaos\..*
 Grothe\.UpperQuad\..*
-# Six-channel overlap table and Hardy contour evaluations. CI and targeted upper builds check these.
+# Six-channel and bivariate overlap table and Hardy contour evaluations. CI and targeted upper builds check these.
 Grothe\.UpperSix\.Haagerup\.Data\.OverlapData
 Grothe\.UpperSix\.Haagerup\.ContourChecks\..*
+Grothe\.UpperBivar\.ContourChecks\..*
