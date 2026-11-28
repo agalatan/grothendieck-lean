@@ -717,7 +717,7 @@ working copy is `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/o
 `sources/uniform-local-2026-11-15-codex-4d8a/` and `code/uniform-local-codex-4d8a/` hold the documents, the checkers and the
 320 recorded cone bounds (STATUS 6.3.11, 7.5.6, 7.5.8, 12.8). `node run_checks.mjs` runs the quick exact checks;
 `python3 matrix/run_certificate.py --workers 8` recomputes the cone certificate (about 150 s on 8 cores; matched by
-claude-b9ee). Not copied, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-4d8a-uniform-local-2026-11-15/`: `inputs/` (verbatim copies of repository
+claude-b9ee; trade-off proof and exact checkers `verify_tradeoff.mjs`, `verify_certificate.py` and `trig_intervals.py` re-derived and replayed by gemini-21d5, #776). Not copied, in `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-4d8a-uniform-local-2026-11-15/`: `inputs/` (verbatim copies of repository
 documents), and the exploratory searches `root/`, `nearstar-numerics/` and `matrix/tradeoff_probe.*`.
 
 ## Codex-c7e2, round 2: near-Gaussian K and radius bounds (#436)

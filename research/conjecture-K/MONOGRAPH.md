@@ -737,14 +737,14 @@ their content allowances on eleven of fifteen fourth-excess bins, ten more than 
 allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
 [C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
 
-On the entire interval from 0.70 to 0.78 u_cap, the same two profiles meet the interpolated allowance under (R1) in the six bins in (0, 8] and the five bins in (16, 42]. [C, author only · piece 15, row 4.56b](../higher-degree/sources/piece15-content-codex-062a/SECOND_BAND.md).
+On the entire interval from 0.70 to 0.78 u_cap, the same two profiles meet the interpolated allowance under (R1) in the six bins in (0, 8] and the five bins in (16, 42]. [C, inheriting author-only 4.56 JM1 duality and C++17 certifier · codex-062a, replayed by gemini-21d5 · piece 15, row 4.56b](../higher-degree/sources/piece15-content-codex-062a/SECOND_BAND.md).
 
 Above the 0.70 node on the same row, both profiles satisfy the affine funding under (R1) on the four middle bins
 (8, 10], (10, 12], (12, 14] and (14, 16] through $x=13/64$, $63/256$, $83/256$ and $139/256$, respectively.
 Here $x$ interpolates from the 0.70 to the 0.78 node. The portions above these endpoints remain open.
 [C · original 40 rectangles independently audited for funding by gemini-21d5, 25 additional rectangles replayed by codex-062a](../higher-degree/sources/piece15-content-codex-062a/MIDDLE_PREFIX.md).
 
-The Rice gate itself rules out fourth excess in $[39,42]$ on continuous energy intervals. Testing the gate after rescaling a cubic carries the piece-17 infeasibility witness to pieces 18–20. At the last listed energy of each of these three pieces the sufficient gate thresholds are 0.86696928, 0.87401059 and 0.88348334, respectively. Using the actual fourth excess and its sixth-moment bound in those same witnesses excludes 27 further whole bins with omitted allowances at the listed energies. At the largest energy nodes on pieces 16 and 17, all excesses from 33.94 and 34.41, respectively, through 42 are excluded. [P + C, author only · proof and rational replay](../higher-degree/sources/rice-energy-exclusion-codex-062a/PROOF.md).
+The Rice gate itself rules out fourth excess in $[39,42]$ on continuous energy intervals. Testing the gate after rescaling a cubic carries the piece-17 infeasibility witness to pieces 18–20. At the last listed energy of each of these three pieces the sufficient gate thresholds are 0.86696928, 0.87401059 and 0.88348334, respectively. Using the actual fourth excess and its sixth-moment bound in those same witnesses excludes 27 further whole bins with omitted allowances at the listed energies. At the largest energy nodes on pieces 16 and 17, all excesses from 33.94 and 34.41, respectively, through 42 are excluded. [P + C, inheriting author-only 4.56 C++17 [0, U₀] witness receipts · codex-062a, re-derived and replayed by gemini-21d5 · proof and rational replay](../higher-degree/sources/rice-energy-exclusion-codex-062a/PROOF.md).
 
 **Influences.** With J₁[a, b] = E[∂_aq·conj(∂_bq)] and I₂[j, k] = ⟨∂̄_jq, ∂̄_kq⟩ (traces 2u and u), the field c₂ − u
 has ‖c₂ − u‖² = ‖J₁‖²_HS + ‖I₂‖²_HS, and the largest eigenvalues satisfy λ₁² + λ₂² ≤ δ/2, with equality only at X²Ȳ
@@ -1140,7 +1140,7 @@ A single tangency parameter controls the visible phase at every sublevel scale. 
 
 The particular cutoff estimate W/τ + τ·min(1, τ²/a²) with separate positive moment charges falls short by a factor of
 about six near u\* [7.5.5]. An anti-concentration bound controls how often the A/B drivers come near a rank-zero
-visible root [P author only · 7.5.4], but rank-one zero curves, and a value defect that vanishes identically outside
+visible root [P + C · codex-91d4, re-derived and replayed by gemini-21d5 · 7.5.4], but rank-one zero curves, and a value defect that vanishes identically outside
 the energy region above, show that it does not finish the proof [7.5.5]. A centred joint form compares the A/B and odd
 sectors together with the right side of (P), keeping the unused margin of (P) and a compensating Q/ν term of zero
 mean. Under the caps u ≤ 0.0463 and u + V ≤ 0.080051 it reduces the target to one compact averaged bound. Its defect
@@ -1242,8 +1242,8 @@ omitted response region; an error ledger with exact thresholds; a single witness
 **A first consumer.** A simple first consumer keeps the witness ε = 149/200 and its 19 rows (in Lean until #525,
 which replaced that witness by the identity-tail witness and its 14 rows). These rows
 and the crude row already cover every response t except [0.84, 0.8555]. One new row M = (149/200, 0.84775, 0.1450976)
-on that interval, with an all-sector bound Λ̂_M ≤ S_M + 10⁻⁴, would give K_G ≥ 1.40171 [C, P author only · codex-8d2f,
-replayed by claude-b9ee · STATUS 8.5]. This is below the lower bound that Lean now proves, so the consumer no longer
+on that interval, with an all-sector bound Λ̂_M ≤ S_M + 10⁻⁴, would give K_G ≥ 1.40171 [P + C · codex-8d2f,
+replayed by claude-b9ee and re-derived by gemini-21d5 · STATUS 8.5]. This is below the lower bound that Lean now proves, so the consumer no longer
 improves the bound; it serves as a full-range test of the six-sector K-consumer architecture. Fixed-homothety triangle/support transfer to M loses 7·10⁻⁴
 against 1.04·10⁻⁴ [STATUS 8.6], **whereas decoupling $\mu \ne \varepsilon/\varepsilon_0$ along the peak ray $(\mu\ell_0, \mu\beta_0)$ (`KHOM`) eliminates profile-transfer loss identically and closes `[0.8390, 0.8556] ⊃ [0.84, 0.8555]` in 2 slabs from pure reviewed P + C / Lean inputs + 3.14 [C], completing all 1,773 cells of `[0, √π/2]` (`K_G^ℂ > 1.40171`) with zero open premises [P + C, author only · gemini-c1de · STATUS 8.5, 8.6; `KHOM`]**. For 1.402 at ε = 1891/2500, the reusable envelope of
 the 19 rows at ε = 149/200 leaves four response intervals, among them [0.696, 0.84], while the upper shoulder [0.851, 0.863] is closed by `KAST` [P + C] and widened to `[0.8400, √π/2]` (Track A) / `[0.8395, √π/2]` (Track B) by `KHOM` [P + C, author only · STATUS 8.1, 8.7].
