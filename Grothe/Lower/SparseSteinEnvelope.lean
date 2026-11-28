@@ -2,6 +2,7 @@ import Grothe.Lower.Cert.SparseEnvelope
 import Grothe.Lower.WeightedTightEnvelope
 import Grothe.LowerAnalytic.SparseOuterRows
 import Grothe.LowerAnalytic.SparseSteinWeights
+import Mathlib.Analysis.Real.Pi.Bounds
 
 set_option warningAsError true
 
@@ -54,7 +55,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 variable {V t : ℝ} {Qh v : E}
 
 /-- Both valid rows and a lower bound on their weighted deduction imply the cell cap. -/
-private theorem tilted_segment_bound {cap tilt : ℚ} (a b : EnvRow) (l h w z dl dh bonus : ℚ) (x : ℝ)
+theorem tilted_segment_bound {cap tilt : ℚ} (a b : EnvRow) (l h w z dl dh bonus : ℚ) (x : ℝ)
     (hx0 : 0 ≤ x) (hx1 : x ≤ 1) (hv : ‖v‖^2 = 2) (ht : t = (1-x)*(l : ℝ)+x*(h : ℝ))
     (hcap : segmentCap a b l h w z dl dh bonus tilt ≤ cap)
     (d₁ d₂ : ℝ)
@@ -89,7 +90,7 @@ theorem segment_bound {cap : ℚ} (a b : EnvRow) (l h w z dl dh bonus : ℚ) (x 
 
 /-- Insert an interior amplitude on the segment's affine path. The inherited
 mass point is the one used to prove the parent row. -/
-private def splitAtAmplitude (t : ℚ) (s : Segment) : List Segment :=
+def splitAtAmplitude (t : ℚ) (s : Segment) : List Segment :=
   if s.base.lo < t ∧ t < s.base.hi then
     let x := (t - s.base.lo) / (s.base.hi - s.base.lo)
     let w := (1 - x) * s.leftWeight + x * s.rightWeight
@@ -109,7 +110,7 @@ private def refineCentral (s : Segment) : List Segment :=
     splitAtAmplitude midpoint s
   else [s]
 
-private def segments (c : EnvCell) : List Segment :=
+def segments (c : EnvCell) : List Segment :=
   if (c.i = 6 ∨ c.i = 7) ∧ (c.j = 6 ∨ c.j = 7) then
     WeightedTight.affineSegments row06.env row07.env {c with i := 6, j := 7} true
   else if (c.i = 8 ∨ c.i = 9) ∧ (c.j = 8 ∨ c.j = 9) then
@@ -117,9 +118,73 @@ private def segments (c : EnvCell) : List Segment :=
   else if c.i = 13 ∧ c.j = 13 then WeightedTight.segments true {c with j := 14}
   else WeightedTight.segments true c
 
-private def cells := envCellsTight.flatMap segments
+/-- Refine two central segments and cut the final scalar crossover at the high-arm switch. -/
+private def cells :=
+  ([((8577/10240+17163/20480)/2),83835/100000,886151109950/10^12] : List ℚ).foldl
+    (fun xs t ↦ xs.flatMap (splitAtAmplitude t)) (envCellsTight.flatMap segments)
 
-private def valid (tilt limit : ℚ) (s : Segment) : Bool :=
+/-- Rational upper bound for the mean radius of a proper standard complex Gaussian. -/
+def meanUpper : ℚ := 886227/1000000
+
+/-- A physical scale test on a whole amplitude cell, including its lower endpoint. -/
+def ScaleChecked (l : ℚ) (band : SparseStein.ScaleBand) : Prop :=
+  band = .whole ∨ 0 ≤ band.stop ∧
+    2*(2129/2166)*meanUpper*((2167/2166)*meanUpper-l)*row08.delta^2 ≤ band.stop^2
+
+instance (l : ℚ) (band : SparseStein.ScaleBand) : Decidable (ScaleChecked l band) := by
+  unfold ScaleChecked
+  infer_instance
+
+theorem scale_le_of_checked {l : ℚ} {t τ : ℝ} {band : SparseStein.ScaleBand}
+    (hc : ScaleChecked l band) (hl : (l : ℝ) ≤ t)
+    (hτ : 0 ≤ τ) (h93 : τ ≤ 93/100) (hphys : physicalScale t τ) :
+    (row08.delta : ℝ)*τ ≤ band.stop := by
+  have hd : (0 : ℝ) < row08.delta := Rat.cast_pos.mpr (by decide +kernel)
+  rcases hc with rfl | ⟨hstop,hcut⟩
+  · simpa [SparseStein.ScaleBand.stop] using mul_le_mul_of_nonneg_left h93 hd.le
+  · let μ := Real.sqrt Real.pi / 2
+    have hm0 : 0 < μ := by dsimp [μ]; positivity
+    have hm : μ ≤ (meanUpper : ℝ) := by
+      have hs : Real.sqrt Real.pi ≤ 2*(meanUpper : ℝ) := by
+        apply Real.sqrt_le_iff.mpr
+        constructor
+        · norm_num [meanUpper]
+        · norm_num [meanUpper]
+          linarith [Real.pi_lt_d6]
+      dsimp [μ]
+      linarith
+    let A : ℝ := 2167/2166
+    let C : ℝ := 2129/2166
+    have hA : 0 ≤ A := by norm_num [A]
+    have hC : 0 < C := by norm_num [C]
+    have hp : τ^2 ≤ 2*(μ*C)*(A*μ-t) := by
+      have h := hphys.2 (1/19)
+      norm_num [PhysicalRice.riceIntercept,PhysicalRice.riceSlope] at h
+      dsimp [A,C,μ]
+      nlinarith only [h]
+    have hmt : 0 ≤ A*μ-t := nonneg_of_mul_nonneg_right ((sq_nonneg τ).trans hp) (by positivity)
+    have hprod : 2*(μ*C)*(A*μ-t) ≤ 2*((meanUpper:ℝ)*C)*(A*meanUpper-l) :=
+      mul_le_mul (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hm hC.le) (by norm_num))
+        (sub_le_sub (mul_le_mul_of_nonneg_left hm hA) hl) hmt
+        (mul_nonneg (by norm_num) (mul_nonneg (hm0.le.trans hm) hC.le))
+    have hclosed : 2*((meanUpper:ℝ)*C)*(A*meanUpper-l)*(row08.delta:ℝ)^2 ≤ (band.stop:ℝ)^2 := by
+      have h := (Rat.cast_le (K := ℝ)).mpr hcut
+      push_cast at h
+      dsimp [A,C]
+      nlinarith only [h]
+    have hh := (mul_le_mul_of_nonneg_right (hp.trans hprod) (sq_nonneg (row08.delta : ℝ))).trans hclosed
+    have hs : (0 : ℝ) ≤ band.stop := Rat.cast_nonneg.mpr hstop
+    apply (sq_le_sq₀ (mul_nonneg hd.le hτ) hs).mp
+    simpa only [mul_pow, mul_comm] using hh
+
+def splitAmplitude : ℚ := 886151109950/10^12
+
+def riceBand (l : ℚ) : SparseStein.ScaleBand :=
+  if 8559/10240 ≤ l ∧ l < 2151/2560 then
+    (SparseStein.ScaleBand.restricted.find? (fun band ↦ decide (ScaleChecked l band))).getD .whole
+  else .whole
+
+private def valid (bandAt : ℚ → SparseStein.ScaleBand) (tilt limit : ℚ) (s : Segment) : Bool :=
   if !s.active then
     match envRowAtPure envRowsTight massS s.massPoint s.base.i,
         envRowAtPure envRowsTight massS s.massPoint s.base.j with
@@ -131,38 +196,39 @@ private def valid (tilt limit : ℚ) (s : Segment) : Bool :=
     decide (segmentCap row06.env row07.env s.base.lo s.base.hi
       s.leftWeight s.rightWeight (SparseOuter.price s.leftWeight) (SparseOuter.price s.rightWeight) 0 tilt ≤ limit)
   else decide (segmentCap TightShared.row8 TightShared.row9 s.base.lo s.base.hi s.leftWeight s.rightWeight
-    (SparseStein.price s.leftWeight) (SparseStein.price s.rightWeight)
-    (SparseStein.bonus s.leftWeight s.rightWeight) tilt ≤ limit) &&
-    decide (s.leftWeight ∈ SparseStein.prices.map Prod.fst ∧
-      s.rightWeight ∈ SparseStein.prices.map Prod.fst)
+    ((bandAt s.base.lo).lookup s.leftWeight) ((bandAt s.base.lo).lookup s.rightWeight)
+    ((bandAt s.base.lo).curvatureBonus s.leftWeight s.rightWeight) tilt ≤ limit) &&
+    decide (ScaleChecked s.base.lo (bandAt s.base.lo)) &&
+    decide (s.leftWeight ∈ (bandAt s.base.lo).table.map Prod.fst ∧
+      s.rightWeight ∈ (bandAt s.base.lo).table.map Prod.fst)
 
 private theorem checks :
     chainTo (fun s : Segment ↦ s.base.lo) (fun s ↦ s.base.hi) 0 (9/10) cells = true ∧
-    cells.all (valid 0 cap) = true ∧ cells.all (fun s ↦ decide (s.base.lo < s.base.hi ∧
+    cells.all (valid (fun _ ↦ .whole) 0 cap) = true ∧ cells.all (fun s ↦ decide (s.base.lo < s.base.hi ∧
       0 ≤ s.leftWeight ∧ s.leftWeight ≤ 1 ∧ 0 ≤ s.rightWeight ∧ s.rightWeight ≤ 1)) = true := by
   decide +kernel
 
 /-- The two physical central row inequalities with their joint, interpolated price. -/
 def CentralDeductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    (V t : ℝ) (Qh v : E) : Prop :=
-  ∀ w z : ℚ, w ∈ SparseStein.prices.map Prod.fst →
-      z ∈ SparseStein.prices.map Prod.fst → 0 ≤ w → w ≤ 1 → 0 ≤ z → z ≤ 1 →
+    (V t : ℝ) (Qh v : E) (band : SparseStein.ScaleBand := .whole) : Prop :=
+  ∀ w z : ℚ, w ∈ band.table.map Prod.fst →
+      z ∈ band.table.map Prod.fst → 0 ≤ w → w ≤ 1 → 0 ≤ z → z ≤ 1 →
       ∀ {x : ℝ}, 0 ≤ x → x ≤ 1 →
       let θ := (1-x)*(w : ℝ)+x*(z : ℝ)
-      ∃ d8 d9 : ℝ, (1-x)*(SparseStein.price w : ℝ)+x*(SparseStein.price z : ℝ)+
-        (SparseStein.bonus w z : ℝ)*x*(1-x) ≤ (1-θ)*d8+θ*d9 ∧
+      ∃ d8 d9 : ℝ, (1-x)*(band.lookup w : ℝ)+x*(band.lookup z : ℝ)+
+        (band.curvatureBonus w z : ℝ)*x*(1-x) ≤ (1-θ)*d8+θ*d9 ∧
       RowHolds ε TightShared.row8.ell TightShared.row8.beta ((TightShared.row8.C : ℝ)-d8) V t Qh v ∧
       RowHolds ε TightShared.row9.ell TightShared.row9.beta ((TightShared.row9.C : ℝ)-d9) V t Qh v
 
-private theorem profile_cell {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+private theorem profile_cell (bandAt : ℚ → SparseStein.ScaleBand) {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
     (hred : CircularSharedReduction rowData V t Qh v)
     (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
-    (hcentral : CentralDeductions V t Qh v) :
-    ∃ s ∈ cells, ∀ tilt limit : ℚ, valid tilt limit s = true → V+(tilt:ℝ)*t^2 ≤ (limit:ℝ) := by
+    (hcentral : ∀ l : ℚ, (l : ℝ) ≤ t → ScaleChecked l (bandAt l) → CentralDeductions V t Qh v (bandAt l)) :
+    ∃ s ∈ cells, (s.base.lo : ℝ) ≤ t ∧ ∀ tilt limit : ℚ, valid bandAt tilt limit s = true → V+(tilt:ℝ)*t^2 ≤ (limit:ℝ) := by
   obtain ⟨s, hs, hlo, hhi⟩ := chainTo_sound (fun c : Segment ↦ c.base.lo) (fun c ↦ c.base.hi)
     cells 0 (9/10) checks.1 t (by simpa using ht₀) (by push_cast; exact ht₁)
-  refine ⟨s, hs, ?_⟩
+  refine ⟨s, hs, hlo, ?_⟩
   intro tilt limit hc
   obtain ⟨hspan,hw₀,hw₁,hz₀,hz₁⟩ := of_decide_eq_true (List.all_eq_true.mp checks.2.2 s hs)
   have hspanR : (s.base.lo : ℝ) < s.base.hi := by exact_mod_cast hspan
@@ -192,8 +258,8 @@ private theorem profile_cell {E : Type*} [NormedAddCommGroup E] [InnerProductSpa
       exact tilted_segment_bound _ _ _ _ _ _ _ _ 0 x hx₀ hx₁ hv ht hcap d6 d7 h6 h7 hθ₀ hθ₁ (by simpa using hdis)
     · simp only [valid,hactive,Bool.not_true,Bool.false_eq_true,ite_false,outer,
         Bool.and_eq_true,decide_eq_true_eq] at hc
-      obtain ⟨hcap,hw',hz'⟩ := hc
-      obtain ⟨d8,d9,hdis,h8,h9⟩ := hcentral _ _ hw' hz' hw₀ hw₁ hz₀ hz₁ hx₀ hx₁
+      obtain ⟨⟨hcap,hcut⟩,hw',hz'⟩ := hc
+      obtain ⟨d8,d9,hdis,h8,h9⟩ := hcentral s.base.lo hlo hcut _ _ hw' hz' hw₀ hw₁ hz₀ hz₁ hx₀ hx₁
       exact tilted_segment_bound _ _ _ _ _ _ _ _ _ x hx₀ hx₁ hv ht hcap d8 d9 h8 h9 hθ₀ hθ₁ hdis
   | false =>
     simp only [valid,hactive,Bool.not_false,ite_true] at hc
@@ -215,24 +281,61 @@ theorem profile_bound {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ 
     (hred : CircularSharedReduction rowData V t Qh v)
     (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
     (hcentral : CentralDeductions V t Qh v) : V ≤ (cap : ℝ) := by
-  obtain ⟨s, hs, bound⟩ := profile_cell hv ht₀ ht₁ hred hrows hcentral
+  obtain ⟨s, hs, _, bound⟩ := profile_cell (fun _ ↦ .whole) hv ht₀ ht₁ hred hrows (fun _ _ _ ↦ hcentral)
   simpa using bound 0 cap (List.all_eq_true.mp checks.2.1 s hs)
 
 /-- Price the extra first-chaos term in the same quadratic as each row mixture. -/
-def mixedCheck (a b c budget : ℚ) : Bool :=
-  cells.all (valid (b/a) ((budget-c)/a))
+def mixedCheck (a b c budget : ℚ) (bandAt : ℚ → SparseStein.ScaleBand := fun _ ↦ .whole) : Bool :=
+  cells.all (valid bandAt (b/a) ((budget-c)/a))
 
 /-- The same physical phase pair obeys the sparse rows and pays the additional
 amplitude cost, including an interior quadratic maximum on any segment. -/
+theorem mixed_profile_bound_band (bandAt : ℚ → SparseStein.ScaleBand) (a b c budget : ℚ) (ha : 0 < a)
+    (check : mixedCheck a b c budget bandAt = true) {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
+    (hred : CircularSharedReduction rowData V t Qh v)
+    (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
+    (hcentral : ∀ l : ℚ, (l : ℝ) ≤ t → ScaleChecked l (bandAt l) → CentralDeductions V t Qh v (bandAt l)) :
+    (a : ℝ)*V+(b : ℝ)*t^2+(c : ℝ) ≤ (budget : ℝ) := by
+  obtain ⟨s, hs, _, bound⟩ := profile_cell bandAt hv ht₀ ht₁ hred hrows hcentral
+  have h := bound _ _ (List.all_eq_true.mp check s hs)
+  push_cast at h
+  have ha' : (0 : ℝ) < a := Rat.cast_pos.mpr ha
+  have hv' := (le_div_iff₀ ha').mp h
+  have he : (V+(b:ℝ)/a*t^2)*a = (a:ℝ)*V+(b:ℝ)*t^2 := by
+    field_simp
+  rw [he] at hv'
+  linarith
+
+/-- The shared terminal-scale estimate remains available for every original mixed check. -/
 theorem mixed_profile_bound (a b c budget : ℚ) (ha : 0 < a)
     (check : mixedCheck a b c budget = true) {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
     (hred : CircularSharedReduction rowData V t Qh v)
     (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
     (hcentral : CentralDeductions V t Qh v) :
+    (a : ℝ)*V+(b : ℝ)*t^2+(c : ℝ) ≤ (budget : ℝ) :=
+  mixed_profile_bound_band (fun _ ↦ .whole) a b c budget ha check hv ht₀ ht₁ hred hrows (fun _ _ _ ↦ hcentral)
+
+/-- The physical budget below the switch; every remaining segment is priced with its
+own admissible scale. The upper closed half is handled by the visible cubic projection. -/
+def riceMixedCheck (a b c budget : ℚ) : Bool :=
+  cells.all (fun s ↦ decide (splitAmplitude ≤ s.base.lo) || valid riceBand (b/a) ((budget-c)/a) s)
+
+theorem rice_mixed_profile_below (a b c budget : ℚ) (ha : 0 < a)
+    (check : riceMixedCheck a b c budget = true) {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10) (ht : t < splitAmplitude)
+    (hred : CircularSharedReduction rowData V t Qh v)
+    (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
+    (hcentral : ∀ l : ℚ, (l : ℝ) ≤ t → ScaleChecked l (riceBand l) → CentralDeductions V t Qh v (riceBand l)) :
     (a : ℝ)*V+(b : ℝ)*t^2+(c : ℝ) ≤ (budget : ℝ) := by
-  obtain ⟨s, hs, bound⟩ := profile_cell hv ht₀ ht₁ hred hrows hcentral
-  have h := bound _ _ (List.all_eq_true.mp check s hs)
+  obtain ⟨s, hs, hlo, bound⟩ := profile_cell riceBand hv ht₀ ht₁ hred hrows hcentral
+  have hl : ¬ splitAmplitude ≤ s.base.lo := by
+    intro h
+    exact ht.not_ge (((Rat.cast_le (K := ℝ)).2 h).trans hlo)
+  have hc := List.all_eq_true.mp check s hs
+  simp only [hl,decide_false,Bool.false_or] at hc
+  have h := bound _ _ hc
   push_cast at h
   have ha' : (0 : ℝ) < a := Rat.cast_pos.mpr ha
   have hv' := (le_div_iff₀ ha').mp h

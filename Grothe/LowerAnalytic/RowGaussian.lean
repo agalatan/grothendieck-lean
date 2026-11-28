@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.FibreIntegral
+import Grothe.LowerAnalytic.GaussianRice
 
 /-!
 # The per-row Gaussian reduction in the coordinate frame (L4, assembly)
@@ -245,6 +246,59 @@ end frame
 
 /-! ### The shared reduction in the coordinate frame -/
 
+/-- The physical remote scale in the aligned first-chaos frame obeys the Rice energy budget. -/
+theorem PhysicalRice.pres_sq_le_priced (k : ℝ) {n : ℕ} {ft gt : (Fin ((n + 1) + (n + 1)) → ℝ) → ℂ}
+    (hfm : Measurable ft) (hgm : Measurable gt)
+    (hfb : ∀ x, ‖ft x‖ ≤ 1) (hgb : ∀ x, ‖gt x‖ ≤ 1) (f g : L2G (n+1))
+    (hfa : ⇑f =ᵐ[stdGaussian ((n+1)+(n+1))] ft) (hga : ⇑g =ᵐ[stdGaussian ((n+1)+(n+1))] gt)
+    (hP : (H10 (n+1)).starProjection (hOf (n+1) f g) = ((tOf (n+1) f g : ℝ) : ℂ) • zeta0 n) :
+    ‖pres hfm hgm hfb hgb‖^2 ≤ 2*((√π/2)*PhysicalRice.riceSlope k)*((√π/2)*PhysicalRice.riceIntercept k - tOf (n+1) f g) := by
+  let M := (√π/2)*PhysicalRice.riceSlope k
+  let A := (√π/2)*PhysicalRice.riceIntercept k
+  let c := cK hfm hgm hfb hgb 0
+  have hi : Integrable (fun y ↦ ‖c y‖^2) (stdGaussian (n+n)) :=
+    (Lp.memLp c).integrable_norm_pow two_ne_zero
+  let W := Lsec 1 0 (ft := ft) (gt := gt)
+  have hW : Integrable W (stdGaussian (n+n)) := integrable_Lsec 1 0 hfm hgm hfb hgb
+  have hpt : ∀ᵐ y ∂stdGaussian (n+n), ‖c y‖^2 ≤ 2*M*(A -(W y).re) := by
+    filter_upwards [cfL_ae (measurable_kt hfm hgm) (norm_kt_le hfb hgb) 0] with y hy
+    change ‖(cK hfm hgm hfb hgb 0) y‖^2 ≤ _
+    rw [cK,hy]
+    simpa [cf,fibreB,W,Lsec,Lf,M,A] using PhysicalRice.fibre_mean_energy_priced k
+      (hfm.comp (measurable_joinR_left y)).aestronglyMeasurable
+      (hgm.comp (measurable_joinR_left y)).aestronglyMeasurable
+      (fun z ↦ hfb (joinR z y)) (fun z ↦ hgb (joinR z y))
+  have hiW := ((integrable_const A).sub hW.re).const_mul (2*M)
+  have h := integral_mono_ae hi hiW hpt
+  change (∫ y, ‖c y‖^2 ∂stdGaussian (n+n)) ≤ ∫ y, 2*M*(A-(W y).re) ∂stdGaussian (n+n) at h
+  have hWre : Integrable (fun y ↦ (W y).re) (stdGaussian (n+n)) := hW.re
+  have hWint : (∫ y, (W y).re ∂stdGaussian (n+n)) = (∫ y, W y ∂stdGaussian (n+n)).re := _root_.integral_re hW
+  rw [integral_const_mul,integral_sub (f := fun _ ↦ A) (g := fun y ↦ (W y).re) (integrable_const _) hWre,integral_const,probReal_univ,
+     one_smul,← norm_sq_eq_integral, hWint] at h
+  have he := inner_L_split 1 0 (hOf (n+1) f g) (hOf_ae f g hfa hga)
+  change _ = ∫ y, W y ∂stdGaussian (n+n) at he
+  simp only [Complex.ofReal_one,Complex.ofReal_zero,one_smul,zero_smul,add_zero] at he
+  have hz : (H10 (n+1)).starProjection (zeta0 n) = zeta0 n :=
+    Submodule.starProjection_eq_self_iff.mpr zeta0_mem
+  have hpair : (inner ℂ (zeta0 n) (hOf (n+1) f g)).re = tOf (n+1) f g := by
+    rw [← hz,Submodule.inner_starProjection_left_eq_right,hP,inner_smul_right,inner_self_eq_norm_sq_to_K,
+      norm_zeta0]; simp
+  rw [← he,hpair] at h
+  have hpr : ‖pres hfm hgm hfb hgb‖ ≤ ‖c‖ :=
+    (H21 n).norm_starProjection_apply_le c
+  exact (pow_le_pow_left₀ (norm_nonneg _) hpr 2).trans h
+
+
+/-- The physical remote scale in the aligned first-chaos frame obeys the Rice energy budget. -/
+theorem PhysicalRice.pres_sq_le {n : ℕ} {ft gt : (Fin ((n + 1) + (n + 1)) → ℝ) → ℂ}
+    (hfm : Measurable ft) (hgm : Measurable gt)
+    (hfb : ∀ x, ‖ft x‖ ≤ 1) (hgb : ∀ x, ‖gt x‖ ≤ 1) (f g : L2G (n+1))
+    (hfa : ⇑f =ᵐ[stdGaussian ((n+1)+(n+1))] ft) (hga : ⇑g =ᵐ[stdGaussian ((n+1)+(n+1))] gt)
+    (hP : (H10 (n+1)).starProjection (hOf (n+1) f g) = ((tOf (n+1) f g : ℝ) : ℂ) • zeta0 n) :
+    ‖pres hfm hgm hfb hgb‖^2 ≤ 2*(√π/2)*(√π/2 - tOf (n+1) f g) := by
+  simpa [PhysicalRice.riceIntercept,PhysicalRice.riceSlope] using
+    PhysicalRice.pres_sq_le_priced 0 hfm hgm hfb hgb f g hfa hga hP
+
 lemma rowData_delta_pos : rowData.all (fun r => decide (0 < r.delta)) = true := by decide +kernel
 
 section shared
@@ -333,23 +387,38 @@ theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e
 the certified sharp scale bound `τ ≤ 93/100`, and integrability of each row potential at every
 nonnegative scale `σ'`. -/
 def CircularSharedReduction {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    (rows : List Row) (V t : ℝ) (Qh v : E) : Prop :=
+    (rows : List Row) (V t : ℝ) (Qh v : E) (scaleOK : ℝ → Prop := fun τ ↦ τ ≤ ρ) : Prop :=
   ∃ (d : ℕ) (J : Fin d → Fin d → ℝ) (A B : MvPolynomial (Fin d) ℝ)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ x : ℝ),
     Chaos3 A ∧ ∫ y, eval y A ^ 2 ∂(stdGaussian d) = 1 / 2 ∧ Circular J A B ∧
     Moments (stdGaussian d) (fun y => eval y (radU A B)) x ∧
     GramInputs (stdGaussian d) (fun y => eval y (radU A B)) ∧
-    0 ≤ τ ∧ τ ≤ 93 / 100 ∧ τ ≤ ρ ∧
+    0 ≤ τ ∧ τ ≤ 93 / 100 ∧ scaleOK τ ∧
     (∀ y, ‖X1 y‖ ^ 2 = τ ^ 2 * eval y (radU A B)) ∧
     ∀ r ∈ rows, ∃ Ψ : ℝ → ℝ,
       RowSharedWith r Ψ (stdGaussian d) (fun y => eval y (radU A B)) X1 X2 X3 τ V t Qh v ∧
       ∀ σ' : ℝ, 0 ≤ σ' → Integrable (fun y => Ψ (σ' * √(eval y (radU A B)))) (stdGaussian d)
 
+/-- The physical joint scale and visible amplitude in the selected frame. -/
+def physicalScale (t τ : ℝ) : Prop :=
+  τ ≤ ρ ∧ ∀ k : ℝ, τ^2 ≤ 2*((√π/2)*PhysicalRice.riceSlope k)*((√π/2)*PhysicalRice.riceIntercept k-t)
+
+theorem physicalScale.quadratic {t τ : ℝ} (h : physicalScale t τ) :
+    τ^2 ≤ 2*(√π/2)*(√π/2-t) := by
+  simpa [PhysicalRice.riceIntercept,PhysicalRice.riceSlope] using h.2 0
+
+lemma CircularSharedReduction.weaken {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {rows : List Row} {V t : ℝ} {Qh v : E} {P Q : ℝ → Prop}
+    (h : CircularSharedReduction rows V t Qh v P) (hpq : ∀ τ, P τ → Q τ) :
+    CircularSharedReduction rows V t Qh v Q := by
+  obtain ⟨d,J,A,B,X1,X2,X3,τ,x,hA,haa,hc,hM,hG,h0,h93,hP,hX,hrows⟩ := h
+  exact ⟨d,J,A,B,X1,X2,X3,τ,x,hA,haa,hc,hM,hG,h0,h93,hpq τ hP,hX,hrows⟩
+
 lemma circularSharedReduction_congr {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    {rows : List Row} {V t : ℝ} {Qh₁ v₁ Qh₂ v₂ : E}
-    (h : CircularSharedReduction rows V t Qh₁ v₁)
+    {rows : List Row} {V t : ℝ} {Qh₁ v₁ Qh₂ v₂ : E} {scaleOK : ℝ → Prop}
+    (h : CircularSharedReduction rows V t Qh₁ v₁ scaleOK)
     (hn : ∀ c : ℝ, ‖Qh₁ + c • v₁‖ = ‖Qh₂ + c • v₂‖) :
-    CircularSharedReduction rows V t Qh₂ v₂ := by
+    CircularSharedReduction rows V t Qh₂ v₂ scaleOK := by
   obtain ⟨d, J, A, B, X1, X2, X3, τ, x, hA, haa, hc, hM, hG, h0, h93, hρ, hX, hrows⟩ := h
   refine ⟨d, J, A, B, X1, X2, X3, τ, x, hA, haa, hc, hM, hG, h0, h93, hρ, hX, fun r hr => ?_⟩
   obtain ⟨Ψ, ⟨hcap, hi, hg, hV⟩, hInt⟩ := hrows r hr
@@ -358,14 +427,14 @@ lemma circularSharedReduction_congr {E : Type*} [NormedAddCommGroup E] [InnerPro
 /-- **The simultaneous circular Gaussian reduction in the coordinate frame**, sharpening
 `sharedReduction_frame` with the certified cubic radius bound `‖p‖ ≤ 93/100` and exposing the
 circular cubic law `(A, B)` so tightened rows can invoke antiholomorphic Stein certificates. -/
-theorem circularSharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e ν = ε)
+theorem circularSharedReduction_frame_rice {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e ν = ε)
     (f g : L2G (n + 1))
     (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
     (hg : g ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
     (hP : (H10 (n + 1)).starProjection (hOf (n + 1) f g) = ((tOf (n + 1) f g : ℝ) : ℂ) • zeta0 n)
     (hcaps : TailNodeCaps (nuHat ν)) :
     CircularSharedReduction rowData (VhatOf (n + 1) e ν f g) (tOf (n + 1) f g) (QhOf (n + 1) f g)
-      (vL (n + 1) 0) := by
+      (vL (n + 1) 0) (physicalScale (tOf (n+1) f g)) := by
   have hfm : Measurable (trunc ⇑f) := measurable_trunc (Lp.stronglyMeasurable f).measurable
   have hgm : Measurable (trunc ⇑g) := measurable_trunc (Lp.stronglyMeasurable g).measurable
   have hfb := norm_trunc_le ⇑f
@@ -396,7 +465,7 @@ theorem circularSharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : 
     exact integrable_sqrt (eval_radU_nonneg A B) (integrable_eval _)
   refine ⟨n + n, Jstd n, A, B, X1, ⇑(X2e hfm hgm hfb hgb), ⇑(X3e hfm hgm hfb hgb), ‖p‖, _,
     hA, haa, hc, gaussian_moments A B hA haa hc, gaussian_gramInputs A B hA haa hc,
-    norm_nonneg _, norm_pres_le_93 hfm hgm hfb hgb, norm_pres_le_rho hfm hgm hfb hgb, hX, ?_⟩
+    norm_nonneg _, norm_pres_le_93 hfm hgm hfb hgb, ⟨norm_pres_le_rho hfm hgm hfb hgb, fun k ↦ PhysicalRice.pres_sq_le_priced k hfm hgm hfb hgb f g hfa hga hP⟩, hX, ?_⟩
   intro r hr
   obtain ⟨k, hk, rfl⟩ := List.mem_iff_getElem.1 hr
   have hkr : rowData.getD k row01 = rowData[k] := List.getD_eq_getElem _ _ hk
@@ -419,6 +488,17 @@ theorem circularSharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : 
     (β := (rowData[k]).beta) (a := aFib (rowData[k]).b1 (rowData[k]).b2 (rowData[k]).b3)
     (ν := nuHat ν) hg'.1.1 (hRk ▸ hRg.1.1) hP_meas hP_int σ' hσ'
   simpa only [hP_norm] using hi
+
+/-- The uniform-radius coordinate-frame interface. -/
+theorem circularSharedReduction_frame {n : ℕ} (hn : 0 < n) {e ν : ℝ} (he : epsHat e ν = ε)
+    (f g : L2G (n + 1))
+    (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
+    (hg : g ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
+    (hP : (H10 (n + 1)).starProjection (hOf (n + 1) f g) = ((tOf (n + 1) f g : ℝ) : ℂ) • zeta0 n)
+    (hcaps : TailNodeCaps (nuHat ν)) :
+    CircularSharedReduction rowData (VhatOf (n + 1) e ν f g) (tOf (n + 1) f g) (QhOf (n + 1) f g)
+      (vL (n + 1) 0) :=
+  (circularSharedReduction_frame_rice hn he f g hf hg hP hcaps).weaken fun _ h ↦ h.1
 
 end
 

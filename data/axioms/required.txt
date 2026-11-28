@@ -42,7 +42,10 @@ Grothe.LowerAnalytic.Circular.gaussian_x_le_sqrt42
 Grothe.LowerAnalytic.Circular.joint_sixth
 Grothe.LowerAnalytic.CircularCellNodeBounds.chord
 Grothe.LowerAnalytic.CoupledStein.Grid.worst_le
+Grothe.LowerAnalytic.QhOf_sq_ge_visible_tangent
+Grothe.LowerAnalytic.QkOf_sq_le_two_visible_gap
 Grothe.LowerAnalytic.SparseStein.actual_deductions
+Grothe.LowerAnalytic.VhatOf_le_visible_cubic_profile
 Grothe.LowerAnalytic.antiStein_I
 Grothe.LowerAnalytic.antiStein_II
 Grothe.LowerAnalytic.capCoverFastOK_eq
@@ -72,8 +75,11 @@ Grothe.LowerAnalytic.first_moment_le_93
 Grothe.LowerAnalytic.first_moment_lt_93
 Grothe.LowerAnalytic.gaussian_gramInputs
 Grothe.LowerAnalytic.gaussian_steinInputs
+Grothe.LowerAnalytic.integral_invRad_fibre
+Grothe.LowerAnalytic.integral_invRadius_cubic_of_unit
 Grothe.LowerAnalytic.integral_norm_le_93_mul_norm_of_mem_H21
 Grothe.LowerAnalytic.integral_norm_le_93_of_mem_H21
+Grothe.LowerAnalytic.invRadius_energy_of_pieces
 Grothe.LowerAnalytic.massRow_frame
 Grothe.LowerAnalytic.nodeList_eq_of_capsChars
 Grothe.LowerAnalytic.normQk_le_93

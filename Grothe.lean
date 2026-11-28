@@ -3377,6 +3377,7 @@ import Grothe.LowerAnalytic.CoupledSteinData
 import Grothe.LowerAnalytic.CoupledSteinGrid
 import Grothe.LowerAnalytic.CoupledSteinWeights
 import Grothe.LowerAnalytic.Covariance
+import Grothe.LowerAnalytic.CubicVisibleTangent
 import Grothe.LowerAnalytic.Fibre
 import Grothe.LowerAnalytic.FibreHermite
 import Grothe.LowerAnalytic.FibreIntegral
@@ -3388,10 +3389,13 @@ import Grothe.LowerAnalytic.Fluctuation
 import Grothe.LowerAnalytic.Frame
 import Grothe.LowerAnalytic.Gaussian
 import Grothe.LowerAnalytic.GaussianRadial
+import Grothe.LowerAnalytic.GaussianRice
 import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.GramSpectral
 import Grothe.LowerAnalytic.GramTensor
 import Grothe.LowerAnalytic.Influence
+import Grothe.LowerAnalytic.InverseRadiusCubic
+import Grothe.LowerAnalytic.InverseRadiusTransfer
 import Grothe.LowerAnalytic.JointContractions
 import Grothe.LowerAnalytic.JointSixthCore
 import Grothe.LowerAnalytic.KSide
