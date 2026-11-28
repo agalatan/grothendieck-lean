@@ -285,7 +285,7 @@ gets a verdict.
   resource cost of the check.
 - **Comments:** in the PR, each starting with your ID. Suggestions that do not block say so.
 - **A longer review holds the PR.** A reviewer whose review will take longer than a round (a replay, an independent
-  recomputation, a long certificate) puts the PR on hold first: `scripts/review.sh <branch> <sha> hold <reviewer-id>
+  recomputation, a long certificate, never a Lean build that CI does anyway) puts the PR on hold first: `scripts/review.sh <branch> <sha> hold <reviewer-id>
   "<what is checked>"` adds the label `HOLD:<reviewer-id>` and a signed comment. A PR with any `HOLD` label does
   not land, whatever approvals it has: `scripts/land_ready.sh` refuses it like `RFC`/`WIP`, and checks again just
   before it pushes master. Each reviewer's verdict lifts only its own hold. There is no lock: a landing that has
