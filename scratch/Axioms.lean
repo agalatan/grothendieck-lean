@@ -196,6 +196,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fn_eq_sum
 #print axioms Grothe.LowerAnalytic.gE_SU
 #print axioms Grothe.LowerAnalytic.gE_rotD
+#print axioms Grothe.LowerAnalytic.gaussC_open_disk_prob
+#print axioms Grothe.LowerAnalytic.gaussC_soft_disk
 #print axioms Grothe.LowerAnalytic.gaussian_gramInputs
 #print axioms Grothe.LowerAnalytic.gaussian_moments
 #print axioms Grothe.LowerAnalytic.gaussian_steinInputs
@@ -259,7 +261,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.norm_starProjection_H21_le_93
 #print axioms Grothe.LowerAnalytic.norm_sub_finiteDiffuseCubic_sq
 #print axioms Grothe.LowerAnalytic.norm_visibleDirection_of_pos
+#print axioms Grothe.LowerAnalytic.phase_pair_ae_re_orthogonal
+#print axioms Grothe.LowerAnalytic.phase_pair_radial_square_le
 #print axioms Grothe.LowerAnalytic.phase_pair_support
+#print axioms Grothe.LowerAnalytic.phase_stability_soft_disk
 #print axioms Grothe.LowerAnalytic.pieceAtCoord_of_pieceAt
 #print axioms Grothe.LowerAnalytic.pieceCoverOK_of_fast
 #print axioms Grothe.LowerAnalytic.pot_le_of_nodeOKNu
@@ -272,6 +277,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.qf_nonneg_of_ldlOK
 #print axioms Grothe.LowerAnalytic.quartic_identity
 #print axioms Grothe.LowerAnalytic.quinticPayoff_energy_envelope
+#print axioms Grothe.LowerAnalytic.quinticPayoff_eq_scaled_hat
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_cubic_energy_ellipse
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_cubic_radius_30629
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_elliptic_lift_29082
@@ -279,6 +285,9 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_nonremote_price
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_smallAmplitude
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_smallCubic
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_small_tail_cost
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_small_tail_cost_of_nodeCaps
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_tailWitnessCap
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_two_cubic_supports
 #print axioms Grothe.LowerAnalytic.quinticPayoff_mass_envelope
 #print axioms Grothe.LowerAnalytic.quinticPayoff_projection_envelope
@@ -329,6 +338,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.transferInputs_of_quinticPayoff
 #print axioms Grothe.LowerAnalytic.transferInputs_of_witnessCap
 #print axioms Grothe.LowerAnalytic.visibleDirection_mem
+#print axioms Grothe.LowerAnalytic.visible_phase_alignment_le_unused
+#print axioms Grothe.LowerAnalytic.visible_phase_stability
 #print axioms Grothe.LowerAnalytic.wickL_mem_H21
 #print axioms Grothe.LowerAnalytic.witnessCap_of_VhatOf_le
 #print axioms Grothe.LowerAnalytic.zc_gaussianBlockSplit_fst

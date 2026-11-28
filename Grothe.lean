@@ -3405,9 +3405,12 @@ import Grothe.LowerAnalytic.PotentialReg
 import Grothe.LowerAnalytic.QuinticDiffuseCarrier
 import Grothe.LowerAnalytic.QuinticDiffuseRealization
 import Grothe.LowerAnalytic.QuinticEllipse
+import Grothe.LowerAnalytic.QuinticPhaseAlignment
+import Grothe.LowerAnalytic.QuinticPhaseStability
 import Grothe.LowerAnalytic.QuinticRemoteSupport
 import Grothe.LowerAnalytic.QuinticSmallAmplitude
 import Grothe.LowerAnalytic.QuinticSpectralCuts
+import Grothe.LowerAnalytic.QuinticTailTransfer
 import Grothe.LowerAnalytic.QuinticWitness
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.RadialParts
