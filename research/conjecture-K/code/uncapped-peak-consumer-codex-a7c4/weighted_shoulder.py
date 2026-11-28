@@ -40,9 +40,9 @@ def geometry_bounds(rows,H,lower,l,v):
     return (v<=upper_v),max(0,upper_v),max(0,remaining),max(0,upper_b)
 
 
-def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
+def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES, *, high=HIGH, odd_price=None):
     H=(base.PI_HI/4-lower**2)/P0**2
-    base.require(0<=lower<=HIGH and lower**2>=3*base.PI_HI/14, 'radius assumption')
+    base.require(0<=lower<=high<=HIGH and lower**2>=3*base.PI_HI/14 and H>0, 'radius assumption')
     base.require(prices and prices[0]==P0 and all(ODD<=p<=P0 for p in prices),'unknown price selection')
     for price in prices:
         base.require(0<base.EPS*price<=1 and 0<=P0-price,
@@ -50,6 +50,15 @@ def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
     @cache
     def geometry(l,v):
         return geometry_bounds(rows,H,lower,l,v)
+
+    @cache
+    def odd_cost(price, upper_energy, upper_shape):
+        if odd_price is None:
+            return ODD
+        u = upper_energy*(P0/price)**2
+        bound = odd_price(u, upper_shape)
+        base.require(0 < bound <= ODD, 'unsupported odd-arm price')
+        return bound
 
     raw=base.make_radial_bound(polys,nodes)
     @cache
@@ -82,7 +91,7 @@ def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
         b=max(s[1] for s in scores)
         k=min(4*rh,rh*(1+base.sqrt_hi(3*y/4)))/2-Q('.0926')
         m=base.EPS*p
-        cost=max(t*t-2*m*base.GUIDE*t+2*(m*base.BETA)**2/base.EPS for t in (lower,HIGH))
+        cost=max(t*t-2*m*base.GUIDE*t+2*(m*base.BETA)**2/base.EPS for t in (lower,high))
         return ratio,a,b,k,radial(p,l,h,x,y),cost,m
 
     def reserve(p,l,h,x,y,v,w,theta, *, absorb_even=True):
@@ -93,7 +102,7 @@ def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
         wmax=ratio*upper_w
         base.require(0<theta<=1 and m*theta<=1 and p<=P0 and P0/theta>=p
                      and wmax>=0, 'incorrect signs in the mixed trial')
-        odd=1/(theta/P0+(1-theta)/ODD)
+        odd=1/(theta/P0+(1-theta)/odd_cost(p,h,y))
         inner=rad+(P0-p)*hu+(P0/theta-p)*h_v+max(0,odd-p)*wmax
         vl,vr=l_v/theta**2,h_v/theta**2
         bmax=min(vr,ratio*upper_b/theta**2)
@@ -142,7 +151,8 @@ def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
         for p in prices[1:]:
             if best>accepted:break
             if h*(P0/p)**2>Q('.07'):continue
-            theta0=P0*(p-ODD)/(p*(P0-ODD))
+            b=odd_cost(p,h,y)
+            theta0=P0*(p-b)/(p*(P0-b))
             for theta in (theta0,Q(1),Q('.96')):
                 if theta<=0:continue
                 best=max(best,reserve(p,l,h,x,y,v,w,theta))
@@ -166,6 +176,7 @@ def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
             m=(x+y)/2
             children=[(l,h,x,m,v,w),(l,h,m,y,v,w)]
         stack.extend((*c,depth+1) for c in children)
+    base.require(count>0, 'empty physical cover')
     return count,least
 
 if __name__=='__main__':
