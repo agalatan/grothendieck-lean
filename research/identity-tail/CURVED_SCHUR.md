@@ -71,8 +71,10 @@ checks the whole-scale and small-scale prices. Bisect the affine weight path on 
 amplitude interval $[3429/4096,8577/10240]$. At the midpoint the two discounts,
 rounded down to multiples of $10^{-13}$, are $10853361/10^{12}$ and $251609893/10^{13}$.
 With these ten weights the normalized cap is $70635481227/10^{11}$ and the
-matrix lower endpoint is $200000000000000/142651094836331$ for the original identity-tail witness. The Lean declaration is `Grothe.Statement.sparse_midpoint_endpoint`. Removing the
-midpoint recovers the original nine-weight result above. The
+matrix lower endpoint is $200000000000000/142651094836331=1.40202218727776025\ldots$
+for the original identity-tail witness. The Lean declaration is
+`Grothe.Statement.sparse_midpoint_endpoint`. Removing the midpoint recovers
+the original nine-weight result above. The
 [curvature-adjusted rows](../../Grothe/LowerAnalytic/SparseSteinRows.lean)
 and these numerical checks use only `propext`, `Classical.choice`, and
 `Quot.sound`.
