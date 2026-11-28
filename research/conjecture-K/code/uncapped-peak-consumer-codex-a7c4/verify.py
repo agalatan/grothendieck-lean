@@ -91,8 +91,8 @@ def read_inputs(repo):
     require(not raw.check_stein_node(damaged, knots, caps), 'accepted negative whole-ray control')
     return polys, nodes
 
-def score_bounds(l, h, y):
-    gamma = min([Q('.08')]+[g for low,g in CONTENT if l >= low])
+def score_bounds(l, h, y, content=CONTENT):
+    gamma = min([Q('.08')]+[g for low,g in content if l >= low])
     slope = sqrt_hi(gamma)
     if h > U0:
         slope += Q('1.04')*max(0,sqrt_hi(h)-sqrt_lo(U0))
