@@ -11,7 +11,7 @@ from joint_cubic_rice import constants
 from tilted_signed_schedule import envelope, high, physical_segments, first, checked
 
 
-def replay():
+def joint_coefficients():
     odd, even = constants()
     tilt = Q(".273")
     gamma = Q(".3655")
@@ -44,11 +44,16 @@ def replay():
         + Q(49, 15000)
     )
     checked(3 * Q("3.141592") / 256 - loss > floor, "physical radial floor")
+    return odd, even, dict(residual=residual, radial_start=cut, radial_floor=floor)
+
+
+def replay():
+    odd, even, opts = joint_coefficients()
+    residual = opts["residual"]
     w = Q(".0000733823")
     d = Q(1, 10**8)
     cap = Q(7132537799728, 10**13)
     pieces = physical_segments()
-    opts = dict(residual=residual, radial_start=cut, radial_floor=floor)
     v = envelope(pieces, w, d, Q(".885773796365757"), **opts)
     checked(
         Q(ceil(v * 10**13), 10**13) == cap and 1 / cap > Q("1.40202551753"),
@@ -71,6 +76,7 @@ def replay():
         "retuned pure endpoint",
     )
     # A physical central illustration, using the same pair's projected cubic.
+    mu = Q(".886227")
     tau = Q(".285")
     t = Q(".83835")
     fresh = (2 * mu * (mu - t) - tau**2) / even

@@ -15,6 +15,8 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.RemoteRadial.allChords
 #print axioms Grothe.LowerAnalytic.RemoteRadial.allPrices
 #print axioms Grothe.LowerAnalytic.RemoteRadial.chord_polynomial_nonneg
+#print axioms Grothe.LowerAnalytic.RemoteRadial.chord_product_eq
+#print axioms Grothe.LowerAnalytic.RemoteRadial.reciprocal_chord
 #print axioms Grothe.LowerAnalytic.SignedRowTransfer.endpoint_of_profile
 #print axioms Grothe.LowerAnalytic.SignedRowTransfer.fifthFloor_le
 #print axioms Grothe.LowerAnalytic.SignedRowTransfer.signed_payoff_le_profile
@@ -163,6 +165,8 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.signed_fifth_residual_gram
 #print axioms Grothe.LowerAnalytic.signed_floor_of_gram
 #print axioms Grothe.LowerAnalytic.signed_joint_visible_budget
+#print axioms Grothe.LowerAnalytic.signed_pair_overlap
+#print axioms Grothe.LowerAnalytic.signed_pair_overlap_14023
 #print axioms Grothe.LowerAnalytic.signed_small_cubic_14023
 #print axioms Grothe.LowerAnalytic.signed_zero_cubic_cap
 #print axioms Grothe.LowerAnalytic.spectral_pair_gram

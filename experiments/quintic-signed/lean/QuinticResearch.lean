@@ -23,6 +23,7 @@ import QuinticResearch.RadialClip
 import QuinticResearch.RadialExpBounds
 import QuinticResearch.RadialTail
 import QuinticResearch.RemoteAngularPrice
+import QuinticResearch.RemoteChordPhysical
 import QuinticResearch.RemoteChordSound
 import QuinticResearch.RemoteRadialCertificate
 import QuinticResearch.ResidualPair
@@ -31,6 +32,7 @@ import QuinticResearch.SignedBand
 import QuinticResearch.SignedCubicDebit
 import QuinticResearch.SignedDiagonal
 import QuinticResearch.SignedFifth
+import QuinticResearch.SignedPairOverlap
 import QuinticResearch.SignedRadial
 import QuinticResearch.SignedRowProfile
 import QuinticResearch.SignedRowTransfer

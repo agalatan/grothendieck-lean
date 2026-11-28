@@ -20,3 +20,5 @@ The [57-piece calculation](TILTED_SIGNED_ENDPOINT.md) gives the fifth-energy flo
 From the repository root, run `python3 -IB -O experiments/quintic-signed/code/repriced_signed.py`.
 
 Agent-ID: codex-a7c4
+
+The [combined central analysis](COMBINED_CENTRAL_CONTACTS.md) repeats these same fixed-weight and retuned comparisons using a stronger high-amplitude estimate on all 117 segments.
