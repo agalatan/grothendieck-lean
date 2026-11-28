@@ -1,0 +1,24 @@
+junta y(|y|^2 - 2) (n = 1, 2^20 points): s = 41.5840, E sqrt V = 0.69087, E c1 = 2.00026, E c2 = 1.00014
+   identities, worst residual over the 27 tests (|mean|, standard error): I 1.4e-04 (3.1e-03); II 1.3e-04 (2.8e-03); III 2.3e-02 (1.5e-01); IV 4.4e-02 (2.7e-01)
+   Gram scalars (n, h, b, y, z) = [0.24493, 0.25189, 0.25217, 0.24686, 0.26919], residual of the 7 relations 7.7e-02
+   inequalities (each must be >= 0 up to the sampling error): min_gram 2.45e-01, n_minus_b -7.24e-03, z_minus_y 2.23e-02, nh_minus_z2 -1.08e-02, m 9.68e-01, hm_minus 2.17e-02, h0 5.98e+00, sixth 9.02e+02, joint1 9.88e+03, joint2 9.74e+03, cone_pointwise -1.46e-11, alpha_cone -1.82e-11, beta_cone -2.98e-08, radius_slack 2.21e-01
+y1 y2 conj(y3) (n = 3, 2^20 points): s = 5.9900, E sqrt V = 0.69604, E c1 = 2.00002, E c2 = 1.00001
+   identities, worst residual over the 27 tests (|mean|, standard error): I 2.7e-04 (4.0e-04); II 1.5e-04 (2.3e-04); III 7.0e-03 (4.7e-03); IV 0.0e+00 (0.0e+00)
+   Gram scalars (n, h, b, y, z) = [0.12484, 0.25008, 6e-05, -7e-05, 0.00048], residual of the 7 relations 1.9e-03
+   inequalities (each must be >= 0 up to the sampling error): min_gram -6.64e-05, n_minus_b 1.25e-01, z_minus_y 5.51e-04, nh_minus_z2 3.12e-02, m 1.24e-01, hm_minus 3.11e-02, h0 4.96e-01, sixth 4.42e+02, joint1 7.23e+02, joint2 5.81e+02, cone_pointwise 9.28e-13, alpha_cone 0.00e+00, beta_cone 0.00e+00, radius_slack 2.16e-01
+y1^2 conj(y2) (n = 2, 2^20 points): s = 9.9850, E sqrt V = 0.62666, E c1 = 2.00002, E c2 = 1.00000
+   identities, worst residual over the 27 tests (|mean|, standard error): I 6.2e-05 (2.2e-04); II 3.2e-05 (4.7e-04); III 2.6e-03 (2.8e-03); IV 0.0e+00 (0.0e+00)
+   Gram scalars (n, h, b, y, z) = [0.24968, 0.25012, 6e-05, -7e-05, 0.0008], residual of the 7 relations 2.0e-03
+   inequalities (each must be >= 0 up to the sampling error): min_gram -7.05e-05, n_minus_b 2.50e-01, z_minus_y 8.66e-04, nh_minus_z2 6.25e-02, m 2.49e-01, hm_minus 6.22e-02, h0 8.27e-01, sixth 8.44e+02, joint1 1.45e+03, joint2 1.14e+03, cone_pointwise 1.56e-19, alpha_cone 0.00e+00, beta_cone 0.00e+00, radius_slack 2.85e-01
+random tensor (n = 2, 2^20 points): s = 14.1285, E sqrt V = 0.66169, E c1 = 1.99995, E c2 = 0.99997
+   identities, worst residual over the 27 tests (|mean|, standard error): I 4.3e-04 (3.5e-04); II 2.1e-04 (1.2e-04); III 3.4e-03 (1.4e-03); IV 1.3e-03 (6.3e-04)
+   Gram scalars (n, h, b, y, z) = [0.17361, 0.18307, 0.06187, 0.05339, 0.09494], residual of the 7 relations 7.4e-03
+   inequalities (each must be >= 0 up to the sampling error): min_gram 5.34e-02, n_minus_b 1.12e-01, z_minus_y 4.16e-02, nh_minus_z2 2.28e-02, m 3.01e-01, hm_minus 5.08e-02, h0 1.52e+00, sixth 1.05e+03, joint1 2.45e+03, joint2 2.10e+03, cone_pointwise 1.38e-08, alpha_cone 4.24e-16, beta_cone 1.53e-21, radius_slack 2.50e-01
+random tensor (n = 3, 2^20 points): s = 7.7670, E sqrt V = 0.68603, E c1 = 1.99990, E c2 = 0.99989
+   identities, worst residual over the 27 tests (|mean|, standard error): I 3.0e-04 (1.9e-04); II 2.3e-04 (1.0e-04); III 1.3e-03 (5.8e-04); IV 4.8e-03 (3.2e-03)
+   Gram scalars (n, h, b, y, z) = [0.0884, 0.11784, 0.03866, 0.02872, 0.08026], residual of the 7 relations 2.4e-03
+   inequalities (each must be >= 0 up to the sampling error): min_gram 2.87e-02, n_minus_b 4.97e-02, z_minus_y 5.15e-02, nh_minus_z2 3.98e-03, m 1.33e-01, hm_minus 1.56e-02, h0 6.79e-01, sixth 5.68e+02, joint1 1.02e+03, joint2 8.16e+02, cone_pointwise 2.77e-07, alpha_cone 2.74e-13, beta_cone 9.57e-19, radius_slack 2.26e-01
+random tensor (n = 4, 2^20 points): s = 7.3827, E sqrt V = 0.72992, E c1 = 2.00034, E c2 = 1.00033
+   identities, worst residual over the 27 tests (|mean|, standard error): I 5.7e-04 (3.1e-04); II 3.9e-04 (2.2e-04); III 4.4e-03 (2.2e-03); IV 1.7e-03 (7.5e-04)
+   Gram scalars (n, h, b, y, z) = [0.07674, 0.08865, 0.02541, 0.03553, 0.07055], residual of the 7 relations 1.2e-02
+   inequalities (each must be >= 0 up to the sampling error): min_gram 2.54e-02, n_minus_b 5.13e-02, z_minus_y 3.50e-02, nh_minus_z2 1.83e-03, m 1.38e-01, hm_minus 1.10e-02, h0 8.08e-01, sixth 5.00e+02, joint1 1.04e+03, joint2 9.09e+02, cone_pointwise 8.98e-05, alpha_cone 1.50e-15, beta_cone 3.42e-14, radius_slack 1.82e-01

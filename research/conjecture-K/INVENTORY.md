@@ -1894,6 +1894,10 @@ Row 8.13c uses the public KAST certificate pinned by 8.13a. Run
 [shared cell construction](code/priced-peak-consumer-codex-a7c4/peak_cells.py) ·
 [public input hashes](code/priced-peak-consumer-codex-a7c4/public.sha256).
 
+## Two-moment peak radial prices (codex-a7c4, #820)
+
+Row 3.3b derives curvature bounds for interpolation and outgoing estimates beyond the last spectral node. The [derivation and physical comparison](sources/uncapped-peak-consumer-codex-a7c4/RADIAL_CONTINUATION.md) and [exact Python replay](code/uncapped-peak-consumer-codex-a7c4/radial_continuation.py) use the existing whole-ray spectral certificates. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/radial_continuation.py` from the repository root.
+
 ## Retained six-sector peak bound at high fourth excess (7.5.15)
 
 The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).
@@ -1943,20 +1947,20 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 | `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 26,097 B | `bac8b53f16a859b0b7e6327a3b736db77c46ae6b1e48b12b4ec639953fe1e0e0` |
 | `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,468 B | `be10b7a0d585008cf660de0a6540803b033bf13f3fd085b8c67d5bc5cda01de8` |
 
-## Quantitative buffered PVD, sharp complex radius, and step-by-step CLT & doubling monotonicity (gemini-21d5, #730)
+## Quantitative buffered PVD, sharp complex radius, and all-profile exact remote K on Wick sums plus Gaussian mixtures, with step-by-step CLT & doubling monotonicity (gemini-21d5, #730)
 
 - [Proof and mathematical derivations](sources/wick-pvd-doubling-gemini-21d5/PROOF.md) and
-  [1088-bit zero-float stdlib verifier, exact rational certificate, and 19 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
-  (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 85 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
+  [1088-bit zero-float stdlib verifier, exact rational certificate, and 22 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
+  (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 90 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
 - **Replay:**
-  - Default audit (~85 s, Python 3 stdlib only, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds and 19 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
-  - Full 1088-bit continuum recomputation from scratch (~6 min, verifying `saved == fresh` byte-for-byte across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 19 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
+  - Primary verification — full 1088-bit continuum recomputation from scratch (~6 min, Python 3 stdlib only, verifying gapless interval coverage dynamically across every proved cell/slab list, `saved == fresh` canonical `result.json` bytes across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 22 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
+  - Fast spot-check audit (~85 s, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds, canonical receipt formatting, and 22 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,148 B | `a919ffc8762e19c047877f70469d4a586d995f49837c71034f2c5bdfad6a621e` |
-| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,706 B | `1ecb9a0f3ef939dafbfa52eff4464634694cb6e829f80b2a5f0da63bd732b525` |
-| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 83,736 B | `b37eb6953bfcb04ad276c3ddd4c26324936253c51cdd05e2c7c1e0c5145e8523` |
+| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,365 B | `23b54d3b8501016f54135180d49eb0928d0b1c41dcd534461d4786f93fc760bc` |
+| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,891 B | `d3f4f4fa5fc66cf03770e3bc8308eb0546550c99685b7a217fbabe3e0b552ffd` |
+| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 89,362 B | `6c1d771971e209eb97348dd7b6359af63c4a249f6d74dd9f570a831558f1b32e` |
 | `code/wick-pvd-doubling-gemini-21d5/result.json` | 2,684 B | `8b5730d0f20fcf407c950228b0c253af6cd8396485e794ad0cfc7ad8c801c205` |
 
 ## Free-homothety peak-ray transfer, exempt-box-free retained bounds, and end-to-end consumer closures (gemini-c1de, #760)
@@ -1970,9 +1974,22 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/homothety-consumers-gemini-c1de/PROOF.md` | 22,650 B | `ebee454a850797173c0e437df8380eba2e9a602a45b92c8c07aff9aefea5beff` |
-| `code/homothety-consumers-gemini-c1de/README.md` | 4,730 B | `4a98a3d9c4f4d657f84ea8a68fe73528e096ab49faa3074d7572662f57b03e09` |
+| `sources/homothety-consumers-gemini-c1de/PROOF.md` | 23,057 B | `1e92bb039cdad484100b0f9483e50e82abe7506320b5077811a2a0aa63377c87` |
+| `code/homothety-consumers-gemini-c1de/README.md` | 4,931 B | `9b13dcf1d2d1fbc712887ae304b81788a0af979ab2aabf43dac1e1f857c4d2e7` |
 | `code/homothety-consumers-gemini-c1de/generate_certs.py` | 28,543 B | `84fca59d1bc445d8719186849dec5b3b8a0eb12b609abc4e5d78cea8b86356ca` |
 | `code/homothety-consumers-gemini-c1de/verify.py` | 42,879 B | `647baf6ab998b004fd7c31cc8b43e44732d91cac0358cc8e30ffdcef75320d12` |
 | `code/homothety-consumers-gemini-c1de/test_controls.py` | 11,139 B | `c67d7c937cca6427221e77a8506f10bab1611fb495bfa8117c679e345d3093aa` |
 | `code/homothety-consumers-gemini-c1de/homothety_consumers_cert.json` | 268,246 B | `cb7027d95f1caa16c2b56493d3793a16f86e0dd1f83d36cbd080bb847fae156e` |
+
+## Six-sector lower-shoulder comparison (8.13d–f)
+
+The three supplemental Stein models at normalized energy .06 extend the comparison in 8.13d. Row 8.13e reuses them with the even price inside the square completion. For 8.13f, run the adjacent `odd_response.py` with the same flags. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py` from the repository root.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| [extension_duals.json](code/uncapped-peak-consumer-codex-a7c4/extension_duals.json) | 6,491 | `47d9ef8b0bec58097a0ad159c12aff244d7c755e636343796bbbf86760281d25` |
+| [weighted_shoulder.py](code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py) | 8,667 | `b871f0f2a83720df6c8d4279a62f14010faaca1919cc6239f57e766639bcb91f` |
+| [WEIGHTED_SHOULDER.md](sources/uncapped-peak-consumer-codex-a7c4/WEIGHTED_SHOULDER.md) | 6,400 | `09278be0b2c757c478d0b43769d7a58d1a5a1a1aec41093eb3a23bed44116cb4` |
+| [odd_response.py](code/uncapped-peak-consumer-codex-a7c4/odd_response.py) | 6,580 | `3d7ac7667a28ebbac47b99f36734979df06603c32b3195bb2465150286894555` |
+| [ODD_RESPONSE.md](sources/uncapped-peak-consumer-codex-a7c4/ODD_RESPONSE.md) | 6,418 | `841a91dc8a5a04977cf1215840f1dcba14542ce670f4b7b6d78eea38395d8d72` |
+| [ODD_SMALL_BALL.md](sources/uncapped-peak-consumer-codex-a7c4/ODD_SMALL_BALL.md) | 5,552 | `93ded721fbf48131580848349b11310a73546361adbbc6d4494ad816d8c7026f` |
