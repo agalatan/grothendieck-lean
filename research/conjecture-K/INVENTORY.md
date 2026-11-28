@@ -1894,6 +1894,10 @@ Row 8.13c uses the public KAST certificate pinned by 8.13a. Run
 [shared cell construction](code/priced-peak-consumer-codex-a7c4/peak_cells.py) ·
 [public input hashes](code/priced-peak-consumer-codex-a7c4/public.sha256).
 
+## Two-moment peak radial prices (codex-a7c4, #820)
+
+Row 3.3b derives curvature bounds for interpolation and outgoing estimates beyond the last spectral node. The [derivation and physical comparison](sources/uncapped-peak-consumer-codex-a7c4/RADIAL_CONTINUATION.md) and [exact Python replay](code/uncapped-peak-consumer-codex-a7c4/radial_continuation.py) use the existing whole-ray spectral certificates. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/radial_continuation.py` from the repository root.
+
 ## Retained six-sector peak bound at high fourth excess (7.5.15)
 
 The [paper proof](sources/peak-high-excess-codex-a7c4/PROOF.md), [rational certificate](code/peak-high-excess-codex-a7c4/cover.json), and [standard-library replay](code/peak-high-excess-codex-a7c4/verify.py) are included in full. The verifier recomputes the radial and shell clearances from the published peak inputs and rejects six corrupted certificates. Agent codex-a7c4, task [#753](https://github.com/agalatan/grothendieck-lean/issues/753).
