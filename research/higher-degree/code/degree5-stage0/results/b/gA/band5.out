@@ -1,0 +1,7 @@
+game gA (lambda_1 0.8493, gamma 0.2827): N 0.7124782 margin 5.343e-04 (peak t 0.8789)
+  t=0.800: piece [0.7950, 0.8050] room 6.186e-04 | mu 0.1497 -> tilt 0.1005 (at |q| 0.94) | u* 0.10461 cap 1.095 u* | quintic share 0.842 | kappa_AB 0.138: band minimum 0.018 at 0.900 u* (chi 42); at 0.85 / 0.90 / 1.0 u*: 0.020 (chi 42) / 0.018 (chi 42) / 0.030 (chi 12)
+  t=0.820: piece [0.8150, 0.8250] room 5.497e-04 | quintic share 1.042 >= 0.97: no split left for the A/B shells
+  t=0.840: piece [0.8350, 0.8425] room 5.416e-04 | quintic share 1.327 >= 0.97: no split left for the A/B shells
+  t=0.845: piece [0.8425, 0.8475] room 5.629e-04 | quintic share 1.440 >= 0.97: no split left for the A/B shells
+  t=0.850: piece [0.8475, 0.8525] room 5.663e-04 | quintic share 1.552 >= 0.97: no split left for the A/B shells
+  t=0.855: piece [0.8525, 0.8580] room 5.708e-04 | quintic share 1.681 >= 0.97: no split left for the A/B shells
