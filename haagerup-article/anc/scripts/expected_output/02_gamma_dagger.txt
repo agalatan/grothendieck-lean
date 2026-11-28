@@ -8,8 +8,8 @@
   accelerated alternating series sum (-1)^k r_k          : 0.7119586597782638015124585488054
   1 / gamma-dagger                                       : 1.4045759346637420327739584715481
   partial sums S_1999 and S_2000 bracket it              : [0.711958628532, 0.711958690993]
-  [ok] (floating point) quadrature and hypergeometric form agree to 30 digits
-  [ok] (floating point) accelerated series and quadrature agree to 30 digits
+  [ok] (floating point) quadrature and hypergeometric form agree to 40 digits
+  [ok] (floating point) accelerated series and quadrature agree to 40 digits
   [ok] (floating point) the quadrature value lies between the partial sums S_1999 and S_2000
   [ok] (floating point) the quadrature value lies inside the exact enclosure of part (b)
 
@@ -32,6 +32,17 @@
   [ok] (exact) b * q_0 * pi_hi / 2 < 0.711958683
   1.40456 * 0.711958683 = 0.99998868779448  (140456 * 711958683 = 99998868779448)
   [ok] (exact) 1.40456 * 0.711958683 < 1, hence 1.40456 < 1/gamma-dagger
+  [ok] (exact) 1.4045758 < 1/0.711958683 = 1.404575888851... and 1/0.711958633 = 1.404575987492... < 1.4045760, hence 1.4045758 < 1/gamma-dagger < 1.4045760
   [ok] (exact) the certified slope c - delta exceeds the upper bound of gamma-dagger (c - delta - upper = 9.370547e-06)
 
-RESULT: all 13 checks passed
+(c) Haagerup's bound of 1987, for orientation (floating point, mpmath, 50 digits)
+---------------------------------------------------------------------------------
+  s with phi(s) = pi (s + 1) / 8 : 0.81255785882147244232
+  gamma_H = phi(s)               : 0.71178980668499792911
+  1 / gamma_H                    : 1.4049091327357955355
+  [ok] (floating point) the residual of the equation is below 1e-40, and 0 < s < 1
+  [ok] (floating point) 0.7117898066 < gamma_H < 0.7117898067 and 1.4049091327 < 1/gamma_H < 1.4049091328
+  [ok] (floating point) 1.404898554746 < 1/gamma_H - 10^-5 (the upper bound of Heilman, Jones and Malavolta quoted in the paper)
+  [ok] (floating point) gamma_H < gamma-dagger: 1/gamma_H - 1/gamma-dagger = 0.000333198
+
+RESULT: all 18 checks passed

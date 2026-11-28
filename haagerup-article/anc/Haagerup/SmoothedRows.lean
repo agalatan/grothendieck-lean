@@ -1,18 +1,28 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.SmoothedMidpoints
 import Haagerup.SmoothedContraction
 
-/-! From the two dot products to the interval for one smoothed energy row.
+/-!
+# The energies of the smoothed map: the terms of the energy formula
 
+`smoothedTerms_sound` combines steps (3)–(5) of Appendix A.4 (the energies of the smoothed map) of the article
+(`kBlock_dot` in `SmoothedContraction.lean`, `energyBox_sound` in `SmoothedEnergy.lean`): the interval
+`smoothedTerm` computed by the checker contains the term of the energy formula (A.5) with index
+`a₂ = p`, `b₂ = d₂ - p`. `tableEncloses` is the hypothesis on the midpoints of the numbers `χ` of step (1). The sum
+over `a₂` and the table of rows are treated in `CellOverlap.lean`.
 -/
 
 set_option warningAsError true
-set_option maxRecDepth 4096
-set_option exponentiation.threshold 2048
 
 namespace Haagerup
 open Finset HaagerupKernel HaagerupKernel.Cell
 noncomputable section
 
+/-- `tableEncloses ct st se sc bt`: for `b ≤ 167` and `a ≤ 251 - b`, the entry `(b, a)` of the table `bt` is a row of
+midpoints at scale `1 / sc` of the numbers `χ(a, b; j)`, `j ≤ a + b` (`rowEncloses`; step (1) of Appendix A.4). -/
 def tableEncloses (ct st se sc : ℝ) (bt : MidTable) : Prop :=
   ∀ b ≤ 167, ∀ a ≤ 251-b, rowEncloses (bCoeff ct (-(se*st)) st (se*ct) a b) sc (a+b+1)
     ((bt.getD b #[]).getD a (#[],0))
@@ -36,6 +46,10 @@ private theorem smoothedTerm_box (binom : Array (Array Nat)) (bt : MidTable) (re
   unfold energyBox rowDot rowError
   rfl
 
+/-- One term of the energy formula (A.5): for `k ≤ 250`, `d₂ ≤ min 167 (250 - k)` and `p ≤ d₂`, the interval
+`smoothedTerm … k d₂ p` contains `choose (k+1) p₁ * choose k q₁ * ‖𝒯‖² / (k + 1)`, where `𝒯 = outerAmp` for `(a₁,
+a₂) = (p₁, p) = (k + 1 - p, p)` and `(b₁, b₂) = (q₁, q) = (k - q, q)`, `q = d₂ - p`; the term is `0` (and the
+interval is `{0}`) unless `p ≤ k + 1` and `q ≤ k`. -/
 theorem smoothedTerms_sound {cr ci : Array Int} {gm : GammaMids} {bt512 bt400 : MidTable}
     {ct st se : ℝ} {k d2 : ℕ} (hk : k ≤ 250) (hd : d2 ≤ min 167 (250-k))
     (hg : ∀ j1 < k+2, ∀ j2 < k+1,

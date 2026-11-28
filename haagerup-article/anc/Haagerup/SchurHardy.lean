@@ -1,3 +1,7 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.SchurGaussian
 import Haagerup.ChaosRealise
 import Mathlib.Analysis.Calculus.ParametricIntegral
@@ -8,21 +12,36 @@ import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Periodic
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 
-set_option warningAsError true
-
 /-!
-# Holomorphic Hardy continuation and real Mehler identification
+# Holomorphy, real covariances and Parseval's identity for the tails
 
-The analytic part of the weighted square-sum Hardy tail hypothesis `∀ J, ∑_{n < J} h_n² ρ^{2(2n+1)} ≤ B` of
-`hardy_tail` (`Transfer.lean`); the finite checks that use it are in `TaylorHardySound.lean`:
-1. Holomorphy of Gaussian-type parametric integrals (`differentiableOn_integral_exp`);
-2. Analytic continuation and circle Parseval inequality for odd power series
-   (`hasSum_odd_of_eqOn_real`, `sum_sq_le_of_mean_le`);
-3. The half-angle circle chart `chartPt`, the positivity condition `KerPos` and the Gaussian denominator
-   `gaussDenominator`; holomorphy of the continued correlation on the disk where `KerPos` holds;
-4. Real cross-covariance Gaussian law identification (`integral_pair_eq_kHol`, `law_swap_gen`) and the
-   identification of the channel series on the real axis (`hreal_smoothed`, `hreal_unsmoothed`).
+The analytic statements of Section 7 (the tails) of the article that do not involve a finite computation. With
+the functional `HholPair F G R = Θ_{F,G}[R]` of Definition 7.2 and the kernel bound of `SchurGaussian.lean`, the
+file provides the following.
+
+1. `differentiableOn_integral_exp`: holomorphy of integrals `∫ c(q) g(t) exp (∑ₖ αₖ(t) mₖ(q)) dμ(q)` with a uniform
+   Gaussian majorant.
+2. Lemma 7.10 (Hardy tail), first part and Parseval step: an odd power series `∑ⱼ hⱼ t^(2j+1)` which agrees on
+   `(0, 1)` with a function holomorphic on `|t| < r` represents it on the whole disk (`hasSum_odd_of_eqOn_real`),
+   and a bound `B` for the mean of `‖f‖²` on the circle `|t| = ρ` gives `∑ⱼ hⱼ² ρ^(2(2j+1)) ≤ B`
+   (`sum_sq_le_of_mean_le`). The Cauchy–Schwarz step of the lemma is `hardy_tail` in `Transfer.lean`.
+3. The definitions used by the computations on circles: the chart `chartPt` (equation (5.4) of Section 5.2
+   (correlation matrices and Schur denominators)), the positivity `KerPos` (the conclusion of Lemma 7.1, used in
+   place of the set `Ω` of the article), and the Schur denominator `gaussDenominator` (`Λ_β` of Definition 5.3).
+4. The matrices `RtGen m00 m01 m11 P Q t = M diag (t P(t²), t Q(t²)) M`, of which the six matrices `Γ_p(t)` of
+   Section 5.2 are instances, and Lemma 7.4 (holomorphy) for them: `differentiableOn_HholPair_RtGen`.
+5. Lemma 7.3 (real covariances), namespace `HardyReal`: for a real matrix `R` with `I - R²` positive definite,
+   `kHol R` is the density of two pairs of Gaussian vectors with cross-covariance `R` (`kHol_real`,
+   `integral_pair_eq_kHol`), and the pair of smoothed Gaussian vectors of the proof of Lemma 7.6 has this law
+   (`law_swap_gen`).
+6. Lemma 7.6: for `0 < t < 1` the channel series is the value of `HholPair` at `Γ_p(t)`, for the channels built from
+   the smoothed map (`hreal_smoothed`) and for the others (`hreal_unsmoothed`).
+
+The reduction to the boundary (Lemma 7.5), the soundness of the computations on circles and the resulting bounds for
+the six channels are in `TaylorHardySound.lean`.
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -71,6 +90,10 @@ private lemma exists_ball_re_le {α : Fin n → ℂ → ℂ} {t₀ : ℂ} (hα :
   rw [hsplit]
   nlinarith [h q, hN q, mul_le_mul_of_nonneg_right hnδ (hN q)]
 
+/-- Holomorphy of a parametric integral with Gaussian majorant. Let `αₖ` (`k < n`) and `g` be holomorphic on the open
+set `U`, let `‖c‖ ≤ 1` and `|mₖ| ≤ N`, and suppose that for every `t ∈ U` there is `l > 0` with
+`Re (∑ₖ αₖ(t) mₖ(q)) ≤ -l N(q)` for all `q`. If `exp (-l N)` and `N exp (-l N)` are integrable for every `l > 0`,
+then `t ↦ ∫ c(q) g(t) exp (∑ₖ αₖ(t) mₖ(q)) dμ(q)` is holomorphic on `U`. -/
 theorem differentiableOn_integral_exp {U : Set ℂ} (hU : IsOpen U) {α : Fin n → ℂ → ℂ}
     (hα : ∀ k, DifferentiableOn ℂ (α k) U) {g : ℂ → ℂ} (hg : DifferentiableOn ℂ g U)
     {m : Fin n → Ω → ℝ} (hm : ∀ k, Measurable (m k)) {c : Ω → ℂ}
@@ -190,10 +213,12 @@ end HolIntegral
 
 /-! ### 2. Analytic continuation & Parseval for odd power series -/
 
+/-- The coefficient sequence of the odd power series `∑ⱼ hⱼ z^(2j+1)`: `h ((n - 1) / 2)` for odd `n`, and `0` for
+even `n`. -/
 private def oddCoeff (h : ℕ → ℝ) (n : ℕ) : ℂ := if Odd n then (h (n / 2) : ℂ) else 0
 
 private lemma oddCoeff_odd (h : ℕ → ℝ) (j : ℕ) : oddCoeff h (2 * j + 1) = h j := by
-  simp [oddCoeff]; congr 2; omega
+  simp only [oddCoeff, even_two, Even.mul_right, Even.add_one, ↓reduceIte, ofReal_inj]; congr 2; omega
 
 private lemma hasSum_oddCoeff_iff (h : ℕ → ℝ) (z S : ℂ) :
     HasSum (fun n => oddCoeff h n • z ^ n) S ↔
@@ -207,6 +232,7 @@ private lemma hasSum_oddCoeff_iff (h : ℕ → ℝ) (z S : ℂ) :
   have : ¬ Odd n := fun ho => hn ⟨n / 2, by obtain ⟨k, rfl⟩ := ho; simp only; omega⟩
   simp [oddCoeff, this]
 
+/-- The formal power series `∑ⱼ hⱼ z^(2j+1)`. -/
 private def oddSeries (h : ℕ → ℝ) : FormalMultilinearSeries ℂ ℂ ℂ := ofScalars ℂ (oddCoeff h)
 
 private lemma one_le_radius_oddSeries {h : ℕ → ℝ} (hs : Summable fun j => |h j|) :
@@ -221,6 +247,9 @@ private lemma one_le_radius_oddSeries {h : ℕ → ℝ} (hs : Summable fun j => 
     exact le_trans (by rw [ofScalars_norm]) (hb n)
   simpa using this
 
+/-- Lemma 7.10 (Hardy tail), first assertion: if `f` is holomorphic on the disk `|z| < r` with `r > 1`, the real
+sequence `h` is absolutely summable and `f(t) = ∑ⱼ hⱼ t^(2j+1)` for real `0 < t < 1`, then the series converges to
+`f(z)` for all `|z| < r`. -/
 theorem hasSum_odd_of_eqOn_real {f : ℂ → ℂ} {r : ℝ} (hr : 1 < r)
     (hf : DifferentiableOn ℂ f (ball 0 r)) {h : ℕ → ℝ} (hs : Summable fun j => |h j|)
     (heq : ∀ t : ℝ, 0 < t → t < 1 → HasSum (fun j => (h j : ℂ) * (t : ℂ) ^ (2 * j + 1)) (f t)) :
@@ -304,6 +333,8 @@ theorem summable_abs_of_hasSum_ball {f : ℂ → ℂ} {h : ℕ → ℝ} {r ρ : 
     _ ≤ C * q ^ (2 * j + 1) := by gcongr
     _ = C * q * (q ^ 2) ^ j := by ring
 
+/-- The continuous function `θ ↦ aᵢ aⱼ exp (2 (i - j) iθ)` for an index pair `(i, j)`: a term of the double series for
+`‖∑ⱼ aⱼ exp ((2j + 1) iθ)‖²`. -/
 private def parsevalTerm (a : ℕ → ℝ) (i : ℕ × ℕ) : C(ℝ, ℂ) :=
   ⟨fun θ => ((a i.1 * a i.2 : ℝ) : ℂ) * Complex.exp (2 * ((i.1 : ℂ) - i.2) * (θ * I)), by fun_prop⟩
 
@@ -328,6 +359,8 @@ private lemma integral_parsevalTerm (a : ℕ → ℝ) (i : ℕ × ℕ) :
       rw [this, Complex.exp_int_mul_two_pi_mul_I]
     push_cast; simp [h1]
 
+/-- Parseval's identity on the circle of radius `ρ` for an odd power series:
+`∫₀^{2π} ‖f(ρ e^{iθ})‖² dθ = 2π ∑ⱼ (hⱼ ρ^(2j+1))²`. -/
 theorem hasSum_parseval_odd {f : ℂ → ℂ} {h : ℕ → ℝ} {ρ : ℝ}
     (hsum : ∀ θ : ℝ, HasSum (fun j => (h j : ℂ) * ((ρ : ℂ) * Complex.exp (θ * I)) ^ (2 * j + 1))
       (f ((ρ : ℂ) * Complex.exp (θ * I))))
@@ -391,6 +424,8 @@ theorem hasSum_parseval_odd {f : ℂ → ℂ} {h : ℕ → ℝ} {ρ : ℝ}
       simp [this]
   exact_mod_cast hdiag
 
+/-- Lemma 7.10 (Hardy tail), Parseval step: if the mean of `‖f‖²` on the circle `|t| = ρ` is at most `B`, then
+`∑_{j < J} hⱼ² ρ^(2(2j+1)) ≤ B` for every `J`. This is the hypothesis of `hardy_tail` (`Transfer.lean`). -/
 theorem sum_sq_le_of_mean_le {f : ℂ → ℂ} {h : ℕ → ℝ} {ρ B : ℝ}
     (hsum : ∀ θ : ℝ, HasSum (fun j => (h j : ℂ) * ((ρ : ℂ) * Complex.exp (θ * I)) ^ (2 * j + 1))
       (f ((ρ : ℂ) * Complex.exp (θ * I))))
@@ -410,16 +445,26 @@ theorem sum_sq_le_of_mean_le {f : ℂ → ℂ} {h : ℕ → ℝ} {ρ B : ℝ}
 
 /-! ### 3. Half-angle circle chart, kernel positivity and the Gaussian denominator -/
 
+/-- The sign `-1` if `neg = true` and `1` otherwise. -/
 def sigB (neg : Bool) : ℂ := if neg then -1 else 1
 
+/-- The chart `±t_ρ(s) = ±ρ (1 - s² + 2is) / (1 + s²)` of the circle of radius `ρ` (equation (5.4) of the article;
+`s = tan (θ / 2)` for the point `ρ e^{iθ}`), with the sign `-` if `neg = true`. For `s ∈ [0, 1]` and `neg = false`
+it runs through the arc of the circle in the first quadrant. -/
 def chartPt (rho : ℝ) (neg : Bool) (s : ℝ) : ℂ :=
   sigB neg * (((rho * (1 - s ^ 2) / (1 + s ^ 2) : ℝ) : ℂ) +
     ((rho * (2 * s) / (1 + s ^ 2) : ℝ) : ℂ) * Complex.I)
 
+/-- `KerPos R l`: the real part of the quadratic form `q_R(x, y) = xᵀ𝖠x + yᵀ𝖠y - 2 xᵀ𝖢y` is at least
+`l (|x|² + |y|²)`. For some `l > 0` this is the conclusion of Lemma 7.1; it is used in place of the condition
+`R ∈ Ω` of the article. -/
 def KerPos (R : Sym2C) (l : ℝ) : Prop :=
   ∀ x y : ℝ × ℝ, l * (x.1 ^ 2 + x.2 ^ 2 + y.1 ^ 2 + y.2 ^ 2) ≤
     (R.Amat.form x x + R.Amat.form y y - 2 * R.Cmat.form x y).re
 
+/-- The Schur denominator `Λ_j(R) = 16 j² |det (I - R²)|² det 𝖹 det (𝖳 + j I) det (𝖳 + 2𝖤 + j I)` of Definition 5.3
+(the article writes `Λ_β(Γ)`). It is meaningful when `𝖹` and `𝖳` are positive definite; then
+`‖HholPair F G R‖² ≤ 1 / Λ_j(R)` by `SchurMainGaussian.norm_HholPair_sq_le`. -/
 def gaussDenominator (R : Sym2C) (j : ℝ) : ℝ :=
   16 * j ^ 2 * ‖R.detIm‖ ^ 2 * (Z (Bj R j)).det *
     (shifted (T (Bj R j) R.Cmat) j).det *
@@ -433,15 +478,19 @@ private lemma detIm_ne_zero_of_kerPos {R : Sym2C} {l : ℝ} (hl : 0 < l) (h : Ke
   have := h (1, 0) (0, 0)
   simp [Sym2C.Amat, Sym2C.Cmat, Sym2C.form, h0] at this; linarith
 
+/-- The six coefficients `(𝖠₁₁, 𝖠₁₂, 𝖠₂₂, 𝖢₁₁, 𝖢₁₂, 𝖢₂₂)` of the exponent `kExp R`. -/
 private def coefK (R : Sym2C) : Fin 6 → ℂ :=
   ![R.Amat.a, R.Amat.b, R.Amat.c, R.Cmat.a, R.Cmat.b, R.Cmat.c]
 
+/-- The six real quadratic monomials in `(x, y)` for which `kExp R x y = ∑ₖ coefK R k * monoK x y k`. -/
 private def monoK (x y : ℝ × ℝ) : Fin 6 → ℝ :=
   ![-(x.1 ^ 2 + y.1 ^ 2) / 2, -(x.1 * x.2 + y.1 * y.2), -(x.2 ^ 2 + y.2 ^ 2) / 2,
     x.1 * y.1, x.1 * y.2 + x.2 * y.1, x.2 * y.2]
 
+/-- The sum of `monoK` over the two pairs `(x, y)` and `(ξ, η)` of a point `q = ((x, ξ), (y, η))` of `(ℝ²)⁴`. -/
 private def mK (k : Fin 6) (q : Pt8) : ℝ := monoK q.1.1 q.2.1 k + monoK q.1.2 q.2.2 k
 
+/-- The squared Euclidean norm of a point of `(ℝ²)⁴ = ℝ⁸`. -/
 private def N8 (q : Pt8) : ℝ :=
   q.1.1.1 ^ 2 + q.1.1.2 ^ 2 + q.1.2.1 ^ 2 + q.1.2.2 ^ 2 +
     q.2.1.1 ^ 2 + q.2.1.2 ^ 2 + q.2.2.1 ^ 2 + q.2.2.2 ^ 2
@@ -579,6 +628,9 @@ private lemma HholPair_eq (F G : ℂ × ℂ → ℂ) (R : Sym2C) :
   unfold HholPair
   exact integral_congr_ae (Filter.Eventually.of_forall fun _ => by simp only [kHol, ← kExp_add_eq_sum])
 
+/-- The complex symmetric matrix `M diag (p, q) M` with `M = !![m00, m01; m01, m11]`, `p = t P(t²)` and `q = t Q(t²)`.
+The matrices `Γ_p(t)` of equation (5.3) of the article are of this form: `Q = -X` and `M` the matrix of Section 5.2
+for the channels `0, 1, 5`, and `M = I` for the diagonal matrices of the channels `2, 3, 4`. -/
 def RtGen (m00 m01 m11 : ℝ) (P Q : ℝ[X]) (t : ℂ) : Sym2C :=
   let p : ℂ := t * Polynomial.aeval (t ^ 2) P
   let q : ℂ := t * Polynomial.aeval (t ^ 2) Q
@@ -597,6 +649,9 @@ private lemma differentiable_RtGen_entries (m00 m01 m11 : ℝ) (P Q : ℝ[X]) :
    ((differentiable_const _).mul (differentiable_odd P)).add
     ((differentiable_const _).mul (differentiable_odd Q))⟩
 
+/-- Lemma 7.4 (holomorphy) for the matrices `RtGen`: if `F`, `G` are measurable and bounded by one and every `t` in
+the open set `U` satisfies `KerPos (RtGen … t) l` for some `l > 0`, then `t ↦ Θ_{F,G}[RtGen … t]` is holomorphic
+on `U`. -/
 theorem differentiableOn_HholPair_RtGen {F G : ℂ × ℂ → ℂ}
     (hF : Measurable F) (hG : Measurable G)
     (hFb : ∀ u, ‖F u‖ ≤ 1) (hGb : ∀ u, ‖G u‖ ≤ 1)
@@ -633,20 +688,31 @@ theorem differentiableOn_HholPair_RtGen {F G : ℂ × ℂ → ℂ}
 
 namespace HardyReal
 
+/-- The entry `(1, 1)` of `I - R²` for the real symmetric matrix `R = !![a, b; b, c]`. -/
 def k11 (a b : ℝ) : ℝ := 1 - a ^ 2 - b ^ 2
+/-- The entry `(1, 2)` of `I - R²` for `R = !![a, b; b, c]`. -/
 def k12 (a b c : ℝ) : ℝ := -(a * b + b * c)
+/-- The entry `(2, 2)` of `I - R²` for `R = !![a, b; b, c]`. -/
 def k22 (b c : ℝ) : ℝ := 1 - b ^ 2 - c ^ 2
+/-- The determinant `det (I - R²)` for `R = !![a, b; b, c]`. -/
 def kdet (a b c : ℝ) : ℝ := k11 a b * k22 b c - k12 a b c ^ 2
 
+/-- The entry `(1, 1)` of the lower triangular Cholesky factor `S` of `I - R² = S Sᵀ`. -/
 def s11 (a b : ℝ) : ℝ := √(k11 a b)
+/-- The entry `(2, 1)` of the Cholesky factor `S` of `I - R²`. -/
 def s21 (a b c : ℝ) : ℝ := k12 a b c / s11 a b
+/-- The entry `(2, 2)` of the Cholesky factor `S` of `I - R²`. -/
 def s22 (a b c : ℝ) : ℝ := √(kdet a b c / k11 a b)
 
+/-- The vector `S⁻¹ d`, by forward substitution with the Cholesky factor `S` of `I - R²`. -/
 def solveS (a b c : ℝ) (d : ℝ × ℝ) : ℝ × ℝ :=
   (d.1 / s11 a b, (d.2 - s21 a b c * (d.1 / s11 a b)) / s22 a b c)
+/-- The vector `S w`, for the Cholesky factor `S` of `I - R²`. -/
 def mulS (a b c : ℝ) (w : ℝ × ℝ) : ℝ × ℝ :=
   (s11 a b * w.1, s21 a b c * w.1 + s22 a b c * w.2)
+/-- The vector `R x`, for `R = !![a, b; b, c]`. -/
 def mulR (a b c : ℝ) (x : ℝ × ℝ) : ℝ × ℝ := (a * x.1 + b * x.2, b * x.1 + c * x.2)
+/-- The bilinear form `uᵀ !![p, q; q, r] v`. -/
 def qf (p q r : ℝ) (u v : ℝ × ℝ) : ℝ := p * u.1 * v.1 + q * (u.1 * v.2 + u.2 * v.1) + r * u.2 * v.2
 
 section Alg
@@ -690,6 +756,7 @@ theorem chol_quad (h : 0 < k11 a b) (hd : 0 < kdet a b c) (x y : ℝ × ℝ) :
 
 end Alg
 
+/-- The real symmetric matrix `!![a, b; b, c]` as a complex symmetric matrix. -/
 def Rre (a b c : ℝ) : Sym2C := ⟨a, b, c⟩
 
 lemma detIm_real {a b c : ℝ} : (Rre a b c).detIm = (kdet a b c : ℂ) := by
@@ -705,6 +772,7 @@ theorem kExp_real {a b c : ℝ} (h : 0 < k11 a b) (hd : 0 < kdet a b c) (x y : �
   simp only [Sym2C.sq, Rre, qf, kdet, k11, k12, k22] at hdc ⊢
   push_cast; field_simp; ring
 
+/-- The standard Gaussian density `(2π)⁻¹ exp (-|x|² / 2)` on `ℝ²` (`phi2_eq`). -/
 def phi2 (x : ℝ × ℝ) : ℝ := gaussianPDFReal 0 1 x.1 * gaussianPDFReal 0 1 x.2
 
 lemma phi2_nonneg (x : ℝ × ℝ) : 0 ≤ phi2 x :=
@@ -712,6 +780,7 @@ lemma phi2_nonneg (x : ℝ × ℝ) : 0 ≤ phi2 x :=
 
 @[fun_prop] lemma measurable_phi2 : Measurable phi2 := by unfold phi2; fun_prop
 
+/-- The exchange of the two middle coordinates, `((a, b), (c, d)) ↦ ((a, c), (b, d))`. -/
 def shuffle {α : Type*} (q : (α × α) × (α × α)) : (α × α) × (α × α) :=
   ((q.1.1, q.2.1), (q.1.2, q.2.2))
 
@@ -741,6 +810,8 @@ lemma mu2_eq_map : mu2 = (gauss2.prod gauss2).map fun q => toC2 q.1 q.2 := by
   conv_lhs => rw [e]
   rw [Measure.map_map hm hs.measurable]; rfl
 
+/-- An integral over `ℂ²` against `γ_ℂ ⊗ γ_ℂ` is the integral over `ℝ² × ℝ²` of `g ((x + iξ) / √2)` against the
+standard Gaussian density. -/
 theorem integral_mu2_eq {g : ℂ × ℂ → ℂ} (hg : AEStronglyMeasurable g mu2) :
     ∫ u, g u ∂mu2 = ∫ q : (ℝ × ℝ) × (ℝ × ℝ), ((phi2 q.1 * phi2 q.2 : ℝ) : ℂ) * g (toC2 q.1 q.2) := by
   have hmeas : Measurable fun q : (ℝ × ℝ) × (ℝ × ℝ) => toC2 q.1 q.2 := by unfold toC2; fun_prop
@@ -754,6 +825,7 @@ theorem integral_mu2_eq {g : ℂ × ℂ → ℂ} (hg : AEStronglyMeasurable g mu
   rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal (phi2_nonneg _), ENNReal.toReal_ofReal (phi2_nonneg _),
     Complex.real_smul]
 
+/-- The map `w ↦ S w` as a linear map of `ℝ²`. -/
 def linS (a b c : ℝ) : (ℝ × ℝ) →ₗ[ℝ] (ℝ × ℝ) where
   toFun := mulS a b c
   map_add' u v := by ext <;> simp [mulS] <;> ring
@@ -766,8 +838,10 @@ lemma det_linS {a b c : ℝ} : LinearMap.det (linS a b c) = s11 a b * s22 a b c 
 lemma measurable_solveS {a b c : ℝ} : Measurable (solveS a b c) := by unfold solveS; fun_prop
 lemma measurable_mulR {a b c : ℝ} : Measurable (mulR a b c) := by unfold mulR; fun_prop
 
+/-- The space `ℝ² × ℝ²` of a pair `(x, ξ)`: real and imaginary parts (times `√2`) of a point of `ℂ²`. -/
 abbrev Pt4 := (ℝ × ℝ) × (ℝ × ℝ)
 
+/-- The standard Gaussian density on `ℝ² × ℝ² = ℝ⁴`. -/
 def psi (q : Pt4) : ℝ := phi2 q.1 * phi2 q.2
 lemma psi_nonneg (q : Pt4) : 0 ≤ psi q := mul_nonneg (phi2_nonneg _) (phi2_nonneg _)
 @[fun_prop] lemma measurable_psi : Measurable psi := by unfold psi; fun_prop
@@ -775,8 +849,11 @@ lemma psi_nonneg (q : Pt4) : 0 ≤ psi q := mul_nonneg (phi2_nonneg _) (phi2_non
 instance : (volume : Measure Pt4).IsAddHaarMeasure := by
   rw [Measure.volume_eq_prod]; infer_instance
 
+/-- The map `(x, ξ) ↦ (S x, S ξ)`. -/
 def mulS4 (a b c : ℝ) (r : Pt4) : Pt4 := (mulS a b c r.1, mulS a b c r.2)
+/-- The map `(x, ξ) ↦ (R x, R ξ)`. -/
 def mulR4 (a b c : ℝ) (p : Pt4) : Pt4 := (mulR a b c p.1, mulR a b c p.2)
+/-- The map `(x, ξ) ↦ (S⁻¹ x, S⁻¹ ξ)`. -/
 def solve4 (a b c : ℝ) (s : Pt4) : Pt4 := (solveS a b c s.1, solveS a b c s.2)
 
 @[fun_prop] lemma measurable_solve4 {a b c : ℝ} : Measurable (solve4 a b c) := by
@@ -787,6 +864,7 @@ def solve4 (a b c : ℝ) (s : Pt4) : Pt4 := (solveS a b c s.1, solveS a b c s.2)
   unfold mulR4
   exact (measurable_mulR.comp measurable_fst).prodMk (measurable_mulR.comp measurable_snd)
 
+/-- The map `mulS4` as a linear map of `ℝ² × ℝ²`; its determinant is `(det S)²`. -/
 def linS4 (a b c : ℝ) : Pt4 →ₗ[ℝ] Pt4 := (linS a b c).prodMap (linS a b c)
 
 lemma det_linS4 {a b c : ℝ} : LinearMap.det (linS4 a b c) = (s11 a b * s22 a b c) ^ 2 := by
@@ -823,7 +901,9 @@ lemma integral_psi : ∫ q : Pt4, (psi q : ℂ) = 1 := by
   rw [MeasureTheory.integral_const, probReal_univ, one_smul] at h
   simpa [psi] using h.symm
 
+/-- The vector `R u` for `u ∈ ℂ²`. -/
 def mulRc (a b c : ℝ) (u : ℂ × ℂ) : ℂ × ℂ := ((a : ℂ) * u.1 + b * u.2, (b : ℂ) * u.1 + c * u.2)
+/-- The vector `S w` for `w ∈ ℂ²`. -/
 def mulSc (a b c : ℝ) (w : ℂ × ℂ) : ℂ × ℂ :=
   ((s11 a b : ℂ) * w.1, (s21 a b c : ℂ) * w.1 + (s22 a b c : ℂ) * w.2)
 
@@ -836,6 +916,8 @@ lemma toC2_affine {a b c : ℝ} (p r : Pt4) :
 lemma phi2_eq (u : ℝ × ℝ) : phi2 u = (2 * Real.pi)⁻¹ * Real.exp (-(u.1 ^ 2 + u.2 ^ 2) / 2) :=
   gaussianPDFReal_mul u.1 u.2
 
+/-- For a real matrix `R` with `I - R²` positive definite, the kernel `kHol R` at `(p, s)` is the joint density
+`ψ(p) ψ(S⁻¹ (s - R p)) / (det S)²` of `(p, R p + S r)` for independent standard Gaussian `p, r ∈ ℝ⁴`. -/
 theorem kHol_real {a b c : ℝ} (h : 0 < k11 a b) (hd : 0 < kdet a b c) (p s : Pt4) :
     kHol (Rre a b c) p.1 p.2 s.1 s.2 =
       ((psi p * psi (solve4 a b c (s - mulR4 a b c p)) / (s11 a b * s22 a b c) ^ 2 : ℝ) : ℂ) := by
@@ -901,6 +983,8 @@ lemma integral_psi_solve4 {a b c : ℝ} (h : 0 < k11 a b) (hd : 0 < kdet a b c) 
       ∫ s : Pt4, psi (solve4 a b c (s - mulR4 a b c p)) = 1 := by exact_mod_cast e2.symm
   exact ((inv_mul_eq_one₀ hpos.ne').1 e3).symm
 
+/-- The joint density `ψ(p) ψ(S⁻¹ (s - R p)) / (det S)²` at `q = (p, s)` of the pair `(p, R p + S r)`, where `p` and
+`r` are independent standard Gaussian vectors of `ℝ⁴`; it equals `kHol (Rre a b c)` (`kHol_real`). -/
 def dens (a b c : ℝ) (q : Pt4 × Pt4) : ℝ :=
   psi q.1 * psi (solve4 a b c (q.2 - mulR4 a b c q.1)) / (s11 a b * s22 a b c) ^ 2
 
@@ -927,6 +1011,9 @@ lemma integrable_dens {a b c : ℝ} (h : 0 < k11 a b) (hd : 0 < kdet a b c) :
     show psi p = ∫ s, ‖dens a b c (p, s)‖
     rw [e, MeasureTheory.integral_const_mul, integral_psi_solve4 h hd p, div_mul_cancel₀ _ hpos.ne']
 
+/-- Lemma 7.3 (real covariances): for a real matrix `R` with `I - R²` positive definite and a bounded measurable `f`,
+the expectation of `f (u, R u + S w)` for independent `u, w` of law `γ_ℂ ⊗ γ_ℂ` is the integral of `f` against the
+kernel `kHol R`. The pair `(u, R u + S w)` has cross-covariance `R`. -/
 theorem integral_pair_eq_kHol {a b c : ℝ} (h : 0 < k11 a b) (hd : 0 < kdet a b c)
     {f : (ℂ × ℂ) × (ℂ × ℂ) → ℂ} (hf : Measurable f) {C : ℝ} (hC : ∀ z, ‖f z‖ ≤ C) :
     ∫ u, (∫ w, f (u, mulRc a b c u + mulSc a b c w) ∂mu2) ∂mu2 =
@@ -964,6 +1051,10 @@ theorem integral_pair_eq_kHol {a b c : ℝ} (h : 0 < k11 a b) (hd : 0 < kdet a b
   rw [inner p, ← mul_assoc, ← MeasureTheory.integral_const_mul]; congr 1; ext s
   simp only [dens, psi]; push_cast; ring
 
+/-- For the smoothed pair `X̃ = M X + N g`, `Ỹ = M Y + N g'` of the proof of Lemma 7.6, with `Y₁ = p X₁ + σ₁ X₁'` and
+`Y₂ = q X₂ + σ₂ X₂'`: the sum of the squares of the coefficients of the eight independent variables
+`X₁, X₂, X₁', X₂', g₁, g₂, g₁', g₂'` in the combination `α₀ X̃₁ + α₁ X̃₂ + α₂ Ỹ₁ + α₃ Ỹ₂`. Here
+`M = !![m00, m01; m01, m11]` and `N = !![n00, n01; n01, n11]`. -/
 def covMehler (m00 m01 m11 n00 n01 n11 p q σ₁ σ₂ : ℝ) (α : Fin 4 → ℝ) : ℝ :=
   (m00 * α 0 + m01 * α 1 + m00 * p * α 2 + m01 * p * α 3) ^ 2 +
   (m01 * α 0 + m11 * α 1 + m01 * q * α 2 + m11 * q * α 3) ^ 2 +
@@ -972,10 +1063,14 @@ def covMehler (m00 m01 m11 n00 n01 n11 p q σ₁ σ₂ : ℝ) (α : Fin 4 → �
   (n00 * α 0 + n01 * α 1) ^ 2 + (n01 * α 0 + n11 * α 1) ^ 2 +
   (n00 * α 2 + n01 * α 3) ^ 2 + (n01 * α 2 + n11 * α 3) ^ 2
 
+/-- For the pair `(u, R u + S w)`: the sum of the squares of the coefficients of the four independent variables
+`u₁, u₂, w₁, w₂` in the combination `α₀ u₁ + α₁ u₂ + α₂ (R u + S w)₁ + α₃ (R u + S w)₂`. -/
 def covPair (a b c : ℝ) (α : Fin 4 → ℝ) : ℝ :=
   (α 0 + a * α 2 + b * α 3) ^ 2 + (α 1 + b * α 2 + c * α 3) ^ 2 +
   (s11 a b * α 2 + s21 a b c * α 3) ^ 2 + (s22 a b c * α 3) ^ 2
 
+/-- The two pairs have the same covariance: `covMehler = covPair` if `M² + N² = I`, `σ₁² = 1 - p²`, `σ₂² = 1 - q²` and
+`R = M diag (p, q) M`. -/
 theorem cov_eq {m00 m01 m11 n00 n01 n11 p q σ₁ σ₂ : ℝ}
     (hM00 : m00 ^ 2 + m01 ^ 2 + n00 ^ 2 + n01 ^ 2 = 1)
     (hM01 : m00 * m01 + m01 * m11 + n00 * n01 + n01 * n11 = 0)
@@ -998,6 +1093,8 @@ theorem cov_eq {m00 m01 m11 n00 n01 n11 p q σ₁ σ₂ : ℝ}
     (α 1 ^ 2 + α 3 ^ 2) * hM11 + (m00 * α 2 + m01 * α 3) ^ 2 * hσ₁ +
     (m01 * α 2 + m11 * α 3) ^ 2 * hσ₂
 
+/-- The squared norm `ℓ(1)² + ℓ(i)²` of a real-linear functional `ℓ` on `ℂ`; the characteristic function of `γ_ℂ` at
+`ℓ` is `exp (-Qform ℓ / 4)`. -/
 def Qform (ℓ : StrongDual ℝ ℂ) : ℝ := ℓ 1 ^ 2 + ℓ I ^ 2
 
 lemma charFunDual_mu2 (L : StrongDual ℝ (ℂ × ℂ)) :
@@ -1022,6 +1119,7 @@ lemma dual_ofReal_mul (ℓ : StrongDual ℝ ℂ) (r : ℝ) (z : ℂ) : ℓ ((r :
 lemma dual_ofReal (ℓ : StrongDual ℝ ℂ) (r : ℝ) : ℓ (r : ℂ) = r * ℓ 1 := by
   rw [← dual_ofReal_mul, mul_one]
 
+/-- The restriction of a real-linear functional `L` on `ℂ² × ℂ²` to its `j`-th complex coordinate, `j < 4`. -/
 def Lc (L : StrongDual ℝ ((ℂ × ℂ) × (ℂ × ℂ))) (j : Fin 4) : StrongDual ℝ ℂ :=
   match j with
   | 0 => (L.comp (.inl ℝ (ℂ × ℂ) (ℂ × ℂ))).comp (.inl ℝ ℂ ℂ)
@@ -1038,6 +1136,9 @@ lemma L_apply (L : StrongDual ℝ ((ℂ × ℂ) × (ℂ × ℂ))) (z : (ℂ × �
     ContinuousLinearMap.inr_apply]
   rfl
 
+/-- The real-linear map `(ω, (Z, Z')) ↦ (X̃, Ỹ)` with `X̃ = M X + N Z` and `Ỹ = M Y + N Z'`, where `X = Xof ω` and
+`Y = Yof p q ω` are the correlated pair of Lemma 2.6 (correlation of two functions) built from `ω ∈ ℂ² × ℂ²`.
+Under the product Gaussian measure this is the smoothed pair of the proof of Lemma 7.6. -/
 def mehlerPairGen (m00 m01 m11 n00 n01 n11 p q : ℝ) :
     ((ℂ × ℂ) × (ℂ × ℂ)) × ((ℂ × ℂ) × (ℂ × ℂ)) →L[ℝ] (ℂ × ℂ) × (ℂ × ℂ) :=
   LinearMap.toContinuousLinearMap
@@ -1051,6 +1152,7 @@ def mehlerPairGen (m00 m01 m11 n00 n01 n11 p q : ℝ) :
           RingHom.id_apply]
         ext <;> simp <;> ring }
 
+/-- The real-linear map `(u, w) ↦ (u, R u + S w)` of `ℂ² × ℂ²`. -/
 def pairMap (a b c : ℝ) : (ℂ × ℂ) × (ℂ × ℂ) →L[ℝ] (ℂ × ℂ) × (ℂ × ℂ) :=
   LinearMap.toContinuousLinearMap
     { toFun := fun v => (v.1, mulRc a b c v.1 + mulSc a b c v.2)
@@ -1060,6 +1162,9 @@ def pairMap (a b c : ℝ) : (ℂ × ℂ) × (ℂ × ℂ) →L[ℝ] (ℂ × ℂ) 
         simp only [mulRc, mulSc, Prod.smul_fst, Prod.smul_snd, Prod.smul_mk, RingHom.id_apply]
         ext <;> simp <;> ring }
 
+/-- The law of the smoothed pair `(X̃, Ỹ)` (`mehlerPairGen`) equals the law of `(u, R u + S w)` (`pairMap`) with
+`R = M diag (p, q) M`, if `M² + N² = I`, `|p|, |q| ≤ 1` and `I - R²` is positive definite. Both are centred Gaussian
+measures; the proof compares characteristic functions (`cov_eq`). -/
 theorem law_swap_gen {m00 m01 m11 n00 n01 n11 p q : ℝ}
     (hM00 : m00 ^ 2 + m01 ^ 2 + n00 ^ 2 + n01 ^ 2 = 1)
     (hM01 : m00 * m01 + m01 * m11 + n00 * n01 + n01 * n11 = 0)
@@ -1165,6 +1270,9 @@ lemma RtGen_real (m00 m01 m11 : ℝ) (P Q : ℝ[X]) (t : ℝ) :
     rw [← Complex.ofReal_pow]; exact (Polynomial.ofReal_eval (K := ℂ) _ _).symm
   simp only [RtGen, HardyReal.Rre, e1, e2]; push_cast; ring_nf
 
+/-- Lemma 7.6 for the channels built from the smoothed map: for `0 < t < 1` and polynomials with `‖P‖₁, ‖Q‖₁ ≤ 1`,
+the channel series of `(smoothMap ct st se ce F, P, Q)` at `t` sums to `Θ_{F ∘ uRot}[M diag (t P(t²), t Q(t²)) M]`,
+where `M` is the matrix of Section 5.2 of the article and `F ∘ uRot` the rotated cell map. -/
 theorem hreal_smoothed {ct st se ce : ℝ} (hd : ct ^ 2 + st ^ 2 = 1) (he : se ^ 2 + ce ^ 2 = 1)
     {F : ℂ × ℂ → ℂ} (hFm : Measurable F) (hF1 : ∀ v, ‖F v‖ ≤ 1)
     (hFch : ∀ c v, ‖c‖ = 1 → F (rot2 c v) = c * F v)
@@ -1265,6 +1373,8 @@ theorem hreal_smoothed {ct st se ce : ℝ} (hd : ct ^ 2 + st ^ 2 = 1) (he : se ^
     Real.norm_of_nonneg ht0.le]
   exact mul_le_of_le_one_right (abs_nonneg _) (pow_le_one₀ ht0.le ht1.le)
 
+/-- Lemma 7.6 for the channels without smoothing: for `0 < t < 1` the channel series of `(G, P, Q)` at `t` sums to
+`Θ_G[diag (t P(t²), t Q(t²))]`. -/
 theorem hreal_unsmoothed {G : ℂ × ℂ → ℂ} (hGm : Measurable G) (hG1 : ∀ u, ‖G u‖ ≤ 1)
     (hGch : ∀ c u, ‖c‖ = 1 → G (rot2 c u) = c * G u) (hGL : MemLp G 2 mu2)
     {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1)

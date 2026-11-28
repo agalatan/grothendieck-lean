@@ -1,3 +1,7 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Mathlib.Analysis.SpecialFunctions.Gaussian.FourierTransform
 import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.MeasureTheory.Measure.CharacteristicFunction.Basic
@@ -9,17 +13,46 @@ import Mathlib.Analysis.SpecialFunctions.PolarCoord
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Algebra.MvPolynomial.PDeriv
 
-set_option warningAsError true
-
 /-!
-# Complex Gaussian measure, planar Gaussian integrals, and Hermite Hilbert bases
+# The complex Gaussian measure and the Hermite basis
 
-Self-contained foundation for the complex Gaussian chaos expansion on `ℂ` and `ℂ × ℂ`:
-* 2D Gaussian integrals with complex and real linear terms (`Gauss2.integral_g`, `Gauss2.integral_gR`);
-* Standard complex Gaussian `gaussC` on `ℂ` and `mu2 = gaussC ⊗ gaussC` on `ℂ × ℂ`, their
-  characteristic functions, polar representation, rotation invariance, and monomial moments;
-* Complex Hermite polynomials `H p q` on `ℂ` and tensor Hermite basis `hermiteBasis2` on `L²(mu2)`.
+This file formalises the Gaussian preliminaries of Section 2 (Preliminaries) of the article: the standard complex
+Gaussian measure `γ_ℂ` on `ℂ`, the complex Hermite polynomials, the orthonormal basis they form in
+`L²(ℂ², γ_ℂ ⊗ γ_ℂ)`, and the vanishing of the Hermite coefficients of charge different from one.
+
+## Main definitions
+
+* `gaussC`: the standard complex Gaussian measure `γ_ℂ`, the law of `(x₁ + i x₂) / √2` for independent standard
+  real Gaussians `x₁, x₂` (Section 2.2, Complex Gaussian variables); `mu2 = gaussC ⊗ gaussC` on `ℂ × ℂ`.
+* `CPoly`: polynomials in two variables `X 0`, `X 1` over `ℂ`, which stand for `z` and `conj z`; `ev z P` is the
+  value `P(z, conj z)`, `Ef P` its integral against `gaussC`, and `ip f g = ∫ conj f * g`.
+* `H p q`: the Wick monomial `:z^p conj(z)^q:` of Section 2.3 (Complex Hermite polynomials), defined by the creation
+  operators `A0`, `A1`; `hfun (p, q) = H p q / √(p! q!)` is the complex Hermite polynomial `𝓗_{p,q}`.
+* `Idx2`, `H2`, `hfun2`, `hvec2`: multi-indices `𝐚 = ((a₁, b₁), (a₂, b₂))`, the product Wick monomial `:z^𝐚:`, and
+  the product Hermite polynomial `𝓗_𝐚` as a function and as an element of `L²(mu2)`.
+* `hermiteBasis2`: the family `𝓗_𝐚` as a Hilbert basis of `L²(mu2)`.
+
+## Main results
+
+* `Gauss2.integral_g`, `Gauss2.integral_gR`: the integral over `ℝ²` of the exponential of a quadratic polynomial
+  with positive definite quadratic part (used in `Haagerup/SchurGaussian.lean`).
+* `map_rot_gaussC`, `integral_gaussC_polar`, `integral_moment`: rotation invariance of `γ_ℂ`, integration in polar
+  coordinates, and the moments `∫ z^a conj(z)^b dγ_ℂ = δ_{ab} a!` (Section 2.2, Complex Gaussian variables).
+* `map_mehlerY`: for `|ρ| ≤ 1` and independent standard complex Gaussians `X, X'`, the variable
+  `ρ X + √(1 - |ρ|²) X'` of Definition 2.1 (Gaussian pair) is a standard complex Gaussian.
+* `integral_hermite`, `integral_hermite2`, `orthonormal_hvec2`: orthogonality of the Wick monomials, with
+  `‖:z^𝐚:‖² = 𝐚!`.
+* `poly_complete`, `hermite_complete`, `complete_prod`, `hermite2_complete`: completeness of the polynomials in
+  Gaussian `L²` and of the Hermite polynomials on `ℂ` and `ℂ²`. Together with orthogonality this is the last
+  assertion of Lemma 2.3 (Mehler's formula) and its extension to `ℂ²` stated after that lemma.
+* `hasSum_energy2`: Parseval's identity `∑_𝐚 |Ĝ(𝐚)|² = ‖G‖²`.
+* `integral_H2_charge_one`: Lemma 2.5 (charge selection): if `g(c z₁, c z₂) = c g(z₁, z₂)` for all unimodular `c`
+  (Definition 2.4, charge one), then `⟨:z^𝐚:, g⟩ = 0` unless `a₁ + a₂ = b₁ + b₂ + 1`.
+
+Mehler's formula itself (Lemma 2.3) is proved in `Haagerup/ChaosRealise.lean`.
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -32,6 +65,8 @@ noncomputable section
 
 namespace Gauss2
 
+/-- The function `x ↦ exp(-(a x₁² + 2 b x₁ x₂ + c x₂²) / 2 + u x₁ + v x₂)` on `ℝ²`, with real `a, b, c` and
+complex `u, v`. -/
 def g (a b c : ℝ) (u v : ℂ) (x : ℝ × ℝ) : ℂ :=
   cexp (-(a * x.1 ^ 2 + 2 * b * x.1 * x.2 + c * x.2 ^ 2) / 2 + u * x.1 + v * x.2)
 
@@ -109,6 +144,8 @@ lemma integrable_g {a b c : ℝ} (ha : 0 < a) (hdet : 0 < a * c - b ^ 2) (u v : 
   simp_rw [hre]
   exact (integrable_outer ha hdet _ _).re
 
+/-- For `a > 0` and `a c - b² > 0`, the integral of `g a b c u v` over `ℝ²` is
+`2π / √(a c - b²) * exp((c u² - 2 b u v + a v²) / (2 (a c - b²)))`. -/
 theorem integral_g {a b c : ℝ} (ha : 0 < a) (hdet : 0 < a * c - b ^ 2) (u v : ℂ) :
     ∫ x : ℝ × ℝ, g a b c u v x =
       ((2 * π / √(a * c - b ^ 2) : ℝ) : ℂ) *
@@ -133,6 +170,8 @@ theorem integral_g {a b c : ℝ} (ha : 0 < a) (hdet : 0 < a * c - b ^ 2) (u v : 
   field_simp
   ring
 
+/-- The real function `x ↦ exp(-(a x₁² + 2 b x₁ x₂ + c x₂²) / 2 + u x₁ + v x₂)` on `ℝ²`: the function `g` for real
+`u, v`. -/
 def gR (a b c u v : ℝ) (x : ℝ × ℝ) : ℝ :=
   Real.exp (-(a * x.1 ^ 2 + 2 * b * x.1 * x.2 + c * x.2 ^ 2) / 2 + u * x.1 + v * x.2)
 
@@ -145,6 +184,8 @@ lemma integrable_gR {a b c : ℝ} (ha : 0 < a) (hdet : 0 < a * c - b ^ 2) (u v :
   refine h.congr (Filter.Eventually.of_forall fun x => ?_)
   simp [g_ofReal]
 
+/-- The real form of `integral_g`: for `a > 0` and `a c - b² > 0`, the integral of `gR a b c u v` over `ℝ²` is
+`2π / √(a c - b²) * exp((c u² - 2 b u v + a v²) / (2 (a c - b²)))`. -/
 theorem integral_gR {a b c : ℝ} (ha : 0 < a) (hdet : 0 < a * c - b ^ 2) (u v : ℝ) :
     ∫ x : ℝ × ℝ, gR a b c u v x =
       2 * π / √(a * c - b ^ 2) *
@@ -162,8 +203,10 @@ end Gauss2
 
 /-! ### 2. Standard complex Gaussian `gaussC`, characteristic function, polar coordinates -/
 
+/-- The standard Gaussian measure on `ℝ × ℝ`: the product of two standard real Gaussian measures. -/
 abbrev gauss2 : Measure (ℝ × ℝ) := (gaussianReal 0 1).prod (gaussianReal 0 1)
 
+/-- The standard Gaussian measure on `ℝ^d = Fin d → ℝ`: the product of `d` standard real Gaussian measures. -/
 def stdGaussian (d : ℕ) : Measure (Fin d → ℝ) := Measure.pi fun _ => gaussianReal 0 1
 
 instance (d : ℕ) : IsProbabilityMeasure (stdGaussian d) := by unfold stdGaussian; infer_instance
@@ -185,19 +228,25 @@ lemma integral_gauss2_eq (F : ℝ × ℝ → ℝ) :
   congr 1; ext p
   rw [ENNReal.toReal_mul, toReal_gaussianPDF, toReal_gaussianPDF, smul_eq_mul]
 
+/-- The map `(x₀, x₁) ↦ (x₀ + i x₁) / √2` from `ℝ² = Fin 2 → ℝ` to `ℂ`. -/
 def toC (x : Fin 2 → ℝ) : ℂ := ((x 0 : ℂ) + (x 1 : ℂ) * Complex.I) / ((√2 : ℝ) : ℂ)
 
 lemma continuous_toC : Continuous toC := by unfold toC; fun_prop
 
 lemma measurable_toC : Measurable toC := continuous_toC.measurable
 
+/-- The standard complex Gaussian measure `γ_ℂ` on `ℂ`: the law of `(x₀ + i x₁) / √2` for independent standard real
+Gaussians `x₀, x₁`. Its density with respect to Lebesgue measure is `π⁻¹ exp(-|z|²)`
+(`integral_gaussC_eq_volume`). -/
 def gaussC : Measure ℂ := (stdGaussian 2).map toC
 
 instance : IsProbabilityMeasure gaussC :=
   ⟨by rw [gaussC, Measure.map_apply measurable_toC MeasurableSet.univ, Set.preimage_univ, measure_univ]⟩
 
+/-- The product measure `γ_ℂ ⊗ γ_ℂ` on `ℂ × ℂ`. -/
 abbrev mu2 : Measure (ℂ × ℂ) := gaussC.prod gaussC
 
+/-- The map `(x₀, x₁) ↦ (x₀ + i x₁) / √2` from `ℝ × ℝ` to `ℂ` (the map `toC` on pairs). -/
 def toC' (p : ℝ × ℝ) : ℂ := ((p.1 : ℂ) + (p.2 : ℂ) * Complex.I) / ((√2 : ℝ) : ℂ)
 
 lemma measurable_toC' : Measurable toC' := by unfold toC'; fun_prop
@@ -215,6 +264,7 @@ lemma dual_complex_apply (L : StrongDual ℝ ℂ) (z : ℂ) :
     show (z.im : ℂ) * Complex.I = z.im • Complex.I by simp, map_smul, map_smul,
     smul_eq_mul, smul_eq_mul]
 
+/-- The map `toC` as a continuous `ℝ`-linear map. -/
 private def toCL : (Fin 2 → ℝ) →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap
     { toFun := toC
@@ -250,14 +300,19 @@ lemma charFunDual_gaussC (L : StrongDual ℝ ℂ) :
   rw [div_pow, div_pow, hs2]
   ring
 
+/-- The number `√(1 - |ρ|²)`, as a complex number: the coefficient of the independent variable `X'` in the
+Gaussian pair `(X, ρ X + √(1 - |ρ|²) X')` of Definition 2.1 of the article. -/
 def sig (ρ : ℂ) : ℂ := ((√(1 - ‖ρ‖ ^ 2) : ℝ) : ℂ)
 
+/-- The map `(u₁, u₂) ↦ ρ u₁ + √(1 - |ρ|²) u₂` as a continuous `ℝ`-linear map `ℂ × ℂ → ℂ`. -/
 private def mehlerL (ρ : ℂ) : ℂ × ℂ →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap
     { toFun := fun u => ρ * u.1 + sig ρ * u.2
       map_add' := fun u v => by simp; ring
       map_smul' := fun a u => by simp; ring }
 
+/-- For `|ρ| ≤ 1`, the image of `γ_ℂ ⊗ γ_ℂ` under `(u₁, u₂) ↦ ρ u₁ + √(1 - |ρ|²) u₂` is `γ_ℂ`: the second
+component of a Gaussian pair with correlation `ρ` (Definition 2.1) is a standard complex Gaussian. -/
 theorem map_mehlerY {ρ : ℂ} (hρ : ‖ρ‖ ≤ 1) :
     mu2.map (fun u => ρ * u.1 + sig ρ * u.2) = gaussC := by
   change mu2.map (mehlerL ρ) = gaussC
@@ -289,12 +344,14 @@ theorem map_mehlerY {ρ : ℂ} (hρ : ‖ρ‖ ≤ 1) :
   push_cast
   linear_combination -(1 / 4 : ℂ) * heC
 
+/-- Multiplication by `c` as a continuous `ℝ`-linear map `ℂ → ℂ`. -/
 private def rotCL (c : ℂ) : ℂ →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap
     { toFun := fun z => c * z
       map_add' := fun x y => by ring
       map_smul' := fun r x => by simp; ring }
 
+/-- The measure `γ_ℂ` is invariant under `z ↦ c z` for `|c| = 1`. -/
 theorem map_rot_gaussC (c : ℂ) (hc : ‖c‖ = 1) : gaussC.map (fun z => c * z) = gaussC := by
   change gaussC.map (rotCL c) = gaussC
   apply Measure.ext_of_charFunDual
@@ -372,6 +429,8 @@ theorem integral_gaussC_eq_volume (F : ℂ → ℝ) (hF : Measurable F) :
   rw [e5, e3, smul_eq_mul]
   norm_num; ring
 
+/-- Integration against `γ_ℂ` in polar coordinates `z = r e^{iθ}`, `r > 0`, `-π < θ < π`:
+`∫ F dγ_ℂ = ∫∫ F(r e^{iθ}) π⁻¹ r exp(-r²) dr dθ`. -/
 theorem integral_gaussC_polar (F : ℂ → ℝ) (hF : Measurable F) :
     ∫ z, F z ∂gaussC = ∫ p in Ioi (0 : ℝ) ×ˢ Ioo (-π) π,
       p.1 * (π⁻¹ * Real.exp (-p.1 ^ 2)) * F (Complex.polarCoord.symm p) := by
@@ -512,6 +571,7 @@ private lemma integral_moment_lt {a b : ℕ} (hab : b < a) :
   linear_combination (c ^ (k + 1) * (z ^ (b + (k + 1)) * conj z ^ b)) * hcb
     + (z ^ (b + (k + 1)) * conj z ^ b) * hck
 
+/-- The moments of `γ_ℂ`: `∫ z^a conj(z)^b dγ_ℂ` is `a!` if `a = b` and `0` otherwise. -/
 theorem integral_moment (a b : ℕ) :
     ∫ z, z ^ a * conj z ^ b ∂gaussC = if a = b then (a.factorial : ℂ) else 0 := by
   rcases lt_trichotomy a b with h | rfl | h
@@ -552,6 +612,7 @@ private lemma memLp_exp_sum_abs {d : ℕ} (c : Fin d → ℝ) :
   simp only; rw [sq, ← Real.exp_add, ← Finset.sum_add_distrib]
   congr 1; exact Finset.sum_congr rfl fun _ _ => by ring
 
+/-- The `i`-th coefficient `L(eᵢ)` of a linear functional `L` on `ℝ^d`. -/
 private def coefL {d : ℕ} (L : StrongDual ℝ (Fin d → ℝ)) (i : Fin d) : ℝ := L (Pi.single i 1)
 
 private lemma L_eq_sum {d : ℕ} (L : StrongDual ℝ (Fin d → ℝ)) (x : Fin d → ℝ) :
@@ -566,6 +627,7 @@ private lemma abs_L_le {d : ℕ} (L : StrongDual ℝ (Fin d → ℝ)) (x : Fin d
   refine (Finset.abs_sum_le_sum_abs _ _).trans (le_of_eq (Finset.sum_congr rfl fun _ _ => ?_))
   rw [abs_mul, mul_comm]
 
+/-- The linear polynomial `∑ᵢ L(eᵢ) Xᵢ`, whose value at `x` is `L x`. -/
 private def polyL {d : ℕ} (L : StrongDual ℝ (Fin d → ℝ)) : MvPolynomial (Fin d) ℝ :=
   ∑ i, C (coefL L i) * X i
 
@@ -619,6 +681,8 @@ private theorem integral_exp_mul_eq_zero {d : ℕ} {f : (Fin d → ℝ) → ℝ}
   simp_rw [hSN] at hlim
   exact tendsto_nhds_unique hlim tendsto_const_nhds
 
+/-- Polynomials are complete in `L²` of the standard Gaussian measure on `ℝ^d`: a square-integrable function
+orthogonal to all polynomials vanishes almost everywhere. -/
 theorem poly_complete {d : ℕ} {f : (Fin d → ℝ) → ℝ} (hf : MemLp f 2 (stdGaussian d))
     (h : ∀ P : MvPolynomial (Fin d) ℝ, ∫ x, f x * eval x P ∂(stdGaussian d) = 0) :
     f =ᵐ[stdGaussian d] 0 := by
@@ -676,10 +740,13 @@ end Completeness
 
 /-! ### 5. Complex Hermite polynomials on `ℂ` -/
 
+/-- Polynomials over `ℂ` in two variables `X 0` and `X 1`, which stand for `z` and `conj z`. -/
 abbrev CPoly := MvPolynomial (Fin 2) ℂ
 
+/-- The point `(z, conj z)` at which a polynomial of `CPoly` is evaluated. -/
 def zv (z : ℂ) : Fin 2 → ℂ := ![z, conj z]
 
+/-- The value `P(z, conj z)` of a polynomial `P` in `z` and `conj z` at `z : ℂ`. -/
 def ev (z : ℂ) (P : CPoly) : ℂ := eval (zv z) P
 
 lemma ev_monomial (z : ℂ) (s : Fin 2 →₀ ℕ) (c : ℂ) :
@@ -697,6 +764,7 @@ lemma integrable_ev (P : CPoly) : Integrable (fun z => ev z P) gaussC := by
   | monomial s c => simp_rw [ev_monomial]; exact (integrable_monomial (s 0) (s 1)).const_mul c
   | add _ _ hP hQ => simp_rw [ev, map_add]; exact hP.add hQ
 
+/-- The expectation `P ↦ ∫ P(z, conj z) dγ_ℂ(z)`, as a linear functional on `CPoly`. -/
 def Ef : CPoly →ₗ[ℂ] ℂ where
   toFun P := ∫ z, ev z P ∂gaussC
   map_add' P Q := by simp_rw [ev, map_add]; exact integral_add (integrable_ev P) (integrable_ev Q)
@@ -749,6 +817,8 @@ theorem Ef_X1_mul (P : CPoly) : Ef (X 1 * P) = Ef (pderiv 0 P) := by
       · simp [h]
   | add _ _ hP hQ => simp only [mul_add, map_add, hP, hQ]
 
+/-- Complex conjugation on `CPoly`: it conjugates the coefficients and exchanges the two variables, so that
+`ev z (conjP P) = conj (ev z P)`. -/
 def conjP : CPoly →+* CPoly :=
   (MvPolynomial.map (starRingEnd ℂ)).comp (rename (Equiv.swap (0 : Fin 2) 1)).toRingHom
 
@@ -780,6 +850,7 @@ lemma pderiv_conjP (i : Fin 2) (P : CPoly) :
     simp only [map_mul, conjP_X, Derivation.leibniz, smul_eq_mul, map_add, hP]
     fin_cases i <;> fin_cases k <;> simp [pderiv_X]
 
+/-- The inner product of `L²(γ_ℂ)` on polynomials: `ip f g = ∫ conj(f(z)) g(z) dγ_ℂ(z)` (`ip_eq_integral`). -/
 def ip (f g : CPoly) : ℂ := Ef (conjP f * g)
 
 lemma ip_eq_integral (f g : CPoly) : ip f g = ∫ z, conj (ev z f) * ev z g ∂gaussC := by
@@ -788,14 +859,22 @@ lemma ip_eq_integral (f g : CPoly) : ip f g = ∫ z, conj (ev z f) * ev z g ∂g
   show eval (zv z) (conjP f * g) = conj (ev z f) * ev z g
   rw [map_mul, ← ev_conjP]; rfl
 
+/-- The creation operator `f ↦ z f - ∂f/∂(conj z)`. It is adjoint to `∂/∂z` for `ip` (`ip_A0`) and maps the Wick
+monomial `:z^p conj(z)^q:` to `:z^(p+1) conj(z)^q:`. -/
 def A0 (f : CPoly) : CPoly := X 0 * f - pderiv 1 f
+/-- The creation operator `f ↦ conj(z) f - ∂f/∂z`. It is adjoint to `∂/∂(conj z)` for `ip` (`ip_A1`) and maps the
+Wick monomial `:z^p conj(z)^q:` to `:z^p conj(z)^(q+1):`. -/
 def A1 (f : CPoly) : CPoly := X 1 * f - pderiv 0 f
 
 lemma A0_smul (n : ℕ) (f : CPoly) : A0 (n • f) = n • A0 f := by
-  simp [A0, nsmul_eq_mul, mul_sub]; ring
+  simp only [A0, Fin.isValue, nsmul_eq_mul, Derivation.leibniz, smul_eq_mul, Derivation.map_natCast, mul_zero,
+    add_zero, mul_sub, sub_left_inj]
+  ring
 
 lemma A1_smul (n : ℕ) (f : CPoly) : A1 (n • f) = n • A1 f := by
-  simp [A1, nsmul_eq_mul, mul_sub]; ring
+  simp only [A1, Fin.isValue, nsmul_eq_mul, Derivation.leibniz, smul_eq_mul, Derivation.map_natCast, mul_zero,
+    add_zero, mul_sub, sub_left_inj]
+  ring
 
 lemma Ef_A0 (f : CPoly) : Ef (A0 f) = 0 := by rw [A0, map_sub, Ef_X0_mul, sub_self]
 lemma Ef_A1 (f : CPoly) : Ef (A1 f) = 0 := by rw [A1, map_sub, Ef_X1_mul, sub_self]
@@ -813,7 +892,9 @@ theorem ip_A1 (f g : CPoly) : ip (A1 f) g = ip f (pderiv 1 g) := by
   simp [smul_eq_mul, mul_comm]
 
 lemma pderiv0_A0 (f : CPoly) : pderiv 0 (A0 f) = f + A0 (pderiv 0 f) := by
-  simp [A0, Derivation.leibniz, pderiv_X, pderiv_comm]; ring
+  simp only [Fin.isValue, A0, map_sub, Derivation.leibniz, smul_eq_mul, pderiv_X, Pi.single_eq_same, mul_one,
+    pderiv_comm]
+  ring
 
 lemma pderiv0_A1 (f : CPoly) : pderiv 0 (A1 f) = A1 (pderiv 0 f) := by
   simp [A1, Derivation.leibniz, pderiv_X]
@@ -822,8 +903,12 @@ lemma pderiv1_A0 (f : CPoly) : pderiv 1 (A0 f) = A0 (pderiv 1 f) := by
   simp [A0, Derivation.leibniz, pderiv_X]
 
 lemma pderiv1_A1 (f : CPoly) : pderiv 1 (A1 f) = f + A1 (pderiv 1 f) := by
-  simp [A1, Derivation.leibniz, pderiv_X, ← pderiv_comm]; ring
+  simp only [Fin.isValue, A1, map_sub, Derivation.leibniz, smul_eq_mul, pderiv_X, Pi.single_eq_same, mul_one,
+    ← pderiv_comm]
+  ring
 
+/-- The Wick monomial `:z^p conj(z)^q:` of Section 2.3 of the article (the complex Hermite polynomial of bidegree
+`(p, q)` before normalisation), defined as `A0^p (A1^q 1)`. Its squared norm in `L²(γ_ℂ)` is `p! q!` (`ip_H`). -/
 def H (p q : ℕ) : CPoly := A0^[p] (A1^[q] 1)
 
 lemma H_succ_left (p q : ℕ) : H (p + 1) q = A0 (H p q) := by
@@ -836,7 +921,7 @@ lemma H_zero_zero : H 0 0 = 1 := rfl
 
 lemma A1_A0 (f : CPoly) : A1 (A0 f) = A0 (A1 f) := by
   simp only [A1, A0, map_sub, Derivation.leibniz, smul_eq_mul, pderiv_X_self, pderiv_comm]
-  simp; ring
+  simp only [Fin.isValue, mul_one]; ring
 
 lemma A1_H (p q : ℕ) : A1 (H p q) = H p (q + 1) := by
   induction p with
@@ -895,6 +980,7 @@ private lemma Ef_H (r s : ℕ) : Ef (H r s) = if r = 0 ∧ s = 0 then 1 else 0 :
     | zero => rw [H_zero_zero, Ef_one]; simp
     | succ _ => rw [H_zero_succ, Ef_A1]; simp
 
+/-- Orthogonality of the Wick monomials: `⟨H p q, H r s⟩ = p! q!` if `(p, q) = (r, s)` and `0` otherwise. -/
 theorem ip_H (p q r s : ℕ) :
     ip (H p q) (H r s) = if p = r ∧ q = s then ((p.factorial * q.factorial : ℕ) : ℂ) else 0 := by
   induction p generalizing r with
@@ -925,6 +1011,8 @@ theorem ip_H (p q r s : ℕ) :
       · have h' : ¬(0 = r ∧ 0 = s) := by omega
         simp [h, h']
 
+/-- Orthogonality of the Wick monomials in integral form:
+`∫ conj(H p q) * H r s dγ_ℂ = p! q!` if `(p, q) = (r, s)` and `0` otherwise. -/
 theorem integral_hermite (p q r s : ℕ) :
     ∫ z, conj (ev z (H p q)) * ev z (H r s) ∂gaussC
       = if p = r ∧ q = s then ((p.factorial * q.factorial : ℕ) : ℂ) else 0 := by
@@ -932,6 +1020,7 @@ theorem integral_hermite (p q r s : ℕ) :
 
 /-! ### 6. Completeness and Hilbert basis on `ℂ` and `ℂ × ℂ` -/
 
+/-- The linear span of the Wick monomials `H p q` in `CPoly`; it is all of `CPoly` (`mem_span_H`). -/
 private def spanH : Submodule ℂ CPoly :=
   Submodule.span ℂ (Set.range fun pq : ℕ × ℕ => H pq.1 pq.2)
 
@@ -977,6 +1066,8 @@ lemma memLp_conj_ev (P : CPoly) : MemLp (fun z => conj (ev z P)) 2 gaussC := by
     (Filter.Eventually.of_forall fun z => ?_)
   simp only [ev_conjP]
 
+/-- The substitution `x₀ = (z + conj z) / √2`, `x₁ = -i (z - conj z) / √2`, which turns a real polynomial in
+`(x₀, x₁)` into a polynomial in `z` and `conj z`: `ev (toC x) (realPoly P) = eval x P`. -/
 private def realPoly : MvPolynomial (Fin 2) ℝ →ₐ[ℝ] CPoly :=
   aeval ![C ((√2 : ℝ) : ℂ)⁻¹ * (X 0 + X 1), C (-Complex.I * ((√2 : ℝ) : ℂ)⁻¹) * (X 0 - X 1)]
 
@@ -996,6 +1087,7 @@ private lemma ev_toC_realPoly (x : Fin 2 → ℝ) (P : MvPolynomial (Fin 2) ℝ)
     · simp [realPoly, zv, toC]; field_simp
       linear_combination (-(x 1 : ℂ)) * hs + (-2 * (x 1 : ℂ)) * Complex.I_sq
 
+/-- The inverse `z ↦ (√2 Re z, √2 Im z)` of `toC`. -/
 private def fromC (z : ℂ) : Fin 2 → ℝ := ![√2 * z.re, √2 * z.im]
 
 private lemma fromC_toC (x : Fin 2 → ℝ) : fromC (toC x) = x := by
@@ -1015,6 +1107,8 @@ private lemma measurableEmbedding_toC : MeasurableEmbedding toC := by
     fromC_toC
   rw [Set.range_eq_univ.2 fun z => ⟨fromC z, toC_fromC z⟩]; exact MeasurableSet.univ
 
+/-- Completeness of the complex Hermite polynomials in `L²(γ_ℂ)` (the last assertion of Lemma 2.3, Mehler's
+formula): a square-integrable function orthogonal to every `H p q` vanishes almost everywhere. -/
 theorem hermite_complete {f : ℂ → ℂ} (hf : MemLp f 2 gaussC)
     (h : ∀ p q, ∫ z, conj (ev z (H p q)) * f z ∂gaussC = 0) : f =ᵐ[gaussC] 0 := by
   have hspan : ∀ P : CPoly, ∫ z, conj (ev z P) * f z ∂gaussC = 0 := fun P => by
@@ -1071,6 +1165,7 @@ theorem hermite_complete {f : ℂ → ℂ} (hf : MemLp f 2 gaussC)
     filter_upwards [hre, him] with x h1 h2; exact Complex.ext h1 h2
   exact measurableEmbedding_toC.ae_map_iff.2 hg0
 
+/-- The normalising factor `1 / √(p! q!)` of the Wick monomial `H p q`. -/
 def nrm (p q : ℕ) : ℝ := (√((p.factorial * q.factorial : ℕ) : ℝ))⁻¹
 
 lemma nrm_sq_mul (p q : ℕ) : nrm p q * nrm p q * ((p.factorial * q.factorial : ℕ) : ℝ) = 1 := by
@@ -1078,10 +1173,13 @@ lemma nrm_sq_mul (p q : ℕ) : nrm p q * nrm p q * ((p.factorial * q.factorial :
     have := Nat.factorial_pos p; have := Nat.factorial_pos q; positivity
   rw [nrm, ← mul_inv, Real.mul_self_sqrt h.le, inv_mul_cancel₀ h.ne']
 
+/-- The complex Hermite polynomial `𝓗_{p,q}(z) = :z^p conj(z)^q: / √(p! q!)` of bidegree `i = (p, q)`, as a
+function on `ℂ`. -/
 def hfun (i : ℕ × ℕ) (z : ℂ) : ℂ := (nrm i.1 i.2 : ℂ) * ev z (H i.1 i.2)
 
 lemma memLp_hfun (i : ℕ × ℕ) : MemLp (hfun i) 2 gaussC := (memLp_ev _).const_mul _
 
+/-- The complex Hermite polynomial `𝓗_{p,q}`, `i = (p, q)`, as an element of `L²(γ_ℂ)`. -/
 def hvec (i : ℕ × ℕ) : Lp ℂ 2 gaussC := (memLp_hfun i).toLp _
 
 lemma inner_toLp {α : Type*} [MeasurableSpace α] {μ : Measure α} {F G : α → ℂ}
@@ -1140,6 +1238,8 @@ private lemma memLp_integral_conj_mul {α β : Type*} [MeasurableSpace α] [Meas
     (norm_inner_le_norm (𝕜 := ℂ) (hg.toLp g) (hx.toLp (fun y => F (x, y)))) 2
   simpa only [inner_toLp, mul_pow, norm_toLp_sq] using h
 
+/-- Completeness passes to products: if the families `b i` and `c j` are complete in `L²(μ)` and `L²(ν)`, then the
+products `b i (x) * c j (y)` are complete in `L²(μ ⊗ ν)`. -/
 theorem complete_prod {α β ι κ : Type*} [MeasurableSpace α] [MeasurableSpace β] [Countable κ]
     {μ : Measure α} {ν : Measure β} [SFinite μ] [SFinite ν]
     (b : ι → α → ℂ) (c : κ → β → ℂ)
@@ -1178,10 +1278,14 @@ theorem complete_prod {α β ι κ : Type*} [MeasurableSpace α] [MeasurableSpac
 
 end ProductL2
 
+/-- Multi-indices `𝐚 = ((a₁, b₁), (a₂, b₂))` of the article: the bidegrees in the two coordinates of `ℂ²`. -/
 abbrev Idx2 := (ℕ × ℕ) × (ℕ × ℕ)
 
+/-- The product Wick monomial `:z^𝐚: = :z₁^a₁ conj(z₁)^b₁: * :z₂^a₂ conj(z₂)^b₂:` on `ℂ²`, for
+`i = ((a₁, b₁), (a₂, b₂))`. -/
 def H2 (i : Idx2) (u : ℂ × ℂ) : ℂ := ev u.1 (H i.1.1 i.1.2) * ev u.2 (H i.2.1 i.2.2)
 
+/-- The factorial `𝐚! = a₁! b₁! a₂! b₂!` of a multi-index. -/
 def fac2 (i : Idx2) : ℕ := i.1.1.factorial * i.1.2.factorial * (i.2.1.factorial * i.2.2.factorial)
 
 lemma memLp_H2 (i : Idx2) : MemLp (H2 i) 2 mu2 := by
@@ -1189,6 +1293,7 @@ lemma memLp_H2 (i : Idx2) : MemLp (H2 i) 2 mu2 := by
   exact memLp_prod_mul (f := fun z => ev z (H i.1.1 i.1.2)) (g := fun z => ev z (H i.2.1 i.2.2))
     (memLp_ev _) (memLp_ev _)
 
+/-- Orthogonality of the product Wick monomials in `L²(γ_ℂ ⊗ γ_ℂ)`, with `‖:z^𝐚:‖² = 𝐚!`. -/
 theorem integral_hermite2 (i j : Idx2) :
     ∫ u, conj (H2 i u) * H2 j u ∂mu2 = if i = j then (fac2 i : ℂ) else 0 := by
   have : ∀ u : ℂ × ℂ, conj (H2 i u) * H2 j u
@@ -1201,6 +1306,8 @@ theorem integral_hermite2 (i j : Idx2) :
     integral_hermite, integral_hermite]
   split_ifs <;> simp_all [Prod.ext_iff, fac2]
 
+/-- Completeness of the product Hermite polynomials: a function of `L²(γ_ℂ ⊗ γ_ℂ)` orthogonal to every `H2 i`
+vanishes almost everywhere. -/
 theorem hermite2_complete {F : ℂ × ℂ → ℂ} (hF : MemLp F 2 mu2)
     (h : ∀ i, ∫ u, conj (H2 i u) * F u ∂mu2 = 0) : F =ᵐ[mu2] 0 := by
   let b (i : ℕ × ℕ) (z : ℂ) := ev z (H i.1 i.2)
@@ -1209,6 +1316,7 @@ theorem hermite2_complete {F : ℂ × ℂ → ℂ} (hF : MemLp F 2 mu2)
     (fun hf hi => hermite_complete hf fun p q => hi (p, q)) hF
     (fun i j => h (i, j))
 
+/-- The normalising factor `1 / √(𝐚!)` of the product Wick monomial `H2 i`. -/
 def nrm2 (i : Idx2) : ℝ := (√(fac2 i : ℝ))⁻¹
 
 lemma fac2_pos (i : Idx2) : (0 : ℝ) < fac2 i := by
@@ -1219,10 +1327,13 @@ lemma fac2_pos (i : Idx2) : (0 : ℝ) < fac2 i := by
 
 lemma nrm2_pos (i : Idx2) : 0 < nrm2 i := by unfold nrm2; have := fac2_pos i; positivity
 
+/-- The product Hermite polynomial `𝓗_𝐚 = :z^𝐚: / √(𝐚!)`, as a function on `ℂ²`. -/
 def hfun2 (i : Idx2) (u : ℂ × ℂ) : ℂ := (nrm2 i : ℂ) * H2 i u
 
 lemma memLp_hfun2 (i : Idx2) : MemLp (hfun2 i) 2 mu2 := (memLp_H2 i).const_mul _
 
+/-- The product Hermite polynomial `𝓗_𝐚` as an element of `L²(γ_ℂ ⊗ γ_ℂ)`. For `G` in this space,
+`⟪hvec2 i, G⟫` is the Hermite coefficient `Ĝ(𝐚)` of the article. -/
 def hvec2 (i : Idx2) : Lp ℂ 2 mu2 := (memLp_hfun2 i).toLp _
 
 lemma inner_hvec2 (i j : Idx2) : ⟪hvec2 i, hvec2 j⟫_ℂ = if i = j then 1 else 0 := by
@@ -1239,6 +1350,7 @@ lemma inner_hvec2 (i j : Idx2) : ⟪hvec2 i, hvec2 j⟫_ℂ = if i = j then 1 el
     exact_mod_cast h1
   · simp [h]
 
+/-- The product Hermite polynomials are orthonormal in `L²(γ_ℂ ⊗ γ_ℂ)`. -/
 theorem orthonormal_hvec2 : Orthonormal ℂ hvec2 := orthonormal_iff_ite.2 inner_hvec2
 
 lemma inner_hvec2_left (i : Idx2) (G : Lp ℂ 2 mu2) :
@@ -1258,11 +1370,14 @@ theorem span_hvec2_perp : (Submodule.span ℂ (Set.range hvec2))ᗮ = ⊥ := by
     exact (mul_eq_zero.1 this).resolve_left (by exact_mod_cast (nrm2_pos i).ne')
   exact Lp.eq_zero_iff_ae_eq_zero.2 (hermite2_complete (Lp.memLp G) h0)
 
+/-- The product Hermite polynomials `𝓗_𝐚` as a Hilbert basis of `L²(γ_ℂ ⊗ γ_ℂ)` (Section 2.3 of the article,
+after Lemma 2.3). -/
 def hermiteBasis2 : HilbertBasis Idx2 ℂ (Lp ℂ 2 mu2) :=
   HilbertBasis.mkOfOrthogonalEqBot orthonormal_hvec2 span_hvec2_perp
 
 @[simp] lemma hermiteBasis2_apply (i : Idx2) : hermiteBasis2 i = hvec2 i := by simp [hermiteBasis2]
 
+/-- Parseval's identity for the Hermite basis: `∑_𝐚 |Ĝ(𝐚)|² = ‖G‖²`. -/
 theorem hasSum_energy2 (G : Lp ℂ 2 mu2) :
     HasSum (fun i => ‖⟪hvec2 i, G⟫_ℂ‖ ^ 2) (‖G‖ ^ 2) := by
   have h := lp.hasSum_norm (p := 2) (by norm_num) (hermiteBasis2.repr G)
@@ -1272,6 +1387,8 @@ theorem hasSum_energy2 (G : Lp ℂ 2 mu2) :
 
 /-! ### 8. Rotation action on `CPoly` and charge selection -/
 
+/-- The substitution `z ↦ c z`, `conj z ↦ conj(c) conj(z)` on `CPoly`: `ev z (rotP c P) = ev (c * z) P`
+(`ev_rotP`). -/
 def rotP (c : ℂ) : CPoly →ₐ[ℂ] CPoly := aeval ![C c * X 0, C (conj c) * X 1]
 
 lemma ev_rotP (c z : ℂ) (P : CPoly) : ev z (rotP c P) = ev (c * z) P := by
@@ -1290,10 +1407,10 @@ private lemma pderiv_rotP (c : ℂ) (j : Fin 2) (P : CPoly) :
     simp only [map_mul, Derivation.leibniz, smul_eq_mul, map_add, hP]
     fin_cases i <;> fin_cases j <;> simp [rotP, pderiv_X] <;> ring
 
-private lemma A0_C_mul (k : ℂ) (g : CPoly) : A0 (C k * g) = C k * A0 g := by
+lemma A0_C_mul (k : ℂ) (g : CPoly) : A0 (C k * g) = C k * A0 g := by
   simp only [A0, Derivation.leibniz, smul_eq_mul, pderiv_C, mul_zero, add_zero]; ring
 
-private lemma A1_C_mul (k : ℂ) (g : CPoly) : A1 (C k * g) = C k * A1 g := by
+lemma A1_C_mul (k : ℂ) (g : CPoly) : A1 (C k * g) = C k * A1 g := by
   simp only [A1, Derivation.leibniz, smul_eq_mul, pderiv_C, mul_zero, add_zero]; ring
 
 private lemma rotP_A0 {c : ℂ} (hc : conj c * c = 1) (f : CPoly) :
@@ -1354,6 +1471,7 @@ lemma exists_charge_witness {p q : ℕ} (hpq : p ≠ q + 1) :
     Complex.exp_pi_mul_I]
   norm_num
 
+/-- The rotation `(z₁, z₂) ↦ (c z₁, c z₂)` of `ℂ²`. -/
 def rot2 (c : ℂ) (u : ℂ × ℂ) : ℂ × ℂ := (c * u.1, c * u.2)
 
 lemma map_rot2 {c : ℂ} (hc : ‖c‖ = 1) : mu2.map (rot2 c) = mu2 := by
@@ -1364,6 +1482,9 @@ lemma H2_rot2 {c : ℂ} (hcc : conj c * c = 1) (i : Idx2) (u : ℂ × ℂ) :
     H2 i (rot2 c u) = c ^ (i.1.1 + i.2.1) * conj c ^ (i.1.2 + i.2.2) * H2 i u := by
   simp only [H2, rot2, ev_mul_H hcc, pow_add]; ring
 
+/-- **Charge selection** (Lemma 2.5 of the article). If `g ∈ L²(γ_ℂ ⊗ γ_ℂ)` has charge one, that is,
+`g(c z₁, c z₂) = c g(z₁, z₂)` for all `|c| = 1`, then `⟨:z^𝐚:, g⟩ = 0` for every multi-index whose charge
+`a₁ - b₁ + a₂ - b₂` is not `1`. -/
 theorem integral_H2_charge_one {g : ℂ × ℂ → ℂ} (hg : MemLp g 2 mu2)
     (hch : ∀ c u, ‖c‖ = 1 → g (rot2 c u) = c * g u) {i : Idx2}
     (hi : i.1.1 + i.2.1 ≠ i.1.2 + i.2.2 + 1) : ∫ u, conj (H2 i u) * g u ∂mu2 = 0 := by

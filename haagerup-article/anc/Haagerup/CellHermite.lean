@@ -1,20 +1,40 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.CellMap
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
-set_option warningAsError true
-
 /-!
-# Polar Hermite-Laguerre overlaps for `cellFn` and square-root-free smoothed energy
+# Hermite coefficients of cell maps, the reflected channel, and the energies of the smoothed map
 
-1. Proves the square-root-free Laguerre polynomial identities (`rTilde`) and the polar evaluation
-   formula `ev_H_polar` for complex Hermite polynomials `H p q` on `ℂ`;
-2. Integrates `conj (H2 i u) * cellFn creArr cimArr u` in polar coordinates over `mu2`, cancelling
-   `2π · π⁻¹ · (1/2) = 1` identically so no `π`, `√`, or `Γ` factors remain;
-3. Proves `tig_bivarKernel_eq` for any antisymmetric channel `(-R, R)`;
-4. Proves `smoothed_energy_eq` expressing `energy (toLp (smoothMap ct st se ce (cellFn ...))) (d₁, d₂)`
-   for odd `d₁ + d₂ = 2k + 1` via `gScaled`, `bCoeff`, and binomial coefficients with zero square roots.
+This file computes the Hermite coefficients of a cell map `cellFn creArr cimArr` (Section 4.1, Cell maps) in
+terms of integrals of Laguerre polynomials over the radial intervals, and derives the two formulas that the
+certified computations evaluate: the overlaps of a cell map (Section 4.2, The reflected pair) and the energies of
+the smoothed map (Appendix A.4, The energies of `f_sm`). No square roots occur in these formulas.
 
+## Main definitions
+
+* `rTilde n a`: the Laguerre polynomial with the sign `(-1)ⁿ`, `(-1)ⁿ L_n^{(a)}`.
+* `cellLagInt a n i`: the integral `(-1)ⁿ I_{n,a,i}`, where
+  `I_{n,a,i} = ∫_{s_i}^{s_{i+1}} s^(a/2) L_n^{(a)}(s) e^(-s) ds` and `s_i = (3i/32)²` (equation (A.2)).
+* `modeOverlap creArr cimArr (m + 17) n₁ n₂`: the sum
+  `∑_{i,j} (c_{m+17,i,j} / 2²⁴) * cellLagInt |m| n₁ i * cellLagInt |1-m| n₂ j` of Lemma 4.4.
+* `muTigOf creArr cimArr n`: the right-hand side of equation (4.6), which is the overlap `μ_n(F)` of the cell map.
+* `gScaled creArr cimArr n k l`: the number `t_{k,l} / n!` of equation (A.5).
+
+## Main results
+
+* `H_eq_rTilde_nonneg`, `ev_H_polar`: the Wick monomials in polar coordinates, equation (2.3).
+* `integral_H2_cellFn_charge_one`: Lemma 4.4 (Hermite coefficients of a cell map).
+* `tig_bivarKernel_eq`: for a cell map `F` with `|F| ≤ 1`, the channel series of `(F, -R, R)` is
+  `h_k = ∑_{n ≤ k} μ_n(F) [X^(k-n)] R^(2n+1)` with `μ_n(F) = muTigOf creArr cimArr n`. This is Lemma 4.5
+  (Antisymmetric preprocessing) together with Proposition 4.6 (Overlaps of a cell map).
+* `smoothed_energy_eq`: the energy formula (A.5) for the smoothed map of a cell map, obtained from Lemma 4.10
+  (Hermite coefficients of the smoothed map, `integral_H2_smoothMap`) and Lemma 4.4.
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -24,8 +44,11 @@ open scoped ComplexConjugate InnerProductSpace
 
 noncomputable section
 
-/-! ### 1. Normalized Laguerre polynomials `rTilde n a = (-1)^n L_n^{(a)}` -/
+/-! ### 1. The Laguerre polynomials `rTilde n a = (-1)^n L_n^{(a)}` -/
 
+/-- The Laguerre polynomial with the sign `(-1)ⁿ`: `rTilde n a = (-1)ⁿ L_n^{(a)}`, defined by the three-term
+recurrence `(n + 2) R_{n+2} = (X - (2n + 3 + a)) R_{n+1} - (n + 1 + a) R_n`, `R_0 = 1`, `R_1 = X - (a + 1)`. With
+this sign `R_n` has leading coefficient `1 / n!`. -/
 def rTilde : ℕ → ℕ → ℝ[X]
   | 0, _ => 1
   | 1, a => X - C (a + 1 : ℝ)
@@ -127,8 +150,9 @@ lemma X_mul_rTilde_succ_a : ∀ n a : ℕ,
     simp only [Nat.cast_add, Nat.cast_one, map_add, map_mul, map_ofNat, map_one] at ih r1 ⊢
     linear_combination -X * hsub - ih - r1
 
-/-! ### 2. Polar formula for complex Hermite polynomials `H p q` -/
+/-! ### 2. The Wick monomials `H p q` in polar coordinates -/
 
+/-- The ring homomorphism `P ↦ P(z * conj z)` from real polynomials in `s = |z|²` to `CPoly`. -/
 def embedS : ℝ[X] →+* CPoly :=
   Polynomial.eval₂RingHom (MvPolynomial.C.comp Complex.ofRealHom) (MvPolynomial.X 0 * MvPolynomial.X 1)
 
@@ -149,10 +173,6 @@ lemma pderiv0_embedS (P : ℝ[X]) :
       MvPolynomial.pderiv_X_of_ne (show (1 : Fin 2) ≠ 0 by decide),
       smul_eq_mul, map_add, map_mul, embedS_X, mul_one, mul_zero, zero_add]
     ring
-
-private lemma A1_C_mul' (c : ℂ) (f : CPoly) : A1 (MvPolynomial.C c * f) = MvPolynomial.C c * A1 f := by
-  simp only [A1, Derivation.leibniz, MvPolynomial.pderiv_C, smul_eq_mul, mul_zero]
-  ring
 
 lemma A0_iter_A1 (p : ℕ) (f : CPoly) : A0^[p] (A1 f) = A1 (A0^[p] f) := by
   induction p with
@@ -208,13 +228,15 @@ lemma H_zero_right (a : ℕ) : H a 0 = MvPolynomial.X 0 ^ a := by
   | succ a ih =>
     rw [H_succ_left, ih, A0, pderiv1_X0_pow, sub_zero, pow_succ']
 
+/-- The Wick monomial of non-negative charge `a`:
+`:z^(n+a) conj(z)^n: = n! z^a R_n^{(a)}(|z|²)` with `R_n^{(a)} = rTilde n a = (-1)ⁿ L_n^{(a)}`. -/
 theorem H_eq_rTilde_nonneg : ∀ n a : ℕ,
     H (n + a) n = MvPolynomial.C (n.factorial : ℂ) * (MvPolynomial.X 0 ^ a * embedS (rTilde n a))
   | 0, a => by simp [H_zero_right, rTilde]
   | n + 1, a => by
     have hstep : H (n + 1 + a) (n + 1) = A1 (H (n + (a + 1)) n) := by
       rw [show n + 1 + a = n + (a + 1) by omega, H_succ_right]
-    rw [hstep, H_eq_rTilde_nonneg n (a + 1), A1_C_mul', A1_pow_mul_embedS, rTilde_sub_deriv]
+    rw [hstep, H_eq_rTilde_nonneg n (a + 1), A1_C_mul, A1_pow_mul_embedS, rTilde_sub_deriv]
     have hrec : X * rTilde n (a + 2) - C (a + 1 : ℝ) * rTilde n (a + 1) =
         C (n + 1 : ℝ) * rTilde (n + 1) a := by
       rw [show a + 2 = (a + 1) + 1 by omega, X_mul_rTilde_succ_a n (a + 1)]
@@ -235,6 +257,9 @@ lemma ev_embedS (z : ℂ) (P : ℝ[X]) : ev z (embedS P) = ((P.eval (‖z‖ ^ 2
     rw [ih, Complex.mul_conj, Complex.normSq_eq_norm_sq]
     push_cast; rfl
 
+/-- The Wick monomials in polar coordinates (equation (2.3) of the article, before normalisation): for `r > 0`,
+with `n = min p q` and `α = |p - q|`,
+`conj (H p q (r e^{iθ})) = n! r^α R_n^{(α)}(r²) e^{-i(p-q)θ}`, where `R_n^{(α)} = rTilde n α`. -/
 theorem ev_H_polar (p q : ℕ) {r θ : ℝ} (hr : 0 < r) :
     conj (ev ((r : ℂ) * Complex.exp (θ * Complex.I)) (H p q)) =
       (((min p q).factorial : ℝ) *
@@ -280,12 +305,17 @@ theorem ev_H_polar (p q : ℕ) {r θ : ℝ} (hr : 0 < r) :
     rw [mul_pow, hexp]
     push_cast; ring
 
-/-! ### 3. Polar cell integrals and Hermite overlaps of `cellFn` -/
+/-! ### 3. Radial integrals over the cells and the Hermite coefficients of `cellFn` -/
 
+/-- The radial integral over the interval `I_i = [3i/32, 3(i+1)/32)`:
+`cellLagInt a n i = ∫_{I_i} 2 r^(a+1) e^(-r²) R_n^{(a)}(r²) dr`, with `R_n^{(a)} = rTilde n a`. By the
+substitution `s = r²` this is `(-1)ⁿ I_{n,a,i}`, with `I_{n,a,i}` as in equation (A.2) of the article. -/
 def cellLagInt (a n i : ℕ) : ℝ :=
   ∫ r in (3 * (i : ℝ) / 32)..(3 * ((i + 1 : ℕ) : ℝ) / 32),
     2 * r ^ (a + 1) * Real.exp (-r ^ 2) * (rTilde n a).eval (r ^ 2)
 
+/-- The sum of Lemma 4.4 of the article for the angular mode `m = idxM - 17` and radial degrees `n₁, n₂`:
+`∑_{i,j < 64} (c_{idxM,i,j} / 2²⁴) * cellLagInt |m| n₁ i * cellLagInt |1-m| n₂ j`. -/
 def modeOverlap (creArr cimArr : Array Int) (idxM n1 n2 : ℕ) : ℂ :=
   let mSigned : ℤ := (idxM : ℤ) - 17
   let a := mSigned.natAbs
@@ -294,6 +324,9 @@ def modeOverlap (creArr cimArr : Array Int) (idxM n1 n2 : ℕ) : ℂ :=
     cellCoeffC creArr cimArr idxM (64 * b1 + b2) *
       ((cellLagInt a n1 b1 * cellLagInt b n2 b2 : ℝ) : ℂ)
 
+/-- The right-hand side of equation (4.6) of the article for the cell table `(creArr, cimArr)`:
+`∑_{m=-17}^{18} (-1)^m ∑_{n₁ + n₂ = k - k₀(m)} |modeOverlap (m + 17) n₁ n₂|² / ((n₁+1)⋯(n₁+|m|) (n₂+1)⋯(n₂+|1-m|))`,
+with `k₀(m) = (|m| + |1-m| - 1) / 2`. By `tig_bivarKernel_eq` it is the overlap `μ_k(F)` of the cell map. -/
 def muTigOf (creArr cimArr : Array Int) (k : ℕ) : ℝ :=
   ∑ idxM ∈ range 36,
     let mSigned : ℤ := (idxM : ℤ) - 17
@@ -479,10 +512,13 @@ private lemma one_coord_cell_integral (p q b : ℕ) (mTarget : ℤ) :
     push_cast; field_simp
   · simp
 
+/-- The indicator function of `{z ≠ 0, |z| ∈ I_b}`, where `I_b = [3b/32, 3(b+1)/32)`. -/
 private def radInd (b : ℕ) (z : ℂ) : ℂ :=
   if z = 0 then 0
   else (Set.Ico (3 * (b : ℝ) / 32) (3 * ((b + 1 : ℕ) : ℝ) / 32)).indicator (fun _ => (1 : ℂ)) ‖z‖
 
+/-- The function `z ↦ 1_{|z| ∈ I_b} (z / |z|)^m` on `ℂ` (zero at `z = 0`), for an integer `m`. A cell map is a
+finite combination of products of two such functions (`cellFn_eq_sum_atoms`, equation (4.2) of the article). -/
 private def atom1D (b : ℕ) (m : ℤ) (z : ℂ) : ℂ :=
   radInd b z * ph z ^ m
 
@@ -651,7 +687,9 @@ private lemma integral_ev_H_atom1D (p q b : ℕ) (hb : b < 64) (mTarget : ℤ) :
   rw [setIntegral_congr_fun (measurableSet_Ioi.prod measurableSet_Ioo) hcongr]
   exact one_coord_cell_integral p q b mTarget
 
-/-- Exact Hermite inner product of `cellFn creArr cimArr` with any basis element `H2 i` of charge `1`. -/
+/-- **Hermite coefficients of a cell map** (Lemma 4.4 of the article), for the Wick monomials. Let
+`𝐚 = ((a₁, b₁), (a₂, b₂))` have charge one, and put `m = a₁ - b₁`, `n₁ = min(a₁, b₁)`, `n₂ = min(a₂, b₂)`. Then
+`⟨:z^𝐚:, F⟩ = n₁! n₂! * modeOverlap creArr cimArr (m + 17) n₁ n₂` if `-17 ≤ m ≤ 18`, and `0` otherwise. -/
 theorem integral_H2_cellFn_charge_one (creArr cimArr : Array Int) {i : Idx2}
     (hch : i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1) :
     ∫ u, conj (H2 i u) * cellFn creArr cimArr u ∂mu2 =
@@ -753,7 +791,7 @@ theorem integral_H2_cellFn_charge_one (creArr cimArr : Array Int) {i : Idx2}
     have := mem_range.1 hk
     rw [ite_eq_right (by omega)]
 
-/-! ### 4. Antisymmetric `(-R, R)` reduction `tig_bivarKernel_eq` -/
+/-! ### 4. The reflected channel `(-R, R)`: `tig_bivarKernel_eq` -/
 
 lemma factorial_mul_risingFact (n : ℕ) : ∀ a : ℕ,
     n.factorial * risingFact n a = (n + a).factorial
@@ -767,6 +805,8 @@ lemma risingFact_pos (n : ℕ) : ∀ a : ℕ, 0 < risingFact n a
   | 0 => by simp [risingFact]
   | a + 1 => by rw [risingFact]; exact mul_pos (risingFact_pos n a) (by positivity)
 
+/-- The multi-index `𝐚` of charge one with `a₁ - b₁ = m`, `min(a₁, b₁) = n₁` and `min(a₂, b₂) = n₂`, where
+`m = idxM - 17` (the bijection in the proof of Proposition 4.6 of the article; see `mkIdx_props`). -/
 private def mkIdx (idxM n1 n2 : ℕ) : Idx2 :=
   let mSigned : ℤ := (idxM : ℤ) - 17
   let a := mSigned.natAbs
@@ -825,6 +865,7 @@ private lemma norm_inner_mkIdx_sq {creArr cimArr qreArr qimArr : Array Int}
   push_cast at hrf_ne
   field_simp
 
+/-- The finite set of multi-indices `𝐚` with `(d₁(𝐚), d₂(𝐚)) = p`. -/
 def bidegFinset (p : ℕ × ℕ) : Finset Idx2 :=
   ((range (p.1 + 1) ×ˢ range (p.1 + 1)) ×ˢ (range (p.2 + 1) ×ˢ range (p.2 + 1))).filter
     fun i => bideg i = p
@@ -833,6 +874,7 @@ lemma mem_bidegFinset {p : ℕ × ℕ} {i : Idx2} : i ∈ bidegFinset p ↔ bide
   simp only [bidegFinset, mem_filter, mem_product, mem_range, bideg, Prod.ext_iff]
   omega
 
+/-- The energy `E_G(d₁, d₂)` as a finite sum over the multi-indices of bidegree `(d₁, d₂)`. -/
 lemma energy_eq_sum_bidegFinset (G : Lp ℂ 2 mu2) (p : ℕ × ℕ) :
     energy G p = ∑ i ∈ bidegFinset p, ‖⟪hvec2 i, G⟫_ℂ‖ ^ 2 := by
   unfold energy
@@ -853,8 +895,10 @@ private lemma neg_one_pow_mode (n1 : ℕ) (mSigned : ℤ) :
   · rw [show mSigned.natAbs = 2 * (mSigned.natAbs / 2) + 1 by omega,
       pow_add, pow_mul, neg_one_sq, one_pow, one_mul, pow_one]
 
-/-- Exact radial polynomial formula for `cellFn` on any antisymmetric channel `(-R, R)`:
-equals `bivarKernel R 0 (onedTable (muTigOf creArr cimArr)) j`. -/
+/-- **The reflected channel** (Lemma 4.5 and Proposition 4.6 of the article). For a cell map `F` whose table
+passes the sum-of-squares check, the channel series of `(F, -R, R)` is
+`h_j = ∑_{n ≤ j} μ_n [X^(j-n)] R^(2n+1)` with the overlaps `μ_n = muTigOf creArr cimArr n` of equation (4.6); the
+right-hand side is written as the series of the table `onedTable μ` (see `bivarKernel_oned_eq_head`). -/
 theorem tig_bivarKernel_eq {creArr cimArr qreArr qimArr : Array Int}
     (hsos : sosAllOK creArr cimArr qreArr qimArr = true) (R : ℝ[X]) (j : ℕ) :
     bivarKernel (-R) R (energy ((memLp_cellFn hsos).toLp (cellFn creArr cimArr))) j =
@@ -1028,9 +1072,12 @@ theorem tig_bivarKernel_eq {creArr cimArr qreArr qimArr : Array Int}
       · omega
       · rw [mul_zero]
 
-/-! ### 5. Square-root-free smoothed energy formula `smoothed_energy_eq` -/
+/-! ### 5. The energies of the smoothed map: `smoothed_energy_eq` -/
 
-/-- Scaled overlap `modeOverlap / (choose(n1+n2, n1) * risingFact(n1+n2, k0))` (`0` outside `[-17, 18]`). -/
+/-- The number `t_{j₁,j₂} / k!` of equation (A.5) of the article, where
+`t_{j₁,j₂} = ⟨:z^(j₁, j₂, k+1-j₁, k-j₂):, F⟩` for the cell map `F` (`integral_H2_cellFn_eq_gScaled`). With
+`m = j₁ - j₂`, `n₁ = min(j₁, j₂)`, `n₂ = min(k+1-j₁, k-j₂)` and `k₀ = (|m| + |1-m| - 1) / 2`, it is
+`modeOverlap (m + 17) n₁ n₂ / (binom(n₁+n₂, n₁) * (n₁+n₂+1)⋯(n₁+n₂+k₀))` if `-17 ≤ m ≤ 18`, and `0` otherwise. -/
 def gScaled (creArr cimArr : Array Int) (k j1 j2 : ℕ) : ℂ :=
   let mSigned : ℤ := (j1 : ℤ) - j2
   if -17 ≤ mSigned ∧ mSigned ≤ 18 then
@@ -1080,6 +1127,12 @@ private lemma integral_H2_cellFn_eq_gScaled (creArr cimArr : Array Int) (k j1 j2
     field_simp
   · simp
 
+/-- **Energies of the smoothed map** (equation (A.5) of the article). Let `F` be a cell map with `|F| ≤ 1`, let
+`G = smoothMap ct st se ce F`, and let `d₁ + d₂ = 2k + 1`. Then `E_G(d₁, d₂)` is the sum, over the multi-indices
+`((p₁, q₁), (p₂, q₂))` of charge one with `p₁ + q₁ = d₁`, `p₂ + q₂ = d₂` (so `p₁ + p₂ = k + 1`, `q₁ + q₂ = k`), of
+`binom(k+1, p₁) binom(k, q₁) / (k + 1) * |∑_{j₁ ≤ k+1} ∑_{j₂ ≤ k} χ(p₁, p₂; j₁) χ(q₁, q₂; j₂) gScaled k j₁ j₂|²`,
+where `χ(a₁, a₂; j) = bCoeff ct (-(se * st)) st (se * ct) a₁ a₂ j`. The binomial factor is
+`(k!)² / (p₁! q₁! p₂! q₂!)`. -/
 theorem smoothed_energy_eq {ct st se ce : ℝ} (hd : ct ^ 2 + st ^ 2 = 1)
     (he : se ^ 2 + ce ^ 2 = 1) {creArr cimArr qreArr qimArr : Array Int}
     (hsos : sosAllOK creArr cimArr qreArr qimArr = true)

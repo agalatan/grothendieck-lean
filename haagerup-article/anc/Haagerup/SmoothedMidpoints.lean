@@ -1,13 +1,28 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.CellOverlapCore
 import HaagerupKernel.SmoothedStages
 
+/-!
+# The energies of the smoothed map: midpoints of the numbers `g`
+
+Step (2) of Appendix A.4 (the energies of the smoothed map) of the article. The sums
+`∑_{i,j} c_{m+17,i,j} I_{n₁,|m|,i} I_{n₂,|1-m|,j}` are enclosed at scale `2⁻⁵⁶⁰` by `modeOverlapsAt`
+(`modeOverlapsAt_sound` in `CellOverlapCore.lean`); `gammaCells` divides them by `2⁴⁸` times the binomial coefficient
+and the rising factorial and reduces the result to a midpoint. `gammaLookup_sound` states that these midpoints are
+within one unit of `2⁵¹²` times the numbers `g_{k,l}` of Appendix A.4, which are `gScaled` in `CellHermite.lean`.
+-/
 
 set_option warningAsError true
-set_option maxRecDepth 4096
 set_option exponentiation.threshold 2048
+
 namespace Haagerup
 open HaagerupKernel HaagerupKernel.Cell
 
+/-- The number `k₀ = (|m'| + |1 - m'| - 1) / 2` for the mode `m' = m - 17` with index `m < 36`; the indices of the
+Laguerre integrals of this mode satisfy `n₁ + n₂ + k₀ = n ≤ 250`. -/
 private def modeOffset (m : ℕ) : ℕ :=
   (((m : ℤ) - 17).natAbs + (1 - ((m : ℤ) - 17)).natAbs - 1) / 2
 
@@ -57,6 +72,9 @@ private lemma dividedMid {x : ℝ} {iv : ℤ × ℤ} {d : ℕ} (hd : 0 < d)
   exact midpoint_err_le_one (ediv_le_of_mul hden (by rw [hs]; exact hl))
     (le_neg_ediv_neg_of_mul hden (by rw [hs]; exact hu)) (of_decide_eq_true hok)
 
+/-- Step (2) of Appendix A.4: if the reductions to midpoints succeed (`gammaOK`), the integers looked up by
+`gLookup704` are within one unit of `2⁵¹²` times the real and the imaginary part of the numbers
+`g_{a,b} = gScaled cr ci k a b`, for `k ≤ 250`, `a ≤ k + 1`, `b ≤ k`. -/
 theorem gammaLookup_sound {cr ci : Array Int} {ov : OverlapBox}
     (hcomp : modeOverlapsAt sh416 sh680 cr ci lagTable1024 = (true,ov))
     (hg : gammaOK (gammaCells binomArr251 ov) = true)

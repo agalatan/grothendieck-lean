@@ -1,21 +1,36 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import HaagerupKernel.CellKernel
 import Haagerup.ChaosRealise
 import Mathlib.MeasureTheory.Function.Floor
 
-set_option warningAsError true
-
 /-!
-# Parametric `64 × 64`, 36-mode cell rounding maps `cellFn` and unit-disk SOS soundness
+# Cell maps
 
-Defines `cellFn creArr cimArr : ℂ × ℂ → ℂ` for any `36 × 64 × 64` integer Fourier table at dyadic
-scale `2⁻²⁴` on `r₁, r₂ ∈ [0, 6)` cut into `64` bins of width `3 / 32` (shared by both `f_tig` and
-`T_cell`). Proves:
-* `measurable_cellFn : Measurable (cellFn creArr cimArr)`;
-* `cellFn_rot2 : ‖c‖ = 1 → cellFn creArr cimArr (rot2 c u) = c * cellFn creArr cimArr u`;
-* `norm_cellFn_le : sosAllOK creArr cimArr qreArr qimArr = true → ‖cellFn creArr cimArr u‖ ≤ 1`;
-* `memLp_cellFn : sosAllOK creArr cimArr qreArr qimArr = true → MemLp (cellFn creArr cimArr) 2 mu2`.
+This file formalises the first part of Section 4.1 (Cell maps) of the article. A *cell table* is a pair of integer
+arrays `creArr`, `cimArr` holding the real and imaginary parts of the numbers `c_{ℓ,i,j}`, `0 ≤ ℓ < 36`,
+`0 ≤ i, j < 64`, at position `4096 ℓ + 64 i + j` (`HaagerupKernel.Cell.getCoeff`).
 
+## Main definitions
+
+* `radBin`, `cellIdx`: the index `i = ⌊(32/3) |z|⌋` of the interval `I_i = [3i/32, 3(i+1)/32)` that contains `|z|`,
+  and the index `64 i + j` of the cell `I_i × I_j` that contains `(|z₁|, |z₂|)`.
+* `cellFn creArr cimArr : ℂ × ℂ → ℂ`: the cell map of the table, Definition 4.1 (Cell map), equation (4.1). The
+  two cell maps `f_tig` and `T_cell` of the certificate are instances, with the tables of `Haagerup/Data/`.
+
+## Main results
+
+* `measurable_cellFn`, `cellFn_rot2`: every cell map is Borel measurable and of charge one; with `norm_cellFn_le`
+  this is Lemma 4.2.
+* `norm_cellFn_le`: Lemma 4.3 (Sum-of-squares bound): if the Boolean check
+  `HaagerupKernel.Cell.sosAllOK creArr cimArr qreArr qimArr` of inequality (4.3) returns `true` for some witness
+  table `(qreArr, qimArr)`, then `|cellFn creArr cimArr| ≤ 1` everywhere.
+* `memLp_cellFn`: under the same hypothesis the cell map belongs to `L²(mu2)`.
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -25,22 +40,26 @@ open scoped ComplexConjugate
 
 noncomputable section
 
-/-- Radial bin `⌊(32/3) ‖z‖⌋₊` (`< 64` when `‖z‖ < 6`). -/
+/-- The index `i = ⌊(32/3) |z|⌋` of the interval `I_i = [3i/32, 3(i+1)/32)` that contains `|z|`
+(`i < 64` when `|z| < 6`). -/
 def radBin (z : ℂ) : ℕ := Nat.floor ((32 / 3 : ℝ) * ‖z‖)
 
-/-- Flattened cell index `64 * radBin z₁ + radBin z₂` (`< 4096` when `‖z₁‖, ‖z₂‖ < 6`). -/
+/-- The index `64 i + j` of the cell `I_i × I_j` that contains `(|z₁|, |z₂|)` (`< 4096` when `|z₁|, |z₂| < 6`). -/
 def cellIdx (z₁ z₂ : ℂ) : ℕ := 64 * radBin z₁ + radBin z₂
 
-/-- Scaled complex Fourier coefficient `(cr + i ci) / 2²⁴`. -/
+/-- The coefficient `c_{k,i,j} / 2²⁴` of a cell table, as a complex number, for the cell with index
+`cell = 64 i + j`. -/
 def cellCoeffC (creArr cimArr : Array Int) (k cell : ℕ) : ℂ :=
   (((getCoeff creArr k cell : ℝ) : ℂ) + ((getCoeff cimArr k cell : ℝ) : ℂ) * Complex.I) /
     (((2 : ℝ) ^ 24 : ℝ) : ℂ)
 
-/-- Unscaled complex integer coefficient `cr + i ci`. -/
+/-- The Gaussian integer `cr k + i ci k`, as a complex number. -/
 def cellIntC (cr ci : ℕ → ℤ) (k : ℕ) : ℂ :=
   ((cr k : ℝ) : ℂ) + ((ci k : ℝ) : ℂ) * Complex.I
 
-/-- Parametric `64 × 64`, 36-mode charge-one rounding map `cellFn creArr cimArr : ℂ × ℂ → ℂ`. -/
+/-- The cell map of the cell table `(creArr, cimArr)` (Definition 4.1 of the article). It is `0` if `z₁ = 0`,
+`z₂ = 0`, `|z₁| ≥ 6` or `|z₂| ≥ 6`; otherwise, with `w = ph z₁ * conj (ph z₂)` and `(|z₁|, |z₂|) ∈ I_i × I_j`,
+it is `ph z₂ * conj(w)^17 * ∑_{k < 36} (c_{k,i,j} / 2²⁴) wᵏ` (equation (4.1)). -/
 def cellFn (creArr cimArr : Array Int) (u : ℂ × ℂ) : ℂ :=
   if u.1 = 0 ∨ u.2 = 0 ∨ 6 ≤ ‖u.1‖ ∨ 6 ≤ ‖u.2‖ then 0
   else
@@ -48,7 +67,7 @@ def cellFn (creArr cimArr : Array Int) (u : ℂ × ℂ) : ℂ :=
     let cell := cellIdx u.1 u.2
     ph u.2 * conj w ^ 17 * ∑ k ∈ range 36, cellCoeffC creArr cimArr k cell * w ^ k
 
-/-! ### 1. Measurability and Charge One -/
+/-! ### 1. Measurability and charge one -/
 
 lemma measurable_radBin : Measurable radBin :=
   (measurable_const.mul continuous_norm.measurable).nat_floor
@@ -58,6 +77,7 @@ lemma measurable_cellIdx : Measurable fun u : ℂ × ℂ => cellIdx u.1 u.2 := b
   exact (measurable_const.mul (measurable_radBin.comp measurable_fst)).add
     (measurable_radBin.comp measurable_snd)
 
+/-- Lemma 4.2 of the article, first part: every cell map is Borel measurable. -/
 theorem measurable_cellFn (creArr cimArr : Array Int) : Measurable (cellFn creArr cimArr) := by
   unfold cellFn
   have hS : MeasurableSet {u : ℂ × ℂ | u.1 = 0 ∨ u.2 = 0 ∨ 6 ≤ ‖u.1‖ ∨ 6 ≤ ‖u.2‖} := by
@@ -84,6 +104,8 @@ theorem measurable_cellFn (creArr cimArr : Array Int) : Measurable (cellFn creAr
     exact hc.mul (hw.pow_const k)
   exact (hph2.mul ((Complex.continuous_conj.measurable.comp hw).pow_const 17)).mul hsum
 
+/-- Lemma 4.2 of the article, last part: every cell map has charge one,
+`F(c z₁, c z₂) = c F(z₁, z₂)` for `|c| = 1`. -/
 theorem cellFn_rot2 (creArr cimArr : Array Int) {c : ℂ} (hc : ‖c‖ = 1) (u : ℂ × ℂ) :
     cellFn creArr cimArr (rot2 c u) = c * cellFn creArr cimArr u := by
   have hc0 : c ≠ 0 := fun h0 => by simp [h0] at hc
@@ -110,7 +132,7 @@ theorem cellFn_rot2 (creArr cimArr : Array Int) {c : ℂ} (hc : ‖c‖ = 1) (u 
   · rw [ite_eq_right (mt hcond.1 h), ite_eq_right h, hcell, hw, hph u.2]
     ring
 
-/-! ### 2. Fejér–Riesz Sum-of-Squares Identity on the Unit Circle -/
+/-! ### 2. The sum-of-squares bound on the unit circle -/
 
 lemma sumInt_cast (n : ℕ) (f : ℕ → ℤ) :
     ((sumInt n f : ℤ) : ℝ) = ∑ k ∈ range n, ((f k : ℤ) : ℝ) := by
@@ -118,6 +140,10 @@ lemma sumInt_cast (n : ℕ) (f : ℕ → ℤ) :
   | zero => simp [sumInt]
   | succ n ih => simp [sumInt, sum_range_succ, ih]
 
+/-- The estimate in the proof of Lemma 4.3 (Sum-of-squares bound) for one cell: for `|w| = 1` and integer
+coefficients `c_k = cr k + i ci k`, `s_k = qr k + i qi k` (`k < 36`),
+`|∑ₖ c_k wᵏ|² ≤ κ₀ + 2 ∑_{m=1}^{35} (|Re κ_m| + |Im κ_m|)`, where
+`κ_m = ∑_d (c_{d+m} conj(c_d) + s_{d+m} conj(s_d))`. -/
 private lemma norm_sq_poly_pair_le_sos (cr ci qr qi : ℕ → ℤ) {w : ℂ} (hw : ‖w‖ = 1) :
     ‖∑ k ∈ range 36, cellIntC cr ci k * w ^ k‖ ^ 2 ≤
       ((sumInt 36 (fun k => cr k * cr k + ci k * ci k + qr k * qr k + qi k * qi k) +
@@ -287,15 +313,16 @@ private lemma norm_sq_poly_pair_le_sos (cr ci qr qi : ℕ → ℤ) {w : ℂ} (hw
                   qr (d + (m0 + 1)) * qr d + qi (d + (m0 + 1)) * qi d).natAbs +
               Int.ofNat (sumInt (36 - (m0 + 1)) fun d =>
                 ci (d + (m0 + 1)) * cr d - cr (d + (m0 + 1)) * ci d +
-                  qi (d + (m0 + 1)) * qr d - qr (d + (m0 + 1)) * qi d).natAbs) : ℤ) : ℝ) := by
-        exact add_le_add (le_of_eq (sum_congr rfl fun k _ => hdiag k))
+                  qi (d + (m0 + 1)) * qr d - qr (d + (m0 + 1)) * qi d).natAbs) : ℤ) : ℝ) :=
+        add_le_add (le_of_eq (sum_congr rfl fun k _ => hdiag k))
           (mul_le_mul_of_nonneg_left (sum_le_sum hoff) (by norm_num))
     _ = _ := by
         rw [Int.cast_add, sumInt_cast, sumInt_cast, mul_sum]
         congr 1
         exact sum_congr rfl fun m0 _ => by dsimp only; push_cast; ring
 
-/-- **Unit-disk bound**: any `(creArr, cimArr)` passing `sosAllOK` has `‖cellFn creArr cimArr u‖ ≤ 1`. -/
+/-- **Sum-of-squares bound** (Lemma 4.3 of the article): if the cell table `(creArr, cimArr)` passes the check
+`sosAllOK` of inequality (4.3) with some witness table `(qreArr, qimArr)`, then its cell map is bounded by `1`. -/
 theorem norm_cellFn_le {creArr cimArr qreArr qimArr : Array Int}
     (hsos_ok : sosAllOK creArr cimArr qreArr qimArr = true) (u : ℂ × ℂ) :
     ‖cellFn creArr cimArr u‖ ≤ 1 := by
@@ -342,6 +369,7 @@ theorem norm_cellFn_le {creArr cimArr qreArr qimArr : Array Int}
       (fun k => getCoeff qreArr k cell) (fun k => getCoeff qimArr k cell) hw).trans hsosR
     exact (pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) (by norm_num : 2 ≠ 0)).1 hsq
 
+/-- A cell map whose table passes the sum-of-squares check belongs to `L²(γ_ℂ ⊗ γ_ℂ)`. -/
 theorem memLp_cellFn {creArr cimArr qreArr qimArr : Array Int}
     (hsos_ok : sosAllOK creArr cimArr qreArr qimArr = true) :
     MemLp (cellFn creArr cimArr) 2 mu2 :=

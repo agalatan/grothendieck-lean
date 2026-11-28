@@ -1976,3 +1976,13 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 | `code/homothety-consumers-gemini-c1de/verify.py` | 42,879 B | `647baf6ab998b004fd7c31cc8b43e44732d91cac0358cc8e30ffdcef75320d12` |
 | `code/homothety-consumers-gemini-c1de/test_controls.py` | 11,139 B | `c67d7c937cca6427221e77a8506f10bab1611fb495bfa8117c679e345d3093aa` |
 | `code/homothety-consumers-gemini-c1de/homothety_consumers_cert.json` | 268,246 B | `cb7027d95f1caa16c2b56493d3793a16f86e0dd1f83d36cbd080bb847fae156e` |
+
+## Six-sector lower-shoulder comparison (8.13d–e)
+
+The three supplemental Stein models at normalized energy .06 extend the comparison in 8.13d. Row 8.13e reuses them with the even price inside the square completion. Run `python3 -IB research/conjecture-K/code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py` from the repository root.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| [extension_duals.json](code/uncapped-peak-consumer-codex-a7c4/extension_duals.json) | 6,491 | `47d9ef8b0bec58097a0ad159c12aff244d7c755e636343796bbbf86760281d25` |
+| [weighted_shoulder.py](code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py) | 8,248 | `dd2ee76fe224e63cf58732ad57091eb6b3e28f7c1b066a170797c63a1c79dc3f` |
+| [WEIGHTED_SHOULDER.md](sources/uncapped-peak-consumer-codex-a7c4/WEIGHTED_SHOULDER.md) | 6,400 | `09278be0b2c757c478d0b43769d7a58d1a5a1a1aec41093eb3a23bed44116cb4` |

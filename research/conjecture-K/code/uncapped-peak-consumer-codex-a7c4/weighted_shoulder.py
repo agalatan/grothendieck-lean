@@ -1,4 +1,4 @@
-"""All-shape lower-shoulder cover using four weighted response ellipsoids. Agent-ID: codex-a7c4."""
+"""All-shape lower-shoulder cover with absorbed even repricing and optional radial pruning. Agent-ID: codex-a7c4."""
 import importlib.util
 import sys
 from fractions import Fraction as Q
@@ -85,7 +85,7 @@ def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
         cost=max(t*t-2*m*base.GUIDE*t+2*(m*base.BETA)**2/base.EPS for t in (lower,HIGH))
         return ratio,a,b,k,radial(p,l,h,x,y),cost,m
 
-    def reserve(p,l,h,x,y,v,w,theta):
+    def reserve(p,l,h,x,y,v,w,theta, *, absorb_even=True):
         ratio,a,b,k,rad,cost,m=inputs(p,l,h,x,y)
         hu,l_v,h_v=ratio*h,ratio*v,ratio*w
         feasible,_,upper_w,upper_b=geometry(l,v)
@@ -107,8 +107,11 @@ def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
 
         # V = theta^2 z in joint-arm units. Absorb its known linear price
         # into the same quadratic shell before choosing signed endpoints.
-        shifted=k+P0-theta*p
-        inner+=min(theta*shell(k),theta*shell(shifted)-(P0/theta-p)*h_v)
+        gain=theta*shell(k)
+        if absorb_even:
+            shifted=k+P0-theta*p
+            gain=min(gain,theta*shell(shifted)-(P0/theta-p)*h_v)
+        inner+=gain
         return base.TARGET-cost-m*inner
 
     # l,h,v,w are normalized by the original (P0) scale; this is one physical response.
@@ -123,6 +126,13 @@ def prove(polys, nodes, rows, lower=LOW, prices=TRIAL_PRICES):
     count=0
     least=Q(1)
     accepted=Q(1,10**7)
+    if lower==LOW and rows and Q('1.318') in prices:
+        # Same feasible cell, price and tilt. Only the treatment of the even charge changes.
+        trial=(Q('1.318'),Q(11287,256000),Q(28229,640000),Q(1,80),Q(3,160),
+               Q(9,16000),Q(19,32000),Q(296875,327523))
+        absorbed=reserve(*trial)
+        separate=reserve(*trial,absorb_even=False)
+        base.require(separate<=accepted<absorbed, 'even repricing control failed')
     while stack:
         l,h,x,y,v,w,depth=stack.pop()
         feasible,vmax,_,_=geometry(l,v)
