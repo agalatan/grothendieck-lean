@@ -2045,7 +2045,7 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 ## Oscillation-preserving OU cone, enhanced third-chaos Level-2+ hierarchy (`s = κ₄(F/‖F‖₂) ≥ 5`), and dimension-free fifth-chaos OU tower on `V₅(ℝⁿ)` & `H₃,₂(ℂⁿ)` (gemini-8732, #458)
 
 - [Self-contained proof and replay instructions](sources/chaos-stein-458-gemini-8732/PROOF.md) and
-  [oscillation-preserving IBP cone verifier, two exact rational certificates, two independent zero-float stdlib verifiers, symbolic multivariate & `{F = 0}` nodal checks, 157 adversarial/AST/`-O` controls, generator, and replay log](code/chaos-stein-458-gemini-8732/) (tag `KCS458`; `STATUS.md` 3.6, 3.7, 3.18, 3.21, 3.21 (e1), 3.21 (e9), 3.30; `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C, author only**). Every file is strictly below 300 KB (`cert_v3_458.json` is 169,848 B; `cert_v5_458.json` is 87,311 B) and committed in the repository with zero external dependencies left outside.
+  [oscillation-preserving IBP cone verifier, two exact rational certificates, two independent zero-float stdlib verifiers, symbolic multivariate & `{F = 0}` nodal checks, 157 adversarial/AST/`-O` controls, generator, and replay log](code/chaos-stein-458-gemini-8732/) (tag `KCS458`; `STATUS.md` 3.6, 3.7, 3.18, 3.21, 3.21 (e1), 3.21 (e9), 3.30; `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C**, independently reviewed by claude-b9ee and codex-062a in [#881](https://github.com/agalatan/grothendieck-lean/pull/881)). Every file is strictly below 300 KB (`cert_v3_458.json` is 169,848 B; `cert_v5_458.json` is 87,311 B) and committed in the repository with zero external dependencies left outside.
 - **Replay (pure Python 3 standard library only, zero floating-point operations or float clocks, zero `assert` statements, `-IB` and `-IB -O` identical):**
   - Oscillation-preserving two-step Ornstein–Uhlenbeck near-Gaussian cone (`R_* <= 21/20 = 1.05` in 1 Bernstein leaf; exact Hermite Stein moments `-1/24` and `+1/240` and `s^{-1/2}` vs unweighted `h_4` moment checks; real `κ_0 = 1/5900`, `κ_1 = 1/1475`; complex `χ_0 = 1/8300`, `χ_1 = 1/2075`, < 1 s): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/verify_ibp_cone.py`
   - Primary integer Sturm + 4-corner `(s_*, θ_*)` envelope + 8-vertex relaxed `V_5` simplex + `U(1)` transfer + downstream degree-5/7 verifier (~31 s across both certificates): `python3 -IB -O research/conjecture-K/code/chaos-stein-458-gemini-8732/verify.py`
@@ -2067,3 +2067,27 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 | `code/chaos-stein-458-gemini-8732/test_controls.py` | 15,327 B | `c70ff8cb830bb9cfc395a1dbb374416c6dc56b84b8bcf7e16591fa1558c559db` |
 | `code/chaos-stein-458-gemini-8732/make_certs.py` | 60,987 B | `24e8e05aa49c638074681fd461d4dfe902749254390f3dcfc6c943ea837efe8f` |
 | `code/chaos-stein-458-gemini-8732/REPLAY.log` | 8,466 B | `5682fb88ef2e9b8c78890492a9cf3d8d0984f98c912d826f6461c9fda27ac374` |
+
+## Shifted second-chaos variance closure (`17/50 > 1/3`), all-degree Wiener chaos `< 1` bounds, and seventh-chaos `V₇(ℝⁿ)` & `H₄,₃(ℂⁿ)` OU tower (gemini-8732, #458)
+
+- [Self-contained proof and replay instructions](sources/shifted-chaos-alldeg-458-gemini-8732/PROOF.md) and
+  [two exact rational certificates, two independent zero-float stdlib verifiers, symbolic multivariate & Wick matching checks, 94 adversarial/AST/`-O` controls, generator, and replay log](code/shifted-chaos-alldeg-458-gemini-8732/) (tag `KADS458`; `STATUS.md` 3.6, 3.8, 3.21 (e5), 3.21 (e9), 3.30, 12.4; **P + C, author only**). Every file is strictly below 300 KB (`cert_shifted_q_458.json` is 192,032 B; `cert_v7_458.json` is 22,509 B) and committed in the repository with zero external dependencies left outside.
+- **Replay (pure Python 3 standard library only, zero floating-point operations or float clocks, zero `assert` statements, `-IB` and `-IB -O` identical):**
+  - Primary integer Sturm + all-degree polynomial majorant factorization + 17-tangent $(m_1, m_2)$ polygon + supporting tangents + $|t| \ge 16/5$ SOS + `V_7` / `H_{4,3}` OU tower verifier (~14 s across both certificates): `python3 -IB -O research/conjecture-K/code/shifted-chaos-alldeg-458-gemini-8732/verify.py`
+  - Second independent verifier — exact integer Bernstein subdivision (`20,779` shifted-chaos leaves + `1,418` `V_7`/`H_{4,3}` leaves) + generic recursive Laplace `det_mat()` + exact multivariate symbolic polynomial identity expansion in `ℚ[x][M_0, M_1, M_2]` and `ℚ[r][τ_1, τ_2, σ̃_{1,r}, ν̃_r]` (~24 s): `python3 -IB -O research/conjecture-K/code/shifted-chaos-alldeg-458-gemini-8732/verify_bernstein.py`
+  - Exact multivariate polynomial & Gaussian Wick verification over `ℚ[G_1, G_2, G_3, Z]` and `ℚ[X_1, X_2, X_3]` of `Br_0, Br_1, Br_2, Br_quad`, joint moments, Markov–Krein `m_3` bounds, `L τ_1 = 12(τ_2 - τ_1)`, `σ̃_{1,r}^2 <= 42 τ_1^2 τ_2`, `{F = 0}` nodal states, and brute-force Frobenius matching submultiplicativity (~2.6 s): `python3 -IB -O research/conjecture-K/code/shifted-chaos-alldeg-458-gemini-8732/check_identities_exact.py`
+  - Static AST zero-float/zero-`assert` audit + 94 negative, corruption, structural-constant (`RB_OUTER`, `7/16`, `21/2`, `M_6`), and overclaim controls against both `verify.py` and `verify_bernstein.py` (~117 s): `python3 -IB -O research/conjecture-K/code/shifted-chaos-alldeg-458-gemini-8732/test_controls.py`
+  - Offline certificate regeneration (`numpy`, `scipy`, `clarabel`): `/usr/local/bin/python3 research/conjecture-K/code/shifted-chaos-alldeg-458-gemini-8732/make_certs.py`
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/shifted-chaos-alldeg-458-gemini-8732/PROOF.md` | 48,058 B | `f56cb1e54d0c075e126df95fb337a93b5cac144f5d43fec5d396381e9f2cc3f1` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/README.md` | 3,710 B | `e6addadcb85a0443cedff20b90ce0aeb6b19f942a70ee9c4fafb3116faebfa08` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/cert_shifted_q_458.json` | 192,032 B | `af81a9b9cd1257613e8fdda927240361a2b79dea167d2777800c24394e9d238f` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/cert_v7_458.json` | 22,509 B | `cbf0ad69e0c21d6f7f756ccc9d649f3e49de24a479d7ebde6ee2951b5afccaf1` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/verify.py` | 54,609 B | `f86be146e5231ebec1798ff778cac5e08c925b55f70e422169f25de3acfbb391` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/verify_bernstein.py` | 31,730 B | `7fa5f3dc20ffb6862cc15873b5cf5cdcf6b2ad2958a5c1f52a090a3cf0c93c46` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/check_identities_exact.py` | 18,073 B | `8a9b000a8d92ffdbd63cd3330c323de3e7524b79b096daf807acbbf1f249ff58` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/test_controls.py` | 10,394 B | `c6db086d6613ffb8cf9c3a70a338a1faeccea5b539e2f597d5f2eee98993ee8a` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/make_certs.py` | 54,507 B | `37603fd90e18997005dc709dcd3ac179af36a724ebafd59febd694d60ba62639` |
+| `code/shifted-chaos-alldeg-458-gemini-8732/REPLAY.log` | 1,606 B | `fda5bb201d8a096c690dabb042569b46ff40cceeaec5c0c840169f556a7efc62` |
