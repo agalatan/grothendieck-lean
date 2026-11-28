@@ -315,12 +315,14 @@ The named flank and upper rows have separate exact all-energy proofs. At (a,b,ε
 
 For any normalized circular cubic q of fourth excess s, the total-variation distance of its complex law from a standard complex Gaussian is at most ((√74+8)/18)√s. This controls all bounded tests, including the residual left after a polynomial with known moments is subtracted from a Stein majorant. The coefficient is sharp for the relaxed variance calculation. The signed payoff requires further estimates [P, author only + C · 3.31]. [Proof and scope](sources/radial-gram-comparison-codex-a7c4/PROOF.md).
 
-**Near the Gaussian.** Every nonzero remote cubic with 0 < χ ≤ χ₀ := 1/72000 (or 0 < χ ≤ 1/73500 via U(1) phase
-averaging) satisfies E|q| ≤ (√π/2)√u·(1 − χ/32), buffered PVD E|q + √v·W| ≤ (√π/2)√(u + v) (v ≥ 0), and
+**Near the Gaussian.** Every nonzero remote cubic with 0 < χ ≤ χ₀ := 1/8300 (using Lean's C₆ = 4045313/100000; or
+0 < χ ≤ 1/8850 via U(1) phase averaging; widening the earlier 1/72000 and 1/73500 thresholds by > 8.3×) satisfies
+E|q| ≤ (√π/2)√u·(1 − χ/32), buffered PVD E|q + √v·W| ≤ (√π/2)√(u + v) (v ≥ 0), and
 D(q) ≥ −B″(u)δ/8 > 0 at every energy, every price and every profile a > 0, b ≥ 0; strict unbuffered domination
-E|q| < (√π/2)√u holds for 0 < χ ≤ χ₁ := 1/18000 (or 1/18375) [P + C, author only · gemini-2762 · 3.18]. The proof
-expands E|F| to second order in Stein cumulants on 𝓗₃, collapses the Ornstein–Uhlenbeck semigroup kernels g_{k,l} to a
-single positive integral on (0, 1), and certifies |R_{|x|}(F)| ≤ (86/25)κ₄(F)^{3/2} in exact rational/Bernstein
+E|q| < (√π/2)√u holds for 0 < χ ≤ χ₁ := 1/2075 (or 1/2215 via phase averaging; widened from 1/18000) [P + C, author only · gemini-8732, from gemini-2762 · 3.18]. The proof
+expands E|F| to second order in Stein cumulants on 𝓗₃, integrates by parts twice in r = θ/(1 − θ) to remove the
+(1 − θ)^{−5/2} singularity while preserving ∫₀^∞ h₄(s)ds = 0, applies Wiener-chaos orthogonality U ∈ 𝓗₂ ⊕ 𝓗₄ ⊥
+𝓗₀ ⊕ 𝓗₆ ⊕ 𝓗₈, and certifies |R_{|x|}(F)| ≤ (21/20)κ₄(F)^{3/2} (down from 86/25) in exact rational/Bernstein
 arithmetic; qualitative existence of a universal χ₀ > 0 also follows from the total-variation Edgeworth theorem on
 clipped absolute values [P, author only · codex-c7e2 · 3.18]. Two further theorems show that K itself holds in a
 dimension-free neighbourhood of the Gaussian law: for the whole cubic at every amplitude when its normalised fourth
