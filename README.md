@@ -3,7 +3,7 @@
 This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.4020221627 < K_G^{\mathbb C} \le 1.404556392 < 1/\gamma^\dagger = 1.40457593\ldots
+1.4020221627 < K_G^{\mathbb C} \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
@@ -16,8 +16,8 @@ value.
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
 | lower bound | $1.4020221627 < K_G^{\mathbb C}$ | `14020221627 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
-| upper bound | $K_G^{\mathbb C} \le 1.404556392$ | `1404556392 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperSeven.constant_le` |
-| Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperSeven.constant_lt_inv_gammaDagger` |
+| upper bound | $K_G^{\mathbb C} \le 1.404554025$ | `1404554025 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperBivar.constant_le` |
+| Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperBivar.constant_lt_inv_gammaDagger` |
 
 The two bounds are 0.00253 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
 parameters behind it and the other numbers that appear in the repository (earlier bounds, thresholds, targets).
@@ -33,7 +33,7 @@ Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's v
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020221627 < K}$ | $\mathbf{K\le 1.404556392}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020221627 < K}$ | $\mathbf{K\le 1.404554025}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -49,7 +49,7 @@ where $1/\gamma^\dagger$ is the value that Haagerup proposed in 1987.
 - **The Lean proof.** The article's ancillary folder [`haagerup-article/anc/`](haagerup-article/anc) is a
   Lean package of its own that proves the article's bound without hypotheses. The article is frozen: it states
   its own bound and is not updated when the bounds of this repository change. The upper bound of `main_bounds`
-  adds a seventh Gaussian angular selector to the six channels
+  adds twelve bivariate smoothed-cell, phase and multi-scale tiger channels to the six channels
   ([the upper bound](#the-upper-bound)).
   [Build instructions and trust](haagerup-article/anc/README.md) · [The article's exact bound](docs/CONSTANTS.md#other-numbers-you-will-meet).
 - **How it was found.** The construction was found by numerical optimisation with the assistance of AI systems,
@@ -91,11 +91,11 @@ definitions, so reading it is enough to know what the theorems say:
 - `Grothe.Statement.main_bounds`: the two bounds of the table above, as the rationals given there. Since
   $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds, the first part says that every $K$ with `IsBound K`
   is above the lower bound.
-- `Grothe.UpperSeven.bound : IsBound ((10 : ℝ) ^ 27 / 711968565817136711740669035)`: for every finite complex matrix
-  $A$, $V(A) \le 1.4045563919697\ldots \cdot C(A)$. This is what the upper bound means for a single matrix;
-  `Grothe.UpperSeven.constant_le` restates it, rounded up to nine decimals, as $K_G^{\mathbb C} \le 1.404556392$.
-- `Grothe.UpperSeven.constant_lt_inv_gammaDagger`: $K_G^{\mathbb C} < 1/\gamma^\dagger$. Lean proves
-  $\gamma^\dagger < 0.711958683$ from rational bounds on the integral, and $1.404556392 \cdot 0.711958683 < 1$.
+- `Grothe.UpperBivar.bound : IsBound ((10 : ℝ) ^ 27 / 711969765819834623238463058)`: for every finite complex matrix
+  $A$, $V(A) \le 1.4045540246340\ldots \cdot C(A)$. This is what the upper bound means for a single matrix;
+  `Grothe.UpperBivar.constant_le` restates it, rounded up to nine decimals, as $K_G^{\mathbb C} \le 1.404554025$.
+- `Grothe.UpperBivar.constant_lt_inv_gammaDagger`: $K_G^{\mathbb C} < 1/\gamma^\dagger$. Lean proves
+  $\gamma^\dagger < 0.711958683$ from rational bounds on the integral, and $1.404554025 \cdot 0.711958683 < 1$.
 - `Grothe.Statement.sparse_stein_endpoint`: $K_G^{\mathbb C}$ is at least an exact rational, the reciprocal of the
   bound $B$ below; the lower bound of `main_bounds` is this rational rounded strictly downward.
 
@@ -141,9 +141,9 @@ $\nu = 47/2000$ and an exact rational $\hat B$ (`SparseEnvelope.cap`); $1/B$ is 
 
 ### The upper bound
 
-The certificate mixes seven Gaussian rounding channels. Three smoothed cell channels, one phase channel and two reflected tiger channels retain their certified interval heads and Hardy tail caps. The seventh channel combines an angular selector at `17/100` with the signed preprocessor `23/25 − (2/25)X`.
+The certificate mixes the established Gaussian rounding channels of `Grothe/UpperSixExact/` with twelve additional preprocessors on the already-certified smoothed cell (`tcellRows`), phase (`haagMuList 321`) and reflected tiger (`tigMuList`) maps, including degree-3 bivariate second-coordinate polynomials `Q(X)` with `Q(0) = 0`.
 
-Lean computes the selector’s 251-entry signed head and a bound on the total absolute coefficient error. The transfer takes absolute values after summing all seven heads, then adds their weighted allowances. The resulting factor is `10^27 / 711968565817136711740669035`. [Selector and mixture](Grothe/UpperSelector/Bound.lean) · [Exact parameters and budgets](docs/CONSTANTS.md#behind-the-upper-bound).
+Every new disk positivity check, Hardy circle budget, and rational tail comparison reduces in Lean's kernel (`TaylorHardy`). The transfer takes absolute values after summing all interval heads, then adds their weighted tail caps. The resulting factor is `10^27 / 711969765819834623238463058`. [Bivariate mixture](Grothe/UpperBivar/Bound.lean) · [Exact parameters and budgets](docs/CONSTANTS.md#behind-the-upper-bound).
 
 An older proof with a single rounding channel is still in the repository. It is independent of the six-channel proof and gives the weaker bound $K_G^{\mathbb C}<1.404599395362$, which is above Haagerup's value. Its quadrature and energy-table construction are documented separately. [Single-channel proof](Grothe/UpperTightFinal.lean) · [Construction notes](docs/UPPER_STATUS.md).
 
