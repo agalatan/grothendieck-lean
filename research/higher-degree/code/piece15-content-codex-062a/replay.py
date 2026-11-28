@@ -99,7 +99,8 @@ def main():
         check((rec["chi_lo"], rec["chi_hi"], rec["F_certified"]) ==
               (c["chi_lo"], c["chi_hi"], c["F_claimed"]), "cell mismatch")
         check(rec["worst_M_A"] < 0 and rec["worst_M_B"] < 0, "continuous residual is nonnegative")
-        print(f"chi in [{rec['chi_lo']}, {rec['chi_hi']}], F = {Q(rec['F_certified'])}, "
+        left = "(" if rec["chi_lo"] == 0 else "["
+        print(f"chi in {left}{rec['chi_lo']}, {rec['chi_hi']}], F = {Q(rec['F_certified'])}, "
               f"sup bounds A, B = {rec['worst_M_A']:.6g}, {rec['worst_M_B']:.6g}")
     print(f"Verified {len(COVERED_BIN_ENDS)} whole funded bins at piece 15, u/u_cap = 0.78 (10 additional).")
 

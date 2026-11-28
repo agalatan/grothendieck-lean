@@ -732,7 +732,7 @@ the rows t = 0.80 and 0.82 the inequality is open in both directions [`../higher
 
 Under the Rice hypothesis (R1), both funded Case I profiles on piece 15, row 0.855 at the discrete energy 0.78 u_cap, satisfy
 their content allowances on eleven of fifteen fourth-excess bins, ten more than previously certified. The bound on [16, 20] is 6.545, below the funded
-allowance 6.545210245012058. The bounds on [0, 8] and [20, 42] are 4.8218 and 12, respectively.
+allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
 [C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
 
 **Influences.** With J₁[a, b] = E[∂_aq·conj(∂_bq)] and I₂[j, k] = ⟨∂̄_jq, ∂̄_kq⟩ (traces 2u and u), the field c₂ − u

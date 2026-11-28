@@ -3,12 +3,12 @@
 **C, author only (codex-062a).** Fix the Case I profile row 0.855 of piece 15 and the discrete energy
 `u = 0.02819853969330301` (`0.78 u_cap` in the funded table). Under the Rice hypothesis (R1) of the
 [JM1 content bound](../degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md), the following bounds apply
-in every dimension to both profile sectors. The third column is the smallest exact table allowance among the
+in every dimension to both profile sectors for positive fourth excess χ. The third column is the smallest exact table allowance among the
 funded bins in the first column. Upper bounds in the second column round the checked binary64 rationals upward.
 
 | Fourth excess χ | Content ratio at most | Smallest allowance | Funded bin upper endpoints |
 |---|---:|---:|---|
-| [0, 8] | 4.8218 | 4.82187613512015 | 1, 2, 3, 4, 6, 8 |
+| (0, 8] | 4.8218 | 4.82187613512015 | 1, 2, 3, 4, 6, 8 |
 | [16, 20] | 6.545 | 6.545210245012058 | 20 |
 | [20, 42] | 12 | 50 | 24, 30, 36, 42 |
 
@@ -19,8 +19,8 @@ The four bins ending at 10, 12, 14 and 16 remain open.
 
 ## Certificate
 
-For [0, 8], fit the slices of the mean parameter on the tightest funded bin, (6, 8], separately for each sector.
-With those slice endpoints and profile prices, re-optimize the dual multipliers on the full [0, 8]. For [16, 20],
+For (0, 8], fit the slices of the mean parameter on the tightest funded bin, (6, 8], separately for each sector.
+With those slice endpoints and profile prices, re-optimize the dual multipliers on the closed enclosure [0, 8]. The JM1 theorem assumes δ(q) = χu² > 0. For [16, 20],
 use the original χ = 20 slice multipliers with the binary64 encoding of 6.545. For [20, 42], start with the same
 χ = 20 slices and re-optimize on the wider interval. Both [new witnesses](../../code/piece15-content-codex-062a/cells.json)
 use the original profiles and Rice tangents. The numerical optimizer proposes the multipliers, and the replay
