@@ -87,9 +87,8 @@ def magnitude(row, r, u):
                         abs(d)*exponential)
 
 
-def panels(row):
+def panels(magnitude_bound, budget):
     factor = ball(Fraction(factorial(ORDER)**4, (2*ORDER+1)*factorial(2*ORDER)**2))
-    budget = arb("4e-11")
     pending = [(0., 7., 0., 1.)]
     while pending:
         a, b, c, d = pending.pop()
@@ -97,8 +96,8 @@ def panels(row):
         r, u = a+hr, c+hu
         # Up to this depth all binary64 panel geometry is exact (initial widths 7 and 1).
         require(hr >= 7*2.0**-40 and hu >= 2.0**-40, "panel depth exceeds exact geometry")
-        mr = magnitude(row, complex_box(r, hr, True), complex_box(u, hu, False))
-        mu = magnitude(row, complex_box(r, hr, False), complex_box(u, hu, True))
+        mr = magnitude_bound(complex_box(r, hr, True), complex_box(u, hu, False))
+        mu = magnitude_bound(complex_box(r, hr, False), complex_box(u, hu, True))
         good_r = mr is not None and factor*mr < budget
         good_u = mu is not None and factor*mu < budget
         if good_r and good_u:
@@ -107,6 +106,17 @@ def panels(row):
             pending.extend([(a,r,c,d), (r,b,c,d)])
         else:
             pending.extend([(a,b,c,u), (a,b,u,d)])
+
+
+def folded_coefficients(x, s, sqrtpi):
+    """Taylor coefficients through degree five for the folded normal at x."""
+    v = x/s
+    v2 = v*v
+    gaussian = (-v2).exp() / sqrtpi
+    slope = v.erf()
+    return (x*slope+s*gaussian, slope, gaussian/s,
+             -2*v*gaussian/(3*s**2), (2*v2-1)*gaussian/(6*s**3),
+             (3*v-2*v2*v)*gaussian/(15*s**4))
 
 
 class Rule:
@@ -134,7 +144,7 @@ class Rule:
 
         self.count = 0
         radius = ball(HALF_BIN_BOUND)
-        for a,b,c,d in panels(row):
+        for a,b,c,d in panels(lambda r, u: magnitude(row, r, u), arb("4e-11")):
             self.count += 1
             for m, axis, mixed, wr in radial(a,b):
                 for co, wu in angles(c,d):
@@ -163,13 +173,7 @@ class Rule:
         value = self.far_linear
         for index, moments in self.moments.items():
             x = arb(index)/BIN_SCALE
-            v = x/s
-            v2 = v*v
-            gaussian = (-v2).exp() / self.row.sqrtpi
-            slope = v.erf()
-            coeff = (x*slope+s*gaussian, slope, gaussian/s,
-                     -2*v*gaussian/(3*s**2), (2*v2-1)*gaussian/(6*s**3),
-                     (3*v-2*v2*v)*gaussian/(15*s**4))
+            coeff = folded_coefficients(x, s, self.row.sqrtpi)
             value += sum(c*m for c,m in zip(coeff,moments))
         # Tensor quadrature, Taylor compression, discarded Gaussian smoothing, radial tail.
         error = (arb(7)*2*arb("4e-11") +
