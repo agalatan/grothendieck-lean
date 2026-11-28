@@ -240,14 +240,18 @@ def main():
     print("  [22/24] Mathematical control: false overly tight cap 1/5 = 0.20 on g84_0.80 rejected: OK")
     print("  [23/24] Certificate bracket tampering on gC_0.80 rejected: OK")
 
-    # 24. Subprocess python3 -IB -O CLI execution check:
+    # 24. Check outward display across zero, on-grid endpoints, and an actual benchmark CLI row.
+    V.check(V.fmt_interval((-1, 1), 5) == "[-0.00001,+0.00001]", "Endpoint next to zero rounded inward")
+    V.check(V.fmt_interval((-V.S, V.S), 5) == "[-1.00000,+1.00000]", "Exact endpoint changed")
+    V.check(V.fmt_interval((-V.S + 1, -1), 5) == "[-1.00000,+0.00000]", "Negative interval rounded inward")
     proc = subprocess.run(
-        [sys.executable, "-IB", "-O", str(HERE / "verify.py"), "--only-row", "gC_0.80", "--jobs", "1", "--quiet"],
+        [sys.executable, "-IB", "-O", str(HERE / "verify.py"), "--only-row", "g84_0.70", "--jobs", "1"],
         capture_output=True,
         text=True,
         check=False,
     )
     V.check(proc.returncode == 0, f"Subprocess -IB -O verify.py failed: {proc.stderr}")
+    V.check("ret_all_dim=[+0.14223,+0.15596]" in proc.stdout, "Printed g84_0.70 enclosure changed")
     passed += 1
     print("  [24/24] Subprocess python3 -IB -O CLI execution passed: OK")
 
