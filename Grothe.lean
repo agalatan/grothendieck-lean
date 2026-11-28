@@ -12,6 +12,7 @@ import Grothe.ListPoly
 import Grothe.Lower.Basic
 import Grothe.Lower.Cert.MassRow
 import Grothe.Lower.Cert.MassWitnesses
+import Grothe.Lower.Cert.QuinticHybrid
 import Grothe.Lower.Cert.Row01
 import Grothe.Lower.Cert.Row02
 import Grothe.Lower.Cert.Row03
@@ -3407,9 +3408,10 @@ import Grothe.LowerAnalytic.QuinticDiffuseCarrier
 import Grothe.LowerAnalytic.QuinticDiffuseRealization
 import Grothe.LowerAnalytic.QuinticEllipse
 import Grothe.LowerAnalytic.QuinticEndpoint
+import Grothe.LowerAnalytic.QuinticHybridTransfer
+import Grothe.LowerAnalytic.QuinticMixedProfile
 import Grothe.LowerAnalytic.QuinticPhaseAlignment
 import Grothe.LowerAnalytic.QuinticPhaseStability
-import Grothe.LowerAnalytic.QuinticHybridTransfer
 import Grothe.LowerAnalytic.QuinticRemoteSupport
 import Grothe.LowerAnalytic.QuinticSignedSupport
 import Grothe.LowerAnalytic.QuinticSmallAmplitude

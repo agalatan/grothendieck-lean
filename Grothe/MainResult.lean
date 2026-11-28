@@ -1,18 +1,19 @@
 -- Grothe/MainResult.lean
 import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
-import Grothe.LowerAnalytic.SparseSteinBound
+import Grothe.LowerAnalytic.QuinticMixedProfile
 
 /-!
-# The main result: `1.4020221627 < K_G^ℂ ≤ 1.404554025`
+# The main result: `1.4020236979 < K_G^ℂ ≤ 1.404554025`
 
 The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`, without
 hypotheses: `main_bounds`.
 
-* The lower bound comes from the Gaussian identity-tail witness with parameters `(191/250, 47/2000)`.
-  Transported Stein cuts price the two central rows at their common fourth excess and residual scale.
-  Strict Schur curvature improves the central mixtures. Two outer rows have a joint gate deduction, and the ordinary rows 13/14 interpolate across their crossover. The amplitude envelope bounds the witness. The node caps (`tailNodeCaps_cert`) and matrix transfer give
-  `sparse_stein_endpoint`. The rational endpoint is rounded strictly downward by `SparseEnvelope.rounded_lt`.
+* The lower bound uses a convex mixture of the identity-tail witness and a polynomial
+  witness supported on the first, third and fifth chaoses. On the same phase pair,
+  the sparse row certificates price the normalized identity-tail payoff together with
+  its first-chaos amplitude. The shared vector test and the existing node caps
+  give the exact reciprocal in `quintic_hybrid_endpoint`.
 * **The upper bound** is `Grothe.UpperBivar.constant_le` (`Grothe/UpperResult.lean`), from multi-channel bivariate Gaussian roundings:
   `Grothe.UpperBivar.bound` gives `V(A) ≤ 1.4045540246340… · C(A)` for every finite complex matrix `A`. The lower proof obtains the existence of an admissible
   bound from the original six channels.
@@ -29,15 +30,20 @@ theorem sparse_stein_endpoint :
     (Grothe.Lower.SparseEnvelope.endpoint : ℝ) ≤ complexGrothendieckConstant :=
   sparseSteinEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
 
+/-- The exact finite-matrix lower endpoint of the retuned mixed degree-five witness. -/
+theorem quintic_hybrid_endpoint :
+    (Grothe.Lower.QuinticHybrid.endpoint : ℝ) ≤ complexGrothendieckConstant :=
+  quinticHybridEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
+
 /-- **The main result**: the exact lower endpoint rounded strictly downward, and the multi-channel upper bound
 rounded up. -/
 theorem main_bounds :
-    (14020221627 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
+    (14020236979 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404554025 / 1000000000 := by
-  have hlo : (14020221627 / 10000000000 : ℝ) < complexGrothendieckConstant := by
-    refine lt_of_lt_of_le ?_ sparse_stein_endpoint
+  have hlo : (14020236979 / 10000000000 : ℝ) < complexGrothendieckConstant := by
+    refine lt_of_lt_of_le ?_ quintic_hybrid_endpoint
     simpa only [Rat.cast_div, Rat.cast_ofNat] using
-      (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.SparseEnvelope.rounded_lt
+      (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.QuinticHybrid.rounded_lt
   exact ⟨hlo, Grothe.UpperBivar.constant_le⟩
 
 end Grothe.Statement

@@ -92,6 +92,7 @@ Grothe.LowerAnalytic.tenS_le_sq_sum
 Grothe.LowerAnalytic.transferInputs_of_witnessCap
 Grothe.Statement.constant_lt_tight_upper
 Grothe.Statement.main_bounds
+Grothe.Statement.quintic_hybrid_endpoint
 Grothe.Statement.sparse_stein_endpoint
 Grothe.Statement.upper_below_tight
 Grothe.Statement.upper_bound_tight

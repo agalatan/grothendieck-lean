@@ -13,6 +13,8 @@ import Grothe
 #print axioms Grothe.Haag.norm_phaseLaplaceKernel_le
 #print axioms Grothe.Haag.ph_eq_phaseLaplace
 #print axioms Grothe.Haag.phaseMoment_weighted
+#print axioms Grothe.Lower.QuinticHybrid.endpoint_eq
+#print axioms Grothe.Lower.QuinticHybrid.rounded_lt
 #print axioms Grothe.Lower.ResponsePenalty.a_block
 #print axioms Grothe.Lower.ResponsePenalty.complete_square
 #print axioms Grothe.Lower.ResponsePenalty.h_block
@@ -26,6 +28,7 @@ import Grothe
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.twoScale_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 #print axioms Grothe.Lower.SparseEnvelope.endpoint_eq
+#print axioms Grothe.Lower.SparseEnvelope.mixed_profile_bound
 #print axioms Grothe.Lower.SparseEnvelope.profile_bound
 #print axioms Grothe.Lower.SparseEnvelope.rounded_lt
 #print axioms Grothe.Lower.SparseOuter.actual_deductions
@@ -113,6 +116,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
+#print axioms Grothe.LowerAnalytic.QuinticMixedProfile.retuned_profile
 #print axioms Grothe.LowerAnalytic.RealCubicCarrier.has_full_lift
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
 #print axioms Grothe.LowerAnalytic.SparseStein.actual_deductions
@@ -302,8 +306,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_small_tail_cost_of_nodeCaps
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_tailWitnessCap
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_two_cubic_supports
-#print axioms Grothe.LowerAnalytic.quinticPayoff_le_visible_endpoint_885868_of_tailNodeCaps
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_retuned_hat
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_visible_endpoint_885868_of_tailNodeCaps
 #print axioms Grothe.LowerAnalytic.quinticPayoff_mass_envelope
 #print axioms Grothe.LowerAnalytic.quinticPayoff_projection_envelope
 #print axioms Grothe.LowerAnalytic.quinticScalarCap_of_payoff_le
@@ -375,6 +379,8 @@ import Grothe
 #print axioms Grothe.Statement.lower_14023_of_remaining_centeredRadius
 #print axioms Grothe.Statement.lower_of_quinticPayoff
 #print axioms Grothe.Statement.main_bounds
+#print axioms Grothe.Statement.quinticHybridEndpoint_le_of_tailNodeCaps
+#print axioms Grothe.Statement.quintic_hybrid_endpoint
 #print axioms Grothe.Statement.sparse_stein_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upper_below_tight
