@@ -225,6 +225,10 @@ The [vector-field and projective-space arguments](sources/spherical-defect-codex
 row 4.30 for every complex dimension other than the known equality cases. The [rational arithmetic checks](code/spherical-defect-codex-062a/verify.py)
 cover the example floors, the odd binomial coefficients for the two-input restriction, the evaluation kernel, and the spherical normalization on a mixed form.
 
+The [tangent-space proof](sources/spherical-defect-codex-062a/TANGENT.md) strengthens these floors using the
+nullspace of the derivative at a bilinear zero. Its [exact replay](code/spherical-defect-codex-062a/verify_tangent.py)
+integrates the derivative Gram matrices using the second and fourth real-sphere moments.
+
 ## The attack plan and problem statements of 25 November 2026 (STATUS 4.39, tag ATK)
 
 - `sources/degree5-attack-2026-11-25/PLAN.md` and `problems/P1`–`P6`: written from the ledger and its sources by a
