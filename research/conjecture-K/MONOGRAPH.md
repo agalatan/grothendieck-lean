@@ -326,7 +326,7 @@ expands E|F| to second order in Stein cumulants on 𝓗₃, integrates by parts 
 arithmetic; qualitative existence of a universal χ₀ > 0 also follows from the total-variation Edgeworth theorem on
 clipped absolute values [P, author only · codex-c7e2 · 3.18]. Two further theorems show that K itself holds in a
 dimension-free neighbourhood of the Gaussian law: for the whole cubic at every amplitude when its normalised fourth
-excess is below some χ\* > 0, and, near the optimum, with a strictly positive quadratic deficit [P author only · 12.8].
+excess is below some χ\* > 0, and, near the optimum, with a strictly positive quadratic deficit [P + C, thresholds unevaluated, second theorem inheriting author-only 3.18 remote Edgeworth input · codex-c7e2 and codex-4d8a, checked by gemini-21d5 · 12.8].
 That all-sector threshold χ\* has no numerical value (at most of order 10⁻¹⁶ with the stated constants). At the peak
 profile, smoothing by L gives much wider signed deficit regions:
 
@@ -720,7 +720,7 @@ inequality on the band. With one constant for all energies it is false: on X(|Y|
 the row profiles rises above the thresholds of the first two rows as u → 0
 [P · 6.3.28; `../higher-degree/STATUS.md` 4.20]. For each cubic the best constant valid for all profiles and
 energies is θ\*(q) = (2/3)(‖E[Z | q]‖² + |⟨q, Z⟩|²/u)/δ, where Z is the representative of the content in
-c[h] = ⟨Z, q·k′(V)⟩: 1.547 at X(|Y|² − 1) and 5.000 at the Wick monomial [P for the rule, N for the values · 6.3.30].
+c[h] = ⟨Z, q·k′(V)⟩: 1.547 at X(|Y|² − 1) and 5.000 at the Wick monomial [P for the rule and θ* formula, N for the values · 6.3.30].
 The inequality is proved, with constants that hold for every profile and every energy, on classes of cubics without
 self-interaction of a driver. For q = √u·X·P with a Hermitian quadratic cofactor P the test function of the content
 representation depends on P through |P| only, so P can be replaced by its conditional mean given |P| before
@@ -734,14 +734,14 @@ the rows t = 0.80 and 0.82 the inequality is open in both directions [`../higher
 Under the Rice hypothesis (R1), both funded Case I profiles on piece 15, row 0.855, satisfy their content allowances on all fifteen fourth-excess bins throughout the closed interval between the 0.60 and 0.70 u_cap nodes. The funding is affine in energy within each bin. [C · codex-062a · continuous energy band](../higher-degree/sources/piece15-content-codex-062a/ENERGY_BAND.md). Gemini-c1de [checked the funding and replayed all 136 rectangles](https://github.com/agalatan/grothendieck-lean/pull/898#issuecomment-7236517954). The two endpoint certificates were independently replayed by gemini-21d5. [Discrete endpoints and review](../higher-degree/sources/piece15-content-codex-062a/FIRST_ENERGIES.md). At 0.78 u_cap both profiles satisfy
 their content allowances on eleven of fifteen fourth-excess bins, ten more than previously certified. The bound on [16, 20] is 6.545, below the funded
 allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
-[C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
+[C, inheriting author-only 4.56 JM1 duality and C++17 certifier · codex-062a, checked by claude-b9ee and replayed by gemini-21d5 · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
 
 On the entire interval from 0.70 to 0.78 u_cap, the same two profiles meet the interpolated allowance under (R1) in the six bins in (0, 8] and the five bins in (16, 42]. [C, inheriting author-only 4.56 JM1 duality and C++17 certifier · codex-062a, replayed by gemini-21d5 · piece 15, row 4.56b](../higher-degree/sources/piece15-content-codex-062a/SECOND_BAND.md).
 
 Above the 0.70 node on the same row, both profiles satisfy the affine funding under (R1) on the four middle bins
 (8, 10], (10, 12], (12, 14] and (14, 16] through $x=13/64$, $63/256$, $83/256$ and $139/256$, respectively.
 Here $x$ interpolates from the 0.70 to the 0.78 node. The portions above these endpoints remain open.
-[C · original 40 rectangles independently audited for funding by gemini-21d5, 25 additional rectangles replayed by codex-062a](../higher-degree/sources/piece15-content-codex-062a/MIDDLE_PREFIX.md).
+[C, inheriting author-only 4.56 JM1 duality and C++17 certifier · codex-062a, binding reviewed by claude-b9ee and all 65 rectangles replayed by gemini-21d5](../higher-degree/sources/piece15-content-codex-062a/MIDDLE_PREFIX.md).
 
 The Rice gate itself rules out fourth excess in $[39,42]$ on continuous energy intervals. Testing the gate after rescaling a cubic carries the piece-17 infeasibility witness to pieces 18–20. At the last listed energy of each of these three pieces the sufficient gate thresholds are 0.86696928, 0.87401059 and 0.88348334, respectively. Using the actual fourth excess and its sixth-moment bound in those same witnesses excludes 27 further whole bins with omitted allowances at the listed energies. At the largest energy nodes on pieces 16 and 17, all excesses from 33.94 and 34.41, respectively, through 42 are excluded. [P + C, inheriting author-only 4.56 C++17 [0, U₀] witness receipts · codex-062a, re-derived and replayed by gemini-21d5 · proof and rational replay](../higher-degree/sources/rice-energy-exclusion-codex-062a/PROOF.md).
 
