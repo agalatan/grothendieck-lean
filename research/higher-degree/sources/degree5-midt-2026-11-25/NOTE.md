@@ -28,7 +28,7 @@ k = (f − g)/2, t = ‖P₁,₀h‖, V = Re⟨f, Tg⟩. Wanted: V ≤ 500/701 =
 | R3 | The coefficient 2/π improves to c₀² with c₀ = 0.862 by an elliptic, non-linear lift; if c₀ ≥ 43/50 the ranges become t ≤ 0.3445 and t ≤ 0.3576 (§3) | construction **P**, author only; the constant **N** here. A certified coefficient (431/500 at the same a = 179/200, range t ≤ 0.35859076) is the subject of codex-a7c4's PR #660, its ledger row 4.18e; it is not re-proved here |
 | R4 | The statement that would carry the method further is a **symmetrised spiked radius** of the cubic chaos, ρ_s: ‖P₁,₀h‖² + ‖P₂,₁k‖² ≤ ρ_s² for every pair. ρ_s ≤ 2287/2500 would give t ≤ 0.4661, ρ_s = √π/2 would give t ≤ 0.6176. No ratio found in the searches exceeds √π/2 (§4) | reductions **P**, author only; evidence **N**; the bound **open** (problem P7) |
 | R5 | A row with the quintic terms replaced by an identity tail (§5) has diffuse value below the target by 0.080, 0.048, 0.029, 0.019, 0.011 at t = 0.2528, 0.45, 0.55, 0.60, 0.649; in the diffuse one-spike model no search started above it and every sector direction tested lowers it. It is the row of a cubic identity-tail game, the kind certified in Lean with its gate | inequality **P**, author only; values **N** |
-| R6 | What does not work (§6): an unsymmetrised two-chaos radius (it is at least √(9π/32) > 0.93998, 0.9460 found; the application needs a radius of at most 0.94071 already at t = 0.2528); bounds that forget the phase (same number); the Lean rows of the cubic witness as black boxes (they miss the target by 1.6·10⁻³ to 9.2·10⁻³ on [0.35, 0.65]); the Gaussian buffer on top of the lift (no gain) | **P** / **N** as stated there |
+| R6 | What does not work (§6): an unsymmetrised two-chaos radius (it is at least √(9π/32) > 0.93998, 0.9460 found; the application needs a radius of at most 0.94071 already at t = 0.2528); bounds that forget the phase (same number); the Lean rows of the cubic witness as black boxes (their scalar bound exceeds the target throughout [0.35, 0.65], with extremal excesses 0.0015387344… and 0.0095284079…); the Gaussian buffer on top of the lift (no gain) | **P** / **N** as stated there |
 
 The range (0.3321, 0.649) is still open. §7 has the tests against the pairs of ledger 4.40, §8 the recommendation.
 
@@ -370,8 +370,7 @@ K (by linear-programming duality this is the best bound obtainable by mixing the
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | bound − 500/701 | −0.0071 | −0.0007 | +0.0027 | +0.0016 | +0.0034 | +0.0079 | +0.0055 | +0.0038 | +0.0050 | +0.0092 | +0.0092 |
 
-Up to t = 0.33 only (ii) acts (this is (B)). Beyond, the existing Lean rows miss by 1.6·10⁻³ to 9.2·10⁻³ on the
-whole range (full table in `lean_rows_blackbox.log`). They were tuned to pass their own target, with margins
+Up to t = 0.33 only (ii) acts (this is (B)). The table above samples t and K (full grid in `lean_rows_blackbox.log`). On the continuous interval [0.35, 0.65], the least excess is 0.0015387344… and the greatest is 0.0095284079…. Even retaining the common square of all fourteen numbered rows and the mass row permits a scalar payoff above target by 0.0011772030 at every t ([exact derivation and replay](../midt-row-envelope-codex-062a/PROOF.md), **P + C, author only**). They were tuned to pass their own target, with margins
 2.9·10⁻³ to 9.5·10⁻³ at mid t (`../../../identity-tail/sources/stage0d-2026-11-17/PROGRESS.md`), not to be tight,
 and only two of them are tuned inside the range. With the hat tail ν̂′ = η/(2r) = 0.04027 in place of 47/1953 the
 K-term of (i) vanishes: V ≤ r·V̂′ + η + (1 − r − η)t², and a hat bound of at most 0.6626, 0.6643, 0.6685,
