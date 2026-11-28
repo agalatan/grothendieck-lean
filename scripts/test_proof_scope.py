@@ -91,23 +91,32 @@ class ScopeTest(unittest.TestCase):
         self.assertIn("/runs/17/attempts/2/jobs", self.api.call_args_list[1].args[0])
         self.assertNotIn(tip, Path("summary").read_text())
 
-    def test_incomplete_or_unavailable_proof_runs_require_real_check(self):
+    def test_docs_only_branch_never_builds_even_without_a_green_fork(self):
+        # The fork point's own staging check covers the proof (#893): no build,
+        # and the summary says the fork's proof is not yet verified.
         self.freeze()
-        self.commit("note.md", "docs")
+        self.commit("research/note.md", "docs")
         for state in (None, "failure", "cancelled", "skipped"):
             with self.subTest(state=state):
                 self.responses(state)
-                self.assertEqual(self.scope(), (True, True))
+                self.assertEqual(self.scope(), (False, False))
         for step in route.PROOF_STEPS | {"Six-channel upper axiom report"}:
             with self.subTest(skipped=step):
                 self.responses(skipped=step)
-                self.assertEqual(self.scope(), (True, True))
+                self.assertEqual(self.scope(), (False, False))
         for response in ({"workflow_runs": []}, {}, ValueError("incomplete API response"),
                          subprocess.CalledProcessError(1, "gh")):
             with self.subTest(response=response):
                 self.api.side_effect = [response]
-                self.assertEqual(self.scope(), (True, True))
-        self.assertFalse(Path("summary").exists())
+                self.assertEqual(self.scope(), (False, False))
+        summary = Path("summary").read_text()
+        self.assertIn("not yet green", summary)
+        self.assertNotIn("Proof inherited", summary)
+
+    def test_lean_change_on_unverified_fork_still_builds(self):
+        self.freeze()
+        self.commit("Grothe/New.lean", "proof")
+        self.assertEqual(self.scope(), (True, True))
 
     def test_renamed_upper_report_still_requires_a_completed_audit(self):
         self.freeze()
@@ -115,8 +124,10 @@ class ScopeTest(unittest.TestCase):
         upper = "Upper axiom report"
         self.responses(upper=upper)
         self.assertEqual(self.scope(), (False, False))
+        self.assertIn("Proof inherited", Path("summary").read_text().splitlines()[-1])
         self.responses(upper=upper, skipped=upper)
-        self.assertEqual(self.scope(), (True, True))
+        self.assertEqual(self.scope(), (False, False))
+        self.assertIn("not yet green", Path("summary").read_text().splitlines()[-1])
 
     def test_cli_outputs_for_explicit_caps(self):
         output = Path.cwd() / "outputs"
@@ -132,7 +143,8 @@ class ScopeTest(unittest.TestCase):
                        {"head_branch": "other"}, {"head_repository": {"full_name": "other/project"}}):
             with self.subTest(fields=fields):
                 self.responses(run_fields=fields)
-                self.assertEqual(self.scope(), (True, True))
+                self.assertEqual(self.scope(), (False, False))
+        self.assertNotIn("Proof inherited", Path("summary").read_text())
 
     def test_staging_itself_and_landing_keep_master_baselines(self):
         self.freeze()

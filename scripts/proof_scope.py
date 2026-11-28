@@ -101,16 +101,21 @@ def proof_scope(branch, *, land=False, pinned_master="", before="", mode="check"
         candidate = git("merge-base", staging, "HEAD")
         if not git_test("merge-base", "--is-ancestor", candidate, master):
             if not lean_changed(candidate):
+                # No Lean-relevant change relative to the fork point: the proof is
+                # staging's own. Every staging commit gets its own uncancelled check
+                # (lean.yml, #888), so a docs-only branch never rebuilds it (#894).
                 run_url = staging_proof(candidate)
                 if run_url:
                     message = f"Proof inherited from staging commit `{candidate}`: {run_url}"
-                    print(message)
-                    if "GITHUB_STEP_SUMMARY" in os.environ:
-                        with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a") as summary:
-                            print(message, file=summary)
-                    return False, False
-            # A revert can match master while changing the staged proof. An
-            # unverified baseline must also build even if its delta is docs.
+                else:
+                    message = (f"No proof change relative to staging commit `{candidate}`; "
+                               "its own staging check (not yet green) covers the proof.")
+                print(message)
+                if "GITHUB_STEP_SUMMARY" in os.environ:
+                    with Path(os.environ["GITHUB_STEP_SUMMARY"]).open("a") as summary:
+                        print(message, file=summary)
+                return False, False
+            # A revert can match master while changing the staged proof.
             print(f"Checking this branch against staging commit {candidate}.")
             return True, heavy_changed(base) or heavy_changed(candidate)
 
