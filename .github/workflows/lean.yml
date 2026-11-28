@@ -144,7 +144,7 @@ jobs:
             fi
           fi
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|GrotheQuadExtKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|GrotheQuadExtKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/(Axioms|UpperSixAxioms)\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_lake_failfast\.py$|scripts/test_caps_stamp\.py$|data/tail-caps/|data/tail-rows/|scripts/(build_caps_batches|caps_coexist|test_build_caps_batches)\.py$|tools/gen_tail_caps\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|GrotheQuadExtKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|GrotheQuadExtKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/(Axioms|UpperAxioms)\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_lake_failfast\.py$|scripts/test_caps_stamp\.py$|data/tail-caps/|data/tail-rows/|scripts/(build_caps_batches|caps_coexist|test_build_caps_batches)\.py$|tools/gen_tail_caps\.py$|\.github/workflows/)'
           if [ "${{ inputs.land }}" = true ]; then base="${{ steps.merge.outputs.base }}"  # HEAD = base + this commit
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -257,12 +257,12 @@ jobs:
           git merge --no-ff --no-edit "${GITHUB_SHA}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
           python3 tools/gen_root_imports.py > /dev/null
           git diff --quiet || git commit -q -a -m "Regenerate root imports and sorted lists after merging ${GITHUB_REF_NAME} (CI)"
-      - name: Lean toolchain and the shared Mathlib packages
+      - name: Lean toolchain and the Mathlib packages of this manifest
         run: |
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-          mkdir -p .lake
-          [ -e .lake/packages ] || ln -s /home/agalatan/grothe-caps/.lake/packages .lake/packages
-          "$HOME/.elan/bin/lake" --version; df -h . | tail -1
+          export PATH="$HOME/.elan/bin:$PATH"
+          bash scripts/package_store.sh   # a store keyed by lake-manifest.json, never shared across manifests
+          lake --version; df -h . | tail -1
       - name: This machine's share of the computational leaves
         run: |
           python3 scripts/build_caps_batches.py --plan > caps-plan.json
@@ -391,13 +391,13 @@ jobs:
           use-github-cache: false     # no per-branch cache entries: the cache limit (70 GB) is kept for the 14 GB builds
           build: false
 
-      - name: Lean toolchain and the shared Mathlib packages (droplet)
+      - name: Lean toolchain and the Mathlib packages of this manifest (droplet)
         if: env.LEAN == 'true' && env.DROPLET == 'true'
         run: |
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-          mkdir -p .lake
-          [ -e .lake/packages ] || ln -s /home/agalatan/grothe-caps/.lake/packages .lake/packages
-          "$HOME/.elan/bin/lake" --version; df -h . | tail -1
+          export PATH="$HOME/.elan/bin:$PATH"
+          bash scripts/package_store.sh   # a store keyed by lake-manifest.json, never shared across manifests
+          lake --version; df -h . | tail -1
 
       - name: Unit tests of the verification scripts (caps hash, axiom reports)
         if: env.LEAN == 'true'

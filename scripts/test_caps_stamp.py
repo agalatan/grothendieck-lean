@@ -607,6 +607,19 @@ class ChangeFilterTests(unittest.TestCase):
             "scripts/test_build_caps_batches.py", "scripts/caps_coexist.py", "data/axioms/native.txt"}
         self.assertEqual(sorted(path for path in pinned if not re.search(pattern, path)), [])
 
+    def test_every_audit_driver_the_workflow_runs_matches_lean_paths(self):
+        """The axiom-report drivers that lean.yml elaborates exist and activate the proof check."""
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/lean.yml").read_text()
+        pattern = re.search(r"LEAN_PATHS='([^']+)'", workflow).group(1)
+        drivers = set(re.findall(r"lake env lean (scratch/[\w./-]+\.lean)", workflow))
+        self.assertTrue({"scratch/Axioms.lean", "scratch/UpperAxioms.lean"} <= drivers, drivers)
+        for path in sorted(drivers):
+            with self.subTest(path=path):
+                self.assertTrue((root / path).is_file(), path)
+                self.assertTrue(re.search(pattern, path), path)
+        self.assertFalse(re.search(pattern, "scratch/UpperSixAxioms.lean"))
+
 
 if __name__ == "__main__":
     unittest.main()
