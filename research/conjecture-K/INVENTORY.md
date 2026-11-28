@@ -2001,3 +2001,21 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 | [odd_response.py](code/uncapped-peak-consumer-codex-a7c4/odd_response.py) | 6,580 | `3d7ac7667a28ebbac47b99f36734979df06603c32b3195bb2465150286894555` |
 | [ODD_RESPONSE.md](sources/uncapped-peak-consumer-codex-a7c4/ODD_RESPONSE.md) | 6,418 | `841a91dc8a5a04977cf1215840f1dcba14542ce670f4b7b6d78eea38395d8d72` |
 | [ODD_SMALL_BALL.md](sources/uncapped-peak-consumer-codex-a7c4/ODD_SMALL_BALL.md) | 5,552 | `93ded721fbf48131580848349b11310a73546361adbbc6d4494ad816d8c7026f` |
+
+## Sharp Gaussian-buffered cubic radius through s <= 5/8 and remote mid-t closure on [0, 61/100] (gemini-4c4c, #784)
+
+- [Self-contained written proof](sources/buffered-rice-stein-gemini-4c4c/PROOF.md) and
+  [zero-float `-O`-safe stdlib verifier, rational certificate, generator, and 14-corruption + P3 §§6–7 control suite](code/buffered-rice-stein-gemini-4c4c/) (tag `KBRS`; `STATUS.md` 3.5a, `../higher-degree/STATUS.md` 4.18h; **P + C, author only**). All files are committed in the repository (`cert_buffered_rice.json` is 261,984 B < 300 KB) with zero external dependencies in `verify.py` and `test_controls.py`.
+- **Replay:**
+  - Zero-float, zero-`assert` exact rational verification of Machin $\pi$, $R_0 = \sqrt{\pi}/2$, 666 low-$s$ `[0, 1/6] x [0, 49]` boxes, 13 deterministically centered two-step Ornstein–Uhlenbeck slabs on `[1/6, 5/8]` ($\chi_{\mathrm{OU}} \ge 11/2000$, exact rational $\theta = u^6$ Laurent antiderivatives cross-checked by monotone Riemann sandwiches), 137-cell complete-monotonicity Hermite cubic + sublinear Cauchy–Schwarz Rice upper cap bank built from positive-term Bessel series, whole-half-line Bernstein/Sturm verification of 101 Level-2 Matrix Stein models, 5-scalar Lean Gram LP duals, 67 curvature-compensated 2D Stein tiles, exact remote frontier $\sqrt{2\pi/13} < 139043/200000 < 7/10$, and 7 mid-$t$ $R_{\mathrm{buf}}(s_j)$ nodes closing `#628` `ATK P3` §5 on `[0, 61/100]` (~21 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/verify.py` and `python3 -IB -O research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/verify.py --quiet`.
+  - Startup AST zero-float / no-`assert` / stdlib-only audit, 14 certificate corruption controls, mandatory `#628` `ATK P3` §6 rejection of false cap `0.62` at `t = 0.30` (plus witness $c = 11/4$), and exact rational verification of all 7 `#628` `ATK P3` §3 / §7 Gaussian driver benchmarks (~22 s, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/test_controls.py` and `python3 -IB -O research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/test_controls.py`.
+  - Offline certificate regeneration (`clarabel` + `scipy` HiGHS): `python3 -IB research/conjecture-K/code/buffered-rice-stein-gemini-4c4c/make_cert.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/buffered-rice-stein-gemini-4c4c/PROOF.md` | 36,535 B | `bb831eee288e2d0b408c7474405e9fea91306e0350c3f63f3c41d1c29b42de46` |
+| `code/buffered-rice-stein-gemini-4c4c/README.md` | 3,136 B | `fcb5f3d2dbad77ee0da2b5515f7bcbb1251238572125a55594cba9c58f8a6224` |
+| `code/buffered-rice-stein-gemini-4c4c/verify.py` | 56,144 B | `63f9cf7414fbecb2e9a4e0330fa731bdbb224161c86ce37f6b1ae2d06e090232` |
+| `code/buffered-rice-stein-gemini-4c4c/test_controls.py` | 12,206 B | `7b064b824a6b5ef1c06783d694c2ef434726d7c829ca2c635adc0f9e8cfad049` |
+| `code/buffered-rice-stein-gemini-4c4c/make_cert.py` | 39,334 B | `8a099ee8ad5347143cb8079deb29f6d7044df917b1e561af5a88c60bb271aa1d` |
+| `code/buffered-rice-stein-gemini-4c4c/cert_buffered_rice.json` | 261,984 B | `0e6ded21f92142cf75602411efcef827a8b360b168258e7b189187bbba0b7dd6` |
