@@ -482,7 +482,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   (`ssh yo`, 8 vCPUs, 31 GB); then the temporary droplets **big** (`ssh big`, 48 vCPUs, 94 GB) and **mega**
   (`ssh mega`, 32 vCPUs, 251 GB), each only if it exists (see below); else **locally** on the laptop.
   "Room" means **at least 50 % of the machine's CPUs idle when you look**: `nproc` against the 1-minute load in
-  `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24; mega: load ≤ 16), or `scripts/droplet_status.sh` for yo. Then use at most that
+  `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24; mega: load ≤ 16), or `scripts/droplet_status.sh` (reports yo, and big and mega when up). Then use at most that
   room (`taskset -c` a range of cores; Lake has no `-j`, so pin the cores), in your own signed folder (§2) with the
   shared Mathlib packages linked (`~/grothe-caps/.lake/packages` on every droplet, symlink), in a process group
   (below), never in a runner workspace, and delete the folder when done (§14). Never run Lean on a droplet while a
@@ -503,18 +503,29 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
       memory (`free -g`). If the machine is more than half free, that is a large share; the next agent then finds
       the other half, and the one after that half of what remains, so agents that start at the same moment never
       overcommit the machine between them. Pin your job to that many idle cores (`taskset -c`, a block that is
-      idle in `mpstat -P ALL 1 1` or `top`) and stay within what you measured: the memory limit is for your
-      whole process group, in KiB from
+      idle in `mpstat -P ALL 1 1` or `top`) and enforce the memory ceiling over your whole process tree with
+      `systemd-run --user --scope --quiet -p MemoryMax=<N>G -- taskset -c <cores> …` (below; `-p AllowedCPUs=`
+      is a no-op under unprivileged `user@1000.service` because `cpuset` is not delegated, so keep `taskset -c`);
+      you can also monitor live group RSS in KiB via
       `ps -eo pgid=,rss= | awk -v pg="$(cat job.pid)" '$1 == pg { kb += $2 } END { print kb + 0 }'` (`ps -g`
-      selects by session on Linux and reports nothing for a job started with `set -m`); stop your job if it grows
-      past it. Do not start a job at all unless at least a quarter of the cores and of the memory is free.
-    - **Runner online: half stays for heavy CI.** An agent uses **at most 8 cores, and 48 GB of memory on mega or
-      16 GB on big**, and all agents' work together stays inside **one fixed half of the cores, the upper one**:
-      cores 16–31 on mega, 24–47 on big. Pin every job to 8 cores inside that range (for example
-      `taskset -c 16-23` on mega, `taskset -c 24-31`, `32-39` or `40-47` on big): the range, not the load, bounds
-      everyone together (several agents can read the same low load and start at once, and a job still loading its
-      input shows no load). Before you start, the 1-minute load plus your own cores must not exceed the half, and
-      `free -g` must show more than half the machine's memory available.
+      selects by session on Linux and reports nothing for a job started with `set -m`). Do not start a job at all
+      unless at least a quarter of the cores and of the memory is free.
+    - **Runner online: half stays for heavy CI.** Use one 8-core research slot in the upper half of the machine.
+      On mega the slots `16-23` and `24-31` each allow 48 GiB. On big the slots `24-31`, `32-39` and `40-47`
+      allow 16, 16 and 15 GiB respectively. Their combined limits reserve at most 47 GiB on big, including while
+      jobs are still loading. Before starting, check that the 1-minute load plus your requested cores fits the
+      research half and that more than half the machine's memory is available. When switching big to these limits,
+      let any earlier 16 GiB job on `40-47` finish before admitting more work.
+      From your job directory, use the slot launcher with your agent ID, chosen slot, and foreground command.
+      For example, replacing the ID and research command with your own:
+      ```sh
+      bash -c 'set -m; nohup scripts/run_research_slot.sh codex-7f3a 24-31 python3 experiment.py </dev/null > build.log 2>&1 &'
+      ```
+      The launcher acquires the slot before writing `job.pid` or starting the command. It pins the cores with
+      `taskset`, sets the slot's `MemoryMax` with `systemd-run --user --scope`, and releases the slot when the
+      foreground command returns. Keep its workers in the foreground job and wait for them there. If another
+      job owns the slot, choose a free one from `scripts/droplet_status.sh`. If the wrapper was killed, check the
+      recorded owner and process group before clearing your own stale reservation.
     - When the agent that manages the droplets is about to start a runner, it announces it on #225 and the task
       issues of the jobs running there; shrink your jobs to the runner-online limits before it starts. A larger
       share for one task while a runner is online is granted by that agent on the task's issue.
@@ -550,9 +561,10 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   folder `~/<agent-id>-<topic>` (§2). Heavy **Lean** builds (the node caps, full builds) are not run in private
   folders: push the branch and CI runs them on the droplet's runner (§8). Light Lean builds (a few modules) may run in
   your folder, linking only the shared Mathlib packages (`~/grothe-caps/.lake/packages`; symlink, never hardlink).
-- **Before a heavy job on the droplet:** run `scripts/droplet_status.sh` (from the laptop, read-only: load, memory,
-  disk, the CI runner, every running Lean build by folder = owner, orphaned processes, the biggest build folders).
-  If another agent's heavy job or a CI check runs there, wait. Keep at least 3 GB of disk free (`df -h ~`).
+- **Before a heavy job on a droplet:** run `scripts/droplet_status.sh` (from the laptop, read-only: checks `yo`, and
+  `big` and `mega` when they exist — load, memory, disk, CI runner state, the research share and `~/research-slots`
+  reservations, active user directories and Lean builds, orphaned processes, and the biggest build folders).
+  If another agent's heavy job or a CI check leaves no room, wait. Keep at least 3 GB of disk free (`df -h ~`).
 
 ## 13. Lean conventions
 
