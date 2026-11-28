@@ -6,7 +6,7 @@ finite-head and Hardy inputs used by the single-channel theorem
 approximately `1.4045993953612070749249`. The endpoint is
 `Grothe.Statement.upper_below_tight` in
 [`Grothe/UpperTightFinal.lean`](../../Grothe/UpperTightFinal.lean). The repository's upper bound
-K ≤ 1.404554025 (`Grothe.Statement.main_bounds`, multi-channel bivariate witness, [`Grothe/UpperResult.lean`](../../Grothe/UpperResult.lean))
+K ≤ 1.404550522 (`Grothe.Statement.main_bounds`, multi-channel bivariate witness, [`Grothe/UpperResult.lean`](../../Grothe/UpperResult.lean))
 is proved separately and uses none of this data.
 
 The byte-pinned data and generators retain historical intermediate endpoint
@@ -65,7 +65,7 @@ The route to the smaller rational bound
 with grouped comparison allowance `groupedCompareQ = 851922301/10^15` and tail
 `303362486/10^16`) was removed from the repository
 ([`abandonware/README.md`](../../abandonware/README.md) gives the commit): its `ComparisonInputs` need the finer
-component error bounds, which are not proved, and the bound `1.404554025` of `main_bounds` is smaller. See `../localized-comparison/PROOF.md` for the comparison interface.
+component error bounds, which are not proved, and the bound `1.404550522` of `main_bounds` is smaller. See `../localized-comparison/PROOF.md` for the comparison interface.
 
 ### Frozen contour replay metadata
 

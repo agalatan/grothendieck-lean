@@ -12,7 +12,7 @@ The conditional target `K_G^C < 1.404598148840` built on the eighteen-piece
 comparison below was removed from the repository (git history;
 `abandonware/README.md` gives the commit): its fourteen
 original Gaussian finite-band estimates are not proved (energy-table accuracy is
-proved by `Final.hclose_final`), and the bound `K_G^C <= 1.404554025` of
+proved by `Final.hclose_final`), and the bound `K_G^C <= 1.404550522` of
 `main_bounds` is smaller.
 The pinned recipe and generator remain active because the comparisons use
 the same comparison bands and table radii. Their historical endpoint metadata
