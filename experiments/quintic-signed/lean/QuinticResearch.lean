@@ -15,5 +15,8 @@ import QuinticResearch.QuinticTailTransfer
 import QuinticResearch.QuinticVisibleMoments
 import QuinticResearch.QuinticVisiblePhase
 import QuinticResearch.QuinticVisibleReduction
+import QuinticResearch.RadialClip
+import QuinticResearch.RadialTail
 import QuinticResearch.SignedFifth
+import QuinticResearch.SignedRadial
 import QuinticResearch.SignedVector

@@ -16,6 +16,31 @@ In particular $D_F\ge17/10000$ for $t\ge0.885868$ (take $b=1$, $r=13/200$), and 
 
 For $0\le d\le\nu$ the residual diagonal $\nu(I-P-Q)-dF$ is positive semidefinite by the common three-projection energy bound. The standard Gaussian vector field therefore still gives at least $1-(1+e)/(n+1)$ for $e\ge0$. The finite-matrix transfer now takes only an upper bound on the real payoff of this signed operator for all unimodular pairs in sufficiently large dimension. These steps leave the central scalar estimate open. [Operator, high-arm scalar theorem and transfer](lean/QuinticResearch/SignedVector.lean).
 
+## Sharper credit from the visible fifth polynomial
+
+The radial argument improves the lower bound for $D_F$ to **$13/500=0.026$** when $t\ge0.885868$ and **$17/500=0.034$** when $t\ge0.886176$. For the real payoff of $T-dF$ this gives a saving of $0.034d$ throughout the latter interval. The checked estimates below use the physical pair directly. [Lean theorem and rational endpoints](lean/QuinticResearch/SignedRadial.lean) · [Independent exact replay](high_signed_credit.py).
+
+Write $Z$ for the visible unit Gaussian, $R=|Z|$, $X=R^2$, $p=\mathrm{ph}(Z)$, $\mu=\sqrt\pi/2$, $s=\operatorname{Re}(\bar h Z)$ and $D=\mu-t=\mathbb E(R-s)$. For every $r>0$,
+
+$$r^2(1-|h|^2)\le2r(R-s)+(r-R)_+^2.$$
+
+Indeed $s\le R|h|$. For $R\le r$ completing the square gives the inequality. For $R\ge r$, use $1-|h|^2\le2(1-|h|)$. The radial density $2R e^{-R^2}\le2R$ gives $\mathbb E(r-R)_+^2\le r^4/6$. As $\|h\|^2+\|k\|^2=1$, it follows that $\|k\|^2\le2D/r+r^2/6$. [Gaussian clipping proof](lean/QuinticResearch/RadialClip.lean).
+
+The visible fifth polynomial is $Fp=(\mu/8)Z L(X)$, where $L(x)=3-3x+x^2/2$. Therefore
+
+$$\operatorname{Re}\langle p-h,Fp\rangle=(\mu/8)\,\mathbb E[L(X)(R-s)].$$
+
+For $M\ge6$, $L(x)\le L(M)$ on $[0,M]$. For $x>M$ use $0\le R-s\le2R$ and $R\le(x+a^2)/(2a)$ for $a>0$. Integrating the cubic polynomial on $x>M$ against the exponential law of $X$ gives
+
+$$\mathbb E[L(X)(R-s)]\le L(M)D+2 B(M,a),\qquad
+ B(M,a)=\frac{e^{-M}}{2a}\big((M+a^2)(M-2)+2M-3\big).$$
+
+This identity uses just the first three shifted exponential moments. The Hilbert-space inequality $\|Fh\|^2\ge\|Fp\|^2-2\operatorname{Re}\langle p-h,Fp\rangle$, together with $\|Fp\|^2=3\pi/256$ and $\|Fk\|\le\|k\|$, now gives
+
+$$D_F\ge\frac{3\pi}{256}-\frac{\mu}{4}\big(L(M)D+2B(M,a)\big)-\frac{2D}{r}-\frac{r^2}{6}.$$
+
+Use $(M,a,r)=(10,3,129/1000)$ for the first range and $(12,7/2,67/1000)$ for the second. The rational arithmetic can be replayed from the branch root with `python3 -IBO experiments/quintic-signed/high_signed_credit.py`. The scalar estimate still needs a separate central argument to yield a stronger global lower bound. [Laguerre tail integral](lean/QuinticResearch/RadialTail.lean).
+
 ## A test of the central signed estimate
 
 Take a standard proper complex Gaussian $Z$, let $X=|Z|^2$, and set $s(X)=-1$ on $[5/4,19/4]$ and $+1$ elsewhere. Define $a=t/(\sqrt\pi/2)$, $b=\sqrt{1-a^2}$ and

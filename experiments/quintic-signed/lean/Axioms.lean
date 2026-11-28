@@ -37,6 +37,8 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.finiteDiffuseCubic_mem
 #print axioms Grothe.LowerAnalytic.gaussC_open_disk_prob
 #print axioms Grothe.LowerAnalytic.gaussC_soft_disk
+#print axioms Grothe.LowerAnalytic.gaussian_radial_tail
+#print axioms Grothe.LowerAnalytic.gaussian_squared_radius_clip
 #print axioms Grothe.LowerAnalytic.hasLaw_finiteDiffuseCopy
 #print axioms Grothe.LowerAnalytic.hasLaw_unitLinearSample
 #print axioms Grothe.LowerAnalytic.hasLaw_unit_H10
@@ -49,6 +51,7 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.independent_test_sign_integral
 #print axioms Grothe.LowerAnalytic.inner_blockLeft_blockRight
 #print axioms Grothe.LowerAnalytic.integral_finiteDiffuseCubic
+#print axioms Grothe.LowerAnalytic.laguerre_clipped
 #print axioms Grothe.LowerAnalytic.linearRadius_diffuseCoeff
 #print axioms Grothe.LowerAnalytic.linear_eq_radius_mul_unit
 #print axioms Grothe.LowerAnalytic.measurable_diffuseCopy
@@ -105,15 +108,20 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.signedFifth_diagonal
 #print axioms Grothe.LowerAnalytic.signedFifth_payoff
 #print axioms Grothe.LowerAnalytic.signedFifth_payoff_high
+#print axioms Grothe.LowerAnalytic.signedFifth_payoff_radial_high
 #print axioms Grothe.LowerAnalytic.signedFifth_transfer
 #print axioms Grothe.LowerAnalytic.signedFifth_vector
 #print axioms Grothe.LowerAnalytic.signed_fifth_at_least_154
 #print axioms Grothe.LowerAnalytic.signed_fifth_at_least_17
 #print axioms Grothe.LowerAnalytic.signed_fifth_high
+#print axioms Grothe.LowerAnalytic.signed_fifth_radial
+#print axioms Grothe.LowerAnalytic.signed_fifth_radial_885868
+#print axioms Grothe.LowerAnalytic.signed_fifth_radial_886176
 #print axioms Grothe.LowerAnalytic.splitFinBlock_fst
 #print axioms Grothe.LowerAnalytic.splitFinBlock_snd
 #print axioms Grothe.LowerAnalytic.transferInputs_of_quinticPayoff
 #print axioms Grothe.LowerAnalytic.visibleDirection_mem
+#print axioms Grothe.LowerAnalytic.visible_half_difference_clip
 #print axioms Grothe.LowerAnalytic.visible_orthogonal_chargeOne5
 #print axioms Grothe.LowerAnalytic.visible_phase_alignment_le_unused
 #print axioms Grothe.LowerAnalytic.visible_phase_stability
