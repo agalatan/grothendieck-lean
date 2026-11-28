@@ -1,3 +1,4 @@
+import Grothe.RealOpaque
 import Mathlib.Data.Rat.Defs
 
 set_option warningAsError true

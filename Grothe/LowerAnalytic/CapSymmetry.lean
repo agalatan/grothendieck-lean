@@ -105,7 +105,7 @@ theorem Jpot_cj (ha : a.cj = a) (y : Fib) (s : ℝ) :
     Jpot E R ℓ β a ν y.cj s = Jpot E R ℓ β a ν y s := by
   unfold Jpot
   rw [Fib.quad_cj]
-  congr 1
+  refine congrArg (· - Fib.quad E R y) ?_
   rw [← integral_gaussC_comp _ Complex.continuous_conj gaussC_map_conj _
     (continuous_Jtail E R ℓ β a ν y s)]
   refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
@@ -119,7 +119,7 @@ theorem Jpot_ng (ha : a.ng = a) (y : Fib) (s : ℝ) :
     Jpot E R ℓ β a ν y.ng s = Jpot E R ℓ β a ν y s := by
   unfold Jpot
   rw [Fib.quad_ng]
-  congr 1
+  refine congrArg (· - Fib.quad E R y) ?_
   rw [← integral_gaussC_comp _ continuous_neg gaussC_map_neg _ (continuous_Jtail E R ℓ β a ν y s)]
   refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
   have hz : Lf ℓ β z = -Lf ℓ β (-z) := by rw [Lf_neg, neg_neg]

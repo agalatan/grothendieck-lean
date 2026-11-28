@@ -1,4 +1,5 @@
 -- Grothe/Lower/Basic.lean
+import Grothe.RealOpaque
 import Mathlib.Basic.Real.Basic
 import Mathlib.Data.Rat.Cast.Lemmas
 import Mathlib.Data.Nat.Choose.Sum

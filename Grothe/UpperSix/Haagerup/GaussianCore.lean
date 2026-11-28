@@ -1,3 +1,4 @@
+import Grothe.RealOpaque
 import Mathlib.Analysis.SpecialFunctions.Gaussian.FourierTransform
 import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.MeasureTheory.Measure.CharacteristicFunction.Basic

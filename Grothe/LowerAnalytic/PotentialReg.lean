@@ -34,7 +34,7 @@ lemma Jpot_neg (y : Fib) (s : ℝ) :
     rw [pfn_eq, pfn_eq, fn_M_smul]; push_cast; ring
   unfold Jpot
   rw [quad_smul_neg]
-  congr 1
+  refine congrArg (· - Fib.quad E R y) ?_
   refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
   simp only [hp, sub_neg_eq_add, ← sub_eq_add_neg]
   rw [psiT_comm]

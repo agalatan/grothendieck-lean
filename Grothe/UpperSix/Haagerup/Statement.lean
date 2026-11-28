@@ -1,3 +1,4 @@
+import Grothe.RealOpaque
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic

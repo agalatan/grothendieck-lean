@@ -273,7 +273,7 @@ theorem hasSum_odd_of_eqOn_real {f : ℂ → ℂ} {r : ℝ} (hr : 1 < r)
     exact (hEq hw).symm
   rw [hfc.hasFPowerSeriesAt.eq_formalMultilinearSeries hfp] at hfc
   have hmem : z ∈ Metric.eball (0 : ℂ) R' := by
-    rw [Metric.mem_eball, edist_zero_right, enorm_eq_nnnorm, ENNReal.coe_lt_coe,
+    rw [Metric.mem_eball, edist_zero_right, eNorm_eq_nnNorm, ENNReal.coe_lt_coe,
       ← NNReal.coe_lt_coe]
     exact hzr'
   have h1 := hfc.hasSum hmem
@@ -882,11 +882,13 @@ private lemma box_sound {R : Sym2C} {RI : SC} {j cap : ℝ} {jI capI : Ival}
     rw [gaussDenominator, normSq_detIm]
     simpa only [gaussDenOf, ndOf, hsh, hTeq, hEeq, Z_Bj_eq hdp0 hdm0, sq, Int.cast_ofNat,
       mul_assoc] using hm
-  have hdenPos : 0 < gaussDenominator R j := pos_of_posI hden hdenpos
+  -- an opaque name for the denominator keeps `0 < _` cheap to normalise
+  generalize gaussDenominator R j = g at hden ⊢
+  have hdenPos : 0 < g := pos_of_posI hden hdenpos
   have hcapR : (D : ℝ) ≤ ((mulI capI (gaussDenOf jI RI)).lo : ℝ) := by exact_mod_cast hcap
   have hmul := (mem_mul hv hden).1
   refine ⟨by rw [Z_Bj_eq hdp0 hdm0]; exact hZPD, by rw [hTeq]; exact PD_of_gate hT hTg,
-    (div_le_iff₀ hdenPos).2 (by nlinarith [D_pos])⟩
+    (div_le_iff₀ hdenPos).2 (le_of_mul_le_mul_right (by rw [one_mul]; exact hcapR.trans hmul) D_pos)⟩
 
 /-! ### 5. Holomorphic kernel `RtGen` and circle/disc soundness -/
 
@@ -1101,13 +1103,13 @@ theorem discCover_sound_gen {m00 m01 m11 : ℝ} {pl ql : List ℚ} {dat : RData}
     simp only [discCover, Bool.or_eq_true, Bool.or_false] at h
     rcases h with h | h
     · exact absurd (outside_sound h hx hy) (not_le.2 hr)
-    · exact kerPos_of_kerGates_gen hm00 hm01 hm11 hP hQ ⟨hx, hy⟩ h
+    · exact kerPos_of_kerGates_gen hm00 hm01 hm11 hP hQ (T := ⟨⟨xlo, xhi⟩, ⟨ylo, yhi⟩⟩) ⟨hx, hy⟩ h
   | succ d ih =>
     intro xlo xhi ylo yhi h t hx hy hr
     simp only [discCover, Bool.or_eq_true, Bool.and_eq_true] at h
     rcases h with (h | h) | ⟨⟨⟨h1, h2⟩, h3⟩, h4⟩
     · exact absurd (outside_sound h hx hy) (not_le.2 hr)
-    · exact kerPos_of_kerGates_gen hm00 hm01 hm11 hP hQ ⟨hx, hy⟩ h
+    · exact kerPos_of_kerGates_gen hm00 hm01 hm11 hP hQ (T := ⟨⟨xlo, xhi⟩, ⟨ylo, yhi⟩⟩) ⟨hx, hy⟩ h
     · set xm := (xlo + xhi) / 2; set ym := (ylo + yhi) / 2
       rcases le_total (t.re * D) xm with hxl | hxl <;> rcases le_total (t.im * D) ym with hyl | hyl
       · exact ih _ _ _ _ h1 t ⟨hx.1, hxl⟩ ⟨hy.1, hyl⟩ hr
@@ -1660,10 +1662,10 @@ theorem integral_subst4 {a b c : ℝ} (h : 0 < k11 a b) (hd : 0 < kdet a b c) (p
         (hg.comp (measurable_const_add _))).aestronglyMeasurable
     rw [← integral_map hm.aemeasurable hGm, hmap, MeasureTheory.integral_smul_measure, det_linS4,
       ENNReal.toReal_ofReal (abs_nonneg _), abs_of_pos (inv_pos.2 hpos), Complex.real_smul]
-  rw [e1, e2]; congr 1
+  rw [e1, e2]; refine congrArg (_ * ·) ?_
   rw [← integral_add_right_eq_self (μ := volume)
     (fun s => (psi (solve4 a b c (s - mulR4 a b c p)) : ℂ) * g s) (mulR4 a b c p)]
-  congr 1; ext v; rw [add_sub_cancel_right, add_comm v (mulR4 a b c p)]
+  refine congrArg (integral _) ?_; ext v; rw [add_sub_cancel_right, add_comm v (mulR4 a b c p)]
 
 lemma integral_psi : ∫ q : Pt4, (psi q : ℂ) = 1 := by
   have h := integral_mu2_eq (g := fun _ => (1 : ℂ)) aestronglyMeasurable_const
@@ -1938,7 +1940,7 @@ theorem law_swap_gen {m00 m01 m11 n00 n01 n11 p q : ℝ}
   simp only [L_apply]
   simp only [Prod.fst_zero, Prod.snd_zero, Prod.mk_add_mk, mul_one, mul_zero, add_zero, zero_add,
     map_zero, dual_ofReal_mul, dual_ofReal]
-  rw [← add_div, ← neg_add, ← Complex.ofReal_add, div_left_inj' (show (4 : ℂ) ≠ 0 by norm_num),
+  rw [← add_div, ← neg_add, ← Complex.ofReal_add, div_left_inj₀ (show (4 : ℂ) ≠ 0 by norm_num),
     neg_inj, Complex.ofReal_inj]
   linear_combination e1 + e2
 
@@ -2215,8 +2217,8 @@ theorem hardy_unsmoothed_channel {G : ℂ × ℂ → ℂ}
       (rhoQ : ℝ) ^ (2 * (2 * n + 1)) ≤ (budgetQ : ℝ) := by
   have hm1 : mem (1 : ℝ) (intI 1) := by simpa using mem_intI 1
   have hm0 : mem (0 : ℝ) zeroI := mem_zero
-  have hU := kerPos_on_ball_gen hr2 hm1 hm0 hm1 rfl rfl hreg
-  have hm := hmean_of_circleMeanOK hGm hGm hG1 hG1 hm1 hm0 hm1 rfl rfl
+  have hU := kerPos_on_ball_gen (dat := unsmoothedRData pl ql) hr2 hm1 hm0 hm1 rfl rfl hreg
+  have hm := hmean_of_circleMeanOK (dat := unsmoothedRData pl ql) hGm hGm hG1 hG1 hm1 hm0 hm1 rfl rfl
     (by linarith) hj0 hB0 hrr hU hmean_ok
   have hs := summable_abs_bivarKernel (ofListQ pl) (ofListQ ql) hP hQ _
     (summable_abs_energy (hGL.toLp G))

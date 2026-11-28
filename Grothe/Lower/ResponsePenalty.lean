@@ -1,4 +1,5 @@
 -- Grothe/Lower/ResponsePenalty.lean
+import Grothe.RealOpaque
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Tactic.FieldSimp

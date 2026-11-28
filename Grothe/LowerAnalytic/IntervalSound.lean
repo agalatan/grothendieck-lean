@@ -1,3 +1,4 @@
+import Grothe.RealOpaque
 import Mathlib
 import GrotheCapsKernel.Basic
 

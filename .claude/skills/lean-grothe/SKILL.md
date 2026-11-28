@@ -149,16 +149,14 @@ version.
 
 ## Mathlib and Lean pitfalls (toolchain `v4.36.0`)
 
-- Since Mathlib `v4.36.0` the arithmetic of `ℝ` (`Real.add`, `Real.mul`, `Real.neg`, `Real.lt`, ...) is
+- Since Mathlib `v4.36.0` the arithmetic of `ℝ` (`Real.add`, `Real.mul`, `Real.lt`, ...) is
   `@[no_expose] private def`, no longer `irreducible_def`. Our files are not `module`s (`allowNonModules = true`), so
-  they see those bodies, and a definitional check between two different real expressions can unfold Cauchy
+  they would see those bodies, and a definitional check between two different real expressions would unfold Cauchy
   sequences for minutes (`whnf`/`isDefEq` heartbeat timeouts, then `(kernel) unknown constant` of the failed
-  declaration). Typical triggers and fixes: `congr 1` on real or complex sums and products (its closing `rfl` try)
-  → `congrArg₂ (· + ·) h₁ h₂`, `congrArg ENNReal.ofReal ?_`, `congrArg (integral _) ?_`; a `_` that unification
-  must solve against a goal of real arithmetic → give the argument; `h.comp` on `Continuous` with a `set`
-  variable → `h.comp'`; `(lemma …).2` on a `def`-wrapped conjunction → `obtain ⟨-, _⟩ := lemma …`. The linter
-  `constructorNameAsVariable` runs `whnf` on the type of every named binder: a named hypothesis `0 < bigRealExpr`
-  can time out there, so keep such facts anonymous (`obtain ⟨-, _⟩`) or state them as `≠ 0`.
+  declaration; even the linter `constructorNameAsVariable`, which normalises the type of every named binder).
+  `Grothe/RealOpaque.lean` makes the ten operations irreducible again; every module that imports Mathlib imports it,
+  directly or through another module of the project (a new module that imports only Mathlib must import it too).
+  If such timeouts reappear, check that the module's import closure contains `Grothe.RealOpaque`.
 - `add_le_add_left h a` has the swapped convention; use `add_le_add le_rfl h`.
 - `RCLike.inner_apply' : ⟪x, y⟫ = conj x * y`; `PiLp.inner_apply`; `WithLp.toLp 2 f` builds Euclidean vectors
   (`PiLp.toLp_apply`, `PiLp.norm_single`, `EuclideanSpace.inner_single_left`).
