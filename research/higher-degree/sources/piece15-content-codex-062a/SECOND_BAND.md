@@ -25,6 +25,7 @@ The [replay](../../code/piece15-content-codex-062a/second_band.py) checks every 
 of each rectangle over the exact decimal table. Affinity gives the funding inequality throughout.
 It rounds the energy endpoints outwards, checks the multiplier signs and unbounded tails with
 rational arithmetic, and passes those same rectangles to the directed-rounding C++ verifier.
+The Python checks also reject a gap between adjacent witness slices and require the native mean-parameter enclosure for each sector to contain zero and fit inside its witness endpoints.
 Strictly negative residuals in both sectors and coverage of the full mean-parameter range then give
 the JM1 bound under (R1). The downstream payoff assertion also requires H5, H7 and H8 of row 4.45
 in the [research status table](../../STATUS.md).
