@@ -1,7 +1,8 @@
-# An explicit fourth-moment gap from vector fields on spheres
+# Fourth-moment bounds from zeros of bilinear maps
 
-Agent-ID: codex-062a. Issue #507. The general inequality is **P, author only**.
-The example fractions and normalization checks are **C, author only**.
+Agent-ID: codex-062a. Issue #507. The one-input vector-field bound and its replay
+were [independently checked by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/926#issuecomment-7238684736).
+The two-input bound below is **P, author only**, and its numerical table is **C, author only**.
 
 Let $x,y,w$ be independent uniform unit vectors in $\mathbb C^c$. Let $R\ne0$
 be any complex trilinear polynomial taking one coordinate from each cluster in
@@ -12,19 +13,21 @@ $\rho(n)=8d+2^b$, $r=\rho(n)+1$, and $D_m=m(m+1)/2$.
 
 **Theorem.** For every $c\ge2$ other than $2,4$,
 $$
-  \kappa(R)\ \ge\ \kappa_0\left(1+\frac{1}{D_r D_n-1}\right).
+  \kappa(R)\ \ge\ \kappa_0\frac{N}{N-1}.
 $$
-For $c=2,4$ the sharp value is $\kappa_0$, attained by the
-[known examples](../kappa-three-cluster-2026-11-17/NOTE.md).
+Put $k=2^{v_2(n)}$, the largest power of two dividing $n$. Take
+$N=D_rD_n$ when $k=n$ and otherwise take
+$N=\min\{D_rD_n,D_{k+1}D_{n-k+1}\}$. At $c=2,4$ the sharp value is
+$\kappa_0$, attained by the [known examples](../kappa-three-cluster-2026-11-17/NOTE.md).
 The exact minimum in the other dimensions remains open.
 
-| Complex dimension $c$ | Restricted real dimension $r$ | Gap above $\kappa_0$ | Lower bound for $\kappa$ |
-|---:|---:|---:|---:|
-| 3 | 3 | $3/250$ | $189/125$ |
-| 5 | 3 | $5/987$ | $550/329$ |
-| 6 | 5 | $12/8183$ | $14040/8183$ |
-| 7 | 3 | $7/2516$ | $2205/1258$ |
-| 8 | 10 | $16/67311$ | $119680/67311$ |
+| Complex dimension $c$ | Real input dimensions used | Gap above $\kappa_0$ | Lower bound for $\kappa$ |
+|---:|:---:|---:|---:|
+| 3 | $(3,5)$ | $3/178$ | $135/89$ |
+| 5 | $(3,9)$ | $5/807$ | $450/269$ |
+| 6 | $(5,9)$ | $6/2359$ | $4050/2359$ |
+| 7 | $(3,13)$ | $7/2180$ | $1911/1090$ |
+| 8 | $(10,16)$ | $16/67311$ | $119680/67311$ |
 
 ## Reduce the defect to one real bilinear map
 
@@ -46,7 +49,7 @@ $$
 The phase average is over all inputs. The conditional law in the $x$-cluster
 may have unequal real and imaginary variances.
 
-## Every restricted map has a zero
+## Restrict one input by the vector-field theorem
 
 In the stated dimensions $\rho(n)<n$. Indeed, if $d=0$, $\rho(n)=2^b$
 and equality requires the odd factor to be one. If $d\ge1$, then
@@ -62,30 +65,68 @@ $\rho(n)$ everywhere independent tangent vector fields on $S^{n-1}$.
 Adams' theorem rules this out. Thus $B=0$ at some point of
 $S(U)\times S^{n-1}$. [J. F. Adams, *Vector Fields on Spheres*, Theorem 1.1](https://www.math.ens.psl.eu/~benoist/refs/Adams.pdf).
 
+## Restrict both inputs by the Hopf–Stiefel condition
+
+Fix arbitrary subspaces $U,V\subset\mathbb R^n$ of dimensions $p,q$.
+Suppose there is an integer $0<j<n$ with $j<p$, $n-j<q$, and $\binom nj$ odd.
+Then $\Phi$ has a zero on $S(U)\times S(V)$. Indeed, a bilinear map with
+no such zero induces a continuous map
+$\mathbb{RP}^{p-1}\times\mathbb{RP}^{q-1}\to\mathbb{RP}^{n-1}$ by taking
+the line through its value. On either input with the other fixed, the
+map comes from an injective linear map. Therefore the generator of
+$H^1(\mathbb{RP}^{n-1};\mathbb F_2)$ pulls back to $a+b$, the sum of the
+two input generators. Its $n$th power vanishes. But in
+$\mathbb F_2[a,b]/(a^p,b^q)$ the term $a^j b^{n-j}$ in $(a+b)^n$
+has coefficient one and survives. This contradiction is the classical
+obstruction. [José Adem, *Construction of some normed maps*, Theorem 8.4](https://www.boletin.math.org.mx/pdf/2/20/BSMM%282%29.20.59-75.pdf).
+
+For $k<n$ this gives $(p,q)=(k+1,n-k+1)$. Indeed,
+$(1+t)^n=(1+t^k)^{n/k}$ over $\mathbb F_2$, and $n/k$ is odd.
+The first positive exponent with odd coefficient is $k$. By symmetry all
+eligible interior exponents $j$ belong to $[k,n-k]$. For a given $j$ the
+smallest eligible dimensions are $j+1,n-j+1$. The product of their quadratic
+dimensions is
+$$
+ D_{j+1}D_{n-j+1}
+ =\frac{(n+1+j(n-j))(2n+4+j(n-j))}{4}.
+$$
+It is minimal at $k$ or $n-k$. Thus this choice gives the best evaluation
+bound obtainable from an odd coefficient of $(a+b)^n$. If $n$ is a power
+of two, the polynomial has only its two endpoint terms.
+
+When $k<n$ and $v_2(n)\le3$, $r=k+1$ and the second restriction strictly
+improves the bound. When $v_2(n)\ge4$ the vector-field choice is stronger.
+To check the latter comparison for $k<n$, observe that $n\ge3k$ and
+$2k\ge3\rho(n)+2$. The second inequality holds at valuation four
+($k=16,\rho=9$) and persists as the valuation increases because $k$
+doubles and the formula for $\rho$ gives at most a doubling. Consequently
+$D_{k+1}/D_r\ge9/4$, while $D_{n-k+1}/D_n>4/9$.
+
 ## Convert a zero into an average
 
-On the unit sphere in $\mathbb R^m$, the restrictions of homogeneous real
-quadratic forms have dimension $D_m$. A form vanishing on the sphere
-vanishes everywhere by homogeneity, and the constant function is represented
-by the squared radius. On $S(U)\times S^{n-1}$ the tensor product of
-these two spaces contains $B$. Under the product probability measure its
-mean-zero subspace has dimension $D_rD_n-1$. For an orthonormal basis of
-this subspace, the sum of squared basis functions is independent of the
-basis and invariant under $O(r)\times O(n)$. Transitivity makes it a
-constant, and integration identifies the constant with $D_rD_n-1$.
-Cauchy–Schwarz therefore bounds the squared value at any point of a centered
-function by $D_rD_n-1$ times its squared $L^2$ norm.
+Use either pair of dimensions $(p,q)$ just established, taking $(r,n)$
+for the vector-field argument. On a real unit sphere in $\mathbb R^m$ the
+restrictions of homogeneous quadratic forms have dimension $D_m$. A form
+vanishing on the sphere vanishes everywhere by homogeneity. The squared radius
+represents the constant function. On $S(U)\times S(V)$ the tensor product of
+the two quadratic spaces contains $B$. Its centered subspace has dimension
+$D_pD_q-1$. For an orthonormal basis under product probability measure, the
+sum of the squares of the centered basis functions is invariant under
+$O(p)\times O(q)$. It is constant by transitivity and integrates to
+$D_pD_q-1$. Cauchy–Schwarz bounds squared point evaluation of any centered
+function in this space by $D_pD_q-1$ times its squared $L^2$ norm.
 
-Let $a_U$ be the mean of $B$ on this product. Evaluate $B-a_U$ at a
-point where $B=0$. The preceding inequality gives
+Write $m_{U,V}$ for the slice mean of $B$. Evaluating $B-m_{U,V}$ at a
+zero and rearranging gives
 $$
- \mathbb E_{S(U),w} B^2
-   \ \ge\ a_U^2\left(1+\frac{1}{D_rD_n-1}\right).
+ \mathbb E_{S(U)\times S(V)} B^2
+ \ \ge\ m_{U,V}^2\left(1+\frac{1}{D_pD_q-1}\right).
 $$
-Choose $U$ with the rotation-invariant probability measure on the Grassmannian.
-A uniform unit vector in a uniform $U$ is uniform on $S^{n-1}$. Hence
-$\mathbb E_U a_U=1$ and $\mathbb E_U a_U^2\ge1$. Averaging the last display
-and applying the real-part identity proves the theorem.
+Choose $U,V$ independently with their rotation-invariant Grassmannian laws.
+Independent uniform directions in the chosen subspaces then have the
+original product law. Hence $\mathbb E m_{U,V}=1$ and
+$\mathbb E m_{U,V}^2\ge1$. Averaging proves the stated lower bound for each
+pair, so the smaller product of dimensions gives the stronger bound.
 
 For odd $c\ge3$, $r=3$ and $D_rD_n=6c(2c+1)$. The resulting gap exceeds
 the [elementary odd-dimensional gap](../kappa-spheres-2026-11-24-gemini-21d5/PROOF.md)
