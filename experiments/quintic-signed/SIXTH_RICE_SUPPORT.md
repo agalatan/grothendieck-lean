@@ -56,8 +56,16 @@ $$
 $$
 For the first inequality use the two factors $W/\sqrt{1+uW/4}$ and $W\sqrt{1+uW/4}$. For the second, the product $(2-u)(m_2+uM_3/4)$ increases in $u$ on the prescribed interval: its derivative is $(1-u)M_3/2-m_2\ge0$, since $M_3\ge3m_2$. At $u=.345^2$ the remaining inequality is a quartic in $z$. Subtract $z^2(z-23/20)^2$. The remaining cubic coefficient is nonnegative, the quadratic coefficient exceeds $1/4$, the linear coefficient vanishes, and the constant exceeds $-1/10$. Each comparison is rational, and $z\ge1$ finishes the proof. Applying the rational Rice bound now gives $1+u/2-u^2(2-u)/16$, as required.
 
-The transfer from this stronger physical scale to an improved finite-matrix bound requires repricing the sparse rows at the new cutoffs. This note proves the scale bound; the supported lower-bound numbers are recorded with their complete schedules.
-
 From the repository root run `python3 -IB -O experiments/quintic-signed/code/sixth_rice_support.py`.
 
 Agent-ID: codex-a7c4
+
+## Finite-matrix transfer on the 117-piece schedule
+
+At the left endpoint of each central piece, intersect the prior scale bound with the estimates at $\lambda=i/400$, $80\le i\le138$. Round the resulting upper bound on $\delta_{08}\tau$ upward to the $10^{-4}$ grid and retain the previously checked $.21$ minimum cutoff. Recompute each row-mixture deduction from its clipped chords. In outer cells 29 and 30 the same argument allows the already certified row-09 deduction $134819/250000000000$ throughout. Since row 09 enters the row 09/12 mixture with weight $1-u$, subtract $1-u$ times this deduction there. The amplitude cover remains the 117 closed pieces of [the repriced schedule](REPRICED_SIGNED_ENDPOINT.md).
+
+Using the [all-cubic high price](JOINT_CUBIC_RICE.md) above $.885774$, the signed weight $.000049481859$ and nonzero fifth debit $10^{-8}$ give scalar cap $7132523664641/10^{13}$. Its reciprocal is **greater than 1.40202829603**. At zero debit the retuned weight $.000049461431$ instead gives $7132523642307/10^{13}$ and reciprocal **greater than 1.40202830042**. These are analytic certificates with exact replays; the complete Lean transfer using these new cutoffs is outstanding. The same original node-cap data supply the rows.
+
+At the signed weight with its fifth debit set to zero, the outward scalar numerator already falls from 7132523664641 to 7132523648371 in units of $10^{-13}$. Retuning the pure weight to $.00004946138633$ yields scalar cap $713252364229283/10^{15}$ and reciprocal $>1.402028300432718$. The [two-contact argument](COMBINED_CENTRAL_CONTACTS.md) now uses the interior amplitudes $.81120935856$ in cell 14 and $.861937787768$ in cell 30. Their weighted lower estimate is strictly larger than $.7132523642292822+.22333265d$, placing the best reciprocal below $1.402028300432721$. For competitive weights $w\in[.000048,.000051]$ the pure upper arm above $.88$ stays below $.71325218370$. Below $.88$ every positive debit increases the sparse price, and the alternative high price has enough slack to preserve that increase. Outside this weight interval a central supporting line already exceeds the displayed pure cap. Thus every $0<d\le(1-w)/10000$ loses to an available pure setting on the updated estimates as well. This ablation concerns the same row and fifth-floor estimates; physical saturation at either contact remains open.
+
+Run `python3 -IB -O experiments/quintic-signed/code/sixth_repriced.py` for both complete comparisons and their constituent checks.

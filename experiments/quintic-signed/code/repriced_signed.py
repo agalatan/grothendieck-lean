@@ -31,7 +31,7 @@ WEIGHTS = (
 DENOM = 10**13
 
 
-def repriced_segments():
+def repriced_segments(*, scale_limit=None):
     case = first.curved.sparse.base.TestWeightedTightGate
     case.setUpClass()
     source = case()
@@ -55,6 +55,8 @@ def repriced_segments():
             checked(limit >= 0, "negative terminal-scale budget")
             stop = max(SMALL, Q(1+isqrt(floor(limit*10**8)), 10000))
             checked(limit <= stop**2, "unsafe terminal scale")
+            if scale_limit is not None:
+                stop = min(stop, scale_limit(law, l))
             debit = Q(floor(DENOM*clipped(stop).discount(w)), DENOM)
             ell = (1-w)*ell8 + w*ell9
             cap = ((1-w)*cap8 + w*cap9

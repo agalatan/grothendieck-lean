@@ -38,8 +38,16 @@ def maximum(piece, poly, lo, hi):
     )[0]
 
 
-def obstruction(pieces, residual):
-    contacts = (Q(167530517578123, 200000000000000), Q(43091569, 50000000))
+def obstruction(
+    pieces, residual, *,
+    contacts=(Q(167530517578123, 200000000000000), Q(43091569, 50000000)),
+    pure_cap=PURE_CAP,
+    price_lower=Q(7132526460176, 10**13),
+    debit_lower=Q(".2233320"),
+    weight_range=(Q(".000052"), Q(".000054")),
+    switch=ZERO_SWITCH,
+    outer_cap=Q(".71325239734"),
+):
     lines = []
     for t in contacts:
         rows = [p for p in pieces if p.low <= t <= p.high]
@@ -63,12 +71,13 @@ def obstruction(pieces, residual):
     cap_floor = share * a + (1 - share) * b
     fifth_cost = share * z + (1 - share) * y
     checked(
-        cap_floor > Q(7132526460176, 10**13) and fifth_cost > Q(".2233320"),
+        cap_floor > price_lower and fifth_cost > debit_lower,
         "central two-point price",
     )
-    left, right, cut = Q(".000052"), Q(".000054"), Q(".88")
+    left, right = weight_range
+    cut = Q(".88")
     checked(
-        a + m * left > PURE_CAP and b + n * right > PURE_CAP,
+        a + m * left > pure_cap and b + n * right > pure_cap,
         "localization of competitive weights",
     )
     inner_gaps = []
@@ -85,24 +94,24 @@ def obstruction(pieces, residual):
                 difference(p.low), difference((p.low + p.high) / 2), difference(p.high)
             )
             inner_gaps.append(-maximum(p, diff, p.low, min(p.high, cut)))
-        if p.high >= cut and p.low <= ZERO_SWITCH:
+        if p.high >= cut and p.low <= switch:
             for w in [left, right]:
                 outer_prices.append(
                     maximum(
                         p,
                         p.transformed(first.physical_scales(w)),
                         max(p.low, cut),
-                        min(p.high, ZERO_SWITCH),
+                        min(p.high, switch),
                     )
                 )
     for w in [left, right]:
-        outer_prices.extend(high(w, 0, t, residual=residual) for t in [ZERO_SWITCH, MU])
+        outer_prices.extend(high(w, 0, t, residual=residual) for t in [switch, MU])
     checked(
         min(inner_gaps) > Q(".00156403") > 3 * PI_LO / 256 / 10000,
         "high price on the lower arm",
     )
     checked(
-        max(outer_prices) < Q(".71325239734") < cap_floor,
+        max(outer_prices) < outer_cap < cap_floor,
         "upper arm cannot bind near the optimum",
     )
     checked(

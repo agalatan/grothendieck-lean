@@ -78,3 +78,47 @@ $$
 Adding the cubic and first energies from the preceding section and minimizing the real quadratic gives the stated bound, including $\lambda=1$. Setting $\lambda=0$ already gives the central floors $-.145866$ and $-.060154$. The two stronger displayed floors use $\lambda=.692$ and $.473$. The [exact replay](code/central_fifth_floor.py) verifies the array, both endpoints of all nine joint Gram blocks, Gaussian radii, and outward bounds.
 
 Agent-ID: codex-a7c4
+
+## Using the joint energy in a finite-matrix price
+
+Write $V_0=\nu(1-2\|k\|^2)+\alpha(t^2-\|Pk\|^2)-\beta(\|Qh\|^2-\|Qk\|^2)$ for the scalar value of the original identity-tail witness on a unimodular pair, with $\nu=47/2000$, $\alpha=1-\nu$, $\beta=63/80$. The signed witness has value
+$$
+ S=(1-w)V_0+w(t^2-\|Pk\|^2)-d\Delta_5.
+$$
+Put $s=d/(2\beta)$ and denote the amplitude-only fifth floor above by $L_\lambda(t)$. Its $\|Qk\|^2/2$ credit pays the $\beta\|Qk\|^2$ term of $sV_0$. Dropping the nonpositive remaining contributions of $k$, the result is
+$$
+ S\le(1-w-s)V_0+(w+s\alpha)t^2+s\nu
+       -d\big(L_\lambda(t)+\|Qh\|^2/2\big).
+$$
+This keeps a further debit from the actual half-sum cubic on the same pair. The [visible cubic test](lean/QuinticResearch/SignedCubicDebit.lean) gives $\|Qh\|^2\ge\pi/32-\mu(\mu-t)$, and the original scalar rows bound $V_0=\alpha\widehat V+\nu$.
+
+On the [sixth-order 117-piece cover](SIXTH_RICE_SUPPORT.md), use $\lambda=4/5$ on pieces starting below $.83$ and $\lambda=1/2$ on all remaining sparse pieces. Each bound holds on its entire closed subinterval. Use the established joint high estimate from $.885774$ onward. With $w=.000049474748$, $d=10^{-8}$, the resulting signed scalar price is at most $71325236499889/10^{14}$, giving reciprocal **greater than 1.40202829891**. At the same nonzero debit the previous quadratic-floor schedule gave 1.40202829603. The matched zero-debit price is $71325236462594/10^{14}$ and the optimized pure result exceeds 1.402028300432718. The [exact signed replay](code/sixth_angular_profile.py) retains all pair sectors and uses the original node-cap data.
+
+## A radial formula in every odd degree
+
+There is an analytic proof of the radial three-degree prices that extends to every odd degree. Set $c_j=\binom{2j}{j}/4^j$. If $u=\sum_{j=0}^m u_{j+1,j}$ with each summand in its indicated pure complex chaos, then
+$$
+ \mathbb E\frac{|u|^2}{|Z|}
+   \le\sqrt\pi\sum_{j=0}^m \frac{\|u_{j+1,j}\|^2}{c_{m-j}} .
+$$
+At $m=2$ this is the $\lambda=0$ case of the three-degree dual estimate. The proof retains the extra factor $c_{|\ell|}$ on a block of visible angular frequency $\ell$. The nonradial estimate with $\lambda>0$ above uses the separate finite real forms.
+
+Fix one remote chaos basis index. The remaining visible modes have one angular frequency $\ell$ and consecutive radial degrees $0,\ldots,N$. Write $L=|\ell|$, $T=|Z|^2$. After taking out the common angular factor, the visible combination is $T^{L/2}\sum_{k=0}^N a_k L_k^L(T)$, with associated Laguerre polynomials in the conventional normalization. The mode with visible radial index $k$ belongs to the total chaos at distance $N-k$ from the top. The unweighted squared norm at index $k$ is $(k+L)!|a_k|^2/k!$.
+
+The connection formula
+$$
+ L_k^L(T)=\sum_{j=0}^k c_{k-j}L_j^{L-1/2}(T)
+$$
+follows from the generating series $(1-z)^{-1-L}\exp[-Tz/(1-z)]$ by extracting a factor $(1-z)^{-1/2}$. The Laguerre orthogonality formula for the weight $T^{L-1/2}e^{-T}$ gives the inverse-radius norm divided by $\sqrt\pi$ as
+$$
+ \sum_{j=0}^N \frac{\Gamma(j+L+1/2)}{\sqrt\pi\,j!}
+                  \left|\sum_{k=j}^N c_{k-j}a_k\right|^2 .
+$$
+Orthogonality in this normalization follows by the Rodrigues formula and integration by parts against monomials; the degree-$j$ monomial determines the squared norm.
+
+The convolution $\sum_{k=j}^N c_{k-j}c_{N-k}=1$ is the coefficient identity for $(1-z)^{-1}$. Cauchy–Schwarz therefore bounds the square above by $\sum_{k=j}^N c_{k-j}|a_k|^2/c_{N-k}$. Interchange the two finite sums and use
+$$
+ \sum_{j=0}^k \frac{\Gamma(j+L+1/2)}{\sqrt\pi\,j!}c_{k-j}
+   =c_L\frac{(k+L)!}{k!},
+$$
+again by multiplying the binomial series. This proves the block estimate with the claimed factor $c_L\le1$. The weight is radial in $Z$ and independent of the remote block, so summing over its orthogonal basis indices proves the full estimate.
