@@ -3403,8 +3403,6 @@ import Grothe.LowerAnalytic.NodeListParse
 import Grothe.LowerAnalytic.Pieces
 import Grothe.LowerAnalytic.Potential
 import Grothe.LowerAnalytic.PotentialReg
-import Grothe.LowerAnalytic.QuinticHybridTransfer
-import Grothe.LowerAnalytic.QuinticWitness
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.RadialParts
 import Grothe.LowerAnalytic.RadiusCheck

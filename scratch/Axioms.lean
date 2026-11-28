@@ -110,8 +110,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.FirstChaosProfile.payoff_split
 #print axioms Grothe.LowerAnalytic.FirstChaosProfile.phase_budget
 #print axioms Grothe.LowerAnalytic.FirstChaosProfile.scalar_cap
-#print axioms Grothe.LowerAnalytic.H32_le_H21_orthogonal
-#print axioms Grothe.LowerAnalytic.H32_le_orthogonal
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
@@ -218,19 +216,11 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
 #print axioms Grothe.LowerAnalytic.qf_nonneg_of_ldlOK
 #print axioms Grothe.LowerAnalytic.quartic_identity
-#print axioms Grothe.LowerAnalytic.quinticHybrid_eq_tail_add_quintic
-#print axioms Grothe.LowerAnalytic.quinticPerturbation_payoff
-#print axioms Grothe.LowerAnalytic.quinticPerturbation_scalarCap
-#print axioms Grothe.LowerAnalytic.quinticPerturbation_transfer
-#print axioms Grothe.LowerAnalytic.quintic_projection_energy_le
 #print axioms Grothe.LowerAnalytic.radAB_sq_le_radC1_mul_radC2
 #print axioms Grothe.LowerAnalytic.radial_cut
 #print axioms Grothe.LowerAnalytic.radiusRow_sound
 #print axioms Grothe.LowerAnalytic.radiusRows_chain
 #print axioms Grothe.LowerAnalytic.radiusRows_ok
-#print axioms Grothe.LowerAnalytic.re_inner_quinticHybridWitness
-#print axioms Grothe.LowerAnalytic.re_inner_quinticWitness
-#print axioms Grothe.LowerAnalytic.re_pairVal_quinticHybridWitness
 #print axioms Grothe.LowerAnalytic.reductionHyp_of_nodeCaps
 #print axioms Grothe.LowerAnalytic.rotD_reW
 #print axioms Grothe.LowerAnalytic.rowOf_of_circular
@@ -258,7 +248,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.tenTT_le_sixth
 #print axioms Grothe.LowerAnalytic.trace3_circular
 #print axioms Grothe.LowerAnalytic.trace4_circular
-#print axioms Grothe.LowerAnalytic.transferInputs_of_quinticHybrid
 #print axioms Grothe.LowerAnalytic.transferInputs_of_witnessCap
 #print axioms Grothe.LowerAnalytic.wickL_mem_H21
 #print axioms Grothe.LowerAnalytic.witnessCap_of_VhatOf_le
@@ -268,7 +257,6 @@ import Grothe
 #print axioms Grothe.Statement.firstChaosEndpoint_le_of_tailNodeCaps
 #print axioms Grothe.Statement.first_chaos_endpoint
 #print axioms Grothe.Statement.main_bounds
-#print axioms Grothe.Statement.quintic_perturbation_scalar_cap
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upper_below_tight
 #print axioms Grothe.Statement.upper_bound_tight

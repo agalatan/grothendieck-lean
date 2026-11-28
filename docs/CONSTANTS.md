@@ -72,13 +72,10 @@ $T=(1-w)T_0+wP_{1,0}$. Its vector payoff tends to one, so its scalar cap $B$ giv
 | $\hat\varepsilon,\hat\nu$ | $25/31,\ 47/1953$ | normalized coefficients of the original identity-tail rows |
 | $B$ | `713254699303 / 1000000000000` | physical scalar cap |
 | $1/B$ | `1000000000000 / 713254699303` | exact lower endpoint in `Grothe.Lower.FirstChaos.endpoint` |
-| $0\le\lambda\le w/50000000$ | $0\le\lambda\le3645203/2500000000000000000$ | extra multiplier in the companion $T+\lambda P_{3,2}$ |
 
-For $h=(f+g)/2$ write $t=\|P_{1,0}h\|$. The certificate prices the first-chaos payoff together with
-$(w/50000000)(1-t^2)$. Bessel's inequality charges the extra signed fifth-chaos contribution to this allowance.
-The pure and perturbed partners attain the same cap rounded upward to $10^{-12}$. The pure partner has the
-smaller unrounded upper envelope. Two rational amplitude evaluations certify that changing $w$ cannot improve
-the rounded cap on the fixed first-chaos row schedule. [Replay and comparison](../research/identity-tail/RETUNED_QUINTIC.md).
+For $h=(f+g)/2$, $k=(f-g)/2$ and $t=\|P_{1,0}h\|$, the first-chaos payoff is $t^2-\|P_{1,0}k\|^2$.
+The certificate bounds the sum of the original normalized row payoff and the $t^2$ term with their retuned coefficients.
+Two rational amplitudes show that varying $w$ on this fixed schedule cannot improve the cap on its $10^{-12}$ grid. [Exact arithmetic replay](../research/identity-tail/FIRST_CHAOS_RETUNING.md).
 
 In the central rows (0.835 and 0.845), a single circular cubic supplies the fourth excess and the residual scale.
 Dilating eleven plain Stein polynomials gives fourteen additional bounds for the row expectations. Lean checks

@@ -1,7 +1,7 @@
 -- Grothe/MainResult.lean
 import Grothe.UpperResult
 import Grothe.LowerAnalytic.CapNodes
-import Grothe.LowerAnalytic.QuinticHybridTransfer
+import Grothe.LowerAnalytic.FirstChaosProfile
 
 /-!
 # The main result: `1.4020237104 < K_G^ℂ ≤ 1.404554025`
@@ -12,8 +12,7 @@ hypotheses: `main_bounds`.
 * The lower proof retunes the identity-tail witness with the first-chaos projector.
   The original sparse rows bound the normalized payoff and first-chaos amplitude
   on the same pair. The verified node caps give the exact reciprocal in
-  `first_chaos_endpoint`. A range of signed fifth-chaos payoff contributions fits
-  within the same budget in `quintic_perturbation_scalar_cap`.
+  `first_chaos_endpoint`.
 * **The upper bound** is `Grothe.UpperBivar.constant_le` (`Grothe/UpperResult.lean`), from multi-channel bivariate Gaussian roundings:
   `Grothe.UpperBivar.bound` gives `V(A) ≤ 1.4045540246340… · C(A)` for every finite complex matrix `A`. The lower proof obtains the existence of an admissible
   bound from the original six channels.
@@ -29,14 +28,6 @@ open Grothe.LowerAnalytic
 theorem first_chaos_endpoint :
     (Grothe.Lower.FirstChaos.endpoint : ℝ) ≤ complexGrothendieckConstant :=
   firstChaosEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
-
-/-- The explicit Gaussian operators with a fifth-chaos perturbation meet the same
-scalar cap in every dimension used by the finite-matrix transfer. -/
-theorem quintic_perturbation_scalar_cap {n : ℕ} (hn : 2 ≤ n)
-    {η : ℝ} (hη : 0 ≤ η) (hmax : η ≤ 1/50000000) :
-    Grothe.Lower.ScalarCap (stdGaussian (n+n))
-      (quinticHybridWitness n Grothe.Lower.FirstChaos.weight 0 η) Grothe.Lower.FirstChaos.cap :=
-  quinticPerturbation_scalarCap tailNodeCaps_cert hn hη hmax
 
 /-- **The main result**: the exact lower endpoint rounded strictly downward, and the multi-channel upper bound
 rounded up. -/
