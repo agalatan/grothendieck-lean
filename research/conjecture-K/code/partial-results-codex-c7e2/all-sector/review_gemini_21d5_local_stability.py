@@ -7,11 +7,11 @@ Checks over Q (pure Python stdlib fractions.Fraction, zero floats, zero external
 safe under python3 -IB -O because acceptance uses explicit require() rather than assert):
   1. Exponential integration-by-parts polynomial identities for Q/P, A, B, the A/B cross term,
      the linear slope matrix determinant 3ab + b^2, and the visible cubic nu tangential kernel (§§3-5).
-  2. Strict positivity / single-crossing conditions on all kernels, and exact v = 0 Laplace-integral
+  2. Strict positivity of the P_nu vertex on r in [0, 3], and exact v = 0 Laplace-integral
      representations for M_0 and nu_0^tan with exact Bernstein positivity on x in [0, 1] (§§4-5).
-  3. Fourth-order remote Taylor coefficient (B''(v)/4) E|q|^4 from the 2D fourth directional average
-     (3/8) Delta^2 and heat equation B''(v) = (1/8) E[Delta^2 m_v], circularity factor 3/8, and
-     Wick fourth-cumulant normalization 3240 on He_3(X_1) (§7).
+  3. Arithmetic of the §7 fourth-order remote scalar factors (1/4 from 2D directional average 3/8
+     and heat-equation factor B''(v) = (1/8) E[Delta^2 m_v], circularity factor 3/8, and
+     Wick fourth-cumulant normalization 3240 on He_3(X_1)).
 """
 
 from __future__ import annotations
@@ -260,7 +260,7 @@ def check_fourth_order_remote_constants() -> None:
     c2s2 = Fraction(1, 8)
     require( 6 * c2s2 == 2 * c4, "2D fourth directional average == (3/8) Delta^2" )
 
-    # 2. B(v) = 2 E[m_v(|L + sqrt(v) W|)] and d_v m_v = (1/4) Delta m_v
+    # 2. B(v) = 2 E|L + sqrt(v) W| = 2 E[m_v(|L|)] and d_v m_v = (1/4) Delta m_v
     #    => B'(v) = 2 * (1/4) E[Delta m_v] = (1/2) E[Delta m_v],
     #       B''(v) = 2 * (1/16) E[Delta^2 m_v] = (1/8) E[Delta^2 m_v].
     #    Fourth-order term of 2 E[m_v(|L + q|)] in circular q:
