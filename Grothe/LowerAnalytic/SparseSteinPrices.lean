@@ -26,28 +26,25 @@ def lookup (small : Bool) := if small then smallPrice else price
 
 def stopAt (small : Bool) := if small then smallStop else stop
 
-private def gridPrices (small : Bool) := (table small).map fun (w,d) ↦ Grid.price w (K w) (B w d)
+private def gridPrices (band : ScaleBand) := band.table.map fun (w,d) ↦ Grid.price w (K w) (B w d)
 private def pairGroup (sl : Slice) := (Grid.group c08 sl.left, Grid.group c09 sl.right)
 private def groups := slices.map pairGroup
-
-private def wholeData : List Grid.Price := eval% gridPrices false
-private def smallData : List Grid.Price := eval% gridPrices true
-private def priceData (small : Bool) := if small then smallData else wholeData
 private def groupData : List (Grid.Group × Grid.Group) := eval% groups
-private def wholeEnd : ℤ := eval% ⌈Grid.scale*stop⌉
-private def smallEnd : ℤ := eval% ⌈Grid.scale*smallStop⌉
-private def stopData (small : Bool) := if small then smallEnd else wholeEnd
 
-private theorem stop_eq (small : Bool) : ⌈Grid.scale*stopAt small⌉ = stopData small := by
-  cases small <;> decide +kernel
-private theorem prices_eq (small : Bool) : gridPrices small = priceData small := by
-  cases small <;> decide +kernel
+private def bands : List ScaleBand := .whole :: .small :: ScaleBand.restricted
+
+private def sourceBank (band : ScaleBand) : ℤ × List Grid.Price :=
+  (⌈Grid.scale*band.stop⌉, gridPrices band)
+
+private def bank : List (ℤ × List Grid.Price) := eval% bands.map sourceBank
+
+private theorem mem_bank (band : ScaleBand) : sourceBank band ∈ bank := by
+  cases band <;> decide +kernel
 
 private abbrev BlockVerified (i : ℕ) : Prop :=
   groups[i]? = groupData[i]? ∧
     let pair := groupData[i]?.getD default
-    Grid.groupCheck wholeEnd wholeData pair.1 pair.2 = true ∧
-    Grid.groupCheck smallEnd smallData pair.1 pair.2 = true
+    bank.all (fun item ↦ Grid.groupCheck item.1 item.2 pair.1 pair.2) = true
 
 set_option Elab.async false
 private theorem block00 : BlockVerified 0 := by decide +kernel
@@ -92,39 +89,44 @@ private theorem block_verified (i : ℕ) (hi : i < 19) : BlockVerified i := by
   · exact block17
   · exact block18
 
-private theorem group_verified (small : Bool) (sl : Slice) (hs : sl ∈ slices) :
-    Grid.groupCheck ⌈Grid.scale*stopAt small⌉ (gridPrices small) (Grid.group c08 sl.left) (Grid.group c09 sl.right) := by
+private theorem group_verified (band : ScaleBand) (sl : Slice) (hs : sl ∈ slices) :
+    Grid.groupCheck ⌈Grid.scale*band.stop⌉ (gridPrices band) (Grid.group c08 sl.left) (Grid.group c09 sl.right) := by
   obtain ⟨i,hi,rfl⟩ := List.mem_iff_getElem.mp hs
   have hsize : slices.length = 19 := by rfl
   obtain ⟨he,hb⟩ := block_verified i (hsize ▸ hi)
   have hl : groups[i]? = some (pairGroup slices[i]) := by simp [groups, getElem?_pos slices i hi]
   rw [← he, hl] at hb
   simp only [Option.getD_some, pairGroup] at hb
-  rw [stop_eq,prices_eq]
-  cases small
-  · exact hb.1
-  · exact hb.2
+  exact List.all_eq_true.mp hb (sourceBank band) (mem_bank band)
 
-private theorem price_ranges (small : Bool) :
-    (table small).all (fun p ↦ decide (0 ≤ p.1 ∧ p.1 ≤ 1 ∧ 0 ≤ B p.1 p.2 ∧ lookup small p.1 = p.2)) := by
-  cases small <;> decide +kernel
+private theorem price_ranges (band : ScaleBand) :
+    (band.table).all (fun p ↦ decide (0 ≤ p.1 ∧ p.1 ≤ 1 ∧ 0 ≤ B p.1 p.2 ∧ band.lookup p.1 = p.2)) := by
+  cases band <;> decide +kernel
 
 /-- A common shape slab and a common actual scale certify each tabulated discount. -/
-theorem price_le (small : Bool) (sl : Slice) (hs : sl ∈ slices) (w : ℚ) (hw : w ∈ (table small).map Prod.fst) :
-    lookup small w ≤ discount (overlay (stopAt small) (rowChords c08 [sl.left]) (rowChords c09 [sl.right])) w
+theorem price_le_band (band : ScaleBand) (sl : Slice) (hs : sl ∈ slices) (w : ℚ) (hw : w ∈ (band.table).map Prod.fst) :
+    band.lookup w ≤ discount (overlay (band.stop) (rowChords c08 [sl.left]) (rowChords c09 [sl.right])) w
       row08.kappa row09.kappa cap08Tight cap09Tight row08.delta (pairGainQ w) := by
   obtain ⟨⟨w,d⟩,hp,rfl⟩ := List.mem_map.mp hw
-  obtain ⟨h0,h1,hb,hp'⟩ := of_decide_eq_true (List.all_eq_true.mp (price_ranges small) (w,d) hp)
-  have h := Grid.worst_le (left := rowChords c08 [sl.left]) (right := rowChords c09 [sl.right]) (s := stopAt small)
+  obtain ⟨h0,h1,hb,hp'⟩ := of_decide_eq_true (List.all_eq_true.mp (price_ranges band) (w,d) hp)
+  have h := Grid.worst_le (left := rowChords c08 [sl.left]) (right := rowChords c09 [sl.right]) (s := band.stop)
     (k := K w) h0 h1 hb fun l hl r hr hm ↦ by
       obtain ⟨L,hL,hlg,hl₀,hl₁⟩ := Grid.member_group hl
       obtain ⟨R,hR,hrg,hr₀,hr₁⟩ := Grid.member_group hr
       simp only [List.map_cons, List.map_nil, List.mem_singleton] at hL hR
       subst L R
-      exact Grid.groupCheck_sound (group_verified small sl hs) hlg hrg hl₀ hl₁ hr₀ hr₁ hm (List.mem_map_of_mem hp)
+      exact Grid.groupCheck_sound (group_verified band sl hs) hlg hrg hl₀ hl₁ hr₀ hr₁ hm (List.mem_map_of_mem hp)
   rw [hp']
   change _ ≤ (1-w)*cap08Tight+w*cap09Tight-worst _ w (K w)
   change _ ≤ (1-w)*cap08Tight+w*cap09Tight-d at h
   linarith only [h]
+
+/-- The original whole-range and small-range prices. -/
+theorem price_le (small : Bool) (sl : Slice) (hs : sl ∈ slices) (w : ℚ) (hw : w ∈ (table small).map Prod.fst) :
+    lookup small w ≤ discount (overlay (stopAt small) (rowChords c08 [sl.left]) (rowChords c09 [sl.right])) w
+      row08.kappa row09.kappa cap08Tight cap09Tight row08.delta (pairGainQ w) := by
+  cases small
+  · exact price_le_band .whole sl hs w hw
+  · exact price_le_band .small sl hs w hw
 
 end Grothe.LowerAnalytic.SparseStein

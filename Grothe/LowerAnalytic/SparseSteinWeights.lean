@@ -25,7 +25,9 @@ def prices : List (ℚ × ℚ) := [
   (887376777194638645220450260259149/1676577848633491615877712812187500, 54250327/5000000000000),
   (890514803275104634555658037662029/1676577848633491615877712812187500, 108489633/10000000000000),
   (7487203764072619502205627923729/13412622789067932927021702497500, 108155411/10000000000000),
+  (8018616237056157255413231123729/13412622789067932927021702497500, 107077377/10000000000000),
   (8550028710039695008620834323729/13412622789067932927021702497500, 6581311/625000000000),
+  (9306760071568252769188461280529/13412622789067932927021702497500, 24018801/2500000000000),
   (9612853656006770515036040723729/13412622789067932927021702497500, 90996147/10000000000000),
   (23025476445074703442057743221229/26825245578135865854043404995000, 27064259/5000000000000),
   (1, 58479/10000000000000)]
@@ -42,7 +44,9 @@ def smallPrices : List (ℚ × ℚ) := [
   (887376777194638645220450260259149/1676577848633491615877712812187500, 253351053/10000000000000),
   (890514803275104634555658037662029/1676577848633491615877712812187500, 253654617/10000000000000),
   (7487203764072619502205627923729/13412622789067932927021702497500, 128995433/5000000000000),
+  (8018616237056157255413231123729/13412622789067932927021702497500, 26415477/1000000000000),
   (8550028710039695008620834323729/13412622789067932927021702497500, 48607593/2000000000000),
+  (9306760071568252769188461280529/13412622789067932927021702497500, 104742561/5000000000000),
   (9612853656006770515036040723729/13412622789067932927021702497500, 48934163/2500000000000),
   (23025476445074703442057743221229/26825245578135865854043404995000, 2162597/200000000000),
   (1, 134819/250000000000)]
@@ -61,5 +65,68 @@ theorem small_weights : prices.map Prod.fst = smallPrices.map Prod.fst := by rfl
 /-- Every previously certified coupled weight occurs in the refined schedule. -/
 theorem price_weights : (CoupledStein.prices.map Prod.fst).Sublist (prices.map Prod.fst) := by
   decide +kernel
+
+/-- A cutoff on the shared scale of the two physical Stein rows. -/
+inductive ScaleBand where
+  | whole | small | cut2298 | cut2317 | cut2336 | cut2340 | cut2347 | cut2352 | cut2358 | cut2361 | cut2362 | cut2363 | cut2368 | cut2379 | cut2400
+  deriving DecidableEq, Repr
+
+namespace ScaleBand
+
+/-- A restricted slab only checks the mixing weights actually used on its amplitude cells. -/
+private def entries (xs : List (ℕ × ℕ)) : List (ℚ × ℚ) :=
+  xs.map fun (i,n) ↦ ((prices[i]?.getD (0,0)).1, (n:ℚ)/10^13)
+
+def table : ScaleBand → List (ℚ × ℚ)
+  | .whole => prices
+  | .small => smallPrices
+  | .cut2298 => entries [(16,58479)]
+  | .cut2317 => entries [(15,61418151), (16,58479)]
+  | .cut2336 => entries [(14,103356981), (15,57536527)]
+  | .cut2340 => entries [(13,103620111), (14,97727129)]
+  | .cut2347 => entries [(12,114681975), (13,101360765)]
+  | .cut2352 => entries [(11,123354632), (12,114681975)]
+  | .cut2358 => entries [(10,124253908), (11,117310285)]
+  | .cut2361 => entries [(9,127085340), (10,122602455)]
+  | .cut2362 => entries [(6,127463893), (7,127329889), (8,127297626), (9,126996051)]
+  | .cut2363 => entries [(5,128994617), (6,127463893)]
+  | .cut2368 => entries [(4,134941099), (5,128994617)]
+  | .cut2379 => entries [(3,145179095), (4,134941099)]
+  | .cut2400 => entries [(2,159028809), (3,145179095)]
+
+def stop : ScaleBand → ℚ
+  | .whole => Grothe.Lower.row08.delta*(93/100)
+  | .small => smallStop
+  | .cut2298 => 1149/5000
+  | .cut2317 => 2317/10000
+  | .cut2336 => 146/625
+  | .cut2340 => 117/500
+  | .cut2347 => 2347/10000
+  | .cut2352 => 147/625
+  | .cut2358 => 1179/5000
+  | .cut2361 => 2361/10000
+  | .cut2362 => 1181/5000
+  | .cut2363 => 2363/10000
+  | .cut2368 => 148/625
+  | .cut2379 => 2379/10000
+  | .cut2400 => 6/25
+
+def lookup (b : ScaleBand) (w : ℚ) : ℚ := (b.table.lookup w).getD 0
+
+def curvatureBonus (b : ScaleBand) (w z : ℚ) : ℚ :=
+  min (min (4*(smallPrice w-b.lookup w)) (4*(smallPrice z-b.lookup z)))
+    ((2019911/10^10)*(w-z)^2*(smallStop/Grothe.Lower.row08.delta)^2)
+
+theorem mem_prices (b : ScaleBand) {w : ℚ} (hw : w ∈ b.table.map Prod.fst) :
+    w ∈ prices.map Prod.fst := by
+  have h : (b.table.map Prod.fst).all (fun t ↦ decide (t ∈ prices.map Prod.fst)) = true := by
+    cases b <;> decide +kernel
+  exact of_decide_eq_true (List.all_eq_true.mp h w hw)
+
+/-- Registered Rice cutoffs in increasing order. The finite checker separately verifies
+the selected physical price and every endpoint weight on each closed cell. -/
+def restricted : List ScaleBand := [.cut2298, .cut2317, .cut2336, .cut2340, .cut2347, .cut2352, .cut2358, .cut2361, .cut2362, .cut2363, .cut2368, .cut2379, .cut2400]
+
+end ScaleBand
 
 end Grothe.LowerAnalytic.SparseStein
