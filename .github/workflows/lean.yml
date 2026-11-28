@@ -134,35 +134,14 @@ jobs:
         id: scope
         env:
           BEFORE: ${{ github.event.before }}
+          LAND: ${{ inputs.land }}
+          PINNED_MASTER: ${{ steps.merge.outputs.base }}
+          MODE: ${{ inputs.mode }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ "${{ steps.wipcap.outputs.skip }}" = true ]; then echo "lean=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          # a branch commit already contained in master: master's own check covers it
-          if [ "${GITHUB_REF_NAME}" != master ] && [ "${{ inputs.land }}" != true ]; then
-            git fetch -q origin master
-            if git merge-base --is-ancestor HEAD origin/master; then
-              echo "already contained in master: skipping this branch check"; echo "lean=false" >> "$GITHUB_OUTPUT"; exit 0
-            fi
-          fi
-          # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|GrotheQuadExtKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|GrotheQuadExtKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/(Axioms|UpperSixAxioms)\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_lake_failfast\.py$|scripts/test_caps_stamp\.py$|data/tail-caps/|data/tail-rows/|scripts/(build_caps_batches|caps_coexist|test_build_caps_batches)\.py$|tools/gen_tail_caps\.py$|\.github/workflows/)'
-          if [ "${{ inputs.land }}" = true ]; then base="${{ steps.merge.outputs.base }}"  # HEAD = base + this commit
-          elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
-          else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
-          if [ "${{ inputs.mode }}" = caps ] || [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "full check"; echo "lean=true" >> "$GITHUB_OUTPUT"; echo "heavy=true" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          changed=$(git diff --name-only "$base" HEAD)
-          echo "changed files:"; echo "$changed"
-          if echo "$changed" | grep -qE "$LEAN_PATHS"; then echo "lean=true" >> "$GITHUB_OUTPUT"
-          else echo "no Lean-relevant file changed: skipping the build and the checks"; echo "lean=false" >> "$GITHUB_OUTPUT"; fi
-          # Memory: rebuilding the big kernel-checked modules (the Q0 base-pair leaves, ~7.5 GB each, four in
-          # parallel) kills a GitHub-hosted 16 GB VM. Only a MODIFIED or deleted file can force such a rebuild (a
-          # new module rebuilds nothing that exists), so a change that only adds modules, or touches nothing under
-          # the kernel-heavy trees, is checked on a hosted runner (the restored cache replays the rest).
-          HEAVY_TREE='^(Grothe/UpperChaos/|Grothe/Upper/|GrotheKernel/|GrotheCapsKernel/|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$)'
-          if git diff --name-status "$base" HEAD | awk '$1 !~ /^A/ {print $NF}' | grep -qE "$HEAVY_TREE"; then
-            echo "modifies existing files under the kernel-heavy trees: the heavy runners build this"; echo "heavy=true" >> "$GITHUB_OUTPUT"
-          else echo "heavy=false" >> "$GITHUB_OUTPUT"; fi
+          export LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|GrotheQuadExtKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|GrotheQuadExtKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/(Axioms|UpperSixAxioms)\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_lake_failfast\.py$|scripts/test_caps_stamp\.py$|data/tail-caps/|data/tail-rows/|scripts/(build_caps_batches|caps_coexist|test_build_caps_batches)\.py$|tools/gen_tail_caps\.py$|scripts/(test_)?proof_scope\.py$|\.github/workflows/)'
+          python3 scripts/proof_scope.py
 
       - name: Is there a verified build cache for these node-cap sources? (no -> the droplet builds them)
         id: where
@@ -405,6 +384,7 @@ jobs:
           python3 scripts/test_caps_stamp.py
           python3 scripts/test_check_axioms.py
           python3 scripts/test_lake_failfast.py
+          python3 scripts/test_proof_scope.py
 
       - name: The restored node caps are verified for these sources (GitHub-hosted)
         if: env.LEAN == 'true' && env.DROPLET != 'true'

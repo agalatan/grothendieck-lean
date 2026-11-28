@@ -19,7 +19,11 @@ MOCKS = r"""
 git() {
     if [[ "$1" == -C ]]; then shift 2; fi
     case "$1" in
-        fetch|config|worktree|-c) return 0 ;;
+        fetch|config|worktree) return 0 ;;
+        -c) if [[ "$CONFLICT" == 1 ]]; then
+                printf 'tree\nfile.lean\n\n'
+                return 1
+            fi ;;
         show-ref) [[ "$FROZEN" == 1 ]] ;;
         merge-base) return 1 ;;
         rev-parse) echo "$TIP" ;;
@@ -35,7 +39,13 @@ gh() {
         'pr list') data=$PRS ;;
         'api '*) [[ "$2" == */commits/"$PR_TIP"/statuses* ]] || return 97
                  [[ "$REVIEWS" != unavailable ]] || return 1
-                 data=$REVIEWS ;;
+                 if [[ " $* " == *" --paginate "* ]]; then
+                     jq -r "${!#}" <<< "$(jq '.[:100]' <<< "$REVIEWS")"
+                     [[ "$PAGE_FAILURE" == 0 ]] || return 1
+                     data=$(jq '.[100:]' <<< "$REVIEWS")
+                 else
+                     data=$(jq '.[:100]' <<< "$REVIEWS")
+                 fi ;;
         *) return 98 ;;
     esac
     jq -r "${!#}" <<< "$data"
@@ -45,16 +55,18 @@ source "$1"
 
 
 def audit(*, status="completed", conclusion="success", run_tip=TIP, pr_tip=TIP,
-          review=APPROVED, labels=(), hours=0, frozen=False):
+          review=APPROVED, labels=(), hours=0, frozen=False, conflict=False, page_failure=False):
     created = datetime.now(timezone.utc) - timedelta(hours=hours)
     run = {"headBranch": BRANCH, "headSha": run_tip, "status": status, "conclusion": conclusion,
            "databaseId": 123, "createdAt": created.strftime("%Y-%m-%dT%H:%M:%SZ")}
     pr = {"headRefName": BRANCH, "headRefOid": pr_tip, "number": 99, "isDraft": False,
           "labels": [{"name": name} for name in labels]}
-    reviews = "unavailable" if review == "unavailable" else json.dumps([review] if review else [])
+    reviews = review if isinstance(review, list) else [review] if review else []
+    reviews = "unavailable" if review == "unavailable" else json.dumps(reviews)
     result = subprocess.run(
         ["bash", "-c", MOCKS, "bash", str(SCRIPT)],
         env={**os.environ, "AGENT_ID": "codex-abcd", "TIP": TIP, "PR_TIP": pr_tip, "BRANCH": BRANCH,
+             "CONFLICT": str(int(conflict)), "PAGE_FAILURE": str(int(page_failure)),
              "RUNS": json.dumps([run] if run_tip else []), "PRS": json.dumps([pr]), "REVIEWS": reviews, "FROZEN": "1" if frozen else "0"},
         capture_output=True, text=True, timeout=10, check=True,
     )
@@ -79,6 +91,54 @@ class BranchAuditTests(unittest.TestCase):
                 result = audit(**changes)
                 self.assertIn(expected, result)
                 self.assertNotIn("/land codex-abcd", result)
+
+    def test_conflicting_reviews_are_visible_in_either_order(self):
+        blocked = dict(APPROVED, state="failure", description="[gemini-8888] block: check the data")
+        for history in ([blocked, APPROVED], [APPROVED, blocked]):
+            for frozen in (False, True):
+                with self.subTest(history=history, frozen=frozen):
+                    result = audit(review=history, frozen=frozen)
+                    self.assertIn("failure [gemini-8888]", result)
+                    self.assertIn("success [claude-1234]", result)
+                    self.assertIn("conflicting independent reviews", result)
+                    self.assertNotIn("/land codex-abcd", result)
+                    self.assertNotIn("green and approved", result)
+
+    def test_older_pages_and_partial_api_failures(self):
+        blocked = dict(APPROVED, state="failure", description="[gemini-8888] block: check")
+        history = [APPROVED] + [dict(APPROVED, context="other check")] * 99 + [blocked]
+        self.assertIn("conflicting independent reviews", audit(review=history))
+        failed = audit(review=history, page_failure=True)
+        self.assertIn("review status could not be read", failed)
+        self.assertNotIn("/land codex-abcd", failed)
+
+    def test_conflict_and_hold_actions_preserve_both_visible_verdicts(self):
+        blocked = dict(APPROVED, state="failure", description="[gemini-8888] block: check")
+        for changes, expected in [({"conflict": True}, "CONFLICT with master"),
+                                  ({"labels": ["HOLD:gemini-8888"]}, "is on HOLD")]:
+            result = audit(review=[APPROVED, blocked], **changes)
+            self.assertIn("success [claude-1234], failure [gemini-8888]", result)
+            self.assertIn(expected, result)
+            self.assertNotIn("/land codex-abcd", result)
+
+    def test_each_reviewer_can_revise_their_own_verdict(self):
+        older_block = dict(APPROVED, state="failure", description="[claude-1234] block: earlier")
+        other = dict(APPROVED, description="[gemini-8888] approve: replayed")
+        result = audit(review=[other, APPROVED, older_block])
+        self.assertIn("success [gemini-8888], success [claude-1234]", result)
+        self.assertNotIn("failure [claude-1234]", result)
+        self.assertIn("/land codex-abcd", result)
+        result = audit(review=[older_block, other, APPROVED])
+        self.assertIn("conflicting independent reviews", result)
+        self.assertNotIn("/land codex-abcd", result)
+
+    def test_only_independent_review_statuses_count_toward_a_split(self):
+        blocked = dict(APPROVED, state="failure", description="[gemini-8888] block: earlier")
+        for older in (dict(blocked, context="other check"),
+                      dict(blocked, description="[codex-0123] block: same family"),
+                      dict(blocked, description="unsigned")):
+            with self.subTest(older=older):
+                self.assertIn("/land codex-abcd", audit(review=[APPROVED, older]))
 
     def test_approved_pending_check_reports_only_a_real_stall(self):
         for status in ("in_progress", "queued"):

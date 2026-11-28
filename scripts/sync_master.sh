@@ -80,6 +80,20 @@ owner_of() {  # the ID in the branch name (AGENTS.md §3), else the Agent-ID of 
   echo "${id:-?}"
 }
 
+# GitHub lists statuses newest first, including earlier verdicts by the same reviewer.
+independent_verdicts() {
+  local author=$1 seen=" " state description reviewer
+  while IFS=$'\t' read -r state description; do
+    [[ "$state" == success || "$state" == failure ]] || continue
+    [[ "$description" =~ ^\[($agent_id_re)\] ]] || continue
+    reviewer=${BASH_REMATCH[1]}
+    is_independent_reviewer "$author" "$reviewer" || continue
+    [[ "$seen" == *" $reviewer "* ]] && continue
+    seen+="$reviewer "
+    printf '%s [%s]\n' "$state" "$reviewer"
+  done
+}
+
 audit() {
   set +e +o pipefail   # a report: never abort the sync on one odd branch
   echo
@@ -101,7 +115,7 @@ audit() {
     --json number,headRefName,isDraft,labels,headRefOid \
     --jq '.[] | [.headRefName, .number, .isDraft, ([.labels[].name] | join(",") | if . == "" then "-" else . end), .headRefOid] | @tsv' \
     2>/dev/null || true)
-  local found=0 todo=0 b own line state behind conflict sha st concl id created tip action hours pr prn prd prl prsha rev summary
+  local found=0 todo=0 b own line state behind conflict sha st concl id created tip action hours pr prn prd prl prsha reviews rev summary verdicts
   while read -r b; do
     [ -z "$b" ] && continue
     own=$(owner_of "$b")
@@ -146,16 +160,25 @@ audit() {
       fi
       [ "$sha" != "$tip" ] && state="$state, for an older commit"
     fi
+    if [ -n "$prn" ]; then
+      if ! reviews=$(gh api "repos/{owner}/{repo}/commits/${prsha}/statuses?per_page=100" --paginate \
+        --jq '.[] | select(.context == "Independent review") | [.state, .description] | @tsv' 2>/dev/null); then
+        reviews=unavailable
+      fi
+      rev=${reviews%%$'\n'*}
+      summary=${rev/$'\t'/ }
+      summary=${summary:0:60}
+      verdicts=$(independent_verdicts "$own" <<< "$reviews")
+      if [[ "$verdicts" == *$'\n'* ]]; then
+        summary=${verdicts//$'\n'/, }
+      fi
+      state="$state; PR #$prn${prl:+ [$prl]}; review: ${summary:-none}"
+    fi
     if [ -n "$conflict" ]; then
       action="CONFLICT with $BASE in: $conflict-> merge origin/$BASE, resolve by understanding both sides, run python3 tools/gen_root_imports.py, push the same branch"
     elif [[ "$b" == ready/* ]] || [[ "$b" == work/* ]]; then
       action="old-style branch name: rename it to ${own:-<agent-id>}/<topic> and open a pull request to land it (AGENTS.md §3, §7)"
     elif [ -n "$prn" ]; then
-      rev=$(gh api "repos/{owner}/{repo}/commits/${prsha}/statuses?per_page=100" \
-        --jq '[.[] | select(.context == "Independent review")] | first // empty | "\(.state)\t\(.description)"' 2>/dev/null || echo unavailable)
-      summary=${rev/$'\t'/ }
-      summary=${summary:-none}
-      state="$state; PR #$prn${prl:+ [$prl]}; review: ${summary:0:60}"
       if [[ ",$prl," == *,HOLD* ]]; then
         [ -z "$action" ] && action="PR #$prn is on HOLD: a reviewer's longer review is running; wait for its verdict (do not /land)"
       elif [[ ",$prl," == *,RFC,* ]] || [[ ",$prl," == *,WIP,* ]] || [ "$prd" = true ]; then
@@ -164,6 +187,8 @@ audit() {
         action="PR #$prn moved after the fetch: sync again before acting"
       elif [ "$rev" = unavailable ]; then
         action="PR #$prn review status could not be read: retry the audit"
+      elif [[ "$verdicts" == *"success ["* && "$verdicts" == *"failure ["* ]]; then
+        action="PR #$prn has conflicting independent reviews: reconcile the approval and block on this head"
       elif [[ "$rev" == failure$'\t'* ]]; then
         action="PR #$prn is blocked by review: answer every comment, fix, push, ask for a new review"
       elif [ "$sha" != "$prsha" ]; then

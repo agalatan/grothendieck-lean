@@ -317,7 +317,11 @@ containing `[skip ci]` skips it) and as the **landing check** of a PR (`/land`, 
    - whether anything Lean-relevant changed (the `LEAN_PATHS` list in the workflow: Lean sources and roots, the
      lakefile and toolchain, `scratch/Axioms.lean`, `data/axioms/`, the root generator, the check scripts and their
      tests, the workflows). If not, the build is skipped and the run is green; documentation-only PRs still land
-     (with the status "no proof change"). A branch commit already contained in master is skipped too (master's own check covers it);
+     (with the status "no proof change"). During a freeze, a topic branch with no proof changes since its staging
+     merge base inherits the proof only if a successful staging push built that exact commit and ran its axiom
+     reports. The route links the verified run in its summary. Otherwise it requests a proof check. Staging’s own
+     check still compares with master, and landing uses the pinned master commit. A branch commit already contained
+     in master is skipped too (master's own check covers it);
    - where to build: it computes the node caps' source digest (`scripts/caps_stamp.py --digest`, part of the cache
      key) and looks for a verified build cache with that digest, of this branch or of master. **A branch check that
      would need the droplet (the node caps changed) does not take it**: it fails at once, saying so. The landing
