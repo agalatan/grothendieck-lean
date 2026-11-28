@@ -62,6 +62,20 @@ freeze_banner() {
   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 }
 
+# Packages of the worktree it runs in: after a merge that changed lake-manifest.json, .lake/packages may still point at
+# a tree at the old Mathlib that other worktrees share; say so before any lake command moves it (AGENTS.md §5).
+packages_check() {
+  local top rev want
+  top=$(git rev-parse --show-toplevel 2>/dev/null) || return 0
+  [ "$top" != "$MAIN" ] && [ -f "$top/lake-manifest.json" ] && [ -e "$top/.lake/packages/mathlib" ] || return 0
+  rev=$(git -C "$top/.lake/packages/mathlib" rev-parse HEAD 2>/dev/null || true)
+  want=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(next((p["rev"] for p in m.get("packages", []) if p.get("name") == "mathlib"), ""))' "$top/lake-manifest.json" 2>/dev/null || true)
+  if [ -n "$want" ] && [ -n "$rev" ] && [ "$rev" != "$want" ]; then
+    echo "ACTION: $top: .lake/packages has Mathlib ${rev:0:12}, its lake-manifest.json pins ${want:0:12}. Before any lake"
+    echo "        command run: (cd $top && scripts/package_store.sh --if-needed)"
+  fi
+}
+
 # The agent whose branches the audit shows: AGENT_ID (e.g. AGENT_ID=claude-b9ee); empty = every agent.
 AGENT="${AGENT_ID:-}"
 
@@ -232,5 +246,6 @@ if [ "${1:-}" = "--build" ]; then
     start_build
   fi
 fi
+packages_check
 audit
 freeze_banner

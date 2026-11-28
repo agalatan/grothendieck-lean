@@ -21,6 +21,8 @@ import json, os, subprocess, sys
 from pathlib import Path
 rev = next(p["rev"] for p in json.load(open("lake-manifest.json"))["packages"] if p["name"] == "mathlib")
 target = Path(".lake/packages/mathlib")
+if sys.argv[1:] == ["exe", "cache", "get"] and os.environ.get("SLOW_FETCH") and not (target / ".git").exists():
+    import time; time.sleep(float(os.environ["SLOW_FETCH"]))   # widen the window of a cold store
 if not (target / ".git").exists():
     subprocess.run(["git", "clone", "-q", os.environ["TEMPLATE"], str(target)], check=True)
 subprocess.run(["git", "-C", str(target), "checkout", "-q", rev], check=True)
@@ -141,6 +143,38 @@ class PackageStoreTests(unittest.TestCase):
         # a second run with the same manifest fetches nothing
         rc, _ = self.sh(d, f"bash {SCRIPT} {self.store_root}")
         self.assertEqual(rc, 0); self.assertEqual(len(self.calls.read_text().splitlines()), before + 1)
+
+    def test_two_concurrent_first_uses_of_a_cold_store(self):
+        text = self.manifest(self.revs[1])
+        procs = []
+        env = dict(self.env, SLOW_FETCH="1.5")
+        for name in ("c1", "c2"):
+            d = self.runner / name; d.mkdir()
+            (d / "lake-manifest.json").write_text(text)
+            procs.append(subprocess.Popen(["bash", str(SCRIPT), str(self.store_root)], cwd=d, env=env,
+                                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True))
+        results = [(p.wait(), p.stdout.read()) for p in procs]
+        for rc, log in results:
+            self.assertEqual(rc, 0, log)
+        fetches = [l for l in self.calls.read_text().splitlines() if l.endswith("exe cache get")]
+        self.assertEqual(len(fetches), 1)      # the second waited for the lock, then found the stamp
+        store = self.store_root / f"packages-{self.key(text)}"
+        self.assertEqual(self.head(store), self.revs[1])
+
+    def test_if_needed_relinks_only_after_a_manifest_change(self):
+        d = self.runner / "wt"; d.mkdir()
+        (d / "lake-manifest.json").write_text(self.manifest(self.revs[0]))
+        (d / ".lake").mkdir(); os.symlink(self.old_shared, d / ".lake/packages")
+        self.assertEqual(self.sh(d, "lake build")[0], 0)               # the legacy tree at the old revision
+        rc, log = self.sh(d, f"bash {SCRIPT} --if-needed {self.store_root}")
+        self.assertEqual(rc, 0, log); self.assertIn("nothing to do", log)
+        self.assertEqual(Path(os.readlink(d / ".lake/packages")), self.old_shared)
+        (d / "lake-manifest.json").write_text(self.manifest(self.revs[1]))   # adopts the new manifest (merge)
+        rc, log = self.sh(d, f"bash {SCRIPT} --if-needed {self.store_root} && lake build")
+        self.assertEqual(rc, 0, log)
+        self.assertEqual(Path(os.readlink(d / ".lake/packages")),
+                         self.store_root / f"packages-{self.key(self.manifest(self.revs[1]))}")
+        self.assertEqual(self.head(self.old_shared), self.revs[0])     # the legacy tree did not move
 
 
 if __name__ == "__main__":

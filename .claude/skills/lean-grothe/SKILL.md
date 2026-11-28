@@ -94,6 +94,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 
 ```sh
 scripts/sync_master.sh && git merge origin/master      # rebase only if the branch was never pushed
+scripts/package_store.sh --if-needed                   # before any lake command, if lake-manifest.json changed
 python3 tools/gen_root_imports.py                      # after every merge and every new module
 python3 scripts/check_constants.py                     # documents quote the bounds Lean states
 python3 scripts/check_md_links.py                      # relative links of the live documents

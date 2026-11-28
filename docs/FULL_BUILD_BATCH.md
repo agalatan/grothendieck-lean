@@ -121,9 +121,16 @@ still carries the v4.34 workflow. Two measures keep them apart without editing t
   a private (non-symlinked) packages directory, which is refreshed when its manifest changes. The old shared trees
   are never touched.
 
+Initialisation of a store is serialised by an exclusive lock (Python's `fcntl.flock`, which works on Linux and macOS).
+Every build cache keeps one archive path, `ws/.lake/build`, because the path is part of a cache entry's version. On a
+hosted runner the checkout is `ws/` itself; on a heavy runner `ws` is a symlink to `ws-<key>`. The master cache saved
+by `lean.yml` is therefore found by `cloud.yml` and the weekly keepalive (`scripts/test_cache_paths.py`).
+
 On the laptop the master builder (`scripts/master_build_job.sh`) selects the store of every target commit it checks
 out, and `scripts/clone_master_build.sh` gives a new worktree the store of its own manifest. The main checkout's
-`.lake/packages` stays as it is for the worktrees already linked to it. Tests: `scripts/test_package_store.py` (old →
+`.lake/packages` stays as it is for the worktrees already linked to it. A resumed worktree that adopts the new
+manifest by a merge runs `scripts/package_store.sh --if-needed` before its first `lake` command (AGENTS.md §5, §6;
+`scripts/sync_master.sh` prints an ACTION line when a worktree's packages do not match its manifest). Tests: `scripts/test_package_store.py` (old →
 new → old → new on one runner with two workspaces, a moved or foreign store refused, a private directory refreshed)
 and `scripts/test_laptop_packages.py` (the builder across a manifest change, existing and new worktrees).
 

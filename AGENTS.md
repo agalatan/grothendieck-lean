@@ -130,7 +130,11 @@ git -C /Users/alingalatan/workspaces/grothe worktree add -b codex-7f3a/<topic> \
 /Users/alingalatan/workspaces/grothe/scripts/clone_master_build.sh /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>
 ```
 
-Resuming an existing worktree: sync, then combine your branch with master (§6) before continuing.
+Resuming an existing worktree: sync, then combine your branch with master (§6) before continuing. **If the
+combination changed `lake-manifest.json` (a new Lean/Mathlib), run `scripts/package_store.sh --if-needed` in the
+worktree before the first `lake` command:** it relinks `.lake/packages` to the store of the new manifest when the
+packages in use are not at its revisions (otherwise it does nothing). Without it, Lake would check the new Mathlib
+out in a packages tree that other worktrees still share at the old one.
 
 **What to build on the laptop.** Only the modules you change and the modules that import them:
 `lake build Grothe.X.Y Grothe.X.Z`. **Never `lake build` or `lake build Grothe`:** the root includes the node-cap
@@ -186,7 +190,8 @@ especially a re-push after a CI failure, a review or a conflict):
    work that duplicates yours, changed data, regenerated files. Adapt your work so it is the best version relative to
    master, not just mergeable.
 3. **Combine:** never pushed: `git rebase origin/master`; already pushed: `git merge origin/master` (no rebase, no
-   force-push).
+   force-push). If `lake-manifest.json` changed, run `scripts/package_store.sh --if-needed` before any `lake`
+   command (§5, "Resuming").
 4. **Resolve every conflict by understanding both sides**, never by taking "ours" or "theirs" blindly:
    - after **every** merge run `python3 tools/gen_root_imports.py` (not only `--check`): it regenerates the roots
      and re-sorts the union-merged lists, which a merge can leave unsorted (CI also does this after its own merge

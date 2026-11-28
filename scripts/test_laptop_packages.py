@@ -98,6 +98,26 @@ class LaptopPackageTests(unittest.TestCase):
         self.run_ok(str(ROOT / "scripts/clone_master_build.sh"), str(new_wt))
         self.assertEqual(Path(os.readlink(new_wt / ".lake/packages")), self.store(builder))
 
+    def test_resumed_worktrees_relink_after_adopting_a_new_manifest(self):
+        wts = []
+        for name in ("wt-a", "wt-b"):                      # two existing 4.34 worktrees on the legacy tree
+            wt = Path(self.tmp.name) / name
+            git(self.main, "worktree", "add", "-q", "-b", f"t/{name}", str(wt), "origin/master")
+            (wt / ".lake").mkdir(); os.symlink(self.legacy, wt / ".lake/packages")
+            wts.append(wt)
+        self.run_ok("-c", "lake build", cwd=wts[0])         # the legacy Mathlib at the old revision
+        self.assertEqual(git(self.legacy / "mathlib", "rev-parse", "HEAD"), self.revs[0])
+        self.commit(self.seed, self.revs[1], "new"); git(self.seed, "push", "-q", "origin", "master")
+        # the documented resume of wt-a: merge master (adopting the new manifest), relink, then the first lake command
+        git(wts[0], "fetch", "-q", "origin"); git(wts[0], "merge", "-q", "--no-edit", "origin/master")
+        self.run_ok("-c", f"bash {ROOT}/scripts/package_store.sh --if-needed && lake build", cwd=wts[0])
+        self.assertEqual(Path(os.readlink(wts[0] / ".lake/packages")), self.store(wts[0]))
+        # wt-b, still on the old manifest, keeps the legacy tree at the old revision
+        self.assertEqual(Path(os.readlink(wts[1] / ".lake/packages")), self.legacy)
+        self.assertEqual(git(self.legacy / "mathlib", "rev-parse", "HEAD"), self.revs[0])
+        self.run_ok("-c", f"bash {ROOT}/scripts/package_store.sh --if-needed", cwd=wts[1])   # nothing to do
+        self.assertEqual(Path(os.readlink(wts[1] / ".lake/packages")), self.legacy)
+
 
 if __name__ == "__main__":
     unittest.main()
