@@ -737,6 +737,8 @@ their content allowances on eleven of fifteen fourth-excess bins, ten more than 
 allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
 [C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
 
+On the entire interval from 0.70 to 0.78 u_cap, the same two profiles meet the interpolated allowance under (R1) in the six bins in (0, 8] and the five bins in (16, 42]. The four intervening bins remain open across this interval. [C, author only · piece 15, row 4.56b](../higher-degree/sources/piece15-content-codex-062a/SECOND_BAND.md).
+
 **Influences.** With J₁[a, b] = E[∂_aq·conj(∂_bq)] and I₂[j, k] = ⟨∂̄_jq, ∂̄_kq⟩ (traces 2u and u), the field c₂ − u
 has ‖c₂ − u‖² = ‖J₁‖²_HS + ‖I₂‖²_HS, and the largest eigenvalues satisfy λ₁² + λ₂² ≤ δ/2, with equality only at X²Ȳ
 [P + C · 6.3.32]. The content is a pairing of two shadows of the profile with these matrices,
