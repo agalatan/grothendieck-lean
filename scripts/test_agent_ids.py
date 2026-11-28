@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 import subprocess
+import tempfile
 import unittest
 
 
@@ -21,7 +22,7 @@ def identity_call(*args):
     )
 
 
-def review_call(branch, reviewer, tip=REVIEWED, verdict="approve"):
+def review_call(branch, reviewer, tip=REVIEWED, verdict="approve", env=None):
     mocks = r"""
         git() {
             if [[ "$1" == ls-remote && "$2" == origin && "$3" == refs/heads/* ]]; then
@@ -34,6 +35,16 @@ def review_call(branch, reviewer, tip=REVIEWED, verdict="approve"):
             case "$1 $2" in
                 'repo view') echo 'owner/repo' ;;
                 'api -X') printf 'Mock API %s\n' "$*" >&2 ;;
+                'pr list') echo "${MOCK_PR:-}" ;;
+                'label create'|'pr edit') printf 'Mock %s\n' "$*" >&2 ;;
+                'pr comment') printf 'Mock %s\n' "$*" >&2; [[ "${MOCK_COMMENT_FAIL:-0}" != 1 ]] ;;
+                'pr view') if [[ "$*" == *labels* ]]; then
+                               if [[ "$*" == *"${MOCK_HELD_BY:-none}"* ]]; then echo true; else echo false; fi
+                           else
+                               n=$(( $(cat "$MOCK_COUNTER" 2>/dev/null || echo 0) + 1 )); echo $n > "$MOCK_COUNTER"
+                               s=$(echo "${MOCK_STATES:-OPEN OPEN}" | cut -d' ' -f$n)
+                               [[ "$s" == FAIL ]] && return 1; echo "${s:-OPEN}"
+                           fi ;;
                 *) return 98 ;;
             esac
         }
@@ -42,7 +53,8 @@ def review_call(branch, reviewer, tip=REVIEWED, verdict="approve"):
     return subprocess.run(
         ["bash", "-c", mocks, "bash", str(SCRIPTS / "review.sh"), branch, REVIEWED, verdict,
          reviewer, "checked"],
-        env={**os.environ, "MOCK_REVIEW_TIP": tip},
+        env={**os.environ, "MOCK_REVIEW_TIP": tip, "HOLD_SETTLE_SECONDS": "0",
+             "MOCK_COUNTER": os.path.join(tempfile.mkdtemp(), "n"), **(env or {})},
         capture_output=True,
         text=True,
         timeout=5,
@@ -100,6 +112,109 @@ class AgentIdentityTests(unittest.TestCase):
         self.assertEqual(stale.returncode, 3, stale.stderr)
         self.assertIn("gemini-a12b/topic has moved", stale.stderr)
         self.assertNotIn("Mock API", stale.stderr)
+
+
+class HoldTests(unittest.TestCase):
+    def call(self, reviewer="claude-3e2a", verdict="hold", **env):
+        return review_call("codex-a12b/topic", reviewer, verdict=verdict, env={"MOCK_PR": "42", **env})
+
+    def test_hold_adds_a_per_reviewer_label_and_no_status(self):
+        result = self.call()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("pr edit 42 --add-label HOLD:claude-3e2a", result.stderr)
+        self.assertNotIn("statuses/", result.stderr)
+
+    def test_hold_needs_an_open_pull_request(self):
+        self.assertEqual(self.call(MOCK_PR="").returncode, 2)
+
+    def test_a_hold_placed_after_the_landing_reports_it(self):
+        result = self.call(MOCK_STATES="MERGED")
+        self.assertEqual(result.returncode, 4, result.stderr)
+        self.assertIn("too late", result.stderr)
+
+    def test_a_landing_already_past_its_check_wins_and_the_holder_is_told(self):
+        # the state still reads OPEN when the label is added; the cleared landing then pushes
+        result = self.call(MOCK_STATES="OPEN MERGED")
+        self.assertEqual(result.returncode, 4, result.stderr)
+        self.assertIn("won the race", result.stderr)
+
+    def test_a_pr_closed_during_the_hold_is_not_called_landed(self):
+        result = self.call(MOCK_STATES="OPEN CLOSED")
+        self.assertEqual(result.returncode, 4, result.stderr)
+        self.assertIn("was CLOSED", result.stderr)
+        self.assertNotIn("won the race", result.stderr)
+
+    def test_a_hold_in_force_says_so(self):
+        result = self.call(MOCK_STATES="OPEN OPEN")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("in force", result.stdout)
+
+    def test_an_unreadable_state_is_reported_separately(self):
+        result = self.call(MOCK_STATES="FAIL")
+        self.assertEqual(result.returncode, 5, result.stderr)
+        self.assertIn("could not be read", result.stderr)
+        self.assertNotIn("too late", result.stderr)
+
+    def test_a_failed_comment_keeps_the_hold_and_a_retry_is_harmless(self):
+        first = self.call(MOCK_COMMENT_FAIL="1")
+        self.assertEqual(first.returncode, 0, first.stderr)
+        self.assertIn("--add-label HOLD:claude-3e2a", first.stderr)
+        self.assertIn("comment failed", first.stderr)
+        again = self.call()
+        self.assertEqual(again.returncode, 0, again.stderr)
+        self.assertIn("--add-label HOLD:claude-3e2a", again.stderr)
+
+    def test_two_reviewers_each_verdict_lifts_only_its_own_hold(self):
+        # gemini holds too; claude's verdict removes HOLD:claude-3e2a only
+        own = self.call(verdict="approve", MOCK_HELD_BY="HOLD:claude-3e2a")
+        self.assertEqual(own.returncode, 0, own.stderr)
+        self.assertIn("--remove-label HOLD:claude-3e2a", own.stderr)
+        self.assertNotIn("HOLD:gemini", own.stderr)
+        other = self.call(reviewer="gemini-1111", verdict="approve", MOCK_HELD_BY="HOLD:gemini-1111")
+        self.assertIn("--remove-label HOLD:gemini-1111", other.stderr)
+
+    def test_a_reviewer_without_a_current_hold_lifts_nothing(self):
+        result = self.call(verdict="approve", MOCK_HELD_BY="HOLD:gemini-1111")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("--remove-label", result.stderr)
+
+
+def notice_call(labels, comment_fails=False):
+    mocks = r"""
+        gh() {
+            case "$1 $2" in
+                'pr view') [[ "$MOCK_LABELS" == FAIL ]] && return 1; echo "$MOCK_LABELS" ;;
+                'pr comment') printf 'Mock %s\n' "$*" >&2; [[ "$MOCK_COMMENT_FAIL" != 1 ]] ;;
+                *) return 98 ;;
+            esac
+        }
+        source "$@"
+    """
+    return subprocess.run(
+        ["bash", "-c", mocks, "bash", str(SCRIPTS / "hold_notice.sh"), "42", "c" * 40],
+        env={**os.environ, "MOCK_LABELS": labels, "MOCK_COMMENT_FAIL": "1" if comment_fails else "0"},
+        capture_output=True, text=True, timeout=5,
+    )
+
+
+class LostHoldNoticeTests(unittest.TestCase):
+    def test_each_hold_present_after_the_push_is_reported_to_its_holder(self):
+        result = notice_call("HOLD:claude-3e2a HOLD:gemini-1111")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("claude-3e2a: please review after the fact", result.stderr)
+        self.assertIn("gemini-1111: please review after the fact", result.stderr)
+
+    def test_no_hold_no_notice(self):
+        result = notice_call("")
+        self.assertEqual(result.returncode, 0)
+        self.assertNotIn("Mock", result.stderr)
+
+    def test_failures_never_fail_the_landing(self):
+        self.assertEqual(notice_call("FAIL").returncode, 0)
+        failed = notice_call("HOLD:claude-3e2a", comment_fails=True)
+        self.assertEqual(failed.returncode, 0)
+        self.assertIn("could not post", failed.stdout)
+        self.assertNotIn("lost hold reported", failed.stdout)
 
 
 if __name__ == "__main__":

@@ -1194,6 +1194,8 @@ bound, not a claim of odd-sector monotonicity.
 
 Varying the radial weight gives a family of simultaneous energy constraints. For any nonnegative test direction, its best bound within this family is a one-dimensional integral of the square root of a cubic polynomial in the visible squared radius. At ε = .752, every actual response with t ≥ .826 and remote energy at least .04 has total even energy below .04031, for any odd energy and arbitrary sharing. At t = .826 and remote energy .04, the single ellipsoid 2.12b permits even energy above .05747. [P + C, author only · 2.12h · proof and exact replay](sources/radial-response-weights-codex-a7c4/PROOF.md)
 
+The two disk constraints also control the part of the difference response parallel to the visible Gaussian phase. Keeping that term yields an explicit six-sector energy ellipsoid for every amplitude. The regularized weights reduce the preceding even-energy cap from .04031 to **.03168** at the same ε, visible amplitude and remote energy. The first-chaos penalty remains available for a payoff trial. [2.12i, **P + C, author only** · proof and exact replay](sources/radial-response-weights-codex-a7c4/TWO_DISKS.md)
+
 At ε = 1891/2500, for t ≥ 0.84 the remote cap is 0.046266 [P + C · codex-a7c4, re-derived by claude-b9ee · 2.12a].
 Combining it with the stronger ellipsoid gives total energy below 0.080051; the total is below 0.070564 for t ≥ 0.8456
 and below 0.061366 for t ≥ 0.851 [P + C · codex-a7c4, re-derived and replayed by claude-b9ee · 2.12b]. Without a
