@@ -1,10 +1,15 @@
 import QuinticResearch
-
 #print axioms Grothe.LowerAnalytic.H21_unitPhaseL_ae
 #print axioms Grothe.LowerAnalytic.H32_eq_span_projected_quintics
+#print axioms Grothe.LowerAnalytic.H32_le_H21_orthogonal
+#print axioms Grothe.LowerAnalytic.H32_le_orthogonal
 #print axioms Grothe.LowerAnalytic.H32_starProjection_Cop
 #print axioms Grothe.LowerAnalytic.H32_unitPhaseL_ae
 #print axioms Grothe.LowerAnalytic.RealCubicCarrier.has_full_lift
+#print axioms Grothe.LowerAnalytic.SignedRowTransfer.endpoint_of_profile
+#print axioms Grothe.LowerAnalytic.SignedRowTransfer.fifthFloor_le
+#print axioms Grothe.LowerAnalytic.SignedRowTransfer.signed_payoff_le_profile
+#print axioms Grothe.LowerAnalytic.SignedRowTransfer.transfer_of_profile
 #print axioms Grothe.LowerAnalytic.blockLeft_ae
 #print axioms Grothe.LowerAnalytic.blockLeft_mem_H21
 #print axioms Grothe.LowerAnalytic.blockRight_ae
@@ -56,6 +61,7 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.linear_eq_radius_mul_unit
 #print axioms Grothe.LowerAnalytic.measurable_diffuseCopy
 #print axioms Grothe.LowerAnalytic.measurable_diffuseTriple
+#print axioms Grothe.LowerAnalytic.measurable_phaseIterate
 #print axioms Grothe.LowerAnalytic.measurePreserving_diffuseCopy
 #print axioms Grothe.LowerAnalytic.measurePreserving_gaussianBathCoordinates
 #print axioms Grothe.LowerAnalytic.measurePreserving_gaussianBlockSplit
@@ -70,6 +76,7 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.norm_pairVal_quinticWitness
 #print axioms Grothe.LowerAnalytic.norm_sub_finiteDiffuseCubic_sq
 #print axioms Grothe.LowerAnalytic.norm_visibleDirection_of_pos
+#print axioms Grothe.LowerAnalytic.phaseIterate_error
 #print axioms Grothe.LowerAnalytic.phase_pair_abs_signed
 #print axioms Grothe.LowerAnalytic.phase_pair_ae_re_orthogonal
 #print axioms Grothe.LowerAnalytic.phase_pair_radial_square_le
@@ -77,6 +84,12 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.phase_stability_soft_disk
 #print axioms Grothe.LowerAnalytic.projection_difference_lower
 #print axioms Grothe.LowerAnalytic.properCoords_eq
+#print axioms Grothe.LowerAnalytic.psiT_anisotropic_margin
+#print axioms Grothe.LowerAnalytic.psiT_attains
+#print axioms Grothe.LowerAnalytic.psiT_control_distance
+#print axioms Grothe.LowerAnalytic.psiT_controls_phaseIterate
+#print axioms Grothe.LowerAnalytic.psiT_gap_identity
+#print axioms Grothe.LowerAnalytic.psiT_integral_controls_phaseIterate
 #print axioms Grothe.LowerAnalytic.pull_mem_H21
 #print axioms Grothe.LowerAnalytic.quinticPayoff_energy_envelope
 #print axioms Grothe.LowerAnalytic.quinticPayoff_eq_scaled_hat
@@ -97,14 +110,18 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.quinticPayoff_projection_envelope
 #print axioms Grothe.LowerAnalytic.quinticScalarCap_of_payoff_le
 #print axioms Grothe.LowerAnalytic.quintic_center_cross
+#print axioms Grothe.LowerAnalytic.quintic_projection_energy_le
 #print axioms Grothe.LowerAnalytic.quintic_projection_near_center
 #print axioms Grothe.LowerAnalytic.re_inner_cubic_subprojection
+#print axioms Grothe.LowerAnalytic.re_inner_quinticWitness
 #print axioms Grothe.LowerAnalytic.re_inner_visibleDirection
 #print axioms Grothe.LowerAnalytic.remoteCubic_le
 #print axioms Grothe.LowerAnalytic.remote_cubic_lift_of_couplings
 #print axioms Grothe.LowerAnalytic.remote_frame_cubic_lift
 #print axioms Grothe.LowerAnalytic.remote_frame_cubic_lift_unconditional
 #print axioms Grothe.LowerAnalytic.remote_frame_phase_support
+#print axioms Grothe.LowerAnalytic.signedFifth_clip
+#print axioms Grothe.LowerAnalytic.signedFifth_clip_828
 #print axioms Grothe.LowerAnalytic.signedFifth_diagonal
 #print axioms Grothe.LowerAnalytic.signedFifth_payoff
 #print axioms Grothe.LowerAnalytic.signedFifth_payoff_high

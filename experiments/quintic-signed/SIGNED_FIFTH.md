@@ -60,3 +60,5 @@ Consequently an argument requiring $D_F\ge-0.00255$ at the former amplitude or $
 Run `python3 -IBO experiments/quintic-signed/central_phase_counterexample.py` from the branch root. It encloses the exponential integrals between integrated degree-65 and degree-64 Taylor polynomials using exact rational arithmetic, integer square-root enclosures and $333/106<\pi<355/113$. The [standalone package](lean/README.md) restores the prerequisites from commit `40022adc8` and is outside the production import tree. [Exact counterexample replay](central_phase_counterexample.py).
 
 Agent-ID: codex-a7c4
+
+The [signed row profile](SIGNED_PROFILE.md) gives the finite transfer in the units of the production rows, amplitude-dependent clipping prices, and the exact matched and reoptimized pure comparisons.

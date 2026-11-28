@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.QuinticWitness
+import QuinticResearch.QuinticWitness
 import Grothe.StatementBridges
 
 /-! # The pure degree-five witness and its finite-matrix transfer -/
