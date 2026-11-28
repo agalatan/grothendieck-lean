@@ -1,22 +1,26 @@
 #!/usr/bin/env python3
-"""Zero-float, zero-assert Python 3 stdlib verifier for Stage 0 (#751 / #849) sector resolution (tag S0RG).
+"""Zero-float, zero-assert Python 3 stdlib verifier for S0RG (#849, refs #751):
+antisymmetric slice-Gram inequality C_-- >= 0, retained-defender dual rows, and
+c -> 0+ quadratic/local diffuse-spike saddle bounds at 9 Stage 0 sample rows.
 
 Verifies from scratch:
   1. Source-code AST self-audit (zero float literals/calls, zero assert statements) and < 300 KB file caps.
-  2. Exact symbolic and concrete Q[i]-tensor verification of Theorem 1:
+  2. Exact symbolic, concrete Q[i]-tensor, and physical Gaussian Wick polynomial verification of Theorem 1:
        - 4-channel Pythagorean slice-Gram decomposition of ctC in Grothe/LowerAnalytic/GramTensor.lean,
-         including the new antisymmetric involution inequality 4 ||C_--||_HS^2 = n + b - (3y - z) >= 0;
+         including the antisymmetric involution inequality 4 ||C_--||_HS^2 = n + b - (3y - z) >= 0;
        - All three sharp dimension-free spectral chaos bounds (25 u_2 >= 9 u_4, 8 u_2 >= 3 v_4, 14 u_2 >= 3 chi),
-         equality at e_{2,1}(y_1), and exact rational 5-scalar counterexamples showing C_-- >= 0 is strictly
+         equality at unit e_{2,1}(y_1), and exact rational 5-scalar counterexamples showing C_-- >= 0 is strictly
          stronger than the 5-scalar Gram.lean cone.
   3. Exact symbolic verification of Theorem 2 & Theorem 3:
        - Bargmann-Laguerre expectation identities and vanishing O(c^2) visible quintic scalar shift gradient;
-       - Dependency-free 4-term SOS polynomial identity reducing sup_{d>=1, ||B||_2=1} to e_{2,1}.
-  4. SHA-256 provenance binding to research/higher-degree/code/degree5-stage0/results/b/*/rows_all.lines
-     (parsed via json.loads(..., parse_float=Decimal), zero float!) and <= 5*10^{-11} rationalisation check.
-  5. Full from-scratch zero-float outward-rounded Jet2 interval re-integration of all 9 benchmark rows across
-     gC, g83, g84, gA, certifying strict complex Hessian concavity (all 14 real & imaginary margins > 0),
-     strictly positive SOS multipliers lam_1..lam_4 > 0, and all quantitative Stage 0 sharing bounds.
+       - Dependency-free 4-term SOS polynomial identity reducing the c -> 0+ quadratic/local saddle to e_{2,1}.
+  4. SHA-256 provenance binding to research/higher-degree/code/degree5-stage0/results/b/*/rows_all.lines,
+     exact pinning of all 9 (id, game, t_key, e1, eta, cap_upper) benchmarks and mode flags, and <= 5*10^{-11}
+     rationalisation check.
+  5. Full from-scratch zero-float outward-rounded Jet2 interval re-integration of all 9 sample rows at sigma = sigma_*,
+     certifying strict complex Hessian concavity (all 14 real & imaginary margins > 0), strictly positive stored & fresh
+     SOS multipliers lam_1..lam_4 > 0, 5-invariant interval SOS balance, and c -> 0+ saddle caps.
+     (Finite gate points c in {0.1, 0.3, 0.6, 1} and off-peak sigma != sigma_* are not evaluated; the Stage 0 stop rule is not yet discharged.)
 """
 
 import argparse
@@ -26,7 +30,7 @@ from decimal import Decimal
 from fractions import Fraction
 import hashlib
 import json
-from math import isqrt
+from math import comb, factorial, isqrt
 import os
 from pathlib import Path
 import sys
@@ -486,6 +490,88 @@ def verify_gram_and_sos_identities(gram_cone_flags=None):
                 t[j][i][k] = half_v
         return t
 
+    # Independent polynomial Gaussian Wick moment & chaos-projection helpers on C^3:
+    def p_add_term(poly, exp6, val):
+        if val[0] == 0 and val[1] == 0:
+            return
+        prev = poly.get(exp6)
+        if prev is None:
+            poly[exp6] = val
+        else:
+            nv = (prev[0] + val[0], prev[1] + val[1])
+            if nv[0] == 0 and nv[1] == 0:
+                del poly[exp6]
+            else:
+                poly[exp6] = nv
+
+    def p_mul(p1, p2):
+        out = {}
+        for e1_k, v1 in p1.items():
+            a0, a1, a2, b0, b1, b2 = e1_k
+            for e2_k, v2_k in p2.items():
+                p_add_term(
+                    out,
+                    (a0 + e2_k[0], a1 + e2_k[1], a2 + e2_k[2], b0 + e2_k[3], b1 + e2_k[4], b2 + e2_k[5]),
+                    qi_mul(v1, v2_k),
+                )
+        return out
+
+    def p_conj(poly):
+        return {(e[3], e[4], e[5], e[0], e[1], e[2]): qi_conj(v) for e, v in poly.items()}
+
+    def gauss_expect(poly):
+        sr = Fraction(0)
+        si = Fraction(0)
+        for (a0, a1, a2, b0, b1, b2), (vr, vi) in poly.items():
+            if a0 == b0 and a1 == b1 and a2 == b2:
+                wt = factorial(a0) * factorial(a1) * factorial(a2)
+                sr += vr * wt
+                si += vi * wt
+        return (sr, si)
+
+    def herm_1d(a, b):
+        return [
+            ((a - k, b - k), ((-1) ** k) * factorial(k) * comb(a, k) * comb(b, k))
+            for k in range(min(a, b) + 1)
+        ]
+
+    def multi_indices_3(deg):
+        return [
+            (a0, a1, deg - a0 - a1)
+            for a0 in range(deg + 1)
+            for a1 in range(deg - a0 + 1)
+        ]
+
+    def proj_norm_sq(f_poly, p_deg, q_deg):
+        total = Fraction(0)
+        for (a0, a1, a2) in multi_indices_3(p_deg):
+            h0_list = herm_1d(a0, 0)
+            for (b0, b1, b2) in multi_indices_3(q_deg):
+                # H_{alpha, beta}(y) = prod_m H_{a_m, b_m}(y_m), norm^2 = prod_m (a_m! b_m!)
+                t0 = herm_1d(a0, b0)
+                t1 = herm_1d(a1, b1)
+                t2 = herm_1d(a2, b2)
+                h_conj = {}
+                for (u0, v0), c0 in t0:
+                    for (u1, v1), c1 in t1:
+                        for (u2_i, v2_i), c2 in t2:
+                            # conj(y^u ybar^v) = y^v ybar^u
+                            p_add_term(h_conj, (v0, v1, v2_i, u0, u1, u2_i), (Fraction(c0 * c1 * c2), Fraction(0)))
+                ip_r = Fraction(0)
+                ip_i = Fraction(0)
+                for (ha0, ha1, ha2, hb0, hb1, hb2), (hc_r, _) in h_conj.items():
+                    for (fa0, fa1, fa2, fb0, fb1, fb2), (fr, fi) in f_poly.items():
+                        if fa0 + ha0 == fb0 + hb0 and fa1 + ha1 == fb1 + hb1 and fa2 + ha2 == fb2 + hb2:
+                            wt = factorial(fa0 + ha0) * factorial(fa1 + ha1) * factorial(fa2 + ha2) * hc_r
+                            ip_r += fr * wt
+                            ip_i += fi * wt
+                den = factorial(a0) * factorial(a1) * factorial(a2) * factorial(b0) * factorial(b1) * factorial(b2)
+                total += (ip_r * ip_r + ip_i * ip_i) / den
+        del h0_list
+        return total
+
+    wick_lin_scale = Fraction(0) if gram_cone_flags.get("corrupt_wick_linear", False) else Fraction(1)
+
     tensors = [
         # (a) One-spike e_{2,1}(y_1): t_{000} = 1/sqrt(2) -> scaled by sqrt(2): t_{000} = 1 => (n,h,b,y,z) = (1,1,1,1,1)
         ("e21", make_sym_tensor({(0, 0, 0): one_qi}), True),
@@ -580,6 +666,71 @@ def verify_gram_and_sos_identities(gram_cone_flags=None):
             check(25 * eval_5sc(pt_t, u2) == 9 * eval_5sc(pt_t, u4), "Sharpness 25 u_2 == 9 u_4 at e21 failed")
             check(8 * eval_5sc(pt_t, u2) == 3 * eval_5sc(pt_t, v4), "Sharpness 8 u_2 == 3 v_4 at e21 failed")
             check(14 * eval_5sc(pt_t, u2) == 3 * eval_5sc(pt_t, chi), "Sharpness 14 u_2 == 3 chi at e21 failed")
+
+        # Independent Gaussian Wick polynomial check of CircularFourth.lean & GramSpectral.lean:
+        # B(y) = sum_{i,j,k} t_{ijk} (y_i y_j ybar_k - delta_{ik} y_j - delta_{jk} y_i)
+        b_poly = {}
+        st_norm2 = Fraction(0)
+        for i in range(dim):
+            for j in range(dim):
+                for k in range(dim):
+                    t_val = t[i][j][k]
+                    st_norm2 += qi_norm_sq(t_val)
+                    if t_val[0] == 0 and t_val[1] == 0:
+                        continue
+                    a_exp = [0, 0, 0]
+                    b_exp = [0, 0, 0]
+                    a_exp[i] += 1
+                    a_exp[j] += 1
+                    b_exp[k] += 1
+                    p_add_term(b_poly, (a_exp[0], a_exp[1], a_exp[2], b_exp[0], b_exp[1], b_exp[2]), t_val)
+                    if wick_lin_scale != 0:
+                        neg_t = (-wick_lin_scale * t_val[0], -wick_lin_scale * t_val[1])
+                        if i == k:
+                            l_exp = [0, 0, 0]
+                            l_exp[j] += 1
+                            p_add_term(b_poly, (l_exp[0], l_exp[1], l_exp[2], 0, 0, 0), neg_t)
+                        if j == k:
+                            l_exp = [0, 0, 0]
+                            l_exp[i] += 1
+                            p_add_term(b_poly, (l_exp[0], l_exp[1], l_exp[2], 0, 0, 0), neg_t)
+
+        check(gauss_expect(b_poly) == zero_qi, f"E[B] != 0 on {name}")
+        check(proj_norm_sq(b_poly, 1, 0) == 0 and proj_norm_sq(b_poly, 0, 1) == 0, f"B leaked into H_1 on {name}")
+        mod_b2 = p_mul(b_poly, p_conj(b_poly))
+        sq_b = p_mul(b_poly, b_poly)
+        eb2_qi = gauss_expect(mod_b2)
+        check(eb2_qi[1] == 0 and eb2_qi[0] == 2 * st_norm2, f"E|B|^2 != 2*sum|t|^2 on {name}")
+        eb2 = eb2_qi[0]
+        check(proj_norm_sq(b_poly, 2, 1) == eb2, f"||P_{{2,1}}(B)||^2 != E|B|^2 on {name}")
+        eb4_qi = gauss_expect(p_mul(mod_b2, mod_b2))
+        check(eb4_qi[1] == 0, f"Im E|B|^4 != 0 on {name}")
+        eb4 = eb4_qi[0]
+        u2_w = proj_norm_sq(mod_b2, 1, 1)
+        u4_w = proj_norm_sq(mod_b2, 2, 2)
+        u6_w = proj_norm_sq(mod_b2, 3, 3)
+        v2_w = proj_norm_sq(sq_b, 2, 0)
+        v4_w = proj_norm_sq(sq_b, 3, 1)
+        check(eb4 - 2 * eb2 * eb2 == eval_5sc(pt_t, chi), f"CircularFourth chi mismatch on {name}")
+        check(u2_w == eval_5sc(pt_t, u2), f"GramSpectral u_2 mismatch on {name}")
+        check(u4_w == eval_5sc(pt_t, u4), f"GramSpectral u_4 mismatch on {name}")
+        check(u6_w == eb2 * eb2 + 16 * gb + 16 * gz, f"u_6 = ||B||^4 + 16b + 16z mismatch on {name}")
+        check(eb2 * eb2 + u2_w + u4_w + u6_w == eb4, f"Parseval on |B|^2 failed on {name}")
+        check(v2_w == eval_5sc(pt_t, v2), f"GramSpectral v_2 mismatch on {name}")
+        check(v4_w == eval_5sc(pt_t, v4), f"GramSpectral v_4 mismatch on {name}")
+        if is_e21:
+            # Unit spike e_{2,1}(y_0) has sum|t|^2 = 1/2 (eb2 = 1), scaling quartic expectations by 1/eb2^2 = 1/4:
+            q_scale = eb2 * eb2
+            check(
+                (gn / q_scale, gh / q_scale, gb / q_scale, gy / q_scale, gz / q_scale)
+                == (Fraction(1, 4), Fraction(1, 4), Fraction(1, 4), Fraction(1, 4), Fraction(1, 4)),
+                "Unit e_{2,1} Lean contractions != (1/4, 1/4, 1/4, 1/4, 1/4)",
+            )
+            check(
+                (u2_w / q_scale, u4_w / q_scale, u6_w / q_scale, v2_w / q_scale, v4_w / q_scale, (eb4 - 2 * q_scale) / q_scale)
+                == (Fraction(9), Fraction(25), Fraction(9), Fraction(8), Fraction(24), Fraction(42)),
+                "Unit e_{2,1} physical projections != (9, 25, 9, 8, 24, 42)",
+            )
 
     # 5) Verify Theorem 3 exact 4-term SOS polynomial identity on all 4 basis vectors (C22, C11, C31, C20):
     for idx_c in range(4):
@@ -1254,7 +1405,9 @@ def integrate_and_certify_row(row_spec):
                 totals[k][0] += mp[0] - err_t
                 totals[k][1] += mp[1] + err_t
 
-    # Rigorous analytic r >= 5 tails:
+    # Rigorous analytic r >= 5 tails (PROOF.md §4.2):
+    # int_25^oo (1, v, v^2, v^3) e^{-v} dv = (1, 26, 677, 17656) e^{-25};
+    # for P, Q, |E_j E_k| <= v^3 / 2 gives (17656 / 2) * sqrt(pi) / amin = 8828 * sqrt(pi) / amin <= 17631 * sqrt(pi) / amin.
     e25_hi = exp_neg_series_lo_hi(25 * S)[1]
     amin_lo = (to_iv(sig_f)[0] * (S + bA_iv[0])) // S
     check(amin_lo > 0, f"{row_spec['id']}: amin_lo <= 0")
@@ -1370,6 +1523,38 @@ def integrate_and_certify_row(row_spec):
         lin_comb_ret(1296, -864, -288, 576),
         lin_comb_ret(32, -96, 192, 64),
     )
+    # Verify interval 5-invariant SOS polynomial balance on (n, h, b, y, z) directly for the integrated row:
+    # LHS_inv = N_tot * chi_inv - 42 * (C22 * u4_inv + C11_ret * u2_inv + C31 * v4_inv + C20_ret * v2_inv)
+    # RHS_inv = lam_1 * c_mm_inv + lam_2 * nb_inv + lam_3 * zy_inv + lam_4 * nh2z_inv
+    C11_ret = lin_comb_ret(0, 1, 0, 0)
+    C20_ret = lin_comb_ret(0, 0, 0, 1)
+    inv_vecs = (
+        ("n", 32, 16, 16, 0, 0, 1, 1, 0, 1),
+        ("h", 8, 4, 4, 0, 0, 0, 0, 0, 1),
+        ("b", 32, 16, 0, 0, 32, 1, -1, 0, 0),
+        ("y", 96, 96, 0, 96, 0, -3, 0, -1, 0),
+        ("z", 0, -32, 16, 0, 0, 1, 0, 1, -2),
+    )
+    for iname, c_chi, c_u4, c_u2, c_v4, c_v2, d1, d2, d3, d4 in inv_vecs:
+        lhs_i = iv_sub(
+            iv_scale_int(num_e21_rt, c_chi),
+            iv_scale_int(
+                iv_add(
+                    iv_add(iv_scale_int(C22, c_u4), iv_scale_int(C11_ret, c_u2)),
+                    iv_add(iv_scale_int(C31, c_v4), iv_scale_int(C20_ret, c_v2)),
+                ),
+                42,
+            ),
+        )
+        rhs_i = iv_add(
+            iv_add(iv_scale_int(lams[0], d1), iv_scale_int(lams[1], d2)),
+            iv_add(iv_scale_int(lams[2], d3), iv_scale_int(lams[3], d4)),
+        )
+        check(
+            lhs_i[0] <= rhs_i[1] and rhs_i[0] <= lhs_i[1],
+            f"{row_spec['id']}: SOS balance interval mismatch on invariant {iname}: {lhs_i} vs {rhs_i}",
+        )
+
     return {
         "id": row_spec["id"],
         "elapsed_ms": int((time.time() - t0) * 1000),
@@ -1399,8 +1584,22 @@ def audit_no_float_no_assert(py_paths):
                 raise ValueError(f"VERIFICATION FAILED: Forbidden float identifier in {p}:{node.lineno}")
 
 
-def verify_certificate(cert_data, repo_root, only_row=None, jobs=0, quiet=False):
-    # 1) Algebraic & tensor verification of Theorems 1, 2, 3:
+EXPECTED_BENCHMARKS = (
+    ("gC_0.80", "gC", "0.800", Fraction(39, 50), Fraction(779, 10000), Fraction(0, 1), Fraction(1, 10), None),
+    ("g83_0.80", "g83", "0.800", Fraction(83, 100), Fraction(2241, 10000), Fraction(7, 20), Fraction(7, 20), None),
+    ("g83_0.85", "g83", "0.850", Fraction(83, 100), Fraction(2241, 10000), Fraction(7, 20), Fraction(7, 20), None),
+    ("g84_0.70", "g84", "0.700", Fraction(21, 25), Fraction(319, 1250), Fraction(7, 20), Fraction(7, 20), None),
+    ("g84_0.80", "g84", "0.800", Fraction(21, 25), Fraction(319, 1250), Fraction(7, 20), Fraction(7, 20), None),
+    ("g84_0.84", "g84", "0.840", Fraction(21, 25), Fraction(319, 1250), Fraction(7, 20), Fraction(1, 1), None),
+    ("g84_0.85", "g84", "0.850", Fraction(21, 25), Fraction(319, 1250), Fraction(7, 20), Fraction(1, 1), None),
+    ("gA_0.80", "gA", "0.800", Fraction(8493, 10000), Fraction(2827, 10000), Fraction(7, 20), Fraction(1, 1), Fraction(7, 20)),
+    ("gA_0.85", "gA", "0.850", Fraction(8493, 10000), Fraction(2827, 10000), Fraction(7, 10), Fraction(1, 1), None),
+)
+EXPECTED_BY_ID = {b[0]: b for b in EXPECTED_BENCHMARKS}
+
+
+def verify_certificate(cert_data, repo_root, only_row=None, jobs=0, quiet=False, _test_hypothesis_override=False):
+    # 1) Algebraic & tensor verification of Theorems 1, 2, 3 (including Gaussian Wick moments & projections):
     verify_gram_and_sos_identities()
 
     # 2) Verify SHA-256 provenance of all Stage 0 rows_all.lines files and exact <= 5e-11 rationalisation:
@@ -1426,23 +1625,64 @@ def verify_certificate(cert_data, repo_root, only_row=None, jobs=0, quiet=False)
             by_t[t_key] = obj
         raw_rows_by_game[gname] = by_t
 
-    rows = cert_data["rows"]
-    check(isinstance(rows, list) and len(rows) == 9, f"Expected 9 benchmark rows, got {len(rows) if isinstance(rows, list) else 'non-list'}")
-    if only_row is not None:
-        rows = [r for r in rows if r["id"] == only_row]
-        check(len(rows) == 1, f"Row id {only_row!r} not found in certificate")
+    all_rows = cert_data["rows"]
+    check(isinstance(all_rows, list) and len(all_rows) == 9, f"Expected 9 benchmark rows, got {len(all_rows) if isinstance(all_rows, list) else 'non-list'}")
+    seen_triples = [(r.get("id"), r.get("game"), r.get("t_key")) for r in all_rows]
+    expected_triples = [(b[0], b[1], b[2]) for b in EXPECTED_BENCHMARKS]
+    check(len(set(seen_triples)) == 9, "Duplicate (id, game, t_key) benchmark row in certificate")
+    check(seen_triples == expected_triples, f"Benchmark row list {seen_triples} != expected {expected_triples}")
 
+    # Pin ALL 9 rows structurally (weights, caps, mode flags, rationalisation, and stored SOS/concavity signs)
+    # BEFORE filtering to only_row, so certificate tampering is rejected immediately even under --only-row!
     half_ulp10 = Fraction(1, 2 * 10 ** 10)
-    for rspec in rows:
+    for rspec in all_rows:
+        rid = rspec["id"]
+        _, exp_game, exp_tkey, exp_e1, exp_eta, exp_cap, exp_pl, exp_nc = EXPECTED_BY_ID[rid]
         gname = rspec["game"]
         t_key = rspec["t_key"]
-        check(gname in raw_rows_by_game and t_key in raw_rows_by_game[gname], f"Row {rspec['id']} missing from {gname} rows_all.lines")
+        check(gname == exp_game and t_key == exp_tkey, f"{rid}: (game, t_key) mismatch")
+        check(gname in raw_rows_by_game and t_key in raw_rows_by_game[gname], f"Row {rid} missing from {gname} rows_all.lines")
         src_obj = raw_rows_by_game[gname][t_key]
+        src_e1 = Fraction(Decimal(src_obj["e1"]))
+        src_eta = Fraction(Decimal(src_obj["eta"]))
+        cert_e1 = parse_frac(rspec["e1"])
+        cert_eta = parse_frac(rspec["eta"])
+        check(cert_e1 == src_e1 == exp_e1, f"{rid}: e1={cert_e1} does not match source {src_e1} / expected {exp_e1}")
+        check(cert_eta == src_eta == exp_eta, f"{rid}: eta={cert_eta} does not match source {src_eta} / expected {exp_eta}")
+
+        if not _test_hypothesis_override:
+            check(rspec.get("eval_mode", "retained_all_dim") == "retained_all_dim", f"{rid}: eval_mode must be 'retained_all_dim' (got {rspec.get('eval_mode')!r})")
+            check(rspec.get("require_sos_pos", True) is True, f"{rid}: require_sos_pos must be True (got {rspec.get('require_sos_pos')!r})")
+            check(parse_frac(rspec["cap_upper"]) <= exp_cap, f"{rid}: cap_upper {rspec['cap_upper']} weaker than pinned {exp_cap}")
+            check("plain_lower_exceeds" in rspec and parse_frac(rspec["plain_lower_exceeds"]) >= exp_pl, f"{rid}: missing/weakened plain_lower_exceeds")
+            if exp_nc is not None:
+                check("no_cmm_lower_exceeds" in rspec and parse_frac(rspec["no_cmm_lower_exceeds"]) >= exp_nc, f"{rid}: missing/weakened no_cmm_lower_exceeds")
+
+        cert_blk = rspec.get("certified", {})
+        check(isinstance(cert_blk, dict), f"{rid}: missing certified block")
+        for field in ("kappa_D", "plain_e21", "no_cmm_5sc", "retained_all_dim"):
+            st = cert_blk.get(field)
+            check(isinstance(st, list) and len(st) == 2 and all(isinstance(x, int) for x in st) and st[0] <= st[1], f"{rid}.{field}: invalid stored interval {st!r}")
+        check(cert_blk["kappa_D"][0] > 0, f"{rid}: stored kappa_D lower bound <= 0")
+        st_mc = cert_blk.get("min_concav_lo")
+        check(isinstance(st_mc, int) and st_mc > 0, f"{rid}: stored min_concav_lo <= 0 ({st_mc!r})")
+        st_lams = cert_blk.get("sos_lams")
+        check(isinstance(st_lams, list) and len(st_lams) == 4, f"{rid}: stored sos_lams must have 4 intervals")
+        for idx_l, sl in enumerate(st_lams, start=1):
+            check(isinstance(sl, list) and len(sl) == 2 and all(isinstance(x, int) for x in sl) and sl[0] <= sl[1], f"{rid}: invalid stored sos_lams[{idx_l}]={sl!r}")
+            if not _test_hypothesis_override:
+                check(sl[0] > 0, f"{rid}: stored SOS multiplier lam_{idx_l} lower bound <= 0 ({sl})")
+
         for k in ("t", "l", "beta", "bA", "bB", "nu5", "sig"):
             dec_exact = Fraction(Decimal(src_obj[k]))
             rat_val = parse_frac(rspec[k])
-            check(rat_val.denominator <= 10 ** 10 and (10 ** 10) % rat_val.denominator == 0, f"{rspec['id']}.{k}: denominator does not divide 10^10")
-            check(abs(dec_exact - rat_val) <= half_ulp10, f"{rspec['id']}.{k}: rationalisation > 5e-11 from rows_all.lines")
+            check(rat_val.denominator <= 10 ** 10 and (10 ** 10) % rat_val.denominator == 0, f"{rid}.{k}: denominator does not divide 10^10")
+            check(abs(dec_exact - rat_val) <= half_ulp10, f"{rid}.{k}: rationalisation > 5e-11 from rows_all.lines")
+
+    rows = all_rows
+    if only_row is not None:
+        rows = [r for r in all_rows if r["id"] == only_row]
+        check(len(rows) == 1, f"Row id {only_row!r} not found in certificate")
 
     # 3) Re-integrate rows from scratch in zero-float outward interval arithmetic:
     max_w = jobs if jobs > 0 else min(len(rows), os.cpu_count() or 1, 9)
@@ -1452,16 +1692,20 @@ def verify_certificate(cert_data, repo_root, only_row=None, jobs=0, quiet=False)
         with ProcessPoolExecutor(max_workers=max_w) as ex:
             results = list(ex.map(integrate_and_certify_row, rows))
 
-    # 4) Verify certified bounds, SOS multipliers, and Stage 0 quantitative thresholds:
+    # 4) Verify certified bounds, SOS multipliers, concavity margins, and Stage 0 sample-row thresholds:
     for rspec, res in zip(rows, results):
         rid = rspec["id"]
-        # Check fresh interval matches/refines stored certificate bracket:
         for field in ("kappa_D", "plain_e21", "no_cmm_5sc", "retained_all_dim"):
             stored = tuple(rspec["certified"][field])
             fresh = res[field]
             check(fresh[0] >= stored[0] and fresh[1] <= stored[1], f"{rid}.{field}: fresh {fresh} outside stored {stored}")
 
-        # Mode control: check every SOS multiplier lam_1..lam_4 > 0 (unless disabled by negative control):
+        check(res["min_concav_lo"] >= rspec["certified"]["min_concav_lo"] > 0, f"{rid}: fresh min_concav_lo {res['min_concav_lo']} < stored {rspec['certified']['min_concav_lo']}")
+
+        stored_lams = rspec["certified"]["sos_lams"]
+        for idx_l, (st_l, fr_l) in enumerate(zip(stored_lams, res["sos_lams"]), start=1):
+            check(fr_l[0] >= st_l[0] and fr_l[1] <= st_l[1], f"{rid}.sos_lams[{idx_l}]: fresh {fr_l} outside stored {st_l}")
+
         if rspec.get("require_sos_pos", True):
             for idx_l, lam_iv in enumerate(res["sos_lams"], start=1):
                 check(lam_iv[0] > 0, f"{rid}: SOS multiplier lam_{idx_l} lower bound <= 0 ({lam_iv})")

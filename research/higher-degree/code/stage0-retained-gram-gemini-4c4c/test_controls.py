@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""17-check zero-float, zero-assert adversarial corruption & mathematical negative-control suite for S0RG."""
+"""23-check zero-float, zero-assert adversarial corruption & mathematical negative-control suite for S0RG."""
 
 from concurrent.futures import ProcessPoolExecutor
 import copy
@@ -35,7 +35,7 @@ def _run_integration_control(task):
         by_id["g84_0.80"]["eval_mode"] = "plain_e21"
         by_id["g84_0.80"]["cap_upper"] = "7/20"
         expect_fail(
-            lambda: V.verify_certificate(c, repo_root, only_row="g84_0.80", jobs=1, quiet=True),
+            lambda: V.verify_certificate(c, repo_root, only_row="g84_0.80", jobs=1, quiet=True, _test_hypothesis_override=True),
             "Dropping retained defenders on g84_0.80 must fail < 7/20",
         )
         return kind
@@ -44,7 +44,7 @@ def _run_integration_control(task):
         by_id["g84_0.84"]["eval_mode"] = "plain_e21"
         by_id["g84_0.84"]["cap_upper"] = "1"
         expect_fail(
-            lambda: V.verify_certificate(c, repo_root, only_row="g84_0.84", jobs=1, quiet=True),
+            lambda: V.verify_certificate(c, repo_root, only_row="g84_0.84", jobs=1, quiet=True, _test_hypothesis_override=True),
             "Dropping retained defenders on g84_0.84 must fail < 1 (theta > 0)",
         )
         return kind
@@ -53,7 +53,7 @@ def _run_integration_control(task):
         by_id["gA_0.80"]["eval_mode"] = "no_cmm_5sc"
         by_id["gA_0.80"]["cap_upper"] = "7/20"
         expect_fail(
-            lambda: V.verify_certificate(c, repo_root, only_row="gA_0.80", jobs=1, quiet=True),
+            lambda: V.verify_certificate(c, repo_root, only_row="gA_0.80", jobs=1, quiet=True, _test_hypothesis_override=True),
             "Dropping C_-- >= 0 on gA_0.80 must fail < 7/20",
         )
         return kind
@@ -61,7 +61,7 @@ def _run_integration_control(task):
     if kind == "false_tight_cap_g84_80":
         by_id["g84_0.80"]["cap_upper"] = "1/5"
         expect_fail(
-            lambda: V.verify_certificate(c, repo_root, only_row="g84_0.80", jobs=1, quiet=True),
+            lambda: V.verify_certificate(c, repo_root, only_row="g84_0.80", jobs=1, quiet=True, _test_hypothesis_override=True),
             "False tight cap 1/5 = 0.20 on g84_0.80 must fail",
         )
         return kind
@@ -86,11 +86,11 @@ def main():
 
     passed = 0
 
-    # 1. Positive AST self-audit on verify.py, make_cert.py, test_controls.py + algebraic identities:
+    # 1. Positive AST self-audit on verify.py, make_cert.py, test_controls.py + algebraic & Wick identities:
     V.audit_no_float_no_assert([HERE / "verify.py", HERE / "make_cert.py", HERE / "test_controls.py"])
     V.verify_gram_and_sos_identities()
     passed += 1
-    print("  [1/17] Positive AST audit (verify.py, make_cert.py, test_controls.py) & Q[i] Gram/SOS identities: OK")
+    print("  [1/23] Positive AST audit & Q[i] Gram/SOS/Wick-projection identities: OK")
 
     # 2-4. Temporary file AST negative controls (float literal, float() call, assert statement):
     with tempfile.TemporaryDirectory() as tmpd:
@@ -98,19 +98,19 @@ def main():
         p_flit.write_text("x = 1 / 2\ny = " + chr(48) + "." + chr(53) + "\n", encoding="utf-8")
         expect_fail(lambda: V.audit_no_float_no_assert([p_flit]), "AST float literal")
         passed += 1
-        print("  [2/17] AST audit rejects float literal: OK")
+        print("  [2/23] AST audit rejects float literal: OK")
 
         p_fcall = Path(tmpd) / "bad_fcall.py"
         p_fcall.write_text("x = " + "flo" + "at(3)\n", encoding="utf-8")
         expect_fail(lambda: V.audit_no_float_no_assert([p_fcall]), "AST float identifier")
         passed += 1
-        print("  [3/17] AST audit rejects float(...) identifier: OK")
+        print("  [3/23] AST audit rejects float(...) identifier: OK")
 
         p_ass = Path(tmpd) / "bad_assert.py"
         p_ass.write_text("ass" + "ert 1 == 1\n", encoding="utf-8")
         expect_fail(lambda: V.audit_no_float_no_assert([p_ass]), "AST assert statement")
         passed += 1
-        print("  [4/17] AST audit rejects assert statement: OK")
+        print("  [4/23] AST audit rejects assert statement: OK")
 
     # 5. Dropping C_-- >= 0 admits the rational 5-scalar counterexamples (14/5 > 25/9 and 3 > 8/3):
     expect_fail(
@@ -118,7 +118,7 @@ def main():
         "Dropping C_-- >= 0 from 5-scalar Gram cone",
     )
     passed += 1
-    print("  [5/17] Dropping C_-- >= 0 admits counterexample (9/16,1,9/16,3/4,3/4) and is rejected: OK")
+    print("  [5/23] Dropping C_-- >= 0 admits counterexample (9/16,1,9/16,3/4,3/4) and is rejected: OK")
 
     # 6. SHA-256 provenance tampering on rows_all.lines:
     c6 = copy.deepcopy(cert_doc)
@@ -126,7 +126,7 @@ def main():
     c6["provenance"]["g84"]["sha256"] = ("0" if old_h[0] != "0" else "1") + old_h[1:]
     expect_fail(lambda: V.verify_certificate(c6, repo_root, only_row="g84_0.80", jobs=1, quiet=True), "SHA-256 tamper")
     passed += 1
-    print("  [6/17] SHA-256 provenance tampering on rows_all.lines rejected: OK")
+    print("  [6/23] SHA-256 provenance tampering on rows_all.lines rejected: OK")
 
     # 7. Rationalisation tolerance > 5*10^{-11} tampering:
     c7 = copy.deepcopy(cert_doc)
@@ -135,7 +135,7 @@ def main():
             r["l"] = str(V.parse_frac(r["l"]) + V.parse_frac("1/1000000000"))
     expect_fail(lambda: V.verify_certificate(c7, repo_root, only_row="g84_0.80", jobs=1, quiet=True), "Rationalisation drift")
     passed += 1
-    print("  [7/17] Rationalisation drift > 5*10^{-11} from rows_all.lines rejected: OK")
+    print("  [7/23] Rationalisation drift > 5*10^{-11} from rows_all.lines rejected: OK")
 
     # 8. Non-decimal denominator tampering:
     c8 = copy.deepcopy(cert_doc)
@@ -144,7 +144,7 @@ def main():
             r["sig"] = "1/3"
     expect_fail(lambda: V.verify_certificate(c8, repo_root, only_row="g84_0.80", jobs=1, quiet=True), "Denominator not dividing 10^10")
     passed += 1
-    print("  [8/17] Non-decimal denominator (not dividing 10^10) rejected: OK")
+    print("  [8/23] Non-decimal denominator (not dividing 10^10) rejected: OK")
 
     # 9-11. Shifted-polar ellipse non-singularity & game-weight guards:
     base_row = copy.deepcopy([r for r in cert_doc["rows"] if r["id"] == "g84_0.80"][0])
@@ -154,21 +154,67 @@ def main():
     r9["bB"] = "-2/5"
     expect_fail(lambda: V.integrate_and_certify_row(r9), "Violating -b_A > |b_B|/sqrt(2)")
     passed += 1
-    print("  [9/17] Violating ellipse positivity -b_A > |b_B|/sqrt(2) rejected: OK")
+    print("  [9/23] Violating ellipse positivity -b_A > |b_B|/sqrt(2) rejected: OK")
 
     r10 = copy.deepcopy(base_row)
     r10["bA"] = "-6/5"
     expect_fail(lambda: V.integrate_and_certify_row(r10), "Violating 1 + b_A > 0")
     passed += 1
-    print("  [10/17] Violating origin positivity 1 + b_A > 0 rejected: OK")
+    print("  [10/23] Violating origin positivity 1 + b_A > 0 rejected: OK")
 
     r11 = copy.deepcopy(base_row)
     r11["eta"] = "9/10"
     expect_fail(lambda: V.integrate_and_certify_row(r11), "Violating 0 < eta < e1 < 1")
     passed += 1
-    print("  [11/17] Invalid game weights (eta >= e1) rejected: OK")
+    print("  [11/23] Invalid game weights (eta >= e1) rejected: OK")
 
-    # 12-16. Full from-scratch integration mathematical negative & corruption controls (run in parallel):
+    # 12-17. Fast structural binding controls (all 4 B2 corruptions + swapped weights + Wick subtraction):
+    c_dup = copy.deepcopy(cert_doc)
+    c_dup["rows"] = [copy.deepcopy(c_dup["rows"][0]) for _ in range(9)]
+    expect_fail(lambda: V.verify_certificate(c_dup, repo_root, only_row="gC_0.80", jobs=1, quiet=True), "Nine copies of gC_0.80")
+    passed += 1
+    print("  [12/23] Nine copies of one benchmark row rejected before integration: OK")
+
+    c_swap = copy.deepcopy(cert_doc)
+    for r in c_swap["rows"]:
+        if r["id"] == "g83_0.80":
+            r["e1"] = "21/25"
+            r["eta"] = "319/1250"
+    expect_fail(lambda: V.verify_certificate(c_swap, repo_root, only_row="gC_0.80", jobs=1, quiet=True), "Swapped g83 -> g84 game weights")
+    passed += 1
+    print("  [13/23] Swapped g83 -> g84 game weights rejected directly against rows_all.lines: OK")
+
+    c_loose_cap = copy.deepcopy(cert_doc)
+    for r in c_loose_cap["rows"]:
+        if r["id"] == "gA_0.80":
+            r["cap_upper"] = "1"
+    expect_fail(lambda: V.verify_certificate(c_loose_cap, repo_root, only_row="gA_0.80", jobs=1, quiet=True), "Loosened cap_upper=1 on gA_0.80")
+    passed += 1
+    print("  [14/23] Loosened cap_upper='1' on gA_0.80 rejected even under --only-row: OK")
+
+    c_disable_sos = copy.deepcopy(cert_doc)
+    for r in c_disable_sos["rows"]:
+        if r["id"] == "gA_0.80":
+            r["require_sos_pos"] = False
+    expect_fail(lambda: V.verify_certificate(c_disable_sos, repo_root, only_row="gA_0.80", jobs=1, quiet=True), "require_sos_pos=False")
+    passed += 1
+    print("  [15/23] Certificate override require_sos_pos=False rejected even under --only-row: OK")
+
+    c_flip_lam1 = copy.deepcopy(cert_doc)
+    lam1_lo, lam1_hi = c_flip_lam1["rows"][0]["certified"]["sos_lams"][0]
+    c_flip_lam1["rows"][0]["certified"]["sos_lams"][0] = [-lam1_hi, -lam1_lo]
+    expect_fail(lambda: V.verify_certificate(c_flip_lam1, repo_root, only_row="gC_0.80", jobs=1, quiet=True), "Flipped lam_1 sign in certified.sos_lams")
+    passed += 1
+    print("  [16/23] Flipped lam_1 sign in certified.sos_lams rejected: OK")
+
+    expect_fail(
+        lambda: V.verify_gram_and_sos_identities(gram_cone_flags={"include_c_mm": True, "corrupt_wick_linear": True}),
+        "Omitting Wick linear subtraction breaks H_{2,1} orthogonality & contraction identities",
+    )
+    passed += 1
+    print("  [17/23] Corrupting Wick normal-ordering subtraction rejected by physical moment check: OK")
+
+    # 18-22. Full from-scratch integration mathematical negative & corruption controls (run in parallel):
     int_tasks = [
         ("drop_defenders_g84_80", cert_doc, str(repo_root)),
         ("drop_defenders_theta_g84_84", cert_doc, str(repo_root)),
@@ -181,13 +227,13 @@ def main():
         done_kinds = list(ex.map(_run_integration_control, int_tasks))
     V.check(len(done_kinds) == 5, "Expected all 5 integration negative controls to complete")
     passed += 5
-    print("  [12/17] Mathematical control: dropping retained defenders on g84_0.80 violates < 7/20: OK")
-    print("  [13/17] Mathematical control: dropping retained defenders on g84_0.84 violates < 1 (theta > 0): OK")
-    print("  [14/17] Mathematical control: dropping C_-- >= 0 on gA_0.80 violates < 7/20: OK")
-    print("  [15/17] Mathematical control: false overly tight cap 1/5 = 0.20 on g84_0.80 rejected: OK")
-    print("  [16/17] Certificate bracket tampering on gC_0.80 rejected: OK")
+    print("  [18/23] Mathematical control: dropping retained defenders on g84_0.80 violates < 7/20: OK")
+    print("  [19/23] Mathematical control: dropping retained defenders on g84_0.84 violates < 1 (theta > 0): OK")
+    print("  [20/23] Mathematical control: dropping C_-- >= 0 on gA_0.80 violates < 7/20: OK")
+    print("  [21/23] Mathematical control: false overly tight cap 1/5 = 0.20 on g84_0.80 rejected: OK")
+    print("  [22/23] Certificate bracket tampering on gC_0.80 rejected: OK")
 
-    # 17. Subprocess python3 -IB -O CLI execution check:
+    # 23. Subprocess python3 -IB -O CLI execution check:
     proc = subprocess.run(
         [sys.executable, "-IB", "-O", str(HERE / "verify.py"), "--only-row", "gC_0.80", "--jobs", "1", "--quiet"],
         capture_output=True,
@@ -196,11 +242,11 @@ def main():
     )
     V.check(proc.returncode == 0, f"Subprocess -IB -O verify.py failed: {proc.stderr}")
     passed += 1
-    print("  [17/17] Subprocess python3 -IB -O CLI execution passed: OK")
+    print("  [23/23] Subprocess python3 -IB -O CLI execution passed: OK")
 
     elapsed_ms = int((time.time() - t0) * 1000)
-    V.check(passed == 17, f"Expected 17 passed controls, got {passed}")
-    print(f"ALL {passed}/17 S0RG ADVERSARIAL & MATHEMATICAL CONTROLS PASSED ({elapsed_ms} ms).")
+    V.check(passed == 23, f"Expected 23 passed controls, got {passed}")
+    print(f"ALL {passed}/23 S0RG ADVERSARIAL & MATHEMATICAL CONTROLS PASSED ({elapsed_ms} ms).")
 
 
 if __name__ == "__main__":

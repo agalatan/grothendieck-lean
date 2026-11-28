@@ -1,4 +1,4 @@
-# Stage 0 (`#751`) Sector Resolution: Antisymmetric Slice-Gram Inequality, Retained-Defender Dual Rows, and Certified All-Dimension Sharing Bounds on `g83`, `g84`, and `gA`
+# Antisymmetric Slice-Gram Inequality $C_{--} \succeq 0$, Retained-Defender Dual Rows, and $c \to 0^+$ Diffuse-Spike Saddle Bounds at 9 Stage 0 Sample Rows
 
 **Author:** `gemini-4c4c`  
 **Date:** 28 November 2026  
@@ -13,53 +13,53 @@
 In Stage 0 (`#751`, `sources/degree5-stage0-2026-11-28/REPORT.md`), two questions were tested to decide whether any degree-5 Hermite projection game $T_5 = P_{1,0} - \varepsilon_1 P_{2,1} + \eta P_{3,2}$ can certify a lower bound $K_G^{\mathbb{C}} > 1.403$:
 
 1. **Part (a) (small-$t$ law layer):** In the enriched law class `E3` (carrying the global cubic radius $\rho_0 = 114/125 = 0.912$ of `KOUL3`), the high-weight games `g83` $= (1, -83/100, 2241/10000)$ ($1/N_5 \approx 1.403493$), `g84` $= (1, -21/25, 319/1250)$ ($1/N_5 \approx 1.403584 > 1.4035$), and the free optimum `gA` $= (1, -8493/10000, 2827/10000)$ ($1/N_5 \approx 1.403646$) clear the $1/1.403 = 1000/1403$ threshold across every sampled point $t \in [0, 0.55]$.
-2. **Part (b) (the sector gate on the binding band $t \in [0.70, 0.86]$):** Using the `spike2.py` gate of `4.16` (which discards all non-visible components of the negative-definite operator $-\varepsilon_1 P_{2,1}$ on $h = \frac{f+g}{2}$), Stage 0 measured one-spike quintic shell shares $\kappa_h = 0.522, 0.673, 0.842 > 0.35 = 7/20$ at $t = 0.80$ ($c = 0.1$) on `g83`, `g84`, `gA`, and total one-spike sharing ratios exceeding $1$ ($\theta > 0$) on `g84` for $t \ge 0.84$ and `gA` for $t \ge 0.82$. Under the `#751` stop rule ($\kappa_h \le 0.35$ at $t = 0.80$ and $\theta \le 0$ across the band), Stage 0 concluded that degree 5 stops unless a structural modification changes the sector budget (`REPORT.md` §9).
+2. **Part (b) (the sector gate on the binding band $t \in [0.70, 0.86]$):** Stage 0's `spike2.py` gate (`REPORT.md` §§3, 5; `4.16`) discards all non-visible components of $-\varepsilon_1 P_{2,1}$ on $h = \frac{f+g}{2}$ and defines $\kappa_h$ as the supremum over the 16 finite gate points $c \in \{0.1, 0.3, 0.6, 1\} \times \sigma \in \{0.5, 0.9, 1, 1.1\}\sigma_*$ of the finite-spike gain divided by $D + V_{\mathrm{sl}}$. Its witnessed failures sit at $c = 0.1, \sigma = \sigma_*$, where Stage 0 measured $\kappa_h = 0.522, 0.673, 0.842 > 0.35 = 7/20$ at $t = 0.80$ on `g83`, `g84`, `gA`, and total one-spike sharing ratios exceeding $1$ ($\theta > 0$) on `g84` for $t \ge 0.84$ and `gA` for $t \ge 0.82$. Under the `#751` stop rule ($\kappa_h \le 0.35$ at $t = 0.80$ and $\theta \le 0$ across the band), Stage 0 concluded that degree 5 stops unless a structural modification changes the sector budget (`REPORT.md` §9).
 
-This note resolves both questions raised by Stage 0 Part (b) and `REPORT.md` §9, with self-contained proofs and a zero-float Python 3 standard-library interval certificate:
+This note analyses the structural remedies discussed in `REPORT.md` §9, proving exact universal chaos inequalities and certifying the **$c \to 0^+$ asymptotic limit at $\sigma = \sigma_*$** of the retained-defender quadratic/local saddle at 9 Stage 0 sample rows (while leaving finite gate points $c \in \{0.1, 0.3, 0.6, 1\}$ and off-peak scales $\sigma \in \{0.5, 0.9, 1.1\}\sigma_*$ unevaluated, so **Stage 0's stop rule is not yet discharged**):
 
-- **Negative resolution of `REPORT.md` §9 Idea 1 (Theorem 2(b)):** Re-optimising the scalar visible quintic multiplier $\nu_5 e_{3,2}(z_1)$ per remote cubic $q_c = \sigma(c B(y) + \sqrt{1 - c^2} W)$ has an **identically zero** $O(c^2)$ linear gradient because $\mathbb{E}_y[\lvert B(y)\rvert^2 - 1] = 0$. Its optimal shift is $\Delta \nu_5 = O(c^4)$, which changes the saddle value by $O(c^8) = O(D(q_c)^2)$ and therefore contributes **$0$** to the $c \to 0^+$ sharing constant.
-- **Theorem 1 (4-channel slice-Gram decomposition, antisymmetric involution inequality $C_{--} \succeq 0$, and three sharp dimension-free chaos bounds):** In the exact contraction algebra of `Grothe/LowerAnalytic/GramTensor.lean` (`ctN, ctH, ctB, ctW, ctC`) and `Grothe/LowerAnalytic/GramBudget.lean` (`u_2, u_4, v_2, v_4, \chi`), the 4-tensor $C_{ij;kl} = \sum_a t_{iak}\overline{t_{laj}}$ decomposes orthogonally under the commuting pair-swap involutions $J_1, J_2$ into four channels satisfying $\|C_{++}\|^2 + \|C_{--}\|^2 + \|C_{+-}\|^2 + \|C_{-+}\|^2 = n$, where the complementary antisymmetric channel satisfies
+- **Negative resolution of `REPORT.md` §9 Idea 1 (Theorem 2(b)):** At an exact Gaussian-stationary scalar quintic parameter $\nu_5^*$ ($\nu_5^*/\eta = g_{32,0}$) with strict negative scalar curvature $-\frac{2}{\eta} + P_{32,32} < 0$, re-optimising $\nu_5 e_{3,2}(z_1)$ in the quadratic/local saddle per remote cubic $q_c = \sigma(c B(y) + \sqrt{1 - c^2} W)$ has an **identically zero** $O(c^2)$ linear gradient because $\mathbb{E}_y[\lvert B(y)\rvert^2 - 1] = 0$. Its $c$-dependent shift is $\Delta \nu_5 = O(c^4)$, which changes the saddle value by $O(c^8) = O(D(q_c)^2)$ and contributes **$0$** to the $c \to 0^+$ sharing constant (at a rationalised row $\nu_5 = \nu_5^* + \delta_\nu$, re-optimising adds only a $c$-independent $O(\delta_\nu^2)$ baseline shift at $c = 0$ while the $c$-dependent gain relative to $c = 0$ enters at $O(|\delta_\nu|D + D^2)$).
+- **Theorem 1 (4-channel slice-Gram decomposition, antisymmetric involution inequality $C_{--} \succeq 0$, and three sharp dimension-free chaos bounds):** In the exact contraction algebra of `Grothe/LowerAnalytic/GramTensor.lean` (`ctN, ctH, ctB, ctW, ctC`), `Grothe/LowerAnalytic/CircularFourth.lean` (`Circular.fourth_moment_contractions`), and `Grothe/LowerAnalytic/GramSpectral.lean` (`specU2_eq, specU4_eq, specV2_eq, specV4_eq`), the 4-tensor $C_{ij;kl} = \sum_a t_{iak}\overline{t_{laj}}$ decomposes orthogonally under the commuting pair-swap involutions $J_1, J_2$ into four channels satisfying $\|C_{++}\|^2 + \|C_{--}\|^2 + \|C_{+-}\|^2 + \|C_{-+}\|^2 = n$, where the complementary antisymmetric channel satisfies
   $$
   4\,\|C_{--}\|_{\mathrm{HS}}^2 \;=\; n + b - (3y - z) \;\ge\; 0.
   $$
-  Combining $4\|C_{--}\|_{\mathrm{HS}}^2 \ge 0$ with $b \le n$, $y \le z$, and $\|N - H^\top\|_{\mathrm{HS}}^2 = n + h - 2z \ge 0$ proves **three sharp universal inequalities** valid in every dimension $d \ge 1$ for every unit $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$, all attained with equality at $B(y) = e_{2,1}(y_1)$:
+  Combining $4\|C_{--}\|_{\mathrm{HS}}^2 \ge 0$ with $b \le n$, $y \le z$, and $\|N - H^\top\|_{\mathrm{HS}}^2 = n + h - 2z \ge 0$ proves **three sharp universal inequalities** valid in every dimension $d \ge 1$ for every nonzero $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$, all attained with equality at $B(y) = e_{2,1}(y_1)$:
   $$
   \|P_{2,2}(|B|^2)\|_2^2 \;\le\; \frac{25}{9}\,\|P_{1,1}(|B|^2)\|_2^2,
   \qquad
   \|P_{3,1}(B^2)\|_2^2 \;\le\; \frac{8}{3}\,\|P_{1,1}(|B|^2)\|_2^2,
   \qquad
-  \|P_{1,1}(|B|^2)\|_2^2 \;\ge\; \frac{3}{14}\,\chi(B).
+  \|P_{1,1}(|B|^2)\|_2^2 \;\ge\; \frac{3}{14}\bigl(\mathbb{E}|B|^4 - 2\|B\|_2^4\bigr).
   $$
   Explicit rational 5-tuples $(\frac{9}{16}, 1, \frac{9}{16}, \frac{3}{4}, \frac{3}{4})$ (giving $u_4/u_2 = 14/5 > 25/9$) and $(\frac{1}{4}, 1, \frac{1}{4}, \frac{1}{2}, \frac{1}{2})$ (giving $v_4/u_2 = 3 > 8/3$) satisfy every inequality of the 5-scalar `Gram.lean` cone (`b <= n`, `y <= z`, `z^2 <= n h`, `n + b + 3y - z >= 0`, `(3y - z)^2 <= h(n + b + 3y - z)`), proving that $C_{--} \succeq 0$ is strictly stronger than the previously formalised 5-scalar cone.
-- **Theorem 2(a) & Theorem 3 (Retained-defender dual rows and exact all-dimension collapse onto $e_{2,1}$):** Retaining the two coordinate-free cubic $h$-defender modes
+- **Theorem 2(a) & Theorem 3 (Retained-defender dual rows and exact all-dimension collapse of the quadratic/local diffuse-spike saddle onto $e_{2,1}$):** Retaining the two coordinate-free cubic $h$-defender modes
   $$
   D_{3,h}^{\mathrm{univ}}(z_1, q) \;=\; \xi_{1,1}\,z_1 P_{1,1}(|q|^2) + \xi_{2,0}\,\bar{z}_1 P_{2,0}(q^2) \;\in\; \mathcal{H}_{2,1}(\mathbb{C}^n) \ominus \mathbb{C}\,e_{2,1}(z_1)
   $$
-  inside $-\varepsilon_1 \|P_{2,1} h\|_2^2$ is valid in every dimension $n \ge 2$ by weak minimax duality ($\sup_{f,g}\inf_\xi \le \inf_\xi \sup_{f,g}$). Along the diffuse-spike family $q_c = \sigma(c B(y) + \sqrt{1 - c^2} W)$ for **any** dimension $d \ge 1$ and **any** unit $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$, the Bargmann generating function gives an exact $O(c^4)$ minimax saddle value over the entire infinite-dimensional complex Hilbert space of all remote quintic shells ($\mathcal{H}_{2,2} \oplus \mathcal{H}_{1,1} \oplus \mathcal{H}_{3,1} \oplus \mathcal{H}_{2,0} \oplus \mathcal{H}_{0,2}$, including imaginary parts and orthogonal chaos complements):
+  inside $-\varepsilon_1 \|P_{2,1} h\|_2^2$ is valid in every dimension $n \ge 2$ by weak minimax duality ($\sup_{f,g}\inf_\xi \le \inf_\xi \sup_{f,g}$). Along the diffuse-spike family $q_c = \sigma(c B(y) + \sqrt{1 - c^2} W)$ for **any** dimension $d \ge 1$ and **any** unit $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$ ($\chi(B) > 0$), the Bargmann generating function gives an exact closed form for the second-variation quadratic/local minimax saddle $\mathcal{Q}^{\mathrm{ret}}(q_c)$ (defined in §3 at the base phase pair $(f_0, g_0) = (\operatorname{ph} A_+, \operatorname{ph} A_-)$, matching the coupled one-spike shell-share model of `4.16` / `STAGE0` §2.3) over the entire infinite-dimensional complex Hilbert space of remote quintic adversary shells ($\mathcal{H}_{2,2} \oplus \mathcal{H}_{1,1} \oplus \mathcal{H}_{3,1} \oplus \mathcal{H}_{2,0} \oplus \mathcal{H}_{0,2}$, including imaginary parts and orthogonal complements) against the retained cubic defenders:
   $$
-  \lim_{c \to 0^+} \frac{\operatorname{gain}_{\mathrm{ret}}(q_c)}{D(q_c)}
+  \lim_{c \to 0^+} \frac{\mathcal{Q}^{\mathrm{ret}}(q_c)}{D(q_c)}
   \;=\; \frac{C_{22} u_4(B) + C_{11}^{\mathrm{ret}} u_2(B) + C_{31} v_4(B) + C_{20}^{\mathrm{ret}} v_2(B)}{\kappa_D(\sigma)\,\chi(B)}.
   $$
-  Furthermore, an exact 4-term sum-of-squares polynomial identity expresses $N_{\mathrm{tot}}\chi(B) - 42(C_{22} u_4 + C_{11}^{\mathrm{ret}} u_2 + C_{31} v_4 + C_{20}^{\mathrm{ret}} v_2)$ as a linear combination of $4\|C_{--}\|^2$, $n - b$, $z - y$, and $\|N - H^\top\|^2$ with explicit multipliers $\lambda_1, \lambda_2, \lambda_3, \lambda_4$. Whenever $\lambda_1, \dots, \lambda_4 \ge 0$, **the supremum over all dimensions $d \ge 1$ and all unit $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$ equals the one-variable $e_{2,1}$ value $N_{\mathrm{tot}}/(42 \kappa_D)$ identically.**
-- **Theorem 4 (Zero-`erf` Radon shifted-polar intervals across `gC`, `g83`, `g84`, `gA`):** A full-line Radon / shifted-polar transformation $(t, \varphi) \in (-\infty, \infty) \times [0, \pi/2]$ with $w = \tan(\varphi/2) \in [0, 1]$ eliminates `erf`/`erfc` and trigonometric calls completely. Across all 9 rationalised Stage 0 benchmark rows, `verify.py` certifies $\kappa_D > 0$, all 14 real and imaginary complex concavity margins $> +1.28$, and $\lambda_1, \dots, \lambda_4 > 0$, proving across **all dimensions $d \ge 1$**:
-  - **`gC` ($t = 0.80$):** $\sup_{d, B} \in [-0.17990, -0.13827] < 0$ (strictly negative sharing constant across all dimensions, vs plain $[+0.1176, +0.1474]$);
-  - **`g83` ($t = 0.80, 0.85$):** $\sup_{d, B} \in [+0.08385, +0.14477]$ and $[+0.11249, +0.17383]$, both strictly $< 7/20 = 0.35$ (vs plain $> 0.531$ and $> 0.764$);
-  - **`g84` ($t = 0.70, 0.80, 0.84, 0.85$):** $\sup_{d, B} < 0.15596, 0.27983, 0.31813, 0.32834$, **every row strictly $< 7/20 = 0.35$ and $\theta < 0$ across all dimensions $d \ge 1$** (overturning plain $> 0.451, > 0.680$, and plain $> 1.034, > 1.183$ where $\theta > 0$ on $0.84, 0.85$);
-  - **`gA` ($t = 0.80, 0.85$):** at $t = 0.80$, **$\sup_{d, B} \in [+0.33474, +0.34506] < 7/20 = 0.35$** across all dimensions (overturning both plain $[+1.0147, +1.0399] > 1$ and the 5-scalar `Gram.lean` cone without $C_{--} \succeq 0$, which satisfies $[+0.3716, +0.3828] > 7/20$!); at $t = 0.85$, $\sup_{d, B} \in [+0.44926, +0.68411] < 7/10 < 1$ ($\theta < 0$ across all dimensions, overturning plain $> 1.449 > 1$).
+  Furthermore, an exact 4-term sum-of-squares polynomial identity expresses $N_{\mathrm{tot}}\chi(B) - 42(C_{22} u_4 + C_{11}^{\mathrm{ret}} u_2 + C_{31} v_4 + C_{20}^{\mathrm{ret}} v_2)$ as a linear combination of $4\|C_{--}\|^2$, $n - b$, $z - y$, and $\|N - H^\top\|^2$ with explicit multipliers $\lambda_1, \lambda_2, \lambda_3, \lambda_4$. Whenever $\lambda_1, \dots, \lambda_4 \ge 0$, **the supremum of this quadratic/local saddle ratio over all dimensions $d \ge 1$ and all unit $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$ equals the one-variable $e_{2,1}$ value $N_{\mathrm{tot}}/(42 \kappa_D)$ identically.**
+- **Theorem 4 (Zero-`erf` Radon shifted-polar intervals at $\sigma = \sigma_*$ across 9 rationalised Stage 0 sample rows):** A full-line Radon / shifted-polar transformation $(t, \varphi) \in (-\infty, \infty) \times [0, \pi/2]$ with $w = \tan(\varphi/2) \in [0, 1]$ eliminates `erf`/`erfc` and trigonometric calls completely. Across all 9 rationalised Stage 0 sample rows at their stored $\sigma = \sigma_*$ (pinned in `verify.py` by SHA-256, exact `(id, game, t_key, e1, eta)`, caps, and mode flags), `verify.py` certifies $\kappa_D > 0$, all 14 real and imaginary complex concavity margins $> +1.28$, and $\lambda_1, \dots, \lambda_4 > 0$, proving for the $c \to 0^+$ quadratic/local diffuse-spike saddle ratio at $\sigma = \sigma_*$ across **all dimensions $d \ge 1$**:
+  - **`gC` (sample row $t = 0.80$):** $\sup_{d, B} \in [-0.17990, -0.13827] < 0$ (vs plain $c \to 0^+$ $e_{2,1}$ $[+0.1176, +0.1474]$);
+  - **`g83` (sample rows $t = 0.80, 0.85$):** $\sup_{d, B} \in [+0.08385, +0.14477]$ and $[+0.11249, +0.17383]$, both strictly $< 7/20 = 0.35$ (vs plain $> 0.531$ and $> 0.764$);
+  - **`g84` (four sample rows $t \in \{0.70, 0.80, 0.84, 0.85\}$):** $\sup_{d, B} < 0.15596, 0.27983, 0.31813, 0.32834$, **every certified sample row strictly $< 7/20 = 0.35$ at $c \to 0^+, \sigma = \sigma_*$ across all dimensions $d \ge 1$** (vs plain $c \to 0^+$ $> 0.451, > 0.680$, and $> 1.034, > 1.183$ at $t = 0.84, 0.85$);
+  - **`gA` (sample rows $t = 0.80, 0.85$):** at $t = 0.80$, **$\sup_{d, B} \in [+0.33474, +0.34506] < 7/20 = 0.35$** across all dimensions (compared against plain $[+1.0147, +1.0399] > 1$ and the 5-scalar `Gram.lean` cone without $C_{--} \succeq 0$, whose explicit witness $(\frac{9}{16}, 1, \frac{9}{16}, \frac{3}{4}, \frac{3}{4})$ reaches $[+0.3716, +0.3828] > 7/20$, giving a certified lower bound $> 7/20$ on that cone's supremum); at $t = 0.85$, $\sup_{d, B} \in [+0.44926, +0.68411] < 7/10 < 1$ (vs plain $> 1.449 > 1$).
 
-**Explicit scope qualification.** This package proves the dimension-free chaos inequalities of Theorem 1 for every $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$, the retained-defender dual row inequality of Theorem 2(a) for every unimodular pair in every dimension $n \ge 2$, and certifies the exact $c \to 0^+$ diffuse-spike minimax sharing constant $\sup_{d \ge 1, \|B\|_2 = 1} \lim_{c \to 0^+} \operatorname{gain}_{\mathrm{ret}}(q_c)/D(q_c)$ at the 9 denominator-$10^{10}$ rationalised Stage 0 band rows. It does **not** by itself prove $K_G^{\mathbb{C}} > 1.403$: finite-amplitude multi-spike / arbitrary-sharing assembly (`H8`), finite-amplitude A/B secant margins (`H5`), per-cell first-chaos content bounds (`H6`–`H7`), and continuous small-$t$ `E3` covers (`H2`–`H4`) remain open.
+**Explicit scope qualification (Stage 0 stop rule NOT yet discharged).** This package proves the dimension-free chaos inequalities of Theorem 1 for every $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$, the retained-defender dual row inequality of Theorem 2(a) for every unimodular pair in every dimension $n \ge 2$, and certifies **only the asymptotic limit $c \to 0^+$ at the single stored row scale $\sigma = \sigma_*$, with denominator $D(q_c)$**, of the second-variation quadratic/local diffuse-spike saddle $\mathcal{Q}^{\mathrm{ret}}(q_c)$ at 9 denominator-$10^{10}$ rationalised Stage 0 sample rows. **Stage 0's $\kappa_h$ (`REPORT.md` §§3, 5) takes the maximum over finite gate points $c \in \{0.1, 0.3, 0.6, 1\} \times \sigma \in \{0.5, 0.9, 1, 1.1\}\sigma_*$ with denominator $D + V_{\mathrm{sl}}$ (witnessed at $c = 0.1, \sigma = \sigma_*$); no finite gate point $c > 0$ and no off-peak scale $\sigma \ne \sigma_*$ is evaluated with the retained defenders here, so Stage 0's verdict / stop rule is NOT yet reversed or discharged.** Likewise, continuous $t$-band coverage, global finite-amplitude multi-spike / arbitrary-sharing assembly (`H8`, studied on 3 modes in `4.16c`–`4.16d`), finite-amplitude A/B secant margins (`H5`), per-cell first-chaos content bounds (`H6`–`H7`), and continuous small-$t$ `E3` covers (`H2`–`H4`) remain open.
 
 ---
 
 ## 1. Theorem 1: 4-Channel Slice-Gram Decomposition, $C_{--} \succeq 0$, and Sharp Universal Chaos Bounds
 
-Let $d \ge 1$ and let $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$ be written in the orthonormal complex Wick basis (`Grothe/LowerAnalytic/GramBudget.lean`) with symmetric coefficient 3-tensor $t_{ijk} = t_{jik} \in \mathbb{C}$ ($1 \le i, j, k \le d$):
+Let $d \ge 1$ and let $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$ be written in the complex Wick basis (`Grothe/LowerAnalytic/CircularFourth.lean`, `Grothe/LowerAnalytic/GramBudget.lean`) with symmetric coefficient 3-tensor $t_{ijk} = t_{jik} \in \mathbb{C}$ ($1 \le i, j, k \le d$):
 $$
-B(y) \;=\; 2\sqrt{2}\sum_{i, j, k = 1}^d t_{ijk}\bigl(y_i y_j \bar{y}_k - (\delta_{ik} y_j + \delta_{jk} y_i)\bigr),
+B(y) \;=\; \sum_{i, j, k = 1}^d t_{ijk}\bigl(y_i y_j \bar{y}_k - (\delta_{ik} y_j + \delta_{jk} y_i)\bigr),
 \qquad
-\|B\|_2^2 \;=\; 16 \sum_{i, j, k = 1}^d |t_{ijk}|^2.
+\|B\|_2^2 \;=\; 2 \sum_{i, j, k = 1}^d |t_{ijk}|^2.
 $$
-Following `Grothe/LowerAnalytic/GramTensor.lean` verbatim, define the matrices $N, H, B_{\mathrm{mat}} \in \mathbb{C}^{d \times d}$ (`ctN, ctH, ctB`) and 4-tensors $W, C \in \mathbb{C}^{d^4}$ (`ctW, ctC`):
+(In `CircularFourth.lean`, writing $B = a + i b$ with $\mathbb{E}[a^2] = \mathbb{E}[b^2] = \frac{1}{2}\|B\|_2^2$, `Circular.cubicTensorNormSq_eq` proves $\sum_{i,j,k}|t_{ijk}|^2 = \mathbb{E}[a^2]$, so unit variance $\|B\|_2 = 1$ corresponds to $\sum_{i,j,k}|t_{ijk}|^2 = \frac{1}{2}$.) Following `Grothe/LowerAnalytic/GramTensor.lean` verbatim, define the matrices $N, H, B_{\mathrm{mat}} \in \mathbb{C}^{d \times d}$ (`ctN, ctH, ctB`) and 4-tensors $W, C \in \mathbb{C}^{d^4}$ (`ctW, ctC`):
 $$
 N_{ab} = \sum_{i, j} t_{iaj}\overline{t_{ibj}}, \qquad
 H_{ab} = \sum_{i, j} t_{ija}\overline{t_{ijb}}, \qquad
@@ -81,7 +81,7 @@ Note that $N$ and $H$ are Hermitian positive semidefinite, so $\overline{H_{ab}}
 $$
 \|N - H^\top\|_{\mathrm{HS}}^2 \;=\; \|N\|_{\mathrm{HS}}^2 + \|H^\top\|_{\mathrm{HS}}^2 - 2\operatorname{Re}\sum_{a,b} N_{ab}\overline{(H^\top)_{ab}} \;=\; n + h - 2z \;\ge\; 0.
 $$
-By `GramBudget.lean` (`u2_eq`, `u4_eq`, `v2_eq`, `v4_eq`, `excess_eq`) for unit $\|B\|_2 = 1$ ($\sum |t_{ijk}|^2 = 1/16$):
+By `Grothe/LowerAnalytic/GramSpectral.lean` (`Circular.specU2_eq`, `Circular.specU4_eq`, `Circular.specV2_eq`, `Circular.specV4_eq`) and `Grothe/LowerAnalytic/CircularFourth.lean` (`Circular.fourth_moment_contractions`), at every scale of $t$ (in particular for unit $\|B\|_2 = 1$, i.e. $\sum |t_{ijk}|^2 = \frac{1}{2}$):
 $$
 \begin{aligned}
 u_2(B) &:= \|P_{1,1}(|B|^2)\|_2^2 = 16 n + 4 h + 16 z, &
@@ -90,7 +90,11 @@ u_4(B) &:= \|P_{2,2}(|B|^2)\|_2^2 = 16 n + 4 h + 16 b + 96 y - 32 z, &
 v_4(B) &:= \|P_{3,1}(B^2)\|_2^2 = 96 y,
 \end{aligned}
 $$
-and $\chi(B) := \mathbb{E}|B|^4 - 2 = u_2(B) + u_4(B) + \frac{1}{2}v_2(B) = 32 n + 8 h + 32 b + 96 y$. (Here $P_{p,q}(F)$ denotes the $L^2(\gamma_d)$-orthogonal projection onto $\mathcal{H}_{p,q}(\mathbb{C}^d)$; note $\operatorname{Re}/\operatorname{Im}$ total variance `specV2, specV4` in `GramTensor.lean` equals $\|P_{2,0}(B^2)\|_2^2$ and $\|P_{3,1}(B^2)\|_2^2$ because $B^2$ is holomorphic in $\mathcal{H}_{p,q}$ with $p - q = 2$, so $\|P_{2,0}(B^2)\|_2^2 = \mathbb{E}|(B^2)_2|^2 = 32 b$ and $\|P_{3,1}(B^2)\|_2^2 = 96 y$.)
+and the unnormalised fourth excess is
+$$
+\chi(B) \;:=\; \mathbb{E}|B|^4 - 2\|B\|_2^4 \;=\; 32 n + 8 h + 32 b + 96 y
+$$
+(`Circular.fourth_moment_contractions`: $\mathbb{E}|B|^4 - 8(\mathbb{E}a^2)^2 = 32n + 8h + 32b + 96y$; note that Parseval on $|B|^2 = \|B\|_2^2 + P_{1,1}(|B|^2) + P_{2,2}(|B|^2) + P_{3,3}(|B|^2)$ gives $\|P_{3,3}(|B|^2)\|_2^2 = \|B\|_2^4 + 16b + 16z$, so $\chi(B) = u_2(B) + u_4(B) + 16b + 16z = u_2(B) + u_4(B) + \frac{1}{2}v_2(B) + 16z$). All seven moment and chaos-projection identities are verified directly from complex Gaussian Wick monomial integration (`a_m!`) against $(n, h, b, y, z)$ across four concrete $\mathbb{Q}[i]$ tensors in `verify.py`.
 
 ### Theorem 1 (4-Channel Slice-Gram Decomposition and Sharp Chaos Inequalities)
 
@@ -113,9 +117,9 @@ $$
 **(b) Three sharp dimension-free spectral chaos bounds.** For every $d \ge 1$ and every $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$:
 1. $25\,u_2(B) - 9\,u_4(B) \;=\; 96\,\|C_{--}\|_{\mathrm{HS}}^2 + 168(n - b) + 792(z - y) + 64\,\|N - H^\top\|_{\mathrm{HS}}^2 \;\ge\; 0$, hence $\|P_{2,2}(|B|^2)\|_2^2 \le \frac{25}{9}\|P_{1,1}(|B|^2)\|_2^2$.
 2. $8\,u_2(B) - 3\,v_4(B) \;=\; 192\,\|C_{--}\|_{\mathrm{HS}}^2 + 48(n - b) + 144(z - y) + 32\,\|N - H^\top\|_{\mathrm{HS}}^2 \;\ge\; 0$, hence $\|P_{3,1}(B^2)\|_2^2 \le \frac{8}{3}\|P_{1,1}(|B|^2)\|_2^2$.
-3. $14\,u_2(B) - 3\,\chi(B) \;=\; 96(n - b) + 288(z - y) + 32\,\|N - H^\top\|_{\mathrm{HS}}^2 \;\ge\; 0$, hence $\|P_{1,1}(|B|^2)\|_2^2 \ge \frac{3}{14}\chi(B)$ (when $\|B\|_2 = 1$; homogeneously $\|P_{1,1}(|B|^2)\|_2^2 \ge \frac{3}{14}(\mathbb{E}|B|^4 - 2\|B\|_2^4)$).
+3. $14\,u_2(B) - 3\,\chi(B) \;=\; 96(n - b) + 288(z - y) + 32\,\|N - H^\top\|_{\mathrm{HS}}^2 \;\ge\; 0$, hence $\|P_{1,1}(|B|^2)\|_2^2 \ge \frac{3}{14}\chi(B)$ (i.e. $\|P_{1,1}(|B|^2)\|_2^2 \ge \frac{3}{14}(\mathbb{E}|B|^4 - 2\|B\|_2^4)$).
 
-All three inequalities hold with equality at $B(y) = e_{2,1}(y_1) = \frac{1}{\sqrt{2}}y_1(|y_1|^2 - 2)$, where $(n, h, b, y, z) = \frac{1}{256}(1, 1, 1, 1, 1)$ (or under unit-tensor normalisation $\sum |t|^2 = 1$, $(1, 1, 1, 1, 1)$ gives $u_2 = 36, u_4 = 100, v_2 = 32, v_4 = 96, \chi = 168$, i.e. $\frac{1}{4}(36, 100, 32, 96, 168) = (9, 25, 8, 24, 42)$).
+All three inequalities hold with equality at the unit spike $B(y) = e_{2,1}(y_1) = \frac{1}{\sqrt{2}}y_1(|y_1|^2 - 2)$, where $t_{111} = \frac{1}{\sqrt{2}}$ ($\sum |t|^2 = \frac{1}{2}$, $\|B\|_2^2 = 1$) gives $N_{11} = H_{11} = (B_{\mathrm{mat}})_{11} = \frac{1}{2}$, $(n, h, b, y, z) = \frac{1}{4}(1, 1, 1, 1, 1)$, and $(u_2, u_4, u_6, v_2, v_4, \chi) = (9, 25, 9, 8, 24, 42)$.
 
 **(c) Strict separation from the 5-scalar `Gram.lean` cone.** Without $4\|C_{--}\|_{\mathrm{HS}}^2 = n + b - (3y - z) \ge 0$, the 5-scalar cone $\mathcal{K}_{\mathrm{old}} = \{n, h, b, y, z \ge 0 : b \le n,\, y \le z,\, z^2 \le n h,\, n + b + 3y - z \ge 0,\, (3y - z)^2 \le h(n + b + 3y - z)\}$ contains:
 - $(n, h, b, y, z) = \bigl(\frac{9}{16}, 1, \frac{9}{16}, \frac{3}{4}, \frac{3}{4}\bigr)$, where $3y - z = \frac{3}{2}$, $n + b + 3y - z = \frac{21}{8} \ge \frac{9}{4} = (3y - z)^2/h$, $u_2 = 25, u_4 = 70, v_2 = 18, v_4 = 72, \chi = 116$, giving $u_4 / u_2 = \frac{14}{5} = 2.80 > \frac{25}{9}$ while $n + b - (3y - z) = -\frac{3}{8} < 0$;
@@ -162,25 +166,24 @@ are **mutually orthogonal subspaces of $\mathcal{H}_{2,1}(\mathbb{C}^n) \ominus 
 
 ### Theorem 2 (Retained-Defender Gate-Free Dual Row & Vanishing of Scalar $\nu_5$ Re-Optimisation)
 
-**(a) Retained-defender dual row inequality across all $n \ge 2$.** For any real row parameters $(\ell, \beta, b_A, b_B, \nu_5)$ and any pair $(f, g)$ on $\mathbb{C}^n$ ($n \ge 2$) with visible linear norm $t = \|P_{1,0} h\|_2$ and remote cubic $q = P_{2,1}^{\mathrm{rem}} k \in \mathcal{H}_{2,1}(\mathbb{C}^{n-1})$, let $U_2(q) := P_{1,1}(|q|^2) \in \mathcal{H}_{1,1}(\mathbb{C}^{n-1})$ and $V_2(q) := P_{2,0}(q^2) \in \mathcal{H}_{2,0}(\mathbb{C}^{n-1})$. Then for **every** choice of multipliers $\xi_1 \in \mathcal{H}_{1,1}(\mathbb{C}^{n-1})$ and $\xi_2 \in \mathcal{H}_{2,0}(\mathbb{C}^{n-1})$ (in particular $\xi_1 = \alpha_1 U_2(q)$ and $\xi_2 = \alpha_2 V_2(q)$ with $\alpha_1, \alpha_2 \in \mathbb{R}$):
+**(a) Retained-defender dual row inequality across all $n \ge 2$.** For any real row parameters $(\ell, \beta, b_A, b_B, \nu_5)$ and any pair $(f, g)$ on $\mathbb{C}^n$ ($n \ge 2$) with visible linear norm $t = \|P_{1,0} h\|_2$ and remote cubic $q = P_{2,1}^{\mathrm{rem}} k \in \mathcal{H}_{2,1}(\mathbb{C}^{n-1})$, let $U_2(q) := P_{1,1}(|q|^2) \in \mathcal{H}_{1,1}(\mathbb{C}^{n-1})$ and $V_2(q) := P_{2,0}(q^2) \in \mathcal{H}_{2,0}(\mathbb{C}^{n-1})$. Then:
 $$
 \begin{aligned}
 -\varepsilon_1 \|P_{2,1} h\|_2^2
 &\;\le\; -\varepsilon_1\Bigl(|\langle e_{2,1}(z_1), h \rangle|^2 + \|P_{\mathcal{V}_{1,1}} h\|_2^2 + \|P_{\mathcal{V}_{2,0}} h\|_2^2\Bigr) \\
-&\;=\; \inf_{\beta_0 \in \mathbb{R},\, \xi_1 \in \mathcal{H}_{1,1},\, \xi_2 \in \mathcal{H}_{2,0}}
+&\;=\; \inf_{\beta_0 \in \mathbb{C},\, \xi_1 \in \mathcal{H}_{1,1},\, \xi_2 \in \mathcal{H}_{2,0}}
 \Bigl\{ 2\operatorname{Re}\bigl\langle \beta_0 e_{2,1}(z_1) + z_1 \xi_1(y) + \bar{z}_1 \xi_2(y),\, h \bigr\rangle
-+ \frac{\beta_0^2 + \|\xi_1\|_2^2 + \|\xi_2\|_2^2}{\varepsilon_1} \Bigr\}.
++ \frac{|\beta_0|^2 + \|\xi_1\|_2^2 + \|\xi_2\|_2^2}{\varepsilon_1} \Bigr\},
 \end{aligned}
 $$
-Consequently, in the gate-free row bound (`STATUS.md` 4.1) $V(f, g) \le t^2 - 2\ell t + \frac{2\beta^2}{\varepsilon_1} + \frac{(b_A^2 + b_B^2)\|q\|_2^2}{\eta} + \Lambda_5^{\mathrm{ret}}(q)$ (dropping $-\|P_{1,0} k\|_2^2 - \eta\|P_{3,2} k\|_2^2 \le 0$ and pairing $\varepsilon_1\|P_{2,1} k\|_2^2$ and $\eta\|P_{3,2} h\|_2^2$ by Fenchel–Young exactly as in KSIDE §6), the adversarial row supremum $\Lambda_5^{\mathrm{ret}}(q)$ is bounded above by the minimax value in which the defender chooses $(\xi_1, \xi_2) \in \mathcal{H}_{1,1}(\mathbb{C}^{n-1}) \oplus \mathcal{H}_{2,0}(\mathbb{C}^{n-1})$ against the adversary's $(f, g)$ at cost $+\frac{1}{\varepsilon_1}(\|\xi_1\|_2^2 + \|\xi_2\|_2^2)$.
+and in particular setting $\beta_0 = 2\beta \in \mathbb{R}$ (or $\beta_0 \in \mathbb{R}$ in the symmetrised $f_0, g_0$ row, where $\inf_{\beta_0 \in \mathbb{C}} \le \inf_{\beta_0 \in \mathbb{R}}$) and arbitrary $\xi_1 \in \mathcal{H}_{1,1}(\mathbb{C}^{n-1}), \xi_2 \in \mathcal{H}_{2,0}(\mathbb{C}^{n-1})$ (such as $\xi_1 = \alpha_1 U_2(q), \xi_2 = \alpha_2 V_2(q)$) is a valid upper bound for every $(f, g)$. Consequently, in the gate-free row bound (`STATUS.md` 4.1) $V(f, g) \le t^2 - 2\ell t + \frac{2\beta^2}{\varepsilon_1} + \frac{(b_A^2 + b_B^2)\|q\|_2^2}{\eta} + \Lambda_5^{\mathrm{ret}}(q)$ (dropping $-\|P_{1,0} k\|_2^2 - \eta\|P_{3,2} k\|_2^2 \le 0$ and pairing $\varepsilon_1\|P_{2,1} k\|_2^2$ and $\eta\|P_{3,2} h\|_2^2$ by Fenchel–Young over complex coefficients as in KSIDE §6), the adversarial row supremum $\Lambda_5^{\mathrm{ret}}(q)$ is bounded above by the minimax value in which the defender chooses $(\xi_1, \xi_2) \in \mathcal{H}_{1,1}(\mathbb{C}^{n-1}) \oplus \mathcal{H}_{2,0}(\mathbb{C}^{n-1})$ against the adversary's $(f, g)$ at cost $+\frac{1}{\varepsilon_1}(\|\xi_1\|_2^2 + \|\xi_2\|_2^2)$.
 
-**(b) Resolution of `STAGE0` §9 Idea 1.** Let $q_c = \sigma(c B(y) + \sqrt{1 - c^2} W)$ with $\|B\|_2 = 1$ in $\mathcal{H}_{2,1}(\mathbb{C}^d)$ and $W \sim \mathcal{CN}(0, 1)$ independent of $(z_1, y)$. At the row's Gaussian-optimal scalar quintic parameter $\nu_5^*$ satisfying $\nu_5^*/\eta = \mathbb{E}_{z_1, W}\operatorname{Re}[\overline{e_{3,2}(z_1)}\operatorname{ph}(A_+^0(z_1, \sigma W))]$, re-optimising $\nu_5 \in \mathbb{C}$ as a function of $c$ produces an optimal shift $\Delta \nu_5(c) = O(c^4)$ and changes the row value by $O(c^8) = O(D(q_c)^2)$. Thus
-$$
-\lim_{c \to 0^+} \frac{\Lambda_5^{\text{re-opt }\nu_5}(q_c) - \Lambda_5^{\text{fixed }\nu_5^*}(q_c)}{D(q_c)} \;=\; 0.
-$$
+**(b) Resolution of `STAGE0` §9 Idea 1 (exact optimisers vs rationalised rows).** Let $q_c = \sigma(c B(y) + \sqrt{1 - c^2} W)$ with $\|B\|_2 = 1$ in $\mathcal{H}_{2,1}(\mathbb{C}^d)$, $\chi(B) > 0$, and $W \sim \mathcal{CN}(0, 1)$ independent of $(z_1, y)$. Consider the quadratic/local scalar visible-quintic perturbation $\nu_5 = \nu_5^{(0)} + \Delta\nu_5 \in \mathbb{C}$ of $Q_{\nu_5}(c, \Delta\nu_5) := \mathbb{E}_{z_1, y, W}\bigl[|A_+(z_1, q_c) + \Delta\nu_5 e_{3,2}(z_1)| + |A_-(z_1, q_c) + \Delta\nu_5 e_{3,2}(z_1)|\bigr] - \frac{|\nu_5^{(0)} + \Delta\nu_5|^2}{\eta}$, assuming strict negative $c = 0$ Hessian curvature $-M_{32,\mathrm{re}} = -\frac{2}{\eta} + P_{32,\mathrm{re}} < 0$ and $-M_{32,\mathrm{im}} = -\frac{2}{\eta} + P_{32,\mathrm{im}} < 0$:
+1. If $\nu_5^{(0)} = \nu_5^*$ satisfies **exact Gaussian stationarity** $\nu_5^*/\eta = g_{32,0} := \frac{1}{2}\mathbb{E}_{z_1, W}\operatorname{Re}\bigl[\overline{e_{3,2}(z_1)}(\operatorname{ph} A_+(z_1, \sigma W) + \operatorname{ph} A_-(z_1, \sigma W))\bigr]$, then the local maximiser satisfies $\Delta\nu_5(c) = O(c^4)$ and $\sup_{\Delta\nu_5} Q_{\nu_5}^{\mathrm{quad}}(c, \Delta\nu_5) - Q_{\nu_5}(c, 0) = O(c^8) = O(D(q_c)^2)$, so $\lim_{c \to 0^+} (\text{gain}_{\Delta\nu_5}(q_c))/D(q_c) = 0$.
+2. At a **rationalised or approximate row** $\nu_5^{(0)} = \nu_5^* + \delta_\nu$ ($|\delta_\nu| > 0$), re-optimising $\Delta\nu_5$ adds the $c$-independent baseline correction $\operatorname{gain}_{\Delta\nu_5}(q_0) = O(|\delta_\nu|^2)$ already at $c = 0$, while the **$c$-dependent excess relative to $c = 0$** satisfies $\operatorname{gain}_{\Delta\nu_5}(q_c) - \operatorname{gain}_{\Delta\nu_5}(q_0) = O(|\delta_\nu| c^4 + c^8)$, i.e. $O(|\delta_\nu|)\cdot D(q_c)$ (below $10^{-10} D(q_c)$ at denominator-$10^{10}$ rationalisation) and $0$ in the exact-stationarity limit $\delta_\nu \to 0$.
 
 **Proof of Theorem 2.**
-Part (a) is immediate from Bessel's inequality $\|P_{2,1} h\|_2^2 \ge |\langle e_{2,1}(z_1), h \rangle|^2 + \|P_{\mathcal{V}_{1,1}} h\|_2^2 + \|P_{\mathcal{V}_{2,0}} h\|_2^2$ on the three mutually orthogonal subspaces $\mathbb{C} e_{2,1}(z_1) \perp \mathcal{V}_{1,1} \perp \mathcal{V}_{2,0}$ of $\mathcal{H}_{2,1}(\mathbb{C}^n)$ together with $\|z_1 \xi_1\|_2^2 = \mathbb{E}|z_1|^2 \|\xi_1\|_2^2 = \|\xi_1\|_2^2$, $\|\bar{z}_1 \xi_2\|_2^2 = \|\xi_2\|_2^2$, and $-\varepsilon_1 \|v\|_2^2 = \inf_\xi \{2\operatorname{Re}\langle \xi, v \rangle + \|\xi\|_2^2/\varepsilon_1\}$ (`-\varepsilon_1 \|v + \xi/\varepsilon_1\|_2^2 \le 0`). Swapping $\sup_{(f,g)} \inf_{(\xi_1, \xi_2)} \le \inf_{(\xi_1, \xi_2)} \sup_{(f,g)}$ holds unconditionally without topological assumptions (weak duality).
+Part (a) follows from Bessel's inequality $\|P_{2,1} h\|_2^2 \ge |\langle e_{2,1}(z_1), h \rangle|^2 + \|P_{\mathcal{V}_{1,1}} h\|_2^2 + \|P_{\mathcal{V}_{2,0}} h\|_2^2$ on the three mutually orthogonal subspaces $\mathbb{C} e_{2,1}(z_1) \perp \mathcal{V}_{1,1} \perp \mathcal{V}_{2,0}$ of $\mathcal{H}_{2,1}(\mathbb{C}^n)$, $\|z_1 \xi_1\|_2^2 = \mathbb{E}|z_1|^2 \|\xi_1\|_2^2 = \|\xi_1\|_2^2$, $\|\bar{z}_1 \xi_2\|_2^2 = \|\xi_2\|_2^2$, and the exact complex Hilbert-space identity $-\varepsilon_1 \|v\|_2^2 = \inf_\xi \{2\operatorname{Re}\langle \xi, v \rangle + \|\xi\|_2^2/\varepsilon_1\}$ (attained at $\xi = -\varepsilon_1 v$, since $-\varepsilon_1\|v + \xi/\varepsilon_1\|_2^2 \le 0$). Swapping $\sup_{(f,g)} \inf_{(\xi_1, \xi_2)} \le \inf_{(\xi_1, \xi_2)} \sup_{(f,g)}$ holds unconditionally by weak minimax duality.
 
 For part (b), let $w_c = \sqrt{1 - c^2} W + c B(y)$. We first record the **Bargmann generating-function identity** used throughout §2–§3: for the orthonormal complex Hermite–Laguerre basis $e_{p,q}(w)$ of $L^2(\mathbb{C}, \gamma_1)$, the exponential generating function $\sum_{p,q \ge 0} \frac{u^p v^q}{\sqrt{p! q!}} e_{p,q}(w) = \exp(u w + v \bar{w} - u v)$ (up to phase convention $(-1)^{\min(p,q)}$, which cancels identically on both sides) satisfies, conditional on $B = B(y)$,
 $$
@@ -194,41 +197,51 @@ Comparing coefficients of $u^p v^q$ proves **for every $p, q \ge 0$ and every $c
 $$
 \mathbb{E}_W\!\left[e_{p,q}\bigl(\sqrt{1 - c^2} W + c B\bigr)\right] \;=\; c^{p+q}\,e_{p,q}(B). \tag{2.1}
 $$
-Now expand the $\mathrm{U}(1)$-invariant radial profile $G_{3,2}(\sigma |w|) := \mathbb{E}_{z_1}\operatorname{Re}[\overline{e_{3,2}(z_1)}(\operatorname{ph}(A_+^0(z_1, \sigma w)) + \operatorname{ph}(A_-^0(z_1, \sigma w)))]/2$ in the radial Laguerre basis $e_{k,k}(w)$ of $L^2(\gamma_1)$: $G_{3,2}(\sigma |w|) = \sum_{k \ge 0} g_{32, k} e_{k,k}(w)$. Applying (2.1) and taking $\mathbb{E}_y$ over $B(y)$ with $\mathbb{E}_y|B(y)|^2 = 1$ and $\mathbb{E}_y|B(y)|^4 = 2 + \chi(B)$ gives
+By the $\mathrm{U}(1)$ rotation (3.1) below, $G_{3,2}(\sigma |w|) := \frac{1}{2}\mathbb{E}_{z_1}\bigl[\overline{e_{3,2}(z_1)}(\operatorname{ph} A_+(z_1, \sigma w) + \operatorname{ph} A_-(z_1, \sigma w))\bigr]$ is real and radial ($e_{3,2}$ has $z_1$-charge $+1$, cancelling $e^{i\omega}$). Expanding $G_{3,2}(\sigma |w|) = \sum_{k \ge 0} g_{32, k} e_{k,k}(w)$ in the radial Laguerre basis of $L^2(\gamma_1)$, applying (2.1), and taking $\mathbb{E}_y$ over $B(y)$ with $\mathbb{E}_y|B(y)|^2 = 1$ and $\mathbb{E}_y|B(y)|^4 = 2 + \chi(B)$ gives
 $$
-\mathbb{E}_{z_1, y, W}\operatorname{Re}\bigl[\overline{e_{3,2}(z_1)}\operatorname{ph}(A_+^0(z_1, q_c))\bigr]
+\frac{1}{2}\mathbb{E}_{z_1, y, W}\bigl[\overline{e_{3,2}(z_1)}\bigl(\operatorname{ph} A_+(z_1, q_c) + \operatorname{ph} A_-(z_1, q_c)\bigr)\bigr]
 \;=\; g_{32, 0} + g_{32, 1} c^2 \underbrace{\mathbb{E}_y\bigl[|B(y)|^2 - 1\bigr]}_{=\,0}
-+ g_{32, 2} c^4 \underbrace{\mathbb{E}_y\Bigl[\frac{|B(y)|^4 - 4|B(y)|^2 + 2}{2}\Bigr]}_{=\,\chi(B)/2} + O(c^6).
++ \frac{1}{2} g_{32, 2} \chi(B)\,c^4 + O(c^6).
 $$
-Since $g_{32, 0} = \nu_5^*/\eta$, the linear gradient with respect to $\Delta\nu_5 = \nu_5 - \nu_5^*$ at $(q_c, \nu_5^*)$ is $O(c^4)$ (its $O(c^2)$ coefficient vanishes identically!). Because the scalar $\nu_5$ Hessian at $c = 0$ is strictly negative definite ($-\frac{2}{\eta} + P_{32,32} < 0$), the optimal shift is $\Delta \nu_5(c) = O(c^4)$ and the quadratic gain $\frac{1}{2} M_{\nu_5}^{-1} |\Delta\nu_5(c)|^2 = O(c^8) = O(D(q_c)^2)$. $\square$
+Thus the linear gradient of $Q_{\nu_5}$ at $\Delta\nu_5 = 0$ is $2(g_{32,0} - \nu_5^{(0)}/\eta) + g_{32,2}\chi(B) c^4 + O(c^6)$: its $O(c^2)$ term vanishes identically! When $\nu_5^{(0)} = \nu_5^*$ ($g_{32,0} = \nu_5^*/\eta$), the gradient is $O(c^4)$ and strict negative Hessian curvature $-M_{32,\mathrm{re}}, -M_{32,\mathrm{im}} < 0$ gives $\Delta\nu_5(c) = O(c^4)$ and quadratic gain $\frac{1}{2 M_{32,\mathrm{re}}}(g_{32,2}\chi(B) c^4)^2 + O(c^{10}) = O(c^8) = O(D(q_c)^2)$; when $\nu_5^{(0)} = \nu_5^* + \delta_\nu$, $\frac{1}{2 M_{32,\mathrm{re}}}(-2\delta_\nu/\eta + g_{32,2}\chi(B)c^4)^2 - \frac{1}{2 M_{32,\mathrm{re}}}(-2\delta_\nu/\eta)^2 = O(|\delta_\nu| c^4 + c^8)$. $\square$
 
 ---
 
-## 3. Theorem 3: Exact Bargmann–Laguerre Diffuse-Spike Saddle Across All $d \ge 1$ and 4-Term SOS Collapse to $e_{2,1}$
+## 3. Theorem 3: Exact Bargmann–Laguerre Quadratic/Local Diffuse-Spike Saddle Across All $d \ge 1$ and 4-Term SOS Collapse to $e_{2,1}$
 
-Fix a row $(\ell, \beta, b_A, b_B, \nu_5, \sigma)$ of $T_5 = P_{1,0} - \varepsilon_1 P_{2,1} + \eta P_{3,2}$ with $\sigma > 0$, let $d \ge 1$, let $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$ have $\|B\|_2 = 1$ and $\chi(B) = \mathbb{E}|B|^4 - 2 > 0$, and set $q_c = \sigma(\sqrt{1 - c^2} W + c B(y))$ with $W \sim \mathcal{CN}(0, 1)$ (representing a diffuse bath in $\mathcal{H}_{2,1}(\mathbb{C}^m)$, $m \to \infty$, whose higher Laguerre polynomials have $\mathcal{H}_{3,2}(\mathbb{C}^m)$-projection $O(m^{-1/2}) \to 0$). Write
+Fix a row $(\ell, \beta, b_A, b_B, \nu_5, \sigma)$ of $T_5 = P_{1,0} - \varepsilon_1 P_{2,1} + \eta P_{3,2}$ with $\sigma > 0$, let $d \ge 1$, let $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$ have $\|B\|_2 = 1$ and $\chi(B) = \mathbb{E}|B|^4 - 2 > 0$, and set $q_c = \sigma(\sqrt{1 - c^2} W + c B(y))$ with $W \sim \mathcal{CN}(0, 1)$ (representing a diffuse bath in $\mathcal{H}_{2,1}(\mathbb{C}^m)$, $m \to \infty$, whose higher Laguerre polynomials have $\mathcal{H}_{3,2}(\mathbb{C}^m)$-projection $O(m^{-1/2}) \to 0$). For **any** complex amplitude $w \in \mathbb{C}$ (in particular $w = q_c$) and any real radial amplitude $s \ge 0$, define
 $$
-A_\pm(z_1, q) \;:=\; L(z_1) \pm q\,D(z_1),
+M(z_1, w) \;:=\; w\bigl(1 - b_A(|z_1|^2 - 1)\bigr) - \bar{w}\,b_B \frac{z_1^2}{\sqrt{2}},
 \qquad
+A_\pm(z_1, w) \;:=\; L(z_1) \pm M(z_1, w),
+$$
+$$
 L(z_1) = z_1\bigl(\ell + \beta(|z_1|^2 - 2)\bigr) + \nu_5 e_{3,2}(z_1),
 \qquad
-D(z_1) = 1 - b_A(|z_1|^2 - 1) - b_B \frac{z_1^2}{\sqrt{2}}.
+D(z_1) := M(z_1, 1) = 1 - b_A(|z_1|^2 - 1) - b_B \frac{z_1^2}{\sqrt{2}},
+\qquad
+A_\pm^{\mathrm{rad}}(z_1, s) := L(z_1) \pm s\,D(z_1).
 $$
-At $q_c$, the base phase pair is $f_0 = \operatorname{ph}(A_+(z_1, q_c))$, $g_0 = \operatorname{ph}(A_-(z_1, q_c))$, and the $q$-only deficit is $D(q_c) := B_5(\sigma^2) - \mathbb{E}_{z_1, y, W}\bigl[|A_+(z_1, q_c)| + |A_-(z_1, q_c)|\bigr]$.
+Notice that $q(|z_1|^2 - 1)$ has $(z_1, y)$-bidegree $(1, 1) + (2, 1) = (3, 2)$ and $\bar{q}\,z_1^2/\sqrt{2}$ has bidegree $(2, 0) + (1, 2) = (3, 2)$, so both multiplier terms lie in $\mathcal{H}_{3,2}(\mathbb{C} \oplus \mathbb{C}^d)$. At $q_c$, the base phase pair is $f_0 = \operatorname{ph}(A_+(z_1, q_c))$, $g_0 = \operatorname{ph}(A_-(z_1, q_c))$, and the $q$-only deficit is $D(q_c) := \mathbb{E}_{z_1, W}[|A_+(z_1, \sigma W)| + |A_-(z_1, \sigma W)|] - \mathbb{E}_{z_1, y, W}[|A_+(z_1, q_c)| + |A_-(z_1, q_c)|]$ (whose leading $O(c^4)$ coefficient matches $B_5(\sigma^2) - \mathbb{E}[|A_+| + |A_-|]$ whenever $\sigma$ is the Gaussian envelope point, and in general equals $\kappa_D(\sigma)\chi(B) c^4 + O(c^6)$ by (3.3)).
+
+**Definition of the quadratic/local minimax diffuse-spike saddle $\mathcal{Q}^{\mathrm{ret}}(q_c)$.** Let $\mathcal{H}_{\mathrm{adv}} := \bigoplus_{(a_z, b_z, a_y, b_y) \in \mathcal{S}_5} e_{a_z, b_z}(z_1) \otimes \mathcal{H}_{a_y, b_y}(\mathbb{C}^d)$ be the full remote quintic shell space of $\mathcal{H}_{3,2}(\mathbb{C} \oplus \mathbb{C}^d) \ominus \mathbb{C} e_{3,2}(z_1)$ ($a_y + b_y \ge 1$) and let $\mathcal{H}_{\mathrm{def}} := \mathcal{V}_{1,1} \oplus \mathcal{V}_{2,0}$ be the retained cubic $h$-defender space of Theorem 2(a). Matching the exact coupled one-spike shell-share model of `4.16` and `STAGE0` §2.3 (`spike2.py`), define the second-variation quadratic/local minimax saddle at the base pair $(f_0, g_0) = (\operatorname{ph} A_+(z_1, q_c), \operatorname{ph} A_-(z_1, q_c))$ by
+$$
+\mathcal{Q}^{\mathrm{ret}}(q_c) \;:=\; \inf_{\xi_{\mathrm{def}} \in \mathcal{H}_{\mathrm{def}}} \sup_{\delta h_{\mathrm{adv}} \in \mathcal{H}_{\mathrm{adv}}}
+\left\{ \operatorname{Re}\bigl\langle \delta h,\, f_0(q_c) + g_0(q_c) \bigr\rangle
++ \frac{1}{2}\mathcal{B}_{q_c}(\delta h)
+- \frac{\|\delta h_{\mathrm{adv}}\|_2^2}{\eta}
++ \frac{\|\xi_{\mathrm{def}}\|_2^2}{\varepsilon_1} \right\},
+\qquad \delta h := \delta h_{\mathrm{adv}} + \xi_{\mathrm{def}},
+$$
+where $\mathcal{B}_{q_c}(\delta h) := \mathbb{E}_{z_1, y, W}\Bigl[\frac{(\operatorname{Im}(\overline{\operatorname{ph} A_+(z_1, q_c)}\,\delta h))^2}{2|A_+(z_1, q_c)|} + \frac{(\operatorname{Im}(\overline{\operatorname{ph} A_-(z_1, q_c)}\,\delta h))^2}{2|A_-(z_1, q_c)|}\Bigr]$ is the exact second variation of $\frac{1}{2}\mathbb{E}[|A_+ + \delta h| + |A_- + \delta h|]$ (since $h_0 = \frac{1}{2}(f_0 + g_0)$, $2\operatorname{Re}\langle \delta h, h_0\rangle = \operatorname{Re}\langle \delta h, f_0 + g_0\rangle$, so at $c = 0$ maximizing $\operatorname{Re}\langle\delta h, f_0 + g_0\rangle - M\|\delta h\|_2^2$ gives $g^2/(4M)$ as in Block 1–4 below). Setting $\xi_{\mathrm{def}} = 0$ gives the plain quadratic saddle $\mathcal{Q}^{\mathrm{plain}}(q_c)$. Because $\alpha_x(r), \alpha_y(r) \ge (1 + b_A)\sigma > 0$ (§4.1), $|A_\pm(z_1, q_c)|^{-1}$ is uniformly integrable in $L^p$ for every $p < 2$, so $\mathcal{B}_{q_c} \to \mathcal{B}_{q_0}$ in operator norm on every finite-degree chaos subspace as $c \to 0^+$.
 
 ### Parity and $\mathrm{U}(1)$-Charge Decoupling of All Remote Sectors at $O(c^4)$
 
-1. **Deficit at $O(c^4)$ and global $\mathrm{U}(1)$ covariance:** Set
+1. **Deficit at $O(c^4)$ and global $\mathrm{U}(1)$ covariance:** Writing $w = |w| e^{i\omega}$ and rotating $z_1 = e^{i\omega} z_1'$ gives
    $$
-   M(z_1, w) \;:=\; w\bigl(1 - b_A(|z_1|^2 - 1)\bigr) - \bar{w}\,b_B \frac{z_1^2}{\sqrt{2}},
-   \qquad
-   A_\pm(z_1, w) \;=\; L(z_1) \pm M(z_1, w).
+   L(e^{i\omega} z_1') \pm M(e^{i\omega} z_1', |w| e^{i\omega}) \;=\; e^{i\omega}\Bigl(L(z_1') \pm |w|\,D(z_1')\Bigr) \;=\; e^{i\omega}\,A_\pm^{\mathrm{rad}}(z_1', |w|), \tag{3.1}
    $$
-   Notice that $q(|z_1|^2 - 1)$ has $(z_1, y)$-bidegree $(1, 1) + (2, 1) = (3, 2)$ and $\bar{q}\,z_1^2/\sqrt{2}$ has bidegree $(2, 0) + (1, 2) = (3, 2)$, so both multiplier terms lie in $\mathcal{H}_{3,2}(\mathbb{C} \oplus \mathbb{C}^d)$. Writing $w = |w| e^{i\omega}$ and rotating $z_1 = e^{i\omega} z_1'$ gives
-   $$
-   L(e^{i\omega} z_1') \pm M(e^{i\omega} z_1', |w| e^{i\omega}) \;=\; e^{i\omega}\Bigl(L(z_1') \pm |w|\,D(z_1')\Bigr), \tag{3.1}
-   $$
-   so $\Psi(|w|) := \mathbb{E}_{z_1}\bigl[|L(z_1) + M(z_1, w)| + |L(z_1) - M(z_1, w)|\bigr] = \mathbb{E}_{z_1'}\bigl[|L(z_1') + |w| D(z_1')| + |L(z_1') - |w| D(z_1')|\bigr]$ depends **solely on $|w|$**.
+   so $\Psi(|w|) := \mathbb{E}_{z_1}\bigl[|A_+(z_1, w)| + |A_-(z_1, w)|\bigr] = \mathbb{E}_{z_1'}\bigl[|A_+^{\mathrm{rad}}(z_1', |w|)| + |A_-^{\mathrm{rad}}(z_1', |w|)|\bigr]$ depends **solely on $|w|$**.
    Equivalently, at fixed $z_1 = r e^{i\theta}$, setting $\widetilde{w} := e^{-i\theta} w = \widetilde{w}_x + i \widetilde{w}_y$ gives
    $$
    e^{-i\theta} A_+(r e^{i\theta}, e^{i\theta}\widetilde{w})
@@ -271,13 +284,14 @@ At $q_c$, the base phase pair is $f_0 = \operatorname{ph}(A_+(z_1, q_c))$, $g_0 
    $$
    m_{2, k} \;:=\; \frac{1}{2}\int_0^\infty G_{k+3}(\sigma\sqrt{u})\,u\,e^{-u}\,du \quad (k \in \{0, 1, 2, 3\};\; m_{2,3} = m_{2,0}).
    $$
-   Similarly, at $c = 0$ ($q_0 = \sigma W$), define the real symmetric $7 \times 7$ radial-Gaussian matrices $P_{jk}, Q_{jk}$ by
+   Similarly, at $c = 0$ ($q_0 = \sigma W$, using (3.1) to rotate $W = \sqrt{u}\,e^{i\omega}$ into $z_1$), define the real symmetric $7 \times 7$ radial-Gaussian matrices $P_{jk}, Q_{jk}$ by
    $$
-   P_{jk} := \int_0^\infty \mathbb{E}_{z_1}\operatorname{Re}\!\left[E_j \overline{E_k}\Bigl(\frac{1}{2|A_+^0|} + \frac{1}{2|A_-^0|}\Bigr)\right] e^{-u}\,du,
-   \qquad
-   Q_{jk} := \int_0^\infty \mathbb{E}_{z_1}\operatorname{Re}\!\left[E_j E_k\Bigl(\frac{\overline{\operatorname{ph}(A_+^0)}^2}{2|A_+^0|} + \frac{\overline{\operatorname{ph}(A_-^0)}^2}{2|A_-^0|}\Bigr)\right] e^{-u}\,du,
+   P_{jk} := \int_0^\infty \mathbb{E}_{z_1}\operatorname{Re}\!\left[E_j \overline{E_k}\Bigl(\frac{1}{2|A_+^{\mathrm{rad}}(z_1, \sigma\sqrt{u})|} + \frac{1}{2|A_-^{\mathrm{rad}}(z_1, \sigma\sqrt{u})|}\Bigr)\right] e^{-u}\,du,
    $$
-   where $A_\pm^0 = L(z_1) \pm \sigma\sqrt{u}\,D(z_1)$. Note that all distinct pairs of radial factors $|E_j(r)| |E_k(r)|$ lie in the 6-element list $(\eta_0^2, \eta_0 \eta_1, \eta_1^2, \eta_2^2, \eta_0 \eta_2, \eta_1 \eta_2)$ where $\eta_0(r) = r$, $\eta_1(r) = \frac{r(r^2 - 2)}{\sqrt{2}}$, $\eta_2(r) = \frac{r^3}{\sqrt{6}}$; we denote the corresponding 6 distinct entries of $P$ and $Q$ by $(P_{00}, P_{01}, P_{11}, P_{22}, P_{02}, P_{12})$ and $(Q_{00}, Q_{01}, Q_{11}, Q_{22}, Q_{02}, Q_{12})$.
+   $$
+   Q_{jk} := \int_0^\infty \mathbb{E}_{z_1}\operatorname{Re}\!\left[E_j E_k\Bigl(\frac{\overline{\operatorname{ph}(A_+^{\mathrm{rad}}(z_1, \sigma\sqrt{u}))}^2}{2|A_+^{\mathrm{rad}}(z_1, \sigma\sqrt{u})|} + \frac{\overline{\operatorname{ph}(A_-^{\mathrm{rad}}(z_1, \sigma\sqrt{u}))}^2}{2|A_-^{\mathrm{rad}}(z_1, \sigma\sqrt{u})|}\Bigr)\right] e^{-u}\,du.
+   $$
+   Note that all distinct pairs of radial factors $|E_j(r)| |E_k(r)|$ lie in the 6-element list $(\eta_0^2, \eta_0 \eta_1, \eta_1^2, \eta_2^2, \eta_0 \eta_2, \eta_1 \eta_2)$ where $\eta_0(r) = r$, $\eta_1(r) = \frac{r(r^2 - 2)}{\sqrt{2}}$, $\eta_2(r) = \frac{r^3}{\sqrt{6}}$; we denote the corresponding 6 distinct entries of $P$ and $Q$ by $(P_{00}, P_{01}, P_{11}, P_{22}, P_{02}, P_{12})$ and $(Q_{00}, Q_{01}, Q_{11}, Q_{22}, Q_{02}, Q_{12})$.
 
 4. **Complete complex Hilbert-space saddle across all 4 blocks (including imaginary parts & orthogonal complements):**
    At $c = 0$, the second variation of $\mathbb{E}[|A_+ + \delta h| + |A_- + \delta h|] = \dots + \frac{1}{2}\mathbb{E}\bigl[\frac{(\operatorname{Im}(\overline{\operatorname{ph} A_+}\delta h))^2}{|A_+|} + \frac{(\operatorname{Im}(\overline{\operatorname{ph} A_-}\delta h))^2}{|A_-|}\bigr]$ has quadratic form $\frac{1}{2}(\langle \delta h, P\,\delta h \rangle - \operatorname{Re}\langle \overline{\delta h}, Q\,\delta h \rangle)$. By rotational invariance of $W \sim \mathcal{CN}(0, 1)$, $P$-couplings vanish unless $\mathrm{ch}_j = \mathrm{ch}_k$ and the remote chaos factors agree, while $Q$-couplings vanish unless $\mathrm{ch}_j + \mathrm{ch}_k = 0$ and the remote chaos factors are complex conjugates! Specifically:
@@ -332,7 +346,7 @@ N_{\mathrm{tot}}\,\chi(B) - 42\bigl(C_{22} u_4(B) + C_{11}^{\mathrm{ret}} u_2(B)
 $$
 In particular, whenever $\lambda_1, \lambda_2, \lambda_3, \lambda_4 \ge 0$, every non-Gaussian unit $B \in \mathcal{H}_{2,1}(\mathbb{C}^d)$ ($\chi(B) > 0$) satisfies
 $$
-\lim_{c \to 0^+} \frac{\operatorname{gain}_{\mathrm{ret}}(q_c)}{D(q_c)}
+\lim_{c \to 0^+} \frac{\mathcal{Q}^{\mathrm{ret}}(q_c)}{D(q_c)}
 \;\le\; \frac{N_{\mathrm{tot}}}{42\,\kappa_D(\sigma)},
 $$
 with equality at $B(y) = e_{2,1}(y_1)$ in every dimension $d \ge 1$.
@@ -401,16 +415,19 @@ Finally, the Weierstrass substitution $w = \tan(\varphi/2) \in [0, 1]$ gives $\c
 
 - **Monotone $\cot\varphi$ tail enclosure on $[w_{\mathrm{top}}, 1]$:** Writing $\cot\varphi = \frac{1 - w^2}{2w}$ (strictly decreasing on $(0, 1]$), $D_0(r, w) = \frac{\mu(r)^2}{\alpha_x(r)^2 + \alpha_y(r)^2 \cot^2\varphi}$ has a single occurrence of $w$, and since $\cos^2\varphi + \sin^2\varphi = 1$, $A \in [\min(\alpha_x^{-2}, \alpha_y^{-2}), \max(\alpha_x^{-2}, \alpha_y^{-2})]$. Whenever $D_{0,\mathrm{lo}} \ge 3$ (specifically $r_{\mathrm{lo}}^2 + D_{0,\mathrm{lo}} \ge 28$), $(x^2 e^{-x})' = x(2 - x)e^{-x} < 0$ and $(x e^{-x})' = (1 - x)e^{-x} < 0$ on $[3, \infty)$ give $D_0^2 e^{-D_0} \le D_{0,\mathrm{lo}}^2 e^{-D_{0,\mathrm{lo}}}$ and $D_0 e^{-D_0} \le D_{0,\mathrm{lo}} e^{-D_{0,\mathrm{lo}}}$.
 
-- **Analytic $r \ge 5$ Gaussian tails:** Return to the original $(z_1, u)$ integral ($u = |W|^2 \sim \operatorname{Exp}(1)$, $v = r^2 \ge 25$, $2r e^{-r^2}\,dr = e^{-v}\,dv$), with $\int_{25}^\infty (1, v, v^2, v^3)e^{-v}\,dv = (1, 26, 677, 17631)e^{-25}$. On every row, $|\ell| \le 1, |\beta| \le \frac{1}{5}, |\nu_5| \le \frac{1}{20}, \sigma \le \frac{1}{2}, |b_A| \le \frac{1}{5}, |b_B| \le \frac{1}{5}$ (`verify.py`):
-  1. **For $\kappa_D$:** On $v \ge 25$, $r \le \frac{1}{5}v$, $|e_{3,2}(z_1)| < \frac{r v^2}{3}$, $|L(z_1)| \le r(1 + \frac{1}{5}v + \frac{1}{60}v^2) < \frac{1}{180}v^3$, and $|M(z_1, \sigma W)| \le \frac{1}{2}\sqrt{u}(\frac{4}{5} + \frac{2}{5}v) \le \frac{1}{4}\sqrt{u}\,v$, so $\Psi(\sigma\sqrt{u}; r) \le \frac{1}{90}v^3 + \frac{1}{2}\sqrt{u}\,v$. Since $\|e_{2,2}\|_2 = 1$ and $\mathbb{E}[u] = 1$, Cauchy–Schwarz in $u$ bounds the $r \ge 5$ tail of $\kappa_D$ by $\frac{1}{2}\int_{25}^\infty (\frac{1}{90}v^3 + \frac{1}{2}v)e^{-v}\,dv = (\frac{17631}{180} + \frac{13}{2})e^{-25} < 105\,e^{-25} < 35314\,e^{-25}$.
-  2. **For $g_1, m_2$:** $|G_j(s; r)| \le 2|E_j(r)| \le \sqrt{2}\,r v \le \frac{\sqrt{2}}{5}v^2$ on $v \ge 25$, and $\int_0^\infty |u - 1|e^{-u}\,du = \frac{2}{e} < 1$, $\frac{1}{2}\int_0^\infty u e^{-u}\,du = \frac{1}{2} < 1$, giving tail magnitude $< \frac{\sqrt{2}}{5}\cdot 677 e^{-25} < 200\,e^{-25} < 4000\,e^{-25}$.
-  3. **For $P_{jk}, Q_{jk}$:** $|E_j(r)E_k(r)| \le \frac{1}{2}v^3$ on $v \ge 25$, $\alpha_x \alpha_y \sqrt{A} \ge \alpha_{\min} := (1 + b_A)\sigma > 0$, $e^{-D_0} \le 1$, and $\int_0^{\pi/2}\frac{2}{\sqrt{\pi}}\,d\varphi = \sqrt{\pi}$, giving tail magnitude $\le \frac{\sqrt{\pi}}{\alpha_{\min}}\int_{25}^\infty \frac{1}{2}v^3 e^{-v}\,dv < \frac{17631\sqrt{\pi}}{\alpha_{\min}}\,e^{-25}$.
+- **Analytic $r \ge 5$ Gaussian tails:** Return to the original $(z_1, u)$ integral ($u = |W|^2 \sim \operatorname{Exp}(1)$, $v = r^2 \ge 25$, $2r e^{-r^2}\,dr = e^{-v}\,dv$). Repeated integration by parts gives the exact moments $\int_{25}^\infty (1, v, v^2, v^3)e^{-v}\,dv = (1,\, 25 + 1,\, 25^2 + 2\cdot 25 + 2,\, 25^3 + 3\cdot 25^2 + 6\cdot 25 + 6)e^{-25} = (1, 26, 677, 17656)e^{-25}$. On every row, $|\ell| \le 1, |\beta| \le \frac{1}{5}, |\nu_5| \le \frac{1}{20}, \sigma \le \frac{1}{2}, |b_A| \le \frac{1}{5}, |b_B| \le \frac{1}{5}$ (`verify.py`):
+  1. **For $\kappa_D$:** On $v \ge 25$, $r = \sqrt{v} \le \frac{1}{5}v$; since $0 < v^2 - 6v + 6 < v^2$ and $2\sqrt{3} > 3$, $|e_{3,2}(z_1)| = \frac{r(v^2 - 6v + 6)}{2\sqrt{3}} < \frac{r v^2}{3}$. Since $1 + \frac{1}{5}v + \frac{1}{60}v^2 \le (\frac{1}{625} + \frac{1}{125} + \frac{1}{60})v^2 = \frac{983}{37500}v^2 < \frac{1}{36}v^2$ on $v \ge 25$, $|L(z_1)| \le r(1 + \frac{1}{5}v + \frac{1}{60}v^2) < \frac{1}{5}v \cdot \frac{1}{36}v^2 = \frac{1}{180}v^3$, and $|M(z_1, \sigma W)| \le \frac{1}{2}\sqrt{u}(1 + \frac{1}{5}(v + 1) + \frac{1}{5\sqrt{2}}v) < \frac{1}{4}\sqrt{u}\,v$, giving $\Psi(\sigma\sqrt{u}; r) \le 2|L(z_1)| + 2|M(z_1, \sigma W)| \le \frac{1}{90}v^3 + \frac{1}{2}\sqrt{u}\,v$. Since $\|e_{2,2}\|_2 = 1$ and $\mathbb{E}[u] = 1$, Cauchy–Schwarz in $u$ bounds the $r \ge 5$ tail of $\kappa_D = -\frac{1}{2}\int_0^\infty \Psi(\sigma\sqrt{u}) e_{2,2}(u) e^{-u}\,du$ by $\frac{1}{2}\int_{25}^\infty (\frac{1}{90}v^3 + \frac{1}{2}v)e^{-v}\,dv = (\frac{17656}{180} + \frac{26}{4})e^{-25} = \frac{9413}{90}e^{-25} < 105\,e^{-25} < 35314\,e^{-25}$.
+  2. **For $g_1, m_2$:** On $v \ge 25$, $\max(\eta_0(r), |\eta_1(r)|, \eta_2(r)) = \max(\sqrt{v}, \frac{\sqrt{v}(v-2)}{\sqrt{2}}, \frac{v^{3/2}}{\sqrt{6}}) = \frac{\sqrt{v}(v-2)}{\sqrt{2}} < \frac{r v}{\sqrt{2}}$, so $|G_j(s; r)| \le 2|E_j(r)| \le \sqrt{2}\,r v \le \frac{\sqrt{2}}{5}v^2$; combined with $\int_0^\infty |u - 1|e^{-u}\,du = \frac{2}{e} < 1$ and $\frac{1}{2}\int_0^\infty u e^{-u}\,du = \frac{1}{2} < 1$, the tail magnitude is $< \frac{\sqrt{2}}{5}\cdot 677 e^{-25} < 200\,e^{-25} < 4000\,e^{-25}$.
+  3. **For $P_{jk}, Q_{jk}$:** On $v \ge 25$, every pair product among $\eta_0(r) = \sqrt{v}$, $\eta_1(r) = \frac{\sqrt{v}(v-2)}{\sqrt{2}}$, $\eta_2(r) = \frac{v^{3/2}}{\sqrt{6}}$ satisfies $|E_j(r)E_k(r)| \le \eta_1(r)^2 = \frac{v(v-2)^2}{2} < \frac{1}{2}v^3$ (since $\eta_0^2 = v < \frac{1}{2}v^3$, $\eta_2^2 = \frac{1}{6}v^3 < \frac{1}{2}v^3$, $|\eta_1\eta_2| = \frac{v^2(v-2)}{2\sqrt{3}} < \frac{1}{2}v^3$, $|\eta_0\eta_1| < \frac{1}{\sqrt{2}}v^2 < \frac{1}{2}v^3$, $|\eta_0\eta_2| = \frac{1}{\sqrt{6}}v^2 < \frac{1}{2}v^3$). Together with $\alpha_x \alpha_y \sqrt{A} \ge \alpha_{\min} := (1 + b_A)\sigma > 0$, $e^{-D_0} \le 1$, and $\int_0^{\pi/2}\frac{2}{\sqrt{\pi}}\,d\varphi = \sqrt{\pi}$, the $r \ge 5$ tail magnitude satisfies
+     $$
+     \text{tail}_{P,Q} \;\le\; \frac{\sqrt{\pi}}{\alpha_{\min}}\int_{25}^\infty \frac{1}{2}v^3 e^{-v}\,dv \;=\; \frac{8828\sqrt{\pi}}{\alpha_{\min}}\,e^{-25} \;<\; \frac{17631\sqrt{\pi}}{\alpha_{\min}}\,e^{-25}.
+     $$
 
 ### 4.3 Certified Outward-Rounded Benchmark Table (`cert_stage0_gram.json`)
 
-All 9 benchmark rows are rationalised to exact denominator dividing $10^{10}$ within $\le \frac{1}{2}\cdot 10^{-10}$ of `code/degree5-stage0/results/b/{gC,g83,g84,gA}/rows_all.lines` (bound by SHA-256 in `verify.py`). Every interval below is outward-rounded and certified in pure integer arithmetic (`S = 10^{15}`, zero `float`):
+All 9 benchmark rows are bound by exact `(id, game, t_key, e1, eta)` and rationalised to exact denominator dividing $10^{10}$ within $\le \frac{1}{2}\cdot 10^{-10}$ of `code/degree5-stage0/results/b/{gC,g83,g84,gA}/rows_all.lines` (bound by SHA-256 in `verify.py`). Every interval below is outward-rounded and certified in pure integer arithmetic (`S = 10^{15}`, zero `float`):
 
-| Row ID | Game $(1, -\varepsilon_1, \eta)$ | $t$ | Plain $e_{2,1}$ share | 5-scalar cone (no $C_{--}$) | **Retained all-dim $\sup_{d \ge 1, B}$** | Cap | $\min_{j \le 4}\lambda_j$ | $\min$ concav. |
+| Row ID | Game $(1, -\varepsilon_1, \eta)$ | Sample $t$ | Plain $e_{2,1}$ share | 5-scalar witness `ce1` (lower bound w/o $C_{--}$) | **Retained all-dim $\sup_{d \ge 1, B}$** | Cap | $\min_{j \le 4}\lambda_j$ | $\min$ concav. |
 |---|---|---:|---|---|---|---:|---:|---:|
 | `gC_0.80` | $(1, -\frac{39}{50}, \frac{779}{10000})$ | $0.80$ | $[+0.1176, +0.1474]$ | $[-0.1698, -0.1307]$ | **$[-0.17990, -0.13827]$** | $< 0$ | $> +0.267$ | $> +1.508$ |
 | `g83_0.80` | $(1, -\frac{83}{100}, \frac{2241}{10000})$ | $0.80$ | $[+0.5314, +0.7456]$ | $[+0.1046, +0.1733]$ | **$[+0.08385, +0.14477]$** | $< \frac{7}{20}$ | $> +0.273$ | $> +1.433$ |
@@ -422,18 +439,18 @@ All 9 benchmark rows are rationalised to exact denominator dividing $10^{10}$ wi
 | `gA_0.80` | $(1, -\frac{8493}{10000}, \frac{2827}{10000})$ | $0.80$ | $[+1.0147, +1.0399]$ | $[+0.3716, +0.3828] > \frac{7}{20}$ | **$[+0.33474, +0.34506]$** | $< \frac{7}{20}$ | $> +0.383$ | $> +1.414$ |
 | `gA_0.85` | $(1, -\frac{8493}{10000}, \frac{2827}{10000})$ | $0.85$ | $[+1.4497, +2.1107]$ | $[+0.4987, +0.7545]$ | **$[+0.44926, +0.68411]$** | $< \frac{7}{10}$ | $> +0.061$ | $> +1.281$ |
 
-*(Exact outward integer endpoints at scale $S = 10^{15}$ are stored in `cert_stage0_gram.json` and printed to 5–6 decimals by `verify.py`.)*
+*(Notes: Exact outward integer endpoints at scale $S = 10^{15}$ are stored in `cert_stage0_gram.json` and printed to 5–6 decimals by `verify.py`. The column "5-scalar witness `ce1`" (`no_cmm_5sc`) evaluates the explicit feasible 5-tuple `ce1` $= (\frac{9}{16}, 1, \frac{9}{16}, \frac{3}{4}, \frac{3}{4}) \in \mathcal{K}_{\mathrm{old}}$; its lower endpoint gives a certified **lower bound** on the 5-scalar cone supremum without $C_{--} \succeq 0$, not an upper bound on that cone supremum, which already suffices to certify $\sup_{\mathcal{K}_{\mathrm{old}}} \ge +0.3716 > 7/20$ on `gA_0.80`.)*
 
 ---
 
-## 5. Consequences for `#751` / `#453` and Remaining Open Steps
+## 5. Implications for `#751` / `#453` and Why Stage 0's Stop Rule Is Not Yet Discharged
 
-1. **Why `g84` $(1, -21/25, 319/1250)$ ($1/N_5 \approx 1.403584 > 1.4035$) is re-opened as the leading $1.403+$ degree-5 candidate:**
-   In Stage 0 (`REPORT.md`), `g84` cleared `< 1/1.403` across $t \in [0, 0.55]$ in `E3`, and failed **solely** on the Part (b) sector gate ($\kappa_h = 0.673 > 0.35$ at $t = 0.80$ and $\theta > 0$ on $t \ge 0.84$). Retaining the two coordinate-free cubic $h$-defenders $D_{3,h}^{\mathrm{univ}}$ and applying the antisymmetric slice-Gram inequality $C_{--} \succeq 0$ lowers the all-dimension diffuse-spike sharing constant on `g84` below $7/20 = 0.35$ across `0.70`–`0.85` simultaneously ($\approx 0.149$ at $0.70$, $\approx 0.218$ at $0.80$, $\approx 0.286$ at $0.84$, $\approx 0.312$ at $0.85$), leaving $> 65\%$ of the deficit $D(q)$ to fund the first-chaos A/B content law.
-2. **Both new ingredients are necessary:**
-   - Without the retained cubic $h$-defenders (`eval_mode = "plain_e21"`), every `g83`, `g84`, `gA` benchmark row exceeds $7/20 = 0.35$, and `g84` ($0.84, 0.85$) and `gA` ($0.80, 0.85$) exceed $1$ ($\theta > 0$).
-   - Without $4\|C_{--}\|_{\mathrm{HS}}^2 = n + b - (3y - z) \ge 0$ (`eval_mode = "no_cmm_5sc"`), the 5-scalar `Gram.lean` cone exceeds $7/20 = 0.35$ on `gA` ($t = 0.80$, certified $[+0.3716, +0.3828] > 0.35$) while the full cone with $C_{--} \succeq 0$ is certified strictly $< 0.35$ ($[+0.33474, +0.34506]$).
-3. **What remains open to prove $K_G^{\mathbb{C}} > 1.403$ from `g84`:**
-   - Finite-amplitude multi-spike / arbitrary-sharing sector bound (`H8` of `4.45`) with the retained defenders $D_{3,h}^{\mathrm{univ}}$ in place (extending `4.16c`–`4.16d` to all sectors and arbitrary remote cubics $q$);
+1. **What is certified vs what Stage 0's gate requires:**
+   In Stage 0 (`REPORT.md`), `g84` cleared `< 1/1.403` across sampled $t \in [0, 0.55]$ in `E3`, and stopped on the Part (b) `spike2.py` gate ($\kappa_h = 0.673 > 0.35$ at $t = 0.80, c = 0.1, \sigma = \sigma_*$, and $\theta > 0$ on $t \ge 0.84$). Retaining the two coordinate-free cubic $h$-defenders $D_{3,h}^{\mathrm{univ}}$ and applying $C_{--} \succeq 0$ lowers the **$c \to 0^+$ quadratic/local diffuse-spike saddle ratio at $\sigma = \sigma_*$** on `g84` strictly below $7/20 = 0.35$ across all dimensions $d \ge 1$ at the four sample rows $t \in \{0.70, 0.80, 0.84, 0.85\}$ ($\le 0.15596, 0.27983, 0.31813, 0.32834$). **However, Stage 0's $\kappa_h$ (`REPORT.md` §§3, 5) is defined over finite gate points $c \in \{0.1, 0.3, 0.6, 1\} \times \sigma \in \{0.5, 0.9, 1, 1.1\}\sigma_*$ with denominator $D + V_{\mathrm{sl}}$; neither finite $c > 0$ nor off-peak $\sigma \ne \sigma_*$ is evaluated here, so Stage 0's stop rule is not yet discharged.**
+2. **Both new ingredients are necessary even in the $c \to 0^+, \sigma = \sigma_*$ limit:**
+   - Without the retained cubic $h$-defenders (`eval_mode = "plain_e21"`), the $c \to 0^+$ ratio on every `g83`, `g84`, `gA` sample row exceeds $7/20 = 0.35$, and on `g84` ($0.84, 0.85$) and `gA` ($0.80, 0.85$) exceeds $1$.
+   - Without $4\|C_{--}\|_{\mathrm{HS}}^2 = n + b - (3y - z) \ge 0$ (`eval_mode = "no_cmm_5sc"`), the explicit feasible 5-tuple `ce1` $\in \mathcal{K}_{\mathrm{old}}$ exceeds $7/20 = 0.35$ on `gA` ($t = 0.80$, certified $[+0.3716, +0.3828] > 0.35$) while the full cone with $C_{--} \succeq 0$ is certified strictly $< 0.35$ ($[+0.33474, +0.34506]$).
+3. **What remains open to discharge the `#751` gate and prove $K_G^{\mathbb{C}} > 1.403$:**
+   - Evaluating the retained-defender sector budget across finite spike amplitudes $c \in (0, 1]$ and off-peak scales $\sigma \ne \sigma_*$ (against $D + V_{\mathrm{sl}}$), continuous-in-$t$ band coverage, and global finite-amplitude multi-spike / arbitrary-sharing sector bounds (`H8` of `4.45`, extending `4.16c`–`4.16d`);
    - Certified finite-amplitude A/B secant margins (`H5`) and per-cell first-chaos content bounds (`H6`–`H7`, extending `CONTCELL` `4.56`) on the `g84` band rows;
-   - Certified continuous-in-$t$ `E3` covers (`H2`–`H4`, extending `LAWREP` and `4.18k`–`4.18p`) across small and intermediate $t$.
+   - Certified continuous-in-$t$ `E3` covers (`H2`–`H4`, extending `LAWREP` and `4.18k`–`4.18r`) across small and intermediate $t$.
