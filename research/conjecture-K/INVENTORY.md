@@ -2032,10 +2032,10 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/real-stein-501-gemini-8732/PROOF.md` | 36,736 B | `d66d5b9974e7956da92eade026c4551c69b199a5181c732ca75dd7db7ee8d9b1` |
+| `sources/real-stein-501-gemini-8732/PROOF.md` | 37,071 B | `a2795f2214636475bfb22f2df98870796dd7994266510a83e05a6d1b513bcedb` |
 | `code/real-stein-501-gemini-8732/README.md` | 2,868 B | `53142c4b40dd435d38b29c3336d702c79340b27d547e69923debdd40e49b8a96` |
 | `code/real-stein-501-gemini-8732/cert_real_501.json` | 113,373 B | `9ed80bdd3bc3e1e645dedb921bd12bf545ce60250db286b90c2dc9ea846a815f` |
-| `code/real-stein-501-gemini-8732/verify.py` | 35,064 B | `dbe2279886b81cc1195803fa5d55e0c9bfb5cc03130e27d20a3e4c1c4b98ea00` |
+| `code/real-stein-501-gemini-8732/verify.py` | 35,102 B | `69040712a4239c6e57e9f7c2965a5a86bcabeca983ff797bfe3446fbb19d49fa` |
 | `code/real-stein-501-gemini-8732/verify_bernstein.py` | 25,166 B | `52d562d52ec9e318b45c011e73ccb570a7c232a2e2ae4492a4c0d15d4577f972` |
 | `code/real-stein-501-gemini-8732/check_identities_exact.py` | 34,584 B | `27bc2bd1a773bcecfe1583a9cc08dcb30d79a75fc3d350a202d35906c3ff78cb` |
 | `code/real-stein-501-gemini-8732/test_controls.py` | 10,681 B | `414117073eaff9766f7491ffc0367e5c264395ccb3f5ad40924a40677f9aff94` |

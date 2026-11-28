@@ -23,7 +23,7 @@ WHAT THIS SCRIPT VERIFIES EXACTLY (Issues #501, #506, #458; conjecture-K/STATUS.
        verifies in exact integer Sturm arithmetic:
          * D_B(r) = A_e(r) t_2(r) - (3/2) l_B(r)^2 > 0  (certifying A_e eta + l_B sigma_r + t_2 tau^2 >= 0);
          * tau_{3,k}(r) - T_{3,exact}(r) > 0            (certifying Q_w + l_A sigma_r + L_nu nu_r + tau_{3,k} tau >= 0);
-         * Sylvester minors m_11 > 0, M_2(r) > 0 (deg <= 2), M_3(r) = det P_k(r) > 0 (deg <= 6)
+         * Sylvester minors m_11 > 0, M_2(r) > 0 (deg <= 2), M_3(r) = det P_k(r) > 0 (deg <= 8 on finite intervals, <= 6 on the tail)
            of the 3x3 polynomial matrix P_k(r) on (1, tau, eta), certifying RHS(X) > r = |F(X)| everywhere;
      - Certifies E[RHS] < B across ALL (s, m, u) in the slab via exact convexity of s^(3/2)
        (rational upper bounds sig_lo^2 >= s_lo^3, sig_hi^2 >= s_hi^3), concavity of -s^2
