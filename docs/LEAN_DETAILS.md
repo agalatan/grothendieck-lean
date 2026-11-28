@@ -66,7 +66,7 @@ are in git history only ([`abandonware/README.md`](../abandonware/README.md) giv
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Lower bound.** `Grothe.Statement.sparse_stein_endpoint` applies `sparseSteinEndpoint_le_of_tailNodeCaps` to the witness node caps and the six-channel existence proof. It gives `25000000000000/17831387166289 ≤ K`. Rounding strictly downward gives the lower half of `main_bounds`. [Certificate](../Grothe/Lower/Cert/SparseEnvelope.lean) · [Matrix transfer](../Grothe/LowerAnalytic/SparseSteinBound.lean).
+**Lower bound.** `Grothe.Statement.sparse_stein_endpoint` applies `sparseSteinEndpoint_le_of_tailNodeCaps` to the witness node caps and the existence of a Grothendieck bound, `Grothe.Upper.bound`. It gives `25000000000000/17831387166289 ≤ K`. Rounding strictly downward gives the lower half of `main_bounds`. [Certificate](../Grothe/Lower/Cert/SparseEnvelope.lean) · [Matrix transfer](../Grothe/LowerAnalytic/SparseSteinBound.lean).
 
 The two central rows use the fourth excess and residual scale of the same normalized circular cubic. Lean extracts eleven plain polynomials from the original rows and checks their majorants on the full nonnegative radius axis. The cut-dilation identity moves them to four target scales. The signed offset and the cubic moment bounds give fourteen additional ordinates across the shape intervals. [Dilation identity](../Grothe/Lower/CutDilation.lean) · [Moment bound for a transported node](../Grothe/Lower/SparseNodePricing.lean) · [Witnesses](../Grothe/LowerAnalytic/SparseWitnessData.lean).
 

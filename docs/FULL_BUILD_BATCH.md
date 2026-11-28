@@ -61,22 +61,46 @@ Mathlib are then upgraded to the latest stable versions in the same build.
 5. **The fast-forward is refused: a permission failure, not a failed check.** This branch changes
    `.github/workflows/` (commit `69eae7193`: the forbidden-code scan of `lean.yml` and `cloud.yml` reads the library
    folders that exist). Unless the repository secret `MERGE_TOKEN` exists, the finish job checks out with
-   `github.token`, and `scripts/land_ready.sh` (step 4, `git push origin merge-candidate:master`) is refused: the
-   job ends red with "this delivery changes .github/workflows and the token may not update workflows". Everything
-   before that step passed: the merged tree built and checked green, the approval and the task issue were verified,
-   and the recreated merge was compared with the checked tree. Nothing has to be rebuilt. Then (AGENTS.md §9):
-   1. The operator reads the checked tree: the `tree=` line of the `merge-info` artifact of the landing run, or the
-      name of its `lean-build-tree-<tree hash>` artifact (kept one day), and the `base=` line (the master commit
-      the check merged with). Master must still be that commit; the freeze guarantees it.
+   `github.token`, and the push of `scripts/land_ready.sh` (step 4) is refused. The script classifies the refusal
+   (`scripts/land_push_refusal.sh`: workflow files changed, by `git diff --quiet` on `.github/workflows`, and
+   GitHub's message about the missing `workflows` permission in the push's own output) and ends red with
+   "PERMISSION, NOT A FAILED CHECK" and the checked tree. Everything before that step passed: the merged tree built
+   and checked green, the approval and the task issue were verified, and the recreated merge was compared with the
+   checked tree. Nothing has to be rebuilt. Any other refusal message ("workflow-unexplained" or "another reason")
+   is not this case: stop and find the cause. Then (AGENTS.md §9):
+   1. The operator reads the landing run's `merge-info` artifact: `tree=` (the checked tree, also the name of the
+      `lean-build-tree-<tree hash>` artifact, kept one day) and `base=` (the master commit the check merged with).
+      Master must still be `base`; the freeze guarantees it.
    2. The user merges #787 by hand with GitHub's **Create a merge commit** at the reviewed head commit (no squash,
       no rebase, no push in between). Because the branch was merged with master before the `/land` and
       `tools/gen_root_imports.py` had nothing to change, that merge has exactly the checked tree.
-   3. The operator verifies, before anything else lands: `git fetch origin master` and
-      `git rev-parse 'origin/master^{tree}'` equals the checked tree. If it differs, stop and report it.
-   4. Master's own check (started by the user's push) then finds the artifact `lean-build-tree-<tree hash>` and
-      replays the finished build instead of building the node caps again (AGENTS.md §10). It must start within the
-      day the artifact is kept. Since CI did not land the PR, the operator also closes the `Closes #n` issues by
-      hand, deletes the branch and its build caches, and lifts the freeze (next section).
+   3. The operator records the merge receipt, `M=$(gh pr view 787 --json mergeCommit --jq .mergeCommit.oid)`, and
+      verifies, before anything else lands: `git fetch origin master`; `git rev-parse "$M^{tree}"` equals the
+      checked `tree=`; `git rev-parse "$M^1"` equals `base=`; `git merge-base --is-ancestor "$M" origin/master`.
+      Master may already be one commit further: since `docs/overview.tex` changes, `overview.yml` can push a
+      generated `OVERVIEW.pdf` commit on top of `M`; `git diff --name-only "$M" origin/master` must then list
+      `OVERVIEW.pdf` only. Compare with `M`, never with master's head. If any check fails, stop and report it.
+   4. Master's own check of `M` replays the finished build from the artifact `lean-build-tree-<tree hash>` instead
+      of building the node caps again (AGENTS.md §10). The operator verifies that a `lean.yml` run exists at `M`
+      (`gh api "repos/agalatan/grothendieck-lean/actions/workflows/lean.yml/runs?head_sha=$M" --jq .total_count`)
+      and that its result is green. If none started, the operator dispatches `gh workflow run lean.yml --ref master`
+      within the artifact's one-day lifetime. That runs master's head: `M` itself, or the PDF commit whose tree differs
+      from the artifact's by `OVERVIEW.pdf`. The latter misses the handoff and builds on the heavy runner whose
+      workspace holds the landing build (minutes), so keep that runner online until master's check is green.
+   5. Since CI did not land the PR, the operator also closes the `Closes #n` issues by hand, deletes the branch and
+      its build caches, and lifts the freeze (next section).
+
+## Package store of the cold build
+
+The batch changes `lake-manifest.json` (Mathlib v4.34.1 → v4.36.0: all nine packages at other revisions). Lake checks
+out, inside `.lake/packages`, the revisions that the consumer's manifest pins, so a packages tree shared between a
+v4.34 user and a v4.36 user on one machine can change under a running build. The self-hosted steps of `lean.yml`
+(the heavy build and the cap shards) therefore run `scripts/package_store.sh`: it links `.lake/packages` to
+`~/grothe-caps/packages-<first 16 hex of sha256(lake-manifest.json)>`, created on first use with
+`lake exe cache get` (Mathlib's compiled files, a minute), shared only by checkouts with exactly that manifest, and
+leaves a workspace's own (non-symlinked) packages directory alone. The old tree `~/grothe-caps/.lake/packages` is not
+touched and keeps serving v4.34 work until master moves. A keyed store needs no exclusivity check: every user of it
+pins the same revisions. Tests: `scripts/test_package_store.py`.
 
 ## Freeze and staging (the user's decision, 28 November 2026)
 

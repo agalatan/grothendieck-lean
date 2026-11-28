@@ -353,7 +353,11 @@ Also:
 - **Force the droplet** for a pushed branch: `gh workflow run lean.yml --ref <branch> -f mode=caps` (it occupies the
   single runner for hours if the caps really changed; do it on purpose only).
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
-  stop/remove). It shares Mathlib with other droplet work through `~/grothe-caps/.lake/packages`; never delete that.
+  stop/remove). Its jobs link `.lake/packages` to a package store keyed by `lake-manifest.json`
+  (`scripts/package_store.sh`: `~/grothe-caps/packages-<first 16 hex of the manifest's sha256>`, created on first
+  use with `lake exe cache get`), so checkouts with different Mathlib versions never share a checkout that Lake
+  would switch under a running build. The older shared tree `~/grothe-caps/.lake/packages` stays for other work;
+  never delete either.
   **A heavy runner needs a warm workspace:** a fresh droplet cannot restore the 14 GB build cache (measured on
   16 November 2026: 0.4 MB/s per connection from the droplet to the cache storage, and the download link expires
   after ten minutes), and its job would then compile everything from nothing. Start a new heavy runner from a
@@ -484,7 +488,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   "Room" means **at least 50 % of the machine's CPUs idle when you look**: `nproc` against the 1-minute load in
   `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24; mega: load ≤ 16), or `scripts/droplet_status.sh` for yo. Then use at most that
   room (`taskset -c` a range of cores; Lake has no `-j`, so pin the cores), in your own signed folder (§2) with the
-  shared Mathlib packages linked (`~/grothe-caps/.lake/packages` on every droplet, symlink), in a process group
+  Mathlib packages of your manifest linked (`~/grothe-caps/.lake/packages` for the manifest it holds, or run
+  `scripts/package_store.sh` in your folder for the store of your own manifest; symlink), in a process group
   (below), never in a runner workspace, and delete the folder when done (§14). Never run Lean on a droplet while a
   caps run's bounded builder is active there (its foreign-work guard aborts the run). A full proof check is what a
   push at a milestone is for (§8).
@@ -541,7 +546,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - **Droplet** (`ssh yo`, Linux, 31 GB RAM, small disk): for heavy computations (scripts, scans) in your own signed
   folder `~/<agent-id>-<topic>` (§2). Heavy **Lean** builds (the node caps, full builds) are not run in private
   folders: push the branch and CI runs them on the droplet's runner (§8). Light Lean builds (a few modules) may run in
-  your folder, linking only the shared Mathlib packages (`~/grothe-caps/.lake/packages`; symlink, never hardlink).
+  your folder, linking only the Mathlib packages of your manifest (`~/grothe-caps/.lake/packages`, or the store
+  `scripts/package_store.sh` links for another manifest; symlink, never hardlink).
 - **Before a heavy job on the droplet:** run `scripts/droplet_status.sh` (from the laptop, read-only: load, memory,
   disk, the CI runner, every running Lean build by folder = owner, orphaned processes, the biggest build folders).
   If another agent's heavy job or a CI check runs there, wait. Keep at least 3 GB of disk free (`df -h ~`).
