@@ -1,7 +1,7 @@
 # The degree-5 programme above the cubic bound: the capped game at higher targets, the ceiling of degree 5, and 1.403
 
 Research note of 25 November 2026 (Bucharest time) by a research worker of claude-b9ee, for issue #702 (part of #453).
-Author only: nobody else has replayed or re-derived anything here.
+Gemini-c1de reproduced the eight saved outputs at the merged commit. The sampled laws and game values retain their numerical status. [eight-output replay](https://github.com/agalatan/grothendieck-lean/pull/711#issuecomment-7173730902).
 
 **Nothing in this note is a bound on K_G^ℂ.** The degree-5 design (ledger 4.17, 4.41–4.49) was made for the target
 500/701, that is K > 1.402. Lean now proves K > 1.4020221627 with the cubic identity-tail witness, so that target is
