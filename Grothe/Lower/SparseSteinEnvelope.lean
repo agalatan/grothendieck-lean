@@ -139,7 +139,7 @@ theorem scale_le_of_checked {l : ℚ} {t τ : ℝ} {band : SparseStein.ScaleBand
     (hc : ScaleChecked l band) (hl : (l : ℝ) ≤ t)
     (hτ : 0 ≤ τ) (h93 : τ ≤ 93/100) (hphys : physicalScale t τ) :
     (row08.delta : ℝ)*τ ≤ band.stop := by
-  have hd := (Rat.cast_pos (K := ℝ)).mpr row08_delta_pos
+  have hd : (0 : ℝ) < row08.delta := Rat.cast_pos.mpr (by decide +kernel)
   rcases hc with rfl | ⟨hstop,hcut⟩
   · simpa [SparseStein.ScaleBand.stop] using mul_le_mul_of_nonneg_left h93 hd.le
   · let μ := Real.sqrt Real.pi / 2
@@ -168,8 +168,8 @@ theorem scale_le_of_checked {l : ℚ} {t τ : ℝ} {band : SparseStein.ScaleBand
         (sub_le_sub (mul_le_mul_of_nonneg_left hm hA) hl) hmt
         (mul_nonneg (by norm_num) (mul_nonneg (hm0.le.trans hm) hC.le))
     have hclosed : 2*((meanUpper:ℝ)*C)*(A*meanUpper-l)*(row08.delta:ℝ)^2 ≤ (band.stop:ℝ)^2 := by
-      have h : 2*(2129/2166 : ℝ)*meanUpper*((2167/2166 : ℝ)*meanUpper-l)*(row08.delta:ℝ)^2 ≤
-          (band.stop:ℝ)^2 := by exact_mod_cast hcut
+      have h := (Rat.cast_le (K := ℝ)).mpr hcut
+      push_cast at h
       dsimp [A,C]
       nlinarith only [h]
     have hh := (mul_le_mul_of_nonneg_right (hp.trans hprod) (sq_nonneg (row08.delta : ℝ))).trans hclosed
