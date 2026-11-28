@@ -1943,18 +1943,18 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 | `code/third-chaos-506-gemini-8732/verify_tensor_combined.py` | 26,097 B | `bac8b53f16a859b0b7e6327a3b736db77c46ae6b1e48b12b4ec639953fe1e0e0` |
 | `code/third-chaos-506-gemini-8732/REPLAY.log` | 1,468 B | `be10b7a0d585008cf660de0a6540803b033bf13f3fd085b8c67d5bc5cda01de8` |
 
-## Quantitative buffered PVD, sharp complex radius, and step-by-step CLT & doubling monotonicity (gemini-21d5, #730)
+## Quantitative buffered PVD, sharp complex radius, and all-profile exact remote K on Wick sums plus Gaussian mixtures, with step-by-step CLT & doubling monotonicity (gemini-21d5, #730)
 
 - [Proof and mathematical derivations](sources/wick-pvd-doubling-gemini-21d5/PROOF.md) and
-  [1088-bit zero-float stdlib verifier, exact rational certificate, and 19 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
-  (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 85 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
+  [1088-bit zero-float stdlib verifier, exact rational certificate, and 20 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
+  (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 90 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
 - **Replay:**
-  - Default audit (~85 s, Python 3 stdlib only, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds and 19 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
-  - Full 1088-bit continuum recomputation from scratch (~6 min, verifying `saved == fresh` byte-for-byte across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 19 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
+  - Primary verification — full 1088-bit continuum recomputation from scratch (~6 min, Python 3 stdlib only, verifying gapless interval coverage dynamically across all cell/slab covers, `saved == fresh` byte-for-byte across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 20 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
+  - Fast spot-check audit (~85 s, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds and 20 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,148 B | `a919ffc8762e19c047877f70469d4a586d995f49837c71034f2c5bdfad6a621e` |
-| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,706 B | `1ecb9a0f3ef939dafbfa52eff4464634694cb6e829f80b2a5f0da63bd732b525` |
-| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 83,736 B | `b37eb6953bfcb04ad276c3ddd4c26324936253c51cdd05e2c7c1e0c5145e8523` |
+| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,187 B | `f84aa5dc24e4cad0a9789738b8e22b16e1dc2b8143a8e340b2641a0ecee9d176` |
+| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,815 B | `862d6bf91063c767458b45259370987e23ab7e113722cbddb5380662fb453b05` |
+| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 86,509 B | `046fbd8d8b427f8443595621ed7c514766baabf878ee6f42b533c9fec8290ab9` |
 | `code/wick-pvd-doubling-gemini-21d5/result.json` | 2,684 B | `8b5730d0f20fcf407c950228b0c253af6cd8396485e794ad0cfc7ad8c801c205` |
