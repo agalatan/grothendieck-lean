@@ -15,8 +15,8 @@ The earlier `upper_below_tight` proof (`Grothe/UpperTightFinal.lean`, `K_G^ℂ <
 **Reading this inventory.** Most paragraphs describe one module or one result.
 Where a paragraph says that a result takes an estimate as a hypothesis, or that
 it gives no numerical bound, this describes that result; it is not an open
-input of the main theorems, which have no hypotheses. The generated root imports both the seven-channel proof used by
-`Grothe/MainResult.lean` and the independent single-channel proof. A module called
+input of the main theorems, which have no hypotheses. The generated root imports the upper proof used by
+`Grothe/MainResult.lean` (`Grothe/UpperBivar/`), the earlier angular-selector proof (`Grothe/UpperSelector/`) and the independent single-channel proof. A module called
 *archived* below has left the libraries and is not built or checked: a few
 modules that later work would reuse are kept in `abandonware/`, and the others
 are in git history only (`abandonware/README.md` lists both, with the commits). The value `1.404598149141` is the
@@ -1193,8 +1193,9 @@ uses the `Haagerup.Data` cell-witness and overlap-table facts (`Haagerup.Data.tc
 the linear floors and the contour checks of the first channel (`Haagerup.SixChannelExact.head_and_floors_ok`,
 `region_ok`, `mean_ok`). The disk and circle checks of the other five channels (`Haagerup.reg1_ok`–`reg5_ok`,
 `Haagerup.mean1_ok`–`mean5_ok`) and the rational tail comparisons reduce directly in the kernel. The upper-six
-allowlist is `data/axioms/modes/upper-six.native.txt`. The seven-channel root theorem adds the native
-comparison `Haagerup.AngularSelector.NumericWitness.budgets_ok` for the signed mixed head and the full selector allowance.
+allowlist is `data/axioms/modes/upper-six.native.txt`. The upper bound of `main_bounds` (`Grothe/UpperBivar/`) adds the native
+comparison `Haagerup.UpperBivar.budgets_ok` for the mixed head and the linear floors of its twelve preprocessors; their contour checks and tail bounds reduce in the kernel. The earlier angular-selector proof (`Grothe/UpperSelector/`, not used by `main_bounds`) has the native
+comparison `Haagerup.AngularSelector.NumericWitness.budgets_ok` for its signed mixed head and full selector allowance.
 The single-channel upper proof uses `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.Upper.improved_high_mass_native` (the two complete high-band masses

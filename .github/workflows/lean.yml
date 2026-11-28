@@ -280,11 +280,13 @@ jobs:
     # older check of the same branch, on GitHub-hosted and heavy runners alike (the build runs in its own process
     # group, killed whole on cancellation, so nothing is orphaned). Master: never cancelled; every master commit gets
     # its own check (a cancelled run marks its commit with a cross, and a long first build would be lost), so its
-    # group is per commit. Runs that really build the node caps (no verified cache, or mode=caps) are per run too:
+    # group is per commit. Staging (the freeze branch, AGENTS.md §6) too, and its older checks are not cancelled
+    # even after a newer one is green: each fork point keeps its own proof, which docs-only PRs based on it inherit
+    # (scripts/proof_scope.py, #888). Runs that really build the node caps (no verified cache, or mode=caps) are per run too:
     # hours of work that a push must not throw away.
     concurrency:
-      group: ${{ needs.route.outputs.caps_build == 'true' && format('caps-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('{0}-{1}', inputs.land && 'land' || 'check', github.ref)) }}
-      cancel-in-progress: ${{ needs.route.outputs.caps_build != 'true' && github.ref_name != 'master' }}
+      group: ${{ needs.route.outputs.caps_build == 'true' && format('caps-{0}', github.run_id) || ((github.ref_name == 'master' || github.ref_name == 'staging') && format('check-{0}-{1}', github.ref_name, github.sha) || format('{0}-{1}', inputs.land && 'land' || 'check', github.ref)) }}
+      cancel-in-progress: ${{ needs.route.outputs.caps_build != 'true' && github.ref_name != 'master' && github.ref_name != 'staging' }}
     env:
       LEAN: ${{ needs.route.outputs.lean }}
       DROPLET: ${{ needs.route.outputs.droplet }}

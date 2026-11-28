@@ -142,7 +142,7 @@ The certificate mixes the established Gaussian rounding channels of `Grothe/Uppe
 
 Every new disk positivity check, Hardy circle budget, and rational tail comparison reduces in Lean's kernel (`TaylorHardy`). The transfer takes absolute values after summing all interval heads, then adds their weighted tail caps. The resulting factor is `10^27 / 711969765819834623238463058`. [Bivariate mixture](Grothe/UpperBivar/Bound.lean) · [Exact parameters and budgets](docs/CONSTANTS.md#behind-the-upper-bound).
 
-An older proof with a single rounding channel is still in the repository. It is independent of the six-channel proof and gives the weaker bound $K_G^{\mathbb C}<1.404599395362$, which is above Haagerup's value. Its quadrature and energy-table construction are documented separately. [Single-channel proof](Grothe/UpperTightFinal.lean) · [Construction notes](docs/UPPER_STATUS.md).
+An older proof with a single rounding channel is still in the repository. It is independent of the upper proof of `main_bounds` and gives the weaker bound $K_G^{\mathbb C}<1.404599395362$, which is above Haagerup's value. Its quadrature and energy-table construction are documented separately. [Single-channel proof](Grothe/UpperTightFinal.lean) · [Construction notes](docs/UPPER_STATUS.md).
 
 ### What the computer checks and what is trusted
 
@@ -156,10 +156,10 @@ An older proof with a single rounding channel is still in the repository. It is 
   allowed facts are listed in `data/axioms/native.txt`: for the lower bound, the checks of the rows of the
   certificate and the node caps (chord nodes, ranges of nodes, pieces and their coverage); for the upper
   bound, the cell witnesses, the overlap tables, the weighted head with the lower bounds of the linear
-  coefficients, the disk and circle-mean checks of the first channel, and one comparison for the seven-channel
-  mixed head and full selector allowance. The mass row and the envelope of the lower
-  bound, the disk and circle-mean checks of the other five channels and the six rational tail comparisons reduce in
-  the kernel. The precise list is in the axiom report.
+  coefficients, the disk and circle-mean checks of the first channel, and one comparison for the mixed head and
+  linear floors of the twelve additional preprocessors (`Haagerup.UpperBivar.budgets_ok`). The mass row and the
+  envelope of the lower bound, the disk and circle-mean checks of the other five channels, those of the twelve
+  preprocessors and the rational tail comparisons reduce in the kernel. The precise list is in the axiom report.
 - **The axiom report** is produced and checked by
   `lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py`. The check fails if a theorem of
   `data/axioms/required.txt` (including `main_bounds` and the upper-bound theorems) is missing from the report, or if
@@ -178,8 +178,9 @@ An older proof with a single rounding channel is still in the repository. It is 
 | path | content |
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
-| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorem `main_bounds` with both bounds; the seven-channel upper bound and the comparison with Haagerup's value |
-| `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six-channel upper proof: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
+| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorem `main_bounds` with both bounds; the upper bound (`Grothe.UpperBivar.constant_le`) and the comparison with Haagerup's value |
+| `Grothe/UpperBivar/` | the certificate of the upper bound of `main_bounds`: twelve preprocessors added to the six channels of `UpperSixExact` (parameters generated from `data/upper-bivar/`, kernel-checked contours and tails, mixed head, `isBound`) |
+| `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six channels on which it builds: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
 | `haagerup-article/` | the article, frozen, with its own Lean package under `anc/` |
 | `Grothe/UpperClose.lean` | certified energy-table accuracy `hclose_final` |
 | `Grothe/UpperHead.lean`, `Grothe/HeadHardy.lean` | finite-head comparison and the Hardy tail after deducting the forced linear energy |
@@ -223,11 +224,11 @@ lake build Grothe.UpperResult
 lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six
 ```
 
-`Grothe.UpperResult` builds the upper proof independently of the lower node caps. The separate six-channel audit checks its inherited library and named computations. The repository-wide audit covers the seventh channel’s additional comparison. [Required theorems](data/axioms/modes/upper-six.required.txt) · [Six-channel native allowlist](data/axioms/modes/upper-six.native.txt).
+`Grothe.UpperResult` builds the upper proof independently of the lower node caps. The separate six-channel audit checks its inherited library and named computations. The repository-wide audit covers the additional comparison of `Grothe/UpperBivar/`. [Required theorems](data/axioms/modes/upper-six.required.txt) · [Six-channel native allowlist](data/axioms/modes/upper-six.native.txt).
 
 ### Full proof check
 
-CI runs `lake build Grothe` for the combined development, then checks the generated imports, the sources and both axiom reports. The combined build includes all lower node caps and the single-channel energy facts. A cold build takes several CPU-days. The upper-only command above is the local build for the seven-channel theorem. [Proof workflow](.github/workflows/lean.yml) · [Pinned dependencies and build costs](lakefile.toml).
+CI runs `lake build Grothe` for the combined development, then checks the generated imports, the sources and both axiom reports. The combined build includes all lower node caps and the single-channel energy facts. A cold build takes several CPU-days. The upper-only command above is the local build for the upper bound of `main_bounds`. [Proof workflow](.github/workflows/lean.yml) · [Pinned dependencies and build costs](lakefile.toml).
 
 ## Related work
 

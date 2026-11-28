@@ -122,8 +122,11 @@ The six original channels, their data and their checker are in
 and the two reflected channels feed interval coefficients. The phase channel
 uses its analytic Hermite coefficients. The finite check takes absolute values
 after mixing the signed coefficients. Each infinite tail is controlled by a
-mean on its own circle. The seventh channel, in \path{Grothe/UpperSelector/}, adds a Gaussian angular selector.
-A finite Fourier sum and the scalar phase expansion give its signed head and its full Wiener allowance.
+mean on its own circle. The certificate of the bound, in \path{Grothe/UpperBivar/}, adds twelve preprocessors
+to these six channels, acting on the same three certified maps: two reflected tiger channels at a steeper and a shallower scale,
+two odd phase polynomials of degrees 29 and 31, and eight smoothed cell channels whose second coordinate is a
+polynomial $t\,Q(t^2)$ with $Q(0)=0$, where $Q$ has degree at most three (so $t\,Q(t^2)$ has degree up to seven in $t$). For these eight cell channels, the smoothed second-coordinate covariance
+keeps these preprocessors strictly contractive on their Hardy circles, so their tails are again controlled by circle means.
 The advertised rational bound follows from the reciprocal
 gap in the transfer theorem. The production theorem applies to every finite
 complex matrix and uses the scalar and vector optima in \path{Grothe/Statement.lean}.
@@ -831,15 +834,15 @@ class, at every odd amplitude and sharing. These are separate subclasses;
 odd sectors over A/B cores remain open. Neither result is a premise of the Lean endpoint.
 
 \section{What exactly the computer checks}\label{sec:trust}
-The six-channel proof checks the Hardy-space disk and circle-mean contours of five channels
-(\lean{TaylorHardySound.lean}) and the rational tail comparisons directly in
-Lean's kernel. \lean{native\_decide} is used for the two bounded cell-map
+For the six channels of the upper proof, Lean's kernel checks the Hardy-space disk and circle-mean contours of five
+of them (\lean{TaylorHardySound.lean}) and the rational tail comparisons directly. \lean{native\_decide} is used for the two bounded cell-map
 norm witnesses and their overlap tables, for the weighted head with the six
 lower bounds of the linear coefficients, and for the contour of the first channel
 (\path{Grothe/UpperSixExact/}). Their soundness is proved in Lean.
-The seven-channel proof adds one \lean{native\_decide} comparison for the mixed head and selector allowance.
+The twelve preprocessors of \path{Grothe/UpperBivar/} have all their disk and circle-mean contours and tail bounds
+checked in the kernel; they add one \lean{native\_decide} comparison, for the mixed head and the linear floors.
 The physical meaning and the error budget of each integer are proved in the kernel.
-The six-channel report is in \path{scratch/UpperSixAxioms.lean}.
+The report of the six channels is in \path{scratch/UpperSixAxioms.lean}; the repository-wide report covers the whole upper proof.
 The discussion below also records the independent single-channel proof and the
 lower certificates.
 \begin{center}\small
