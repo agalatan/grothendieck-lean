@@ -9,7 +9,7 @@ records how the new witness was found and certified:
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
 K ≈ 1.40212 (ledger 3.1). **The integer certificate is complete** (ledger 5.1): an exact envelope over t ∈ [0, 0.9]
 stays below the design target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵; its exact maximum gives
-1/B = 1.4019105…. The current proof uses the same node caps. The central rows share nineteen fourth-excess intervals and gain a quadratic discount from the Schur curvature. The ordinary rows 13 and 14 share the amplitude interval containing their crossover. The final amplitude cover has 38 cells. The original identity-tail endpoint is 25000000000000/17831387166289 (`SparseEnvelope.endpoint_eq` in `Grothe/Lower/Cert/SparseEnvelope.lean`). Ledger §6 records the node-cap port.
+1/B = 1.4019105…. The current proof uses the same node caps. The central rows share nineteen fourth-excess intervals and gain a quadratic discount from the Schur curvature. The ordinary rows 13 and 14 share the amplitude interval containing their crossover. The final amplitude cover has 38 cells. The original identity-tail endpoint is 25000000000000/17831387166289 (`SparseEnvelope.endpoint_eq` in `Grothe/Lower/Cert/SparseEnvelope.lean`). Ledger §6 records the node-cap port. The [physical residual-scale proof](PHYSICAL_RICE.md) gives the paper endpoint 100000000000000/71325509501647 with those same inputs.
 
 It is research material: nothing here is imported by Lean or checked by CI. The Lean proof itself lives in `Grothe/`
 (the witness, the rows, the envelope and the tail node caps; `docs/LEAN_DETAILS.md`), ported as ledger §6 describes.

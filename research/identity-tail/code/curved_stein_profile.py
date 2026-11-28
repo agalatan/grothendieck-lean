@@ -55,7 +55,7 @@ def curvature(i, j):
     return lower
 
 
-def weighted_segments(src, prices, curve):
+def weighted_segments(src, prices, curve, *, central_endpoints=None):
     """Yield the normalized quadratic on each closed amplitude segment."""
     for n,(lo,hi,i,j,old_weight) in enumerate(src.cells):
         rows = dict(src.rows)
@@ -75,6 +75,8 @@ def weighted_segments(src, prices, curve):
         for l,h,w,z in affine_pieces(rows,i,j,lo,hi,old_weight):
             dw,dz = price(w),price(z)
             extra = curve(w,z) if (i,j)==(8,9) else Q(0)
+            if (i,j)==(8,9) and central_endpoints is not None:
+                dw,dz,extra = central_endpoints(n,l,h,w,z)
             def f(x):
                 t,theta = l+x*(h-l),w+x*(z-w)
                 return (t**2-2*((1-theta)*el+theta*er)*t+(1-theta)*C+theta*D
@@ -84,10 +86,10 @@ def weighted_segments(src, prices, curve):
             yield n, i, j, l, h, (a, y1-y0-a, y0)
 
 
-def weighted_profile(src, prices, curve):
+def weighted_profile(src, prices, curve, *, central_endpoints=None):
     maxima = []
     outer_maxima = []
-    for n, i, j, l, h, coeffs in weighted_segments(src, prices, curve):
+    for n, i, j, l, h, coeffs in weighted_segments(src, prices, curve, central_endpoints=central_endpoints):
         val, at = quadratic_maximum(coeffs, Q(0), Q(1), True)
         maxima.append((val, n))
         if (i, j) != (8, 9):
