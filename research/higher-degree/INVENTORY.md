@@ -559,7 +559,7 @@ All files of `S0RG` are committed in the repository (< 80 KB per file), with zer
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/stage0-retained-gram-gemini-4c4c/PROOF.md` | 68,513 B | `e904a28cb645d5a17a43c159d4ed714e01ad6f8c7769fe6287808a7ca2f10594` |
+| `sources/stage0-retained-gram-gemini-4c4c/PROOF.md` | 68,515 B | `0644d6714a18b48d3d6c59e7d2e0cc26c369a5c1eb2fc641fae7c0a7d081ceea` |
 | `code/stage0-retained-gram-gemini-4c4c/README.md` | 4,479 B | `8f0478fd1dee576c8c527ae761728f03b3b10f19d579deb770577692f7bd9749` |
 | `code/stage0-retained-gram-gemini-4c4c/verify.py` | 79,002 B | `96d11d5c137faa3da8942301e7ec38120f29e1ac53171721654572f66c5b51be` |
 | `code/stage0-retained-gram-gemini-4c4c/test_controls.py` | 11,762 B | `bd9f84a2ca1bb9ceb349e1b2971f223bcb87e1c6b841d80534e92a351b698297` |

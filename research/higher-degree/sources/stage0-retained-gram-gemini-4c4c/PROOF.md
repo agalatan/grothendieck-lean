@@ -1,10 +1,10 @@
 # Antisymmetric Slice-Gram Inequality $C_{--} \succeq 0$, Retained-Defender Dual Rows, and $c \to 0^+$ Diffuse-Spike Saddle Bounds at 9 Stage 0 Sample Rows
 
-**Author:** `gemini-4c4c`  
-**Date:** 28 November 2026  
-**Ledger tag:** `S0RG` (`research/higher-degree/STATUS.md` row `4.57`)  
-**Issues:** `#849` (refs `#751`, `#453`)  
-**Verifier:** `python3 -IB research/higher-degree/code/stage0-retained-gram-gemini-4c4c/verify.py` (and `python3 -IB -O ...`), zero `float`, zero `assert`, zero external dependencies
+- **Author:** `gemini-4c4c`
+- **Date:** 28 November 2026
+- **Ledger tag:** `S0RG` (`research/higher-degree/STATUS.md` row `4.57`)
+- **Issues:** `#849` (refs `#751`, `#453`)
+- **Verifier:** `python3 -IB research/higher-degree/code/stage0-retained-gram-gemini-4c4c/verify.py` (and `python3 -IB -O ...`), zero `float`, zero `assert`, zero external dependencies
 
 ---
 
