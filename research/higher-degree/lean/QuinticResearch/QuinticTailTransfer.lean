@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.QuinticSmallAmplitude
+import QuinticResearch.QuinticSmallAmplitude
 import Grothe.LowerAnalytic.SparseSteinBound
 
 /-!

@@ -1,5 +1,5 @@
-import Grothe.LowerAnalytic.QuinticVisiblePhase
-import Grothe.LowerAnalytic.QuinticTailTransfer
+import QuinticResearch.QuinticVisiblePhase
+import QuinticResearch.QuinticTailTransfer
 import Grothe.Lower.Cert.SparseEnvelope
 
 /-!

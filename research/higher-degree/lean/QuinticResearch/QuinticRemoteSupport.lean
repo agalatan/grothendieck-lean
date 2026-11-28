@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.QuinticEllipse
+import QuinticResearch.QuinticEllipse
 import Grothe.LowerAnalytic.Frame
 import Mathlib.Probability.IdentDistribIndep
 import Mathlib.Probability.HasLaw

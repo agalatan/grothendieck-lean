@@ -1,6 +1,6 @@
 import Grothe.LowerAnalytic.CapPolar
-import Grothe.LowerAnalytic.QuinticDiffuseCarrier
-import Grothe.LowerAnalytic.QuinticRemoteSupport
+import QuinticResearch.QuinticDiffuseCarrier
+import QuinticResearch.QuinticRemoteSupport
 import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 import Mathlib.MeasureTheory.Integral.Layercake
 

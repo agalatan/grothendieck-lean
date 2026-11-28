@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.QuinticWitness
+import QuinticResearch.QuinticPureWitness
 import Grothe.LowerAnalytic.FibreIntegral
 import Grothe.LowerAnalytic.Frame
 

@@ -1,7 +1,7 @@
 # research/
 
 Research notes on open problems behind the bounds of this repository. **Nothing here is a proof that the repository
-relies on.** The proved results are the Lean theorems under `Grothe/` (see the top-level `README.md` and
+relies on.** The published bounds are Lean theorems under `Grothe/` (see the top-level `README.md` and
 `docs/LEAN_DETAILS.md`); this folder records what is known, conjectured, tried and refuted about statements that are
 still open, so that a worker (human or AI) can start from an organised record instead of a pile of session files.
 
@@ -9,10 +9,9 @@ still open, so that a worker (human or AI) can start from an organised record in
 (`Grothe.Statement.main_bounds`; every constant is stated exactly in [`docs/CONSTANTS.md`](../docs/CONSTANTS.md)).
 The dated notes retain their original targets. The open targets and ceilings of individual methods are identified in the ledgers.
 
-- **Not built, not checked.** No Lean module imports anything from here, `tools/gen_root_imports.py` does not scan
-  it, and CI neither builds nor tests it. A change that touches only `research/` gets the status
-  "Lean proof check (no proof change)".
-- **Text only.** Markdown, LaTeX and plain-text notes, scripts (`.py`, `.mjs`, `.cpp`) and small JSON result files.
+- **Verification.** The production Lean root imports no research module. The [optional degree-five Lean package](higher-degree/lean/README.md)
+  has its own build target and axiom report. The production CI proof check covers the modules under `Grothe/`.
+- **Source files.** Markdown, LaTeX and plain-text notes, scripts (`.py`, `.mjs`, `.cpp`), Lean research modules and small JSON result files.
   Zips, certificates above 300 KB, logs, binaries and PDFs stay outside the repository; each subfolder has an
   `INVENTORY.md` that says where they are, with sizes and SHA-256 hashes of the important ones. A log is kept only
   where it is small and a note cites it as its record (each `INVENTORY.md` names such exceptions).

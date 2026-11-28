@@ -1,6 +1,6 @@
-import Grothe.LowerAnalytic.GaussianBlockEmbedding
-import Grothe.LowerAnalytic.QuinticDiffuseCarrier
-import Grothe.LowerAnalytic.QuinticRemoteSupport
+import QuinticResearch.GaussianBlockEmbedding
+import QuinticResearch.QuinticDiffuseCarrier
+import QuinticResearch.QuinticRemoteSupport
 
 /-!
 # The physical remote cubic lift

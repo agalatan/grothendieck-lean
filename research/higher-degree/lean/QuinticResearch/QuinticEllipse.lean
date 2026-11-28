@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.QuinticSmallAmplitude
+import QuinticResearch.QuinticSmallAmplitude
 
 /-!
 # The elliptic cubic lift in the degree-five scalar payoff

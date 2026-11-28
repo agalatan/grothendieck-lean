@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.QuinticRemoteSupport
+import QuinticResearch.QuinticRemoteSupport
 
 /-!
 # Signed tests for a physical phase pair

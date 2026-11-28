@@ -1,5 +1,5 @@
-import Grothe.LowerAnalytic.GaussianBlockEmbedding
-import Grothe.LowerAnalytic.QuinticSignedSupport
+import QuinticResearch.GaussianBlockEmbedding
+import QuinticResearch.QuinticSignedSupport
 import Grothe.LowerAnalytic.Potential
 
 /-!

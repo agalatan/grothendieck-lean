@@ -1,5 +1,5 @@
 import Grothe.LowerAnalytic.MassRowFrame
-import Grothe.LowerAnalytic.QuinticWitness
+import QuinticResearch.QuinticPureWitness
 
 /-!
 # A scalar cap for the low-amplitude degree-five witness

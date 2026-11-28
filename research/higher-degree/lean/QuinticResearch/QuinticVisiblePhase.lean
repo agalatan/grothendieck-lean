@@ -1,6 +1,6 @@
-import Grothe.LowerAnalytic.QuinticVisibleMoments
-import Grothe.LowerAnalytic.QuinticVisibleReduction
-import Grothe.LowerAnalytic.QuinticPhaseStability
+import QuinticResearch.QuinticVisibleMoments
+import QuinticResearch.QuinticVisibleReduction
+import QuinticResearch.QuinticPhaseStability
 
 /-! Coordinate projection of the pure visible phase. Agent-ID: codex-a7c4 -/
 namespace Grothe.LowerAnalytic

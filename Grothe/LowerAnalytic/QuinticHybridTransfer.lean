@@ -1,4 +1,5 @@
-import Grothe.LowerAnalytic.QuinticSmallAmplitude
+import Grothe.LowerAnalytic.QuinticWitness
+import Grothe.StatementBridges
 import Grothe.LowerAnalytic.LowerBoundTight
 
 /-!
@@ -143,16 +144,3 @@ theorem retunedHybrid_transferInputs_of_profile
 
 end
 end Grothe.LowerAnalytic
-
-namespace Grothe.Statement
-open Grothe.Lower Grothe.LowerAnalytic
-
-/-- The strictly rounded decimal for the actual retuned degree-five witness. -/
-theorem lower_14020236979_of_retunedHybrid
-    (hT : TransferInputsL2 (713254705661/1000000000000)) (hne : ∃ K, IsBound K) :
-    (14020236979/10000000000 : ℝ) < complexGrothendieckConstant := by
-  have hlow : 1/(713254705661/1000000000000:ℝ) ≤ complexGrothendieckConstant :=
-    le_csInf hne fun K hK => transfer_lower hT (isBound_iff.mp hK)
-  exact (by norm_num : (14020236979/10000000000 : ℝ) < 1/(713254705661/1000000000000:ℝ)).trans_le hlow
-
-end Grothe.Statement
