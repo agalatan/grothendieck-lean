@@ -54,7 +54,7 @@ def _run_integration_control(task):
         by_id["gA_0.80"]["cap_upper"] = "7/20"
         expect_fail(
             lambda: V.verify_certificate(c, repo_root, only_row="gA_0.80", jobs=1, quiet=True, _test_hypothesis_override=True),
-            "Dropping C_-- >= 0 on gA_0.80 must fail < 7/20",
+            "Dropping n + b - 3y + z >= 0 on gA_0.80 must fail < 7/20",
         )
         return kind
 
@@ -112,13 +112,13 @@ def main():
         passed += 1
         print("  [4/24] AST audit rejects assert statement: OK")
 
-    # 5. Dropping C_-- >= 0 admits the rational 5-scalar counterexamples (14/5 > 25/9 and 3 > 8/3):
+    # 5. Dropping n + b - 3y + z >= 0 admits the rational 5-scalar counterexamples (14/5 > 25/9 and 3 > 8/3):
     expect_fail(
         lambda: V.verify_gram_and_sos_identities(gram_cone_flags={"include_c_mm": False}),
-        "Dropping C_-- >= 0 from 5-scalar Gram cone",
+        "Dropping n + b - 3y + z >= 0 from 5-scalar Gram cone",
     )
     passed += 1
-    print("  [5/24] Dropping C_-- >= 0 admits counterexample (9/16,1,9/16,3/4,3/4) and is rejected: OK")
+    print("  [5/24] Dropping n + b - 3y + z >= 0 admits counterexample (9/16,1,9/16,3/4,3/4) and is rejected: OK")
 
     # 6. SHA-256 provenance tampering on rows_all.lines:
     c6 = copy.deepcopy(cert_doc)
@@ -189,8 +189,19 @@ def main():
         if r["id"] == "gA_0.80":
             r["cap_upper"] = "1"
     expect_fail(lambda: V.verify_certificate(c_loose_cap, repo_root, only_row="gA_0.80", jobs=1, quiet=True), "Loosened cap_upper=1 on gA_0.80")
+    # The printed interval for gA at 0.85 lies strictly above 7/20 at the recorded scale.
+    weak_interval = copy.deepcopy(cert_doc)
+    exceptional = next(row for row in weak_interval["rows"] if row["id"] == "gA_0.85")
+    exceptional["certified"]["retained_all_dim"][0] = 7 * V.S // 20
+    error = expect_fail(lambda: V.verify_certificate(weak_interval, repo_root, only_row="gC_0.80"),
+                        "gA_0.85 lower endpoint at 7/20")
+    V.check("retained lower endpoint" in error, error)
+    wrong_scale = dict(cert_doc, scale_S=2 * V.S)
+    error = expect_fail(lambda: V.verify_certificate(wrong_scale, repo_root, only_row="gC_0.80"),
+                        "mismatched receipt interval scale")
+    V.check("interval scale" in error, error)
     passed += 1
-    print("  [14/24] Loosened cap_upper='1' on gA_0.80 rejected even under --only-row: OK")
+    print("  [14/24] Altered cap, retained lower endpoint, and receipt scale rejected under --only-row: OK")
 
     c_disable_sos = copy.deepcopy(cert_doc)
     for r in c_disable_sos["rows"]:
@@ -236,7 +247,7 @@ def main():
     passed += 5
     print("  [19/24] Mathematical control: dropping retained defenders on g84_0.80 violates < 7/20: OK")
     print("  [20/24] Mathematical control: dropping retained defenders on g84_0.84 violates < 1 (theta > 0): OK")
-    print("  [21/24] Mathematical control: dropping C_-- >= 0 on gA_0.80 violates < 7/20: OK")
+    print("  [21/24] Mathematical control: dropping n + b - 3y + z >= 0 on gA_0.80 violates < 7/20: OK")
     print("  [22/24] Mathematical control: false overly tight cap 1/5 = 0.20 on g84_0.80 rejected: OK")
     print("  [23/24] Certificate bracket tampering on gC_0.80 rejected: OK")
 
