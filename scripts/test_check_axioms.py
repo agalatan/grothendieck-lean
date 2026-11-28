@@ -41,7 +41,7 @@ class CheckAxiomsTests(unittest.TestCase):
 
     def test_existing_policy_headlines_and_native_restrictions(self):
         headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
-                     "Grothe.Statement.sparse_stein_endpoint", "Grothe.UpperSix.bound",
+                     "Grothe.Statement.first_chaos_endpoint", "Grothe.UpperSix.bound",
                      "Grothe.UpperBivar.bound", "Grothe.UpperBivar.constant_le",
                      "Grothe.UpperBivar.constant_lt_inv_gammaDagger",
                      "Grothe.LowerAnalytic.tailNodeCaps_cert",
