@@ -125,6 +125,7 @@ at 1.455u\* (0.74), 0.4000 at 1.492u\* (0.76), 0.5232 at 1.448u\* (0.78).
   weaker floor (2c²/(c + 1)²) missed them by 0.001–0.019; with it the Gamma-shape values were 0.2281–0.2402 at
   1.449u\* (up to 3.4 % above the allowance). With the intermediate "Wick" floor 2c²(3c + 5)/(3(c + 1)³) the
   Gamma-shape values are 0.1924–0.1979 at 1.449u\* and 0.1786–0.1838 at 1.612u\*.
+- **Exact cancellation (P, author only).** At a = 0, opposite cofactor coefficients with a zero third entry, and three equilateral coefficients, have zero content for every bulk law and weight. These are the only nonzero coefficient directions with cancellation for every bounded continuous profile across weights. [Proof, a numerator bound near symmetry, and exact controls](../../cluster-cancellation-codex-062a/PROOF.md)
 - **The shape of the law matters at the 10 % level (N).** Two-point laws of G with the same first two moments give
   ratios 9–11 % above the Gamma shape at the stored maximisers; the exact Beta law at c = 4 (H ≡ 1) gives
   0.1548–0.1573 and 0.1680–0.1709 at 1.612u\* and 1.449u\*, below the Gamma shape with the same κ.
