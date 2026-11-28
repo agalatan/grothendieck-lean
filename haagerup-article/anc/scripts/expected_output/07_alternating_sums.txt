@@ -34,6 +34,8 @@ Full alternating sums W(h^(p)) = head sum +- tau_p
   [ok] (interval) channels 3, 4 (R(-1) = 1) have one common value of W: their enclosures intersect in [0.712901282238531, 0.712901282244532]
   [ok] (interval) 0.712901282238 < W < 0.712901282245 for channel 4 (paper)
   W(reflected) - gamma-dagger in [9.42622460e-04, 9.42622467e-04]
+  [ok] (interval) W - gamma-dagger = 9.42622...e-4 for channels 3, 4 (paper)
+  [ok] (interval) the tail bound of channel 3 alone gives W < 0.7129013931 (paper), and not W < 0.712901282245
   channel 2: sigma = P_2(-1) = 0.998613877434; W = sum_m (-1)^m r_m sigma^(2m+1)
   [ok] (interval) |W| <= gamma-dagger for channel 2
 
@@ -45,9 +47,10 @@ The ceiling W(H) = sum_p w_p W(h^(p)) of the mixture
   [ok] (interval) W(H) < 0.711975481 (paper)
   c - delta = 0.711968053274152
   [ok] (exact) 0.711968053 < c - delta
+  [ok] (exact) 0.711975481 - 0.711968053 = 7.428e-06 < 7.5e-6 (paper: the certified slope is within 7.5e-6 of the alternating sum)
   [ok] (interval) c - delta <= W(H) (consistent with D(H) <= W(H)); W(H) - (c - delta) in [7.136526e-06, 7.231070e-06]
   [ok] (interval) max_p W(h^(p)) < 0.712901282245: no mixture of these six channels has slope above it
   1 / 0.712901282245 = 1.402718756
   [ok] (exact) 1 / 0.712901282245 > 1.40271: such mixtures give no bound below 1.40271 (paper)
 
-RESULT: all 12 checks passed
+RESULT: all 15 checks passed

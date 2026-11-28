@@ -1,24 +1,40 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.CellHermite
 import Haagerup.SchurHardy
 import Mathlib.Analysis.Calculus.Deriv.Polynomial
 
+/-!
+# Soundness of the Laguerre integrals and of the overlap computation
+
+Soundness proofs for the executable programs of `HaagerupKernel/CellKernel.lean` that implement Appendix A.2
+(Laguerre integrals over the cells) and Appendix A.3 (the overlaps of the reflected pair) of the article, and the
+shared ingredients of Appendix A.4 (the energies of the smoothed map).
+
+1. Interval arithmetic at scale `2⁻¹⁰²⁴` (Appendix A.1): `memLag x iv` says that the pair of integers `iv` encloses
+   `x`; the operations `ivAddL`, `ivSubL`, `ivMulIntL`, `ivDivPosL` preserve enclosures.
+2. The exponentials `exp (-sᵢ)` at the grid points `sᵢ = (3i / 32)²` (`expNegS_sound`).
+3. The Laguerre integrals `I_{n,α,i}` of (A.2), which are `cellLagInt α n i` in Lean: the case `n = 0` and the
+   boundary terms (`f0AndBdy0_sound`), the recurrences (A.3), and `lagTable1024_sound`: the table `lagTable1024`
+   encloses `I_{n,α,i}` for `α ≤ 18`, `n ≤ 250`, `i < 64`.
+4. Reduction to midpoints (`midpoint_err_le_one`, `toMid_sound_lag`), the error (A.1) of a dot product of midpoints
+   (`dotMidErr`), the table of binomial coefficients, and `modeOverlapsAt_sound`: steps (1)–(3) of Appendix A.3.
+5. `mem_muTigOf`, the soundness of Computation 2 (overlaps): if `tigMuCheck creArr cimArr tigMuList = true`, the
+   `k`-th interval of `tigMuList` contains the overlap `muTigOf creArr cimArr k` for every `k < 251`.
+6. Ingredients of Appendix A.4, assembled in `Smoothed*.lean` and `CellOverlap.lean`: the shape of the table of rows
+   (`flatIdx_ofFn_props`), the numbers `χ` of step (1) (`bTable1024_sound`, `extractBMids_sound`), the lookup of the
+   numbers `g` of step (2) (`gLookup704_sound_of_mid`), and the inner and outer sums of steps (3) and (4)
+   (`t1Cell_sound`, `dotT1_sound`).
+
+As in `CellHermite.lean`, the polynomials are `rTilde n α = (-1)ⁿ L_n^{(α)}`, and the integrals are written in the
+variable `r = √s`.
+-/
+
 set_option warningAsError true
 set_option maxRecDepth 2000
 set_option exponentiation.threshold 2048
-
-/-!
-# Soundness of `lagTable1024`, `computeTigMu` and the smoothed row checker
-
-Proves:
-1. Soundness of 1024-bit integer interval arithmetic (`ivAddL`, `ivSubL`, `ivMulIntL`, `ivDivPosL`),
-   `expNegSArr`, `f0AndBdy0`, `lagRecLoop`, and `lagTable1024`;
-2. Soundness of `binomArr251`, `bTable1024`, `extractBMids`, `modeOverlapsAt`, and `dotMidErr`;
-3. `mem_muTigOf`: `computeTigMu creArr cimArr = (true, tigMuList)` implies
-   `∀ k < 251, mem (muTigOf creArr cimArr k) (tigMuList.getD k zeroI)`;
-4. The ingredients of the smoothed row checker `computeSmoothedRows` (`flatIdx_ofFn_props`, `bTable1024_sound`,
-   `extractBMids_sound`, `t1Cell_sound`, `dotT1_sound`), assembled in `SmoothedRows.lean` and `CellOverlap.lean`.
-
--/
 
 namespace Haagerup
 
@@ -55,6 +71,8 @@ private lemma list_ofFn_getD {α : Type*} {n : ℕ} (f : Fin n → α) (i : ℕ)
 
 /-! ### 1. 1024-bit integer-interval soundness (`dLag = 2¹⁰²⁴`) -/
 
+/-- `memLag x iv`: the pair of integers `iv = (lo, hi)` encloses the real number `x` at scale `2⁻¹⁰²⁴`, that is,
+`lo ≤ x * 2¹⁰²⁴ ≤ hi` (Appendix A.1 (interval arithmetic), with `dLag = 2¹⁰²⁴`). -/
 def memLag (x : ℝ) (iv : Int × Int) : Prop :=
   (iv.1 : ℝ) ≤ x * (dLag : ℝ) ∧ x * (dLag : ℝ) ≤ (iv.2 : ℝ)
 
@@ -110,6 +128,7 @@ lemma ivDivPosL_sound {x : ℝ} {a : Int × Int} (hx : memLag x a) {d : ℤ} (hd
 
 /-! ### 2. Soundness of `expNegS` (`exp(-9 i² / 1024)` for `i ≤ 64`) -/
 
+/-- The partial sum `∑_{k ≤ M} xᵏ / k!` of the exponential series. -/
 private def expPartial (M : ℕ) (x : ℝ) : ℝ :=
   ∑ k ∈ range (M + 1), x ^ k / (k.factorial : ℝ)
 
@@ -257,6 +276,7 @@ private lemma expPosLoop_sound {i : ℕ} (sNum : ℤ) (hsNum : sNum = Int.ofNat 
     simpa [show k + (rem + 1) = k + 1 + rem by omega,
       show k - 1 + (rem + 1) = k + rem by omega] using ih
 
+/-- The pair `expNegS i` encloses `exp (-sᵢ)`, `sᵢ = (3i / 32)²`, for `i ≤ 64` (Appendix A.2, exponentials). -/
 theorem expNegS_sound {i : ℕ} (hi : i ≤ 64) :
     memLag (Real.exp (-(3 * (i : ℝ) / 32) ^ 2)) (expNegS i) := by
   unfold expNegS
@@ -364,12 +384,17 @@ lemma expNegSArr_sound {i : ℕ} (hi : i ≤ 64) :
 
 /-! ### 3. Soundness of `f0AndBdy0`, `lagRecLoop`, and `lagTable1024` -/
 
+/-- The integral `∫₀ʳ 2 t^(a+1) exp (-t²) dt`, which is `g_a(r²) = ∫₀^{r²} u^(a/2) exp (-u) du` in the notation of
+Appendix A.2 (the case `n = 0`). -/
 def F0Val (a : ℕ) (r : ℝ) : ℝ :=
   ∫ t in (0 : ℝ)..r, 2 * t ^ (a + 1) * Real.exp (-t ^ 2)
 
+/-- The boundary term `r^(a+2) exp (-r²) (rTilde n a)(r²)`: the function `b_{n,a}` of Appendix A.2 at `s = r²`, with the
+polynomial `rTilde n a = (-1)ⁿ L_n^{(a)}`. -/
 def bdyVal (a n : ℕ) (r : ℝ) : ℝ :=
   r ^ (a + 2) * Real.exp (-r ^ 2) * (rTilde n a).eval (r ^ 2)
 
+/-- The coefficient `2^(k+1) / ((a + 2) (a + 4) ⋯ (a + 2k + 2))` of the series for `g_a` in Appendix A.2. -/
 private def gamCoeff (a : ℕ) : ℕ → ℝ
   | 0 => 2 / (a + 2 : ℝ)
   | k + 1 => gamCoeff a k * (2 / (a + 2 + 2 * (k + 1) : ℝ))
@@ -378,6 +403,7 @@ private lemma gamCoeff_pos (a : ℕ) : ∀ k : ℕ, 0 < gamCoeff a k
   | 0 => by unfold gamCoeff; positivity
   | k + 1 => by unfold gamCoeff; have := gamCoeff_pos a k; positivity
 
+/-- The `k`-th term `gamCoeff a k * r^(a + 2 + 2k) * exp (-r²)` of the series for `F0Val a r`. -/
 private def gamTerm (a k : ℕ) (r : ℝ) : ℝ :=
   gamCoeff a k * r ^ (a + 2 + 2 * k) * Real.exp (-r ^ 2)
 
@@ -542,6 +568,8 @@ private lemma gamSeriesLoop_sound {a i : ℕ} (sNum9 : ℤ) (hs : sNum9 = Int.of
     simpa [show k + (rem + 1) = k + 1 + rem by omega,
       show k - 1 + (rem + 1) = k + rem by omega] using ih
 
+/-- The two pairs computed by `f0AndBdy0` enclose `F0Val a rᵢ` and `bdyVal a 0 rᵢ` at the grid point `rᵢ = 3i / 32`,
+`i ≤ 64` (Appendix A.2, the case `n = 0`). -/
 theorem f0AndBdy0_sound (a : ℕ) {i : ℕ} (hi : i ≤ 64) :
     let res := f0AndBdy0 expNegSArr a i
     memLag (F0Val a (3 * (i : ℝ) / 32)) res.1 ∧
@@ -818,6 +846,9 @@ private lemma lagRecLoop_sound (a : ℕ) :
     simpa [show n + 1 + rem = n + (rem + 1) by omega,
       show n + 1 + 1 + rem = n + 1 + (rem + 1) by omega] using ih
 
+/-- Soundness of the table of Laguerre integrals (Appendix A.2): for `a ≤ 18`, `n ≤ 250`, `i < 64`, the entry
+`(a, n, i)` of `lagTable1024` encloses `cellLagInt a n i`, the integral `I_{n,a,i}` of (A.2) (for the polynomial
+`(-1)ⁿ L_n^{(a)}`), at scale `2⁻¹⁰²⁴`. -/
 theorem lagTable1024_sound {a n i : ℕ} (ha : a < 19) (hn : n ≤ 250) (hi : i < 64) :
     memLag (cellLagInt a n i)
       (((lagTable1024.getD a #[]).getD n #[]).getD i (0, 0)) := by
@@ -856,8 +887,6 @@ theorem lagTable1024_sound {a n i : ℕ} (ha : a < 19) (hn : n ≤ 250) (hi : i 
   exact hout.2 n (by omega) i hi
 
 /-! ### 4. Midpoint, Dot-Product, Binomial, and `modeOverlapsAt` Soundness -/
-
-set_option maxRecDepth 2000
 
 @[simp] lemma mulSkipZero_eq (g b : ℤ) : mulSkipZero g b = g * b := by
   unfold mulSkipZero
@@ -1133,8 +1162,7 @@ private theorem sumInt_congr_lt {n : ℕ} {f g : ℕ → ℤ} (h : ∀ i < n, f 
 section
 attribute [local irreducible] Array.ofFn sumInt maxAbsInt
 
-set_option maxHeartbeats 800000 in
-/-- Shared soundness theorem for `modeOverlapsAt`. -/
+/-- Soundness of `modeOverlapsAt`, used for the overlaps (Appendix A.3) and for the energies (Appendix A.4). -/
 theorem modeOverlapsAt_sound {bLag : ℕ} (hbLag : bLag ≤ 1024)
     {shLag shDot : ℤ} (hshLag : shLag = (2 : ℤ) ^ (1024 - bLag)) (hshDot : 0 < shDot)
     {tbl : Array (Array (Array (Int × Int)))}
@@ -1277,8 +1305,8 @@ theorem modeOverlapsAt_sound {bLag : ℕ} (hbLag : bLag ≤ 1024)
   have interval {x y : ℝ} {c r : ℤ} (hscale : y * (shDot : ℝ) = x)
       (h : -(r : ℝ) ≤ x - (c : ℝ) ∧ x - (c : ℝ) ≤ (r : ℝ)) :
       (((ivDivPosL (c - r, c + r) shDot).1 : ℤ) : ℝ) ≤ y ∧
-        y ≤ (((ivDivPosL (c - r, c + r) shDot).2 : ℤ) : ℝ) := by
-    exact ⟨ediv_le_of_mul hshDot (by rw [hscale, Int.cast_sub]; linarith only [h.1]),
+        y ≤ (((ivDivPosL (c - r, c + r) shDot).2 : ℤ) : ℝ) :=
+    ⟨ediv_le_of_mul hshDot (by rw [hscale, Int.cast_sub]; linarith only [h.1]),
       le_neg_ediv_neg_of_mul hshDot (by rw [hscale, Int.cast_add]; linarith only [h.2])⟩
   have hre := interval hsc_re herr_re
   have him := interval hsc_im herr_im
@@ -1288,6 +1316,9 @@ end
 
 /-! ### 5. Soundness of `computeTigMu` (`mem_muTigOf`) -/
 
+/-- Soundness of Computation 2 (overlaps), Appendix A.3: if `tigMuCheck creArr cimArr tigMuList = true`, then for
+every `k < 251` the `k`-th interval of `tigMuList` contains the overlap `muTigOf creArr cimArr k` of the cell map
+with the tables `creArr`, `cimArr`. -/
 theorem mem_muTigOf {creArr cimArr : Array Int} {tigMuList : List Ival}
     (hcheck : tigMuCheck creArr cimArr tigMuList = true) {k : ℕ} (hk : k < 251) :
     mem (muTigOf creArr cimArr k) (tigMuList.getD k zeroI) := by
@@ -1373,7 +1404,8 @@ theorem mem_muTigOf {creArr cimArr : Array Int} {tigMuList : List Ival}
         simp only [Bool.false_eq_true, ↓reduceIte, neg_one_mul, mem, Int.cast_neg]
         exact ⟨by linarith [hvIv.2], by linarith [hvIv.1]⟩
 
-lemma flatIdx_ofFn_props {M : ℕ} (hM : M = 168) {entryFn : (m : Fin M) → Fin ((501 - 3 * m.val - (1 - m.val % 2)) / 2 + 1) → ℕ × Ival}
+lemma flatIdx_ofFn_props {M : ℕ}
+    (hM : M = 168) {entryFn : (m : Fin M) → Fin ((501 - 3 * m.val - (1 - m.val % 2)) / 2 + 1) → ℕ × Ival}
     {rows : List RowI}
     (hrows : (List.ofFn fun (mIdx : Fin M) =>
       let d2 := mIdx.val
@@ -1690,12 +1722,14 @@ lemma t1Cell_sound {creArr cimArr : Array Int}
         ((sumInt (k + 1) fun j2 => mulSkipZero (gLookup704 gMid k j1 j2).1 (b2Row.getD j2 0)) -
           ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).1.natAbs) + sb2 + Int.ofNat (k + 1)),
          (sumInt (k + 1) fun j2 => mulSkipZero (gLookup704 gMid k j1 j2).1 (b2Row.getD j2 0)) +
-          ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).1.natAbs) + sb2 + Int.ofNat (k + 1))) sh624).1 &&
+          ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).1.natAbs) + sb2 +
+            Int.ofNat (k + 1))) sh624).1 &&
       (toMid
         ((sumInt (k + 1) fun j2 => mulSkipZero (gLookup704 gMid k j1 j2).2 (b2Row.getD j2 0)) -
           ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).2.natAbs) + sb2 + Int.ofNat (k + 1)),
          (sumInt (k + 1) fun j2 => mulSkipZero (gLookup704 gMid k j1 j2).2 (b2Row.getD j2 0)) +
-          ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).2.natAbs) + sb2 + Int.ofNat (k + 1))) sh624).1) = true) :
+          ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).2.natAbs) + sb2 +
+            Int.ofNat (k + 1))) sh624).1) = true) :
     |(∑ j2 ∈ range (k + 1),
         gScaled creArr cimArr k j1 j2 *
           ((bCoeff ct (-(seR * st)) st (seR * ct) q1 q2 j2 : ℝ) : ℂ)).re * (2 : ℝ) ^ 400 -
@@ -1703,7 +1737,8 @@ lemma t1Cell_sound {creArr cimArr : Array Int}
         ((sumInt (k + 1) fun j2 => mulSkipZero (gLookup704 gMid k j1 j2).1 (b2Row.getD j2 0)) -
           ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).1.natAbs) + sb2 + Int.ofNat (k + 1)),
          (sumInt (k + 1) fun j2 => mulSkipZero (gLookup704 gMid k j1 j2).1 (b2Row.getD j2 0)) +
-          ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).1.natAbs) + sb2 + Int.ofNat (k + 1))) sh624).2 : ℤ) : ℝ)| ≤ 1 ∧
+          ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).1.natAbs) + sb2 +
+            Int.ofNat (k + 1))) sh624).2 : ℤ) : ℝ)| ≤ 1 ∧
     |(∑ j2 ∈ range (k + 1),
         gScaled creArr cimArr k j1 j2 *
           ((bCoeff ct (-(seR * st)) st (seR * ct) q1 q2 j2 : ℝ) : ℂ)).im * (2 : ℝ) ^ 400 -
@@ -1711,7 +1746,8 @@ lemma t1Cell_sound {creArr cimArr : Array Int}
         ((sumInt (k + 1) fun j2 => mulSkipZero (gLookup704 gMid k j1 j2).2 (b2Row.getD j2 0)) -
           ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).2.natAbs) + sb2 + Int.ofNat (k + 1)),
          (sumInt (k + 1) fun j2 => mulSkipZero (gLookup704 gMid k j1 j2).2 (b2Row.getD j2 0)) +
-          ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).2.natAbs) + sb2 + Int.ofNat (k + 1))) sh624).2 : ℤ) : ℝ)| ≤ 1 := by
+          ((sumInt (k + 1) fun j2 => Int.ofNat (gLookup704 gMid k j1 j2).2.natAbs) + sb2 +
+            Int.ofNat (k + 1))) sh624).2 : ℤ) : ℝ)| ≤ 1 := by
   simp only [mulSkipZero_eq, Bool.and_eq_true] at hok ⊢
   have hd_re := dotMidErr (k + 1)
     (fun j2 => (gScaled creArr cimArr k j1 j2).re * (2 : ℝ) ^ 512)

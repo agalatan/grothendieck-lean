@@ -1946,15 +1946,33 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 ## Quantitative buffered PVD, sharp complex radius, and all-profile exact remote K on Wick sums plus Gaussian mixtures, with step-by-step CLT & doubling monotonicity (gemini-21d5, #730)
 
 - [Proof and mathematical derivations](sources/wick-pvd-doubling-gemini-21d5/PROOF.md) and
-  [1088-bit zero-float stdlib verifier, exact rational certificate, and 20 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
+  [1088-bit zero-float stdlib verifier, exact rational certificate, and 22 built-in adversarial controls](code/wick-pvd-doubling-gemini-21d5/)
   (tag `KWPVD`; `STATUS.md` 2.2, 3.5, 3.6, 3.20, 3.25; **P + C, author only**). All files are committed in the repository (`< 90 KB` each) with zero external dependencies, zero floating-point literals/calls, and zero `assert` statements (enforced by AST self-audit).
 - **Replay:**
-  - Primary verification — full 1088-bit continuum recomputation from scratch (~6 min, Python 3 stdlib only, verifying gapless interval coverage dynamically across all cell/slab covers, `saved == fresh` byte-for-byte across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 20 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
-  - Fast spot-check audit (~85 s, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds and 20 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
+  - Primary verification — full 1088-bit continuum recomputation from scratch (~6 min, Python 3 stdlib only, verifying gapless interval coverage dynamically across every proved cell/slab list, `saved == fresh` canonical `result.json` bytes across all 1,292 envelope cells, 160 + 320 buffered-PVD slabs, log-slope $g'(\zeta) > 0$ cells, $m = 1 \dots 12$ CLT & doubling checks, 121 diffuse-doubling slabs, and 22 adversarial controls): `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py --recompute`.
+  - Fast spot-check audit (~85 s, `-IB` and `-IB -O`, live recomputation of $C_{1/4}$, real $\operatorname{He}_3/\sqrt{6}$ failure, analytic lemmas, $m = 1$ doubling, and outward enclosures on every $m = 2 \dots 12$, plus spot-checked saved slab bounds, canonical receipt formatting, and 22 adversarial controls): `python3 -IB research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py` and `python3 -IB -O research/conjecture-K/code/wick-pvd-doubling-gemini-21d5/verify.py`.
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,187 B | `f84aa5dc24e4cad0a9789738b8e22b16e1dc2b8143a8e340b2641a0ecee9d176` |
-| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,815 B | `862d6bf91063c767458b45259370987e23ab7e113722cbddb5380662fb453b05` |
-| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 86,509 B | `046fbd8d8b427f8443595621ed7c514766baabf878ee6f42b533c9fec8290ab9` |
+| `sources/wick-pvd-doubling-gemini-21d5/PROOF.md` | 44,365 B | `23b54d3b8501016f54135180d49eb0928d0b1c41dcd534461d4786f93fc760bc` |
+| `code/wick-pvd-doubling-gemini-21d5/README.md` | 1,891 B | `d3f4f4fa5fc66cf03770e3bc8308eb0546550c99685b7a217fbabe3e0b552ffd` |
+| `code/wick-pvd-doubling-gemini-21d5/verify.py` | 89,362 B | `6c1d771971e209eb97348dd7b6359af63c4a249f6d74dd9f570a831558f1b32e` |
 | `code/wick-pvd-doubling-gemini-21d5/result.json` | 2,684 B | `8b5730d0f20fcf407c950228b0c253af6cd8396485e794ad0cfc7ad8c801c205` |
+
+## Free-homothety peak-ray transfer, exempt-box-free retained bounds, and end-to-end consumer closures (gemini-c1de, #760)
+
+- [Proof and replay instructions](sources/homothety-consumers-gemini-c1de/PROOF.md) and
+  [zero-float stdlib verifier, single-file rational certificate, generator, and 19-check AST/corruption control suite](code/homothety-consumers-gemini-c1de/) (tag KHOM; STATUS 7.4.10, 8.1, 8.5, 8.6, 8.7, 8.10, 8.13; **P + C, author only**). All files are committed in the repository (`homothety_consumers_cert.json` is 268,246 B < 300 KB) with zero external dependencies.
+- **Replay:**
+  - Zero-float, zero-`assert` exact rational verification of 220-bit Machin $\pi$, $\sqrt{\pi}$, the `2.12a–b` Rice tangent, exact $\mathbb{Q}[T]$ partial-fraction identities and positive peak deficit Laplace moments $M_D[0..7]$, algebraic Cholesky-SOS proof of $U_7(y) \ge \sqrt{1 + y}$ and $B_{\mathrm{hi}}(u_0) \ge B_0(u_0)$ joined to `2.7` Jensen concavity, exempt-box-free peak retained covers (`mode == 2` enforced on $u_0 < 3/2000$), complete 1,773-cell `[0, \sqrt{\pi}/2]` verification of `8.5` (`K_G^ℂ > 1.40171`), and all 10 Track A / Track B consumer covers cross-checked against SHA-256-pinned `inherited_rows.json`, `central_94_125_certificate.json`, and `central_7475_certificate.json` (< 3 s, Python 3 stdlib only, `-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/verify.py` and `python3 -IB -O research/conjecture-K/code/homothety-consumers-gemini-c1de/verify.py`.
+  - Static `ast` zero-float/zero-`assert` self-audit + 18 mathematical/corruption controls (`-IB` and `-IB -O`): `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/test_controls.py` and `python3 -IB -O research/conjecture-K/code/homothety-consumers-gemini-c1de/test_controls.py`.
+  - Certificate regeneration from scratch: `python3 -IB research/conjecture-K/code/homothety-consumers-gemini-c1de/generate_certs.py`.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/homothety-consumers-gemini-c1de/PROOF.md` | 22,650 B | `ebee454a850797173c0e437df8380eba2e9a602a45b92c8c07aff9aefea5beff` |
+| `code/homothety-consumers-gemini-c1de/README.md` | 4,730 B | `4a98a3d9c4f4d657f84ea8a68fe73528e096ab49faa3074d7572662f57b03e09` |
+| `code/homothety-consumers-gemini-c1de/generate_certs.py` | 28,543 B | `84fca59d1bc445d8719186849dec5b3b8a0eb12b609abc4e5d78cea8b86356ca` |
+| `code/homothety-consumers-gemini-c1de/verify.py` | 42,879 B | `647baf6ab998b004fd7c31cc8b43e44732d91cac0358cc8e30ffdcef75320d12` |
+| `code/homothety-consumers-gemini-c1de/test_controls.py` | 11,139 B | `c67d7c937cca6427221e77a8506f10bab1611fb495bfa8117c679e345d3093aa` |
+| `code/homothety-consumers-gemini-c1de/homothety_consumers_cert.json` | 268,246 B | `cb7027d95f1caa16c2b56493d3793a16f86e0dd1f83d36cbd080bb847fae156e` |

@@ -14,7 +14,7 @@ Modes:
       m >= 13 asymptotic CLT monotonicity bound, real He_3/sqrt(6) doubling failure
       enclosure, live m = 1 Wick doubling recomputation, coarse outward consistency
       enclosures on every m = 2..12, spot verification of saved continuum slab bounds
-      in result.json, plus 19 built-in adversarial controls.
+      in result.json, plus 22 built-in adversarial controls.
   python3 -IB -O verify.py --recompute [--write-result]
       Full (~7 min) zero-float 1088-bit continuum recomputation from scratch of:
       (1) |psi_Wick(zeta)| <= (1 + (19/5)*zeta)^{-1/5} on [0, inf) (< 1 for zeta > 0),
@@ -1051,6 +1051,18 @@ def build_pvd_slab_edges():
     return w_edges, m_edges
 
 
+def build_diffuse_doubling_slab_edges():
+    """Returns wd_edges and verifies gapless monotone partition of [1/100, 1/7]."""
+    wd_edges = [Q(k, 1400) for k in range(14, 70)] + [Q(k, 700) for k in range(35, 101)]
+    verify_interval_cover(
+        list(zip(wd_edges, wd_edges[1:])),
+        Q(1, 100),
+        Q(1, 7),
+        "diffuse doubling wd_edges [1/100, 1/7]",
+    )
+    return wd_edges
+
+
 def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     """Recomputes all 4 continuum certificates in 1088-bit zero-float interval arithmetic."""
     # Precompute Jet1 grid on [0, 14.50] with spacing dz_main = 1/100 (1451 nodes),
@@ -1124,6 +1136,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     n_tau_pvd = 200
     dtau_pvd = Q(2, n_tau_pvd)  # tau = sqrt(xi) in [0, 2], (1/2) xi^{-3/2} dxi = tau^{-2} dtau
     min_fpos_over_w2 = Q(100)
+    w_slabs_proved: list[tuple[Q, Q]] = []
     for s_idx in range(len(w_edges) - 1):
         wlo, whi = w_edges[s_idx], w_edges[s_idx + 1]
         acc_f = 0
@@ -1144,6 +1157,8 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         ratio_f = Q(acc_f, ONE) / (whi * whi)
         require(ratio_f > Q(19, 50), f"F_pos/w^2 <= 19/50 on slab [{wlo}, {whi}]: {fmt_dec_floor(ratio_f)}")
         min_fpos_over_w2 = min(min_fpos_over_w2, ratio_f)
+        w_slabs_proved.append((wlo, whi))
+    verify_interval_cover(w_slabs_proved, Q(1, 50), Q(1), "PVD w_slabs proved [1/50, 1]")
 
     # T_PVD(M) / M^2 <= 7/25 on M in [1/5, 1]:
     # Octave-uniform dyadic zeta-grid on [4, 4096] (10 octaves * 50 panels = 500 panels, max denom 25):
@@ -1159,6 +1174,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     z_panel_wt_hi = [2 * (z_inv_sqrt[k][1] - z_inv_sqrt[k + 1][0]) for k in range(len(z_tail_grid) - 1)]
 
     max_tpvd_over_m2 = Q(0)
+    m_slabs_proved: list[tuple[Q, Q]] = []
     for s_idx in range(len(m_edges) - 1):
         mlo, mhi = m_edges[s_idx], m_edges[s_idx + 1]
         exp_q = q_to_iv(ALPHA_ENV / mhi)
@@ -1173,6 +1189,8 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         ratio_t = Q(tpvd_hi, ONE) / (mlo * mlo)
         require(ratio_t < Q(7, 25), f"T_PVD/M^2 >= 7/25 on [{mlo}, {mhi}]: {fmt_dec_ceil(ratio_t)}")
         max_tpvd_over_m2 = max(max_tpvd_over_m2, ratio_t)
+        m_slabs_proved.append((mlo, mhi))
+    verify_interval_cover(m_slabs_proved, Q(1, 5), Q(1), "PVD M_slabs proved [1/5, 1]")
 
     # (C) Certify log-slope increase g'(zeta) >= 3/2 on [1/200, 1/12] and g'(zeta) > 0 on [1/12, 6/5]:
     min_gp_low_q = Q(2307, 400)
@@ -1373,7 +1391,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     fdoub_small_q = Q(int_sq_1_lo, ONE)
     require(fdoub_small_q > Q(173, 1000), f"small-w F_doub/w^2 > 173/1000 ({fmt_dec_floor(fdoub_small_q)})")
 
-    wd_edges = [Q(k, 1400) for k in range(14, 70)] + [Q(k, 700) for k in range(35, 101)]
+    wd_edges = build_diffuse_doubling_slab_edges()
     require(wd_edges[0] == Q(1, 100) and wd_edges[-1] == m_doub_cap, "wd_edges endpoints")
     # Fixed tau_d_max = 17/5: for every M <= 1/7 and tau <= 17/5, M * tau^2 <= (1/7)*(289/25) = 289/175 < 169/100!
     tau_d_max = Q(17, 5)
@@ -1381,6 +1399,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     n_td = 340
     dtau_d = tau_d_max / n_td  # exact 1/100
     min_fdoub_over_w2 = fdoub_small_q
+    wd_slabs_proved: list[tuple[Q, Q]] = []
     for s_idx in range(len(wd_edges) - 1):
         wlo, whi = wd_edges[s_idx], wd_edges[s_idx + 1]
         acc_fd = 0
@@ -1403,6 +1422,8 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         rf = Q(acc_fd, ONE) / (whi * whi)
         require(rf > Q(173, 1000), f"F_doub/w^2 <= 173/1000 on [{wlo}, {whi}]: {fmt_dec_floor(rf)}")
         min_fdoub_over_w2 = min(min_fdoub_over_w2, rf)
+        wd_slabs_proved.append((wlo, whi))
+    verify_interval_cover(wd_slabs_proved, Q(1, 100), m_doub_cap, "diffuse doubling w_slabs proved [1/100, 1/7]")
 
     zd_cut = Q(169, 100)
     # On ALL M in (0, 1/7], d/dM [M^{-3/2} (1 + c*z)^{-a/M}] > 0 since a*ln(1 + c*zd_cut) > (3/2)*(1/7) = 3/14:
@@ -1450,8 +1471,8 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
             "psi_wick_minus_exp_scaled_lb_min_zeta2_1_on_0_4": q_str(pos_scaled_floor),
         },
         "buffered_pvd": {
-            "w_slab_count": len(w_edges) - 1,
-            "M_slab_count": len(m_edges) - 1,
+            "w_slab_count": len(w_slabs_proved),
+            "M_slab_count": len(m_slabs_proved),
             "F_pos_over_w2_lower": q_str(fpos_floor),
             "T_PVD_over_M2_upper": q_str(tpvd_ceil),
             "certified_net_gap_coef": "1/20",
@@ -1469,8 +1490,25 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
 
 
 # ---------------------------------------------------------------------------
-# 6. Audit of saved result.json & 20 built-in adversarial controls
+# 6. Audit of saved result.json & 22 built-in adversarial controls
 # ---------------------------------------------------------------------------
+
+def canonical_receipt_bytes(payload: dict) -> bytes:
+    return (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
+
+
+def verify_canonical_receipt_bytes(raw_bytes: bytes, expected: dict) -> dict:
+    try:
+        parsed = json.loads(raw_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"CERTIFICATION FAILURE: invalid UTF-8/JSON in result.json: {exc}") from exc
+    require(parsed == expected, "recomputed certificate differs from committed result.json")
+    require(
+        raw_bytes == canonical_receipt_bytes(expected),
+        "committed result.json bytes differ from canonical --write-result output",
+    )
+    return parsed
+
 
 def audit_result_dict(res: dict, sw_real: dict, fast_lem: dict, pi_iv=None, eh_iv=None, c14_iv=None, spot_eng=None) -> None:
     require(res.get("schema") == "wick-pvd-doubling-v1", "unexpected schema")
@@ -1482,6 +1520,8 @@ def audit_result_dict(res: dict, sw_real: dict, fast_lem: dict, pi_iv=None, eh_i
 
     _, _, _, _, env_cells_expected = build_compact_envelope_plan()
     w_edges_exp, m_edges_exp = build_pvd_slab_edges()
+    wd_edges_exp = build_diffuse_doubling_slab_edges()
+    require(len(wd_edges_exp) - 1 == 121, "diffuse doubling slab count mismatch")
 
     ct = res.get("continuum_certificates", {})
     ae = ct.get("algebraic_envelope", {})
@@ -1719,7 +1759,31 @@ def run_adversarial_controls(res: dict, sw_real: dict, fast_lem: dict, eng: Wick
         "ctrl20_interval_short",
     )
 
-    return 20
+    # 21. Omitted parameter slab in diffuse-doubling / PVD loops rejected by verify_interval_cover:
+    wd_ctrl = build_diffuse_doubling_slab_edges()
+    w_ctrl, m_ctrl = build_pvd_slab_edges()
+    expect_failure(
+        lambda: verify_interval_cover(list(zip(wd_ctrl, wd_ctrl[1:]))[1:], Q(1, 100), Q(1, 7), "ctrl21_wd_skip0"),
+        "ctrl21_wd_omitted_first_slab",
+    )
+    expect_failure(
+        lambda: verify_interval_cover(list(zip(w_ctrl, w_ctrl[1:]))[1:], Q(1, 50), Q(1), "ctrl21_w_skip0"),
+        "ctrl21_pvd_w_omitted_first_slab",
+    )
+    expect_failure(
+        lambda: verify_interval_cover(list(zip(m_ctrl, m_ctrl[1:]))[:-1], Q(1, 5), Q(1), "ctrl21_m_skiplast"),
+        "ctrl21_pvd_m_omitted_last_slab",
+    )
+
+    # 22. Non-canonical receipt bytes (e.g. extra trailing newline) rejected even when parsed JSON matches:
+    canon_res = canonical_receipt_bytes(res)
+    require(verify_canonical_receipt_bytes(canon_res, res) == res, "ctrl22: canonical bytes must pass")
+    expect_failure(
+        lambda: verify_canonical_receipt_bytes(canon_res + b"\n", res),
+        "ctrl22_extra_trailing_newline",
+    )
+
+    return 22
 
 
 def main(argv: list[str]) -> int:
@@ -1750,18 +1814,18 @@ def main(argv: list[str]) -> int:
             "continuum_certificates": cont,
         }
         if write_result:
-            RESULT_JSON.write_text(json.dumps(fresh, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            RESULT_JSON.write_bytes(canonical_receipt_bytes(fresh))
             print(f"[write] Wrote {RESULT_JSON} ({RESULT_JSON.stat().st_size} bytes)")
         require(RESULT_JSON.is_file(), f"missing {RESULT_JSON}")
-        saved = json.loads(RESULT_JSON.read_text(encoding="utf-8"))
-        require(saved == fresh, "recomputed certificate differs from committed result.json")
+        saved = verify_canonical_receipt_bytes(RESULT_JSON.read_bytes(), fresh)
         audit_result_dict(saved, sw_real, fast_lem, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv, spot_eng=eng)
         n_ctrl = run_adversarial_controls(saved, sw_real, fast_lem, eng, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv)
         mode_lbl = "FULL 1088-BIT RECOMPUTE FROM SCRATCH (saved == fresh)"
         src_tag = "[recomputed]"
     else:
         require(RESULT_JSON.is_file(), f"missing {RESULT_JSON}; run with --recompute --write-result first")
-        saved = json.loads(RESULT_JSON.read_text(encoding="utf-8"))
+        raw_saved = RESULT_JSON.read_bytes()
+        saved = verify_canonical_receipt_bytes(raw_saved, json.loads(raw_saved.decode("utf-8")))
         audit_result_dict(saved, sw_real, fast_lem, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv, spot_eng=eng)
         n_ctrl = run_adversarial_controls(saved, sw_real, fast_lem, eng, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv)
         mode_lbl = "DEFAULT AUDIT (live analytic/m=1..12 checks + saved slab bounds)"

@@ -1,20 +1,58 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.GaussianCore
 import Haagerup.Transfer
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
-set_option warningAsError true
-
 /-!
-# Mehler expansion, chaos realisation, smoothed 2D channels, and Haagerup's phase channel
+# Mehler's formula, Gaussian realisation of a channel, the smoothed map, and the phase channel
 
-Connects complex Gaussian chaos on `ℂ × ℂ` to `DominatedKernel` and `bivarKernel` (`Transfer.lean`):
-1. 1D and 2D complex Mehler formulas (`integral_mehler`, `mehler_L2`, `Bm_polyKernel`);
-2. Tensor realisation of disk-valued charge-one maps (`DiskKernel.dominated`, `rounding_diskKernel`);
-3. Rotated Ornstein–Uhlenbeck smoothing `smoothMap` with exact rational Pythagorean parameters,
-   its symmetric-matrix law equivalence `smoothMap_eq_sym`, and the square-root-free binomial
-   Hermite inner-product identity `integral_H2_smoothMap`;
-4. Haagerup's phase map `ph`, `phase2`, `haagCoeff`, `energy_phase2_odd_zero`, and `phase_bivarKernel_eq`.
+This file connects functions on `ℂ × ℂ` that are square-integrable for `mu2 = γ_ℂ ⊗ γ_ℂ` to the dominated kernels
+of `Haagerup/Transfer.lean`.
+
+## Main definitions
+
+* `Bm h₁ h₂ F G`: the correlation `E[conj F(X) G(Y)]` of Lemma 2.6 (Correlation of two functions), where
+  `(X₁, Y₁)` and `(X₂, Y₂)` are independent Gaussian pairs with correlations `ρ₁`, `ρ₂`; `Bm h₁ h₂ G G` is the
+  correlation function `Θ_G(ρ₁, ρ₂)` of Definition 2.7.
+* `energy G (d₁, d₂)`: the energy `E_G(d₁, d₂)` of Definition 3.6.
+* `polyKernel P`: the function `ζ ↦ ζ P(|ζ|²)`; `realL P`, `realR P`: the maps `𝓛_P`, `𝓡_P` of Lemma 3.4
+  (Polynomial lift).
+* `DiskKernel Q`: `Q(⟪xᵢ, yⱼ⟫) = E[conj εᵢ δⱼ]` for random variables `εᵢ`, `δⱼ` with values in the closed unit disc.
+* `smoothMap ct st se ce F`: the smoothed map of equation (4.9), for an arbitrary map `F` and parameters
+  `(c_θ, s_θ, s_η, c_η) = (ct, st, se, ce)`; `bCoeff`: the coefficients `χ(a₁, a₂; k)` of Lemma 4.10.
+* `ph`, `phase2`, `haagCoeff`: the phase `z / |z|`, the phase map `(z₁, z₂) ↦ ph z₁` of Section 3.4 (Phase
+  channels), and Haagerup's coefficients `r_k` of equation (1.3).
+
+## Main results
+
+* `integral_mehler`: Lemma 2.3 (Mehler's formula), for the Wick monomials `H p q`:
+  `E[conj (H p q)(X) * (H r s)(Y)] = δ_{pr} δ_{qs} p! q! ρ^p conj(ρ)^q` for a Gaussian pair of correlation `ρ`.
+* `mehler_L2`: Lemma 2.6 (Correlation of two functions):
+  `E[conj F(X) G(Y)] = ∑_𝐚 conj(F̂(𝐚)) Ĝ(𝐚) ρ₁^a₁ conj(ρ₁)^b₁ ρ₂^a₂ conj(ρ₂)^b₂`.
+* `hasSum_energy_bideg`, `energy_eq_zero_of_even`: the energies sum to `‖G‖²`, and they vanish for `d₁ + d₂` even
+  when `G` has charge one (the remarks after Definition 3.6).
+* `inner_realL_realR`, `norm_realL`, `norm_realR`: Lemma 3.4 (Polynomial lift).
+* `Bm_polyKernel`: Proposition 3.7 (Channel series), part (2):
+  `Θ_G(ζ P(|ζ|²), ζ Q(|ζ|²)) = ∑ₖ hₖ ζ |ζ|^(2k)` with `h = bivarKernel P Q (energy G)`.
+* `rounding_diskKernel`, `DiskKernel.dominated`: Proposition 3.7 (Channel series), part (3): the channel series
+  of `(G, P, Q)` is dominated. The proof of `rounding_diskKernel` contains Lemma 3.5 (Gaussian projection), in
+  the form of the private lemma `map_pairProj`.
+* `measurable_smoothMap`, `norm_smoothMap_le`, `smoothMap_rot2`: Lemma 4.9 (the smoothed map is measurable,
+  bounded by one and of charge one).
+* `integral_H2_smoothMap`: Lemma 4.10 (Hermite coefficients of the smoothed map).
+* `smoothMap_eq_sym`: the smoothed map written with symmetric matrices, used for the tail bounds in
+  `Haagerup/SchurHardy.lean`.
+* `phase_energy`, `energy_phase2_odd_zero`, `phase_bivarKernel_eq`: Lemma 3.8 (energies and channel series of the
+  phase map).
+
+The article's smoothing (4.9) integrates over one variable `ξ`; here `smoothMap` integrates over
+`mu2` and uses only the second coordinate, which gives the same function.
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
@@ -24,8 +62,9 @@ open scoped ComplexConjugate InnerProductSpace Nat ENNReal Polynomial
 
 noncomputable section
 
-/-! ### 1. Four-variable polynomial expectation `E2` and 1D Mehler (`integral_mehler`) -/
+/-! ### 1. Expectations of polynomials in four variables (`E2`) and Mehler's formula (`integral_mehler`) -/
 
+/-- The moment `∫ z^a conj(z)^b dγ_ℂ`: `a!` if `a = b` and `0` otherwise (`integral_moment`). -/
 def mom (a b : ℕ) : ℂ := if a = b then (a.factorial : ℂ) else 0
 
 lemma mom_succ_left (a b : ℕ) : mom (a + 1) b = b * mom a (b - 1) := by
@@ -44,10 +83,13 @@ lemma mom_succ_right (a b : ℕ) : mom a (b + 1) = a * mom (a - 1) b := by
     · subst h; simp [mom, Nat.factorial_succ]
     · simp [mom, h]
 
+/-- Polynomials over `ℂ` in four variables `X 0, …, X 3`, which stand for `z₁, conj z₁, z₂, conj z₂`. -/
 abbrev P4 := MvPolynomial (Fin 4) ℂ
 
+/-- The point `(z₁, conj z₁, z₂, conj z₂)` at which a polynomial of `P4` is evaluated. -/
 def wv (p : ℂ × ℂ) : Fin 4 → ℂ := ![p.1, conj p.1, p.2, conj p.2]
 
+/-- The value `P(z₁, conj z₁, z₂, conj z₂)` of a polynomial `P : P4` at `p = (z₁, z₂)`. -/
 def ev4 (p : ℂ × ℂ) (P : P4) : ℂ := eval (wv p) P
 
 lemma ev4_monomial (p : ℂ × ℂ) (s : Fin 4 →₀ ℕ) (c : ℂ) :
@@ -65,6 +107,7 @@ lemma integrable_ev4 (P : P4) : Integrable (fun p => ev4 p P) mu2 := by
     exact ((integrable_monomial (s 0) (s 1)).mul_prod (integrable_monomial (s 2) (s 3))).const_mul c
   | add _ _ hP hQ => simp_rw [ev4, map_add]; exact hP.add hQ
 
+/-- The expectation `P ↦ ∫ P(z₁, conj z₁, z₂, conj z₂) d(γ_ℂ ⊗ γ_ℂ)`, as a linear functional on `P4`. -/
 def E2 : P4 →ₗ[ℂ] ℂ where
   toFun P := ∫ p, ev4 p P ∂mu2
   map_add' P Q := by simp_rw [ev4, map_add]; exact integral_add (integrable_ev4 P) (integrable_ev4 Q)
@@ -138,8 +181,12 @@ lemma pderiv_aeval2 {k : ℕ} (ψ : Fin 2 → MvPolynomial (Fin k) ℂ) (j : Fin
     simp only [map_mul, aeval_X, Derivation.leibniz, smul_eq_mul, map_add, hP]
     fin_cases i <;> simp [pderiv_X] <;> ring
 
+/-- A polynomial in `z, conj z` as a polynomial of `P4` in the first pair of variables: `ev4 u (sX f) = ev u.1 f`. -/
 def sX : CPoly →ₐ[ℂ] P4 := MvPolynomial.aeval ![MvPolynomial.X 0, MvPolynomial.X 1]
 
+/-- The substitution `z ↦ ρ z₁ + √(1 - |ρ|²) z₂` (and the conjugate substitution for `conj z`) from `CPoly` to
+`P4`: `ev4 u (sY ρ g) = ev (ρ * u.1 + sig ρ * u.2) g`. With `u = (X, X')` this evaluates `g` at the second
+component `Y` of a Gaussian pair with correlation `ρ`. -/
 def sY (ρ : ℂ) : CPoly →ₐ[ℂ] P4 :=
   MvPolynomial.aeval ![MvPolynomial.C ρ * MvPolynomial.X 0 + MvPolynomial.C (sig ρ) * MvPolynomial.X 2,
     MvPolynomial.C (conj ρ) * MvPolynomial.X 1 + MvPolynomial.C (sig ρ) * MvPolynomial.X 3]
@@ -168,6 +215,8 @@ private lemma pderiv3_sY (ρ : ℂ) (g : CPoly) :
 private lemma E2_C_mul (a : ℂ) (P : P4) : E2 (MvPolynomial.C a * P) = a * E2 P := by
   rw [C_mul', map_smul, smul_eq_mul]
 
+/-- The correlation `E[conj f(X) g(Y)]` of two polynomials at a Gaussian pair `(X, Y)` with correlation `ρ`,
+defined algebraically through `E2`. -/
 def Mp (ρ : ℂ) (f g : CPoly) : ℂ := E2 (sX (conjP f) * sY ρ g)
 
 private lemma Mp_A0 (ρ : ℂ) (f g : CPoly) : Mp ρ (A0 f) g = ρ * Mp ρ f (pderiv 0 g) := by
@@ -220,6 +269,8 @@ private lemma E2_sY_H {ρ : ℂ} (hρ : ‖ρ‖ ≤ 1) (r s : ℕ) :
     | zero => rw [H_zero_zero, map_one, E2_one]; simp
     | succ _ => rw [H_zero_succ, E2_sY_A1 hρ]; simp
 
+/-- Mehler's formula for the Wick monomials, in algebraic form:
+`Mp ρ (H p q) (H r s) = δ_{pr} δ_{qs} p! q! ρ^p conj(ρ)^q` for `|ρ| ≤ 1`. -/
 theorem Mp_H {ρ : ℂ} (hρ : ‖ρ‖ ≤ 1) (p q r s : ℕ) :
     Mp ρ (H p q) (H r s) =
       if p = r ∧ q = s then ((p.factorial * q.factorial : ℕ) : ℂ) * ρ ^ p * conj ρ ^ q else 0 := by
@@ -269,6 +320,9 @@ lemma ev4_sY (ρ : ℂ) (u : ℂ × ℂ) (g : CPoly) :
     simp only [map_mul, ev4, ev] at *; rw [hP]
     fin_cases i <;> simp [sY, wv, zv, sig, Complex.conj_ofReal]
 
+/-- **Mehler's formula** (Lemma 2.3 of the article) for the Wick monomials `H p q = √(p! q!) 𝓗_{p,q}`: if
+`|ρ| ≤ 1` and `(X, Y) = (u₁, ρ u₁ + √(1 - |ρ|²) u₂)` with `u ~ γ_ℂ ⊗ γ_ℂ`, then
+`E[conj (H p q)(X) * (H r s)(Y)] = δ_{pr} δ_{qs} p! q! ρ^p conj(ρ)^q`. -/
 theorem integral_mehler {ρ : ℂ} (hρ : ‖ρ‖ ≤ 1) (p q r s : ℕ) :
     ∫ u, conj (ev u.1 (H p q)) * ev (ρ * u.1 + sig ρ * u.2) (H r s) ∂mu2 =
       if p = r ∧ q = s then ((p.factorial * q.factorial : ℕ) : ℂ) * ρ ^ p * conj ρ ^ q else 0 := by
@@ -278,8 +332,10 @@ theorem integral_mehler {ρ : ℂ} (hρ : ‖ρ‖ ≤ 1) (p q r s : ℕ) :
     = eval (wv u) (sX (conjP (H p q)) * sY ρ (H r s))
   rw [map_mul, ← ev4, ← ev4, ev4_sX, ev4_sY, ev_conjP]
 
-/-! ### 2. `L²(mu2)` Mehler, chaos energies, and `Bm_polyKernel` -/
+/-! ### 2. Correlation of two functions (`mehler_L2`), energies, and the channel series (`Bm_polyKernel`) -/
 
+/-- If two continuous linear maps `P, Q : E → K` satisfy `⟪P bᵢ, Q bⱼ⟫ = δᵢⱼ λᵢ` on a Hilbert basis `b` of `E`, then
+`⟪P F, Q G⟫ = ∑ᵢ conj ⟪bᵢ, F⟫ λᵢ ⟪bᵢ, G⟫` for all `F, G`. -/
 theorem hasSum_diagonal_pairing {ι E K : Type*} [DecidableEq ι]
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
     [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
@@ -296,10 +352,17 @@ theorem hasSum_diagonal_pairing {ι E K : Type*} [DecidableEq ι]
   simp only [ContinuousLinearMap.adjoint_inner_right, step] at hs
   convert hs using 1; ext i; rw [inner_conj_symm]; ring
 
+/-- The measure `(γ_ℂ ⊗ γ_ℂ) ⊗ (γ_ℂ ⊗ γ_ℂ)` on `(ℂ × ℂ) × (ℂ × ℂ)`: the law of `ω = ((X₁, X₁'), (X₂, X₂'))` for four
+independent standard complex Gaussians. -/
 abbrev mu4 : Measure ((ℂ × ℂ) × (ℂ × ℂ)) := mu2.prod mu2
 
+/-- The vector `X = (X₁, X₂)` of Lemma 2.6, as a function of `ω = ((X₁, X₁'), (X₂, X₂'))`. -/
 def Xof (ω : (ℂ × ℂ) × (ℂ × ℂ)) : ℂ × ℂ := (ω.1.1, ω.2.1)
+/-- The second component `ρ X + √(1 - |ρ|²) X'` of the Gaussian pair with correlation `ρ` built from `u = (X, X')`
+(Definition 2.1). -/
 def mY (ρ : ℂ) (u : ℂ × ℂ) : ℂ := ρ * u.1 + sig ρ * u.2
+/-- The vector `Y = (Y₁, Y₂)` of Lemma 2.6, `Yᵣ = ρᵣ Xᵣ + √(1 - |ρᵣ|²) Xᵣ'`, as a function of
+`ω = ((X₁, X₁'), (X₂, X₂'))`. -/
 def Yof (ρ₁ ρ₂ : ℂ) (ω : (ℂ × ℂ) × (ℂ × ℂ)) : ℂ × ℂ := (mY ρ₁ ω.1, mY ρ₂ ω.2)
 
 lemma measurable_mY (ρ : ℂ) : Measurable (mY ρ) := by unfold mY; fun_prop
@@ -319,6 +382,7 @@ lemma mp_Y {ρ₁ ρ₂ : ℂ} (h₁ : ‖ρ₁‖ ≤ 1) (h₂ : ‖ρ₂‖ �
   have e₂ : mu2.map (mY ρ₂) = gaussC := map_mehlerY h₂
   rw [e₁, e₂]
 
+/-- The factor `ρ₁^a₁ conj(ρ₁)^b₁ ρ₂^a₂ conj(ρ₂)^b₂` of Lemma 2.6 for the multi-index `i = ((a₁, b₁), (a₂, b₂))`. -/
 def lam (ρ₁ ρ₂ : ℂ) (i : Idx2) : ℂ :=
   ρ₁ ^ i.1.1 * conj ρ₁ ^ i.1.2 * (ρ₂ ^ i.2.1 * conj ρ₂ ^ i.2.2)
 
@@ -345,10 +409,15 @@ theorem integral_H2_XY {ρ₁ ρ₂ : ℂ} (h₁ : ‖ρ₁‖ ≤ 1) (h₂ : �
   · have : ¬((p, q), (r, s)) = ((p', q'), (r', s')) := fun h => ha (by simp_all)
     simp [ha, this]
 
+/-- The isometry `F ↦ F(X)` from `L²(mu2)` to `L²(mu4)`. -/
 def PX : Lp ℂ 2 mu2 →ₗᵢ[ℂ] Lp ℂ 2 mu4 := Lp.compMeasurePreservingₗᵢ ℂ Xof mp_X
+/-- The isometry `G ↦ G(Y)` from `L²(mu2)` to `L²(mu4)`, for correlations `|ρ₁|, |ρ₂| ≤ 1`. -/
 def PY {ρ₁ ρ₂ : ℂ} (h₁ : ‖ρ₁‖ ≤ 1) (h₂ : ‖ρ₂‖ ≤ 1) : Lp ℂ 2 mu2 →ₗᵢ[ℂ] Lp ℂ 2 mu4 :=
   Lp.compMeasurePreservingₗᵢ ℂ (Yof ρ₁ ρ₂) (mp_Y h₁ h₂)
 
+/-- The correlation `E[conj F(X) G(Y)]` of Lemma 2.6, where `(X₁, Y₁)` and `(X₂, Y₂)` are independent Gaussian pairs
+with correlations `ρ₁` and `ρ₂` (see `Bm_eq_integral`). For `F = G` it is the correlation function
+`Θ_G(ρ₁, ρ₂)` of Definition 2.7. -/
 def Bm {ρ₁ ρ₂ : ℂ} (h₁ : ‖ρ₁‖ ≤ 1) (h₂ : ‖ρ₂‖ ≤ 1) (F G : Lp ℂ 2 mu2) : ℂ :=
   ⟪PX F, PY h₁ h₂ G⟫_ℂ
 
@@ -381,6 +450,8 @@ lemma Bm_hvec2 {ρ₁ ρ₂ : ℂ} (h₁ : ‖ρ₁‖ ≤ 1) (h₂ : ‖ρ₂�
     simp only [Function.comp, hvec2] at h1 h2 ⊢
     rw [h1, h2]; simp [hfun2, Complex.conj_ofReal]; ring
 
+/-- **Correlation of two functions** (Lemma 2.6 of the article): for `F, G ∈ L²(γ_ℂ ⊗ γ_ℂ)` and
+`|ρ₁|, |ρ₂| ≤ 1`, `E[conj F(X) G(Y)] = ∑_𝐚 conj(F̂(𝐚)) Ĝ(𝐚) ρ₁^a₁ conj(ρ₁)^b₁ ρ₂^a₂ conj(ρ₂)^b₂`. -/
 theorem mehler_L2 {ρ₁ ρ₂ : ℂ} (h₁ : ‖ρ₁‖ ≤ 1) (h₂ : ‖ρ₂‖ ≤ 1) (F G : Lp ℂ 2 mu2) :
     HasSum (fun i => conj ⟪hvec2 i, F⟫_ℂ * lam ρ₁ ρ₂ i * ⟪hvec2 i, G⟫_ℂ) (Bm h₁ h₂ F G) := by
   simpa only [hermiteBasis2_apply, Bm, LinearIsometry.coe_toContinuousLinearMap] using
@@ -397,19 +468,25 @@ lemma Bm_toLp {G : ℂ × ℂ → ℂ} (hGL : MemLp G 2 mu2) {ρ₁ ρ₂ : ℂ}
     (mp_Y h₁ h₂).quasiMeasurePreserving.ae_eq_comp hGL.coeFn_toLp] with _ hx hy
   simp only [Function.comp] at hx hy; rw [hx, hy]
 
+/-- The pair `(d₁(𝐚), d₂(𝐚)) = (a₁ + b₁, a₂ + b₂)` of total degrees of a multi-index in the two coordinates. -/
 def bideg (i : Idx2) : ℕ × ℕ := (i.1.1 + i.1.2, i.2.1 + i.2.2)
 
+/-- The energy `E_G(d₁, d₂) = ∑ |Ĝ(𝐚)|²` of Definition 3.6, the sum being over the multi-indices with
+`d₁(𝐚) = d₁` and `d₂(𝐚) = d₂`. The article restricts the sum to charge one; for `G` of charge one the other
+coefficients vanish (`chargeOne_toLp`), so the two sums agree. -/
 def energy (G : Lp ℂ 2 mu2) (nm : ℕ × ℕ) : ℝ := ∑' i : bideg ⁻¹' {nm}, ‖⟪hvec2 i, G⟫_ℂ‖ ^ 2
 
 lemma energy_nonneg (G : Lp ℂ 2 mu2) (nm : ℕ × ℕ) : 0 ≤ energy G nm :=
   tsum_nonneg fun _ => sq_nonneg _
 
+/-- The energies of `G` sum to `‖G‖²` (Parseval's identity, grouped by bidegree). -/
 theorem hasSum_energy_bideg (G : Lp ℂ 2 mu2) : HasSum (energy G) (‖G‖ ^ 2) :=
   (hasSum_energy2 G).tsum_fiberwise bideg
 
 theorem summable_abs_energy (G : Lp ℂ 2 mu2) : Summable fun nm => |energy G nm| := by
   simp_rw [abs_of_nonneg (energy_nonneg G _)]; exact (hasSum_energy_bideg G).summable
 
+/-- For a map of charge one, the energy `E_G(d₁, d₂)` vanishes when `d₁ + d₂` is even. -/
 theorem energy_eq_zero_of_even {g : ℂ × ℂ → ℂ} (hg : MemLp g 2 mu2)
     (hch : ∀ c u, ‖c‖ = 1 → g (rot2 c u) = c * g u) (nm : ℕ × ℕ) (he : (nm.1 + nm.2) % 2 = 0) :
     energy (hg.toLp g) nm = 0 := by
@@ -425,8 +502,11 @@ theorem energy_eq_zero_of_even {g : ℂ × ℂ → ℂ} (hg : MemLp g 2 mu2)
     rw [hint, integral_H2_charge_one hg hch hi]; simp
   simp_rw [h0, tsum_zero]
 
+/-- The function `ζ ↦ ζ P(|ζ|²)` on `ℂ`, for a real polynomial `P`. -/
 def polyKernel (P : ℝ[X]) (z : ℂ) : ℂ := z * ((P.eval (‖z‖ ^ 2) : ℝ) : ℂ)
 
+/-- The conclusion of Lemma 2.5 for `G ∈ L²(γ_ℂ ⊗ γ_ℂ)`: the Hermite coefficient `Ĝ(𝐚)` vanishes for every
+multi-index whose charge `a₁ - b₁ + a₂ - b₂` is not `1`. -/
 def ChargeOne (G : Lp ℂ 2 mu2) : Prop :=
   ∀ i : Idx2, i.1.1 + i.2.1 ≠ i.1.2 + i.2.2 + 1 → ⟪hvec2 i, G⟫_ℂ = 0
 
@@ -439,6 +519,8 @@ lemma chargeOne_toLp {G : ℂ × ℂ → ℂ} (hGL : MemLp G 2 mu2)
     filter_upwards [hGL.coeFn_toLp] with _ hu; rw [hu]
   rw [hint, integral_H2_charge_one hGL hch hi, mul_zero]
 
+/-- For `‖P‖₁, ‖Q‖₁ ≤ 1`, an absolutely summable table `μ` and `0 ≤ r ≤ 1`, the two summations in
+`∑ⱼ (bivarKernel P Q μ j) rʲ` may be interchanged: the sum equals `∑_p μ p * (termOf P Q p)(r)`. -/
 theorem tsum_bivarKernel_mul_pow {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1)
     {μ : ℕ × ℕ → ℝ} (hμ : Summable fun p => |μ p|) {r : ℝ} (hr0 : 0 ≤ r) (hr1 : r ≤ 1) :
     ∑' j, bivarKernel P Q μ j * r ^ j = ∑' p, μ p * (termOf P Q p).eval r := by
@@ -505,6 +587,8 @@ private lemma lam_polyKernel (P Q : ℝ[X]) (z : ℂ) {i : Idx2} (h : i.1.1 + i.
     _ = z * ((z * conj z) ^ (q₁ + q₂) * (A ^ (p₁ + q₁) * B ^ (p₂ + q₂))) := by
         rw [hp, mul_pow]; ring
 
+/-- Proposition 3.7 (Channel series), part (2): if `G` has charge one and `‖P‖₁, ‖Q‖₁ ≤ 1`, then for `|ζ| ≤ 1`
+`Θ_G(ζ P(|ζ|²), ζ Q(|ζ|²)) = ∑ₖ hₖ ζ |ζ|^(2k)`, where `h = bivarKernel P Q (energy G)` is the channel series. -/
 theorem Bm_polyKernel {G : Lp ℂ 2 mu2} (hG : ChargeOne G) {P Q : ℝ[X]} (hP : l1 P ≤ 1)
     (hQ : l1 Q ≤ 1) {z : ℂ} (hz : ‖z‖ ≤ 1) (h₁ : ‖polyKernel P z‖ ≤ 1)
     (h₂ : ‖polyKernel Q z‖ ≤ 1) :
@@ -534,8 +618,9 @@ theorem Bm_polyKernel {G : Lp ℂ 2 mu2} (hG : ChargeOne G) {P Q : ℝ[X]} (hP :
   rw [radialKernel_eq_mul, ← hr, tsum_bivarKernel_mul_pow hP hQ (summable_abs_energy G) hr0 hr1,
     ← hf.tsum_eq, tsum_mul_right, ← Complex.ofReal_tsum, mul_comm]
 
-/-! ### 3. Disk-valued roundings and tensor-product Gaussian realisation (`rounding_diskKernel`) -/
+/-! ### 3. Polynomial lift, Gaussian projection, and domination of the channel series (`rounding_diskKernel`) -/
 
+/-- A unimodular number `c` with `conj c * b = |b|`: `b / |b|` for `b ≠ 0`, and `1` for `b = 0`. -/
 private def phaseOf (b : ℂ) : ℂ := if b = 0 then 1 else b / ((‖b‖ : ℝ) : ℂ)
 
 private lemma norm_phaseOf (b : ℂ) : ‖phaseOf b‖ = 1 := by
@@ -581,6 +666,9 @@ private lemma norm_pairing_le_scalarOpt {m n : ℕ} (A : Fin m → Fin n → ℂ
   simp only [Complex.conj_conj] at e2'; rw [← e2']
   exact hleft fun _ => by rw [Complex.norm_conj]; exact norm_phaseOf _
 
+/-- A kernel `Q` is realised by disc-valued random variables: for all unit vectors `xᵢ`, `yⱼ` there are a
+probability space and random variables `εᵢ`, `δⱼ` with values in the closed unit disc such that
+`E[conj εᵢ δⱼ] = Q ⟪xᵢ, yⱼ⟫` for all `i, j`. -/
 def DiskKernel (Q : ℂ → ℂ) : Prop :=
   ∀ (m n : ℕ) (ι : Type) [Fintype ι]
     (x : Fin m → EuclideanSpace ℂ ι) (y : Fin n → EuclideanSpace ℂ ι),
@@ -592,6 +680,8 @@ def DiskKernel (Q : ℂ → ℂ) : Prop :=
       (∀ ω i, ‖ε ω i‖ ≤ 1) ∧ (∀ ω j, ‖δ ω j‖ ≤ 1) ∧
       ∀ i j, ∫ ω, conj (ε ω i) * δ ω j ∂μ = Q (inner ℂ (x i) (y j))
 
+/-- A kernel realised by disc-valued random variables is dominated (the last display of the proof of
+Proposition 3.7). -/
 theorem DiskKernel.dominated {Q : ℂ → ℂ} (hQ : DiskKernel Q) : DominatedKernel Q := by
   intro m n A ι _ x y hx hy
   obtain ⟨Ω, _, μ, _, ε, δ, hεm, hδm, hε1, hδ1, hint⟩ := hQ m n ι x y hx hy
@@ -621,8 +711,11 @@ theorem DiskKernel.dominated {Q : ℂ → ℂ} (hQ : DiskKernel Q) : DominatedKe
 
 section TensorRealise
 
+/-- Index type of the direct sum `⨁_{j < N} ℂ^(TIdx ι j) ⊕ ℂ²` in which the polynomial lift takes its values. -/
 abbrev RIdx (ι : Type) (N : ℕ) : Type := (Σ j : Fin N, TIdx ι j) ⊕ Bool
 
+/-- The vector `⨁_{j < N} α_j Ψ_j(x) ⊕ (a, b)`, where `Ψ_j = tpow j`; the coordinate `a` has index `Sum.inr true`
+and `b` has index `Sum.inr false`. -/
 def realVec {ι : Type} [Fintype ι] (N : ℕ) (α : ℕ → ℂ) (a b : ℂ) (x : EuclideanSpace ℂ ι) :
     EuclideanSpace ℂ (RIdx ι N) :=
   WithLp.toLp 2 fun
@@ -644,17 +737,23 @@ private lemma inner_realVec {ι : Type} [Fintype ι] (N : ℕ) (α β : ℕ → 
     exact sum_congr rfl fun _ _ => by simp only [RCLike.inner_apply, map_mul]; ring
   · ring
 
+/-- The sign of a real number, with the convention `sgn 0 = 1`. -/
 private def sgn (r : ℝ) : ℝ := if r < 0 then -1 else 1
 
+/-- The map `𝓛_P(x) = ⨁ⱼ √|ϖⱼ| Ψⱼ(x) ⊕ (0, ε)` of Lemma 3.4 (Polynomial lift), for `P = ∑ⱼ ϖⱼ Xʲ` and
+`ε = √(1 - ‖P‖₁)`. -/
 def realL {ι : Type} [Fintype ι] (P : ℝ[X]) (x : EuclideanSpace ℂ ι) :
     EuclideanSpace ℂ (RIdx ι (P.natDegree + 1)) :=
   realVec (P.natDegree + 1) (fun j => ((√|P.coeff j| : ℝ) : ℂ)) 0 ((√(1 - l1 P) : ℝ) : ℂ) x
 
+/-- The map `𝓡_P(y) = ⨁ⱼ sgn(ϖⱼ) √|ϖⱼ| Ψⱼ(y) ⊕ (ε, 0)` of Lemma 3.4 (Polynomial lift), for `P = ∑ⱼ ϖⱼ Xʲ` and
+`ε = √(1 - ‖P‖₁)`. -/
 def realR {ι : Type} [Fintype ι] (P : ℝ[X]) (y : EuclideanSpace ℂ ι) :
     EuclideanSpace ℂ (RIdx ι (P.natDegree + 1)) :=
   realVec (P.natDegree + 1) (fun j => ((sgn (P.coeff j) * √|P.coeff j| : ℝ) : ℂ))
     ((√(1 - l1 P) : ℝ) : ℂ) 0 y
 
+/-- Lemma 3.4 (Polynomial lift): `⟪𝓛_P(x), 𝓡_P(y)⟫ = ζ P(|ζ|²)` with `ζ = ⟪x, y⟫`. -/
 lemma inner_realL_realR {ι : Type} [Fintype ι] (P : ℝ[X]) (x y : EuclideanSpace ℂ ι) :
     inner ℂ (realL P x) (realR P y) = polyKernel P (inner ℂ x y) := by
   rw [realL, realR, inner_realVec, polyKernel, Polynomial.eval_eq_sum_range,
@@ -693,20 +792,24 @@ private lemma inner_self_realVec_of_unit {ι : Type} [Fintype ι] (P : ℝ[X])
     exact_mod_cast h4
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h3
 
+/-- Lemma 3.4 (Polynomial lift): if `‖P‖₁ ≤ 1`, then `𝓛_P` maps unit vectors to unit vectors. -/
 lemma norm_realL {ι : Type} [Fintype ι] (P : ℝ[X]) (hP : l1 P ≤ 1) (x : EuclideanSpace ℂ ι)
     (hx : ‖x‖ = 1) : ‖realL P x‖ = 1 :=
   inner_self_realVec_of_unit P (fun j => √|P.coeff j|) (fun _ => Real.sq_sqrt (abs_nonneg _))
     (by rw [Real.sq_sqrt (by linarith)]; ring) x hx
 
+/-- Lemma 3.4 (Polynomial lift): if `‖P‖₁ ≤ 1`, then `𝓡_P` maps unit vectors to unit vectors. -/
 lemma norm_realR {ι : Type} [Fintype ι] (P : ℝ[X]) (hP : l1 P ≤ 1) (y : EuclideanSpace ℂ ι)
     (hy : ‖y‖ = 1) : ‖realR P y‖ = 1 :=
   inner_self_realVec_of_unit P (fun j => sgn (P.coeff j) * √|P.coeff j|)
     (fun j => by rw [mul_pow, Real.sq_sqrt (abs_nonneg _)]; unfold sgn; split_ifs <;> ring)
     (by rw [Real.sq_sqrt (by linarith)]; ring) y hy
 
+/-- The embedding of `ℂ^ι` into `ℂ^(Option ι)` that puts `0` in the new coordinate `none`. -/
 private def embOpt {ι : Type} [Fintype ι] (x : EuclideanSpace ℂ ι) : EuclideanSpace ℂ (Option ι) :=
   WithLp.toLp 2 fun | none => 0 | some i => x i
 
+/-- The basis vector of `ℂ^(Option ι)` at the new coordinate `none`; it is orthogonal to the image of `embOpt`. -/
 private def eNone (ι : Type) [Fintype ι] : EuclideanSpace ℂ (Option ι) :=
   WithLp.toLp 2 fun | none => 1 | some _ => 0
 
@@ -759,11 +862,14 @@ private lemma exists_decomp {κ : Type} [Fintype κ] {x y e : EuclideanSpace ℂ
     · rw [inner_smul_right, hxr, mul_zero]
     · rw [hsr, smul_smul, mul_inv_cancel₀ hn, one_smul, hr]; abel
 
+/-- The law of a vector `(g_k)_{k ∈ κ}` of independent standard complex Gaussians. -/
 private def gaussPi (κ : Type) [Fintype κ] : Measure (κ → ℂ) := Measure.pi fun _ => gaussC
 
 private instance (κ : Type) [Fintype κ] : IsProbabilityMeasure (gaussPi κ) := by
   unfold gaussPi; infer_instance
 
+/-- The variable `X_u = ∑ₖ conj(gₖ) uₖ` of Lemma 3.5 (Gaussian projection), as a continuous `ℝ`-linear function
+of `g`. -/
 private def projC {κ : Type} [Fintype κ] (u : EuclideanSpace ℂ κ) : (κ → ℂ) →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap
     { toFun := fun g => ∑ k : κ, conj (g k) * u k
@@ -779,6 +885,8 @@ private lemma projC_linear {κ : Type} [Fintype κ] (ρ σ : ℂ) (a w : Euclide
   rw [mul_sum, mul_sum, ← sum_add_distrib]
   exact sum_congr rfl fun _ _ => by ring
 
+/-- The core of Lemma 3.5 (Gaussian projection): for orthonormal `a, w`, the variables `X_a` and `X_w` are
+independent standard complex Gaussians. -/
 private lemma map_pairProj {κ : Type} [Fintype κ] {a w : EuclideanSpace ℂ κ}
     (ha : ‖a‖ = 1) (hw : ‖w‖ = 1) (haw : inner ℂ a w = 0) :
     (gaussPi κ).map (fun g => (projC a g, projC w g)) = mu2 := by
@@ -859,6 +967,10 @@ private lemma map_pairProj {κ : Type} [Fintype κ] {a w : EuclideanSpace ℂ κ
     rw [sum_neg_distrib, ← sum_div, ← Complex.ofReal_sum, hsumR]; push_cast; ring
   simpa only [neg_div] using hsumC
 
+/-- Proposition 3.7 (Channel series), part (3), in probabilistic form. Let `G : ℂ² → ℂ` be measurable, bounded by
+one and of charge one, and let `‖P‖₁, ‖Q‖₁ ≤ 1`. Then the radial kernel of the channel series of `(G, P, Q)` is
+realised by disc-valued random variables, namely `G` applied to Gaussian projections of the polynomial lifts.
+With `DiskKernel.dominated`, the channel series is dominated. -/
 theorem rounding_diskKernel {G : ℂ × ℂ → ℂ} (hGm : Measurable G) (hG1 : ∀ u, ‖G u‖ ≤ 1)
     (hch : ∀ c u, ‖c‖ = 1 → G (rot2 c u) = c * G u) (hGL : MemLp G 2 mu2) {P Q : ℝ[X]}
     (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) :
@@ -921,28 +1033,46 @@ theorem rounding_diskKernel {G : ℂ × ℂ → ℂ} (hGm : Measurable G) (hG1 :
 
 end TensorRealise
 
-/-! ### 4. Rotated Ornstein–Uhlenbeck smoothing `smoothMap` and `bCoeff` identity -/
+/-! ### 4. The smoothed map `smoothMap` -/
 
+/-- The rotation `(u₁, u₂) ↦ (c_θ u₁ + s_θ u₂, -s_θ u₁ + c_θ u₂)` of `ℂ²`, with `(c_θ, s_θ) = (ct, st)`. -/
 def uRot (ct st : ℝ) (u : ℂ × ℂ) : ℂ × ℂ :=
   ((ct : ℂ) * u.1 + (st : ℂ) * u.2, -(st : ℂ) * u.1 + (ct : ℂ) * u.2)
 
+/-- The inverse rotation `(v₁, v₂) ↦ (c_θ v₁ - s_θ v₂, s_θ v₁ + c_θ v₂)` of `uRot ct st`. -/
 def uRotInv (ct st : ℝ) (v : ℂ × ℂ) : ℂ × ℂ :=
   ((ct : ℂ) * v.1 - (st : ℂ) * v.2, (st : ℂ) * v.1 + (ct : ℂ) * v.2)
 
+/-- The argument of the cell map in equation (4.9) of the article:
+`(c_θ x₁ + s_θ x₂, s_η (-s_θ x₁ + c_θ x₂) + c_η ξ)`, with `(c_θ, s_θ, s_η, c_η) = (ct, st, se, ce)` and
+`ξ = z.2`; the coordinate `z.1` is not used. -/
 def smoothEff (ct st se ce : ℝ) (x z : ℂ × ℂ) : ℂ × ℂ :=
   ((ct : ℂ) * x.1 + (st : ℂ) * x.2,
    -(((se * st : ℝ) : ℂ)) * x.1 + ((se * ct : ℝ) : ℂ) * x.2 + (ce : ℂ) * z.2)
 
+/-- The smoothed map of equation (4.9) of the article, for an arbitrary map `F` and parameters
+`(c_θ, s_θ, s_η, c_η) = (ct, st, se, ce)`:
+`x ↦ ∫ F(c_θ x₁ + s_θ x₂, s_η (-s_θ x₁ + c_θ x₂) + c_η ξ) dγ_ℂ(ξ)`.
+The integral is written over `mu2`, with an unused first coordinate. -/
 def smoothMap (ct st se ce : ℝ) (F : ℂ × ℂ → ℂ) (x : ℂ × ℂ) : ℂ :=
   ∫ z, F (smoothEff ct st se ce x z) ∂mu2
 
+/-- Entry `(0, 0)` of the symmetric matrix `M = Uᵀ diag(1, s_η) U`, where `U` is the rotation matrix with rows
+`(c_θ, s_θ)` and `(-s_θ, c_θ)`. -/
 def m00Sym (ct st se : ℝ) : ℝ := ct ^ 2 + se * st ^ 2
+/-- Entry `(0, 1)` of the symmetric matrix `M = Uᵀ diag(1, s_η) U`. -/
 def m01Sym (ct st se : ℝ) : ℝ := ct * st * (1 - se)
+/-- Entry `(1, 1)` of the symmetric matrix `M = Uᵀ diag(1, s_η) U`. -/
 def m11Sym (ct st se : ℝ) : ℝ := st ^ 2 + se * ct ^ 2
+/-- Entry `(0, 0)` of the symmetric matrix `N = c_η Uᵀ diag(0, 1) U`. -/
 def n00Sym (st ce : ℝ) : ℝ := ce * st ^ 2
+/-- Entry `(0, 1)` of the symmetric matrix `N = c_η Uᵀ diag(0, 1) U`. -/
 def n01Sym (ct st ce : ℝ) : ℝ := -(ce * ct * st)
+/-- Entry `(1, 1)` of the symmetric matrix `N = c_η Uᵀ diag(0, 1) U`. -/
 def n11Sym (ct ce : ℝ) : ℝ := ce * ct ^ 2
 
+/-- The vector `M x + N z` of `ℂ²` for the symmetric real matrices `M` and `N` with entries `m00, m01, m11` and
+`n00, n01, n11`. -/
 def smoothSym (m00 m01 m11 n00 n01 n11 : ℝ) (x z : ℂ × ℂ) : ℂ × ℂ :=
   ((m00 : ℂ) * x.1 + (m01 : ℂ) * x.2 + (n00 : ℂ) * z.1 + (n01 : ℂ) * z.2,
    (m01 : ℂ) * x.1 + (m11 : ℂ) * x.2 + (n01 : ℂ) * z.1 + (n11 : ℂ) * z.2)
@@ -1000,6 +1130,8 @@ lemma map_orth_mu2 {a b : ℝ} (hab : a ^ 2 + b ^ 2 = 1) :
     exact_mod_cast hid
   linear_combination -(1 / 4 : ℂ) * hidC
 
+/-- The smoothed map written with symmetric matrices: `smoothMap ct st se ce F x = ∫ F(U (M x + N w)) dmu2(w)`,
+where `U = uRot ct st`, `M = Uᵀ diag(1, s_η) U` and `N = c_η Uᵀ diag(0, 1) U`. -/
 lemma smoothMap_eq_sym {ct st se ce : ℝ} (hd : ct ^ 2 + st ^ 2 = 1)
     {F : ℂ × ℂ → ℂ} (hFm : Measurable F) (x : ℂ × ℂ) :
     smoothMap ct st se ce F x =
@@ -1028,12 +1160,14 @@ lemma smoothMap_eq_sym {ct st se ce : ℝ} (hd : ct ^ 2 + st ^ 2 = 1)
   rw [hi, smoothMap]
   exact integral_congr_ae (Filter.Eventually.of_forall fun z => congrArg F (hpt z).symm)
 
+/-- Lemma 4.9 of the article, first assertion: the smoothed map of a measurable map is measurable. -/
 theorem measurable_smoothMap (ct st se ce : ℝ) {F : ℂ × ℂ → ℂ} (hFm : Measurable F) :
     Measurable (smoothMap ct st se ce F) := by
   have hm : Measurable fun p : (ℂ × ℂ) × (ℂ × ℂ) => F (smoothEff ct st se ce p.1 p.2) :=
     hFm.comp (by unfold smoothEff; fun_prop)
   exact hm.stronglyMeasurable.integral_prod_right'.measurable
 
+/-- Lemma 4.9 of the article, second assertion: if `|F| ≤ 1`, then the smoothed map is bounded by `1`. -/
 theorem norm_smoothMap_le (ct st se ce : ℝ) {F : ℂ × ℂ → ℂ} (hF1 : ∀ v, ‖F v‖ ≤ 1) (x : ℂ × ℂ) :
     ‖smoothMap ct st se ce F x‖ ≤ 1 := by
   calc ‖∫ z, F (smoothEff ct st se ce x z) ∂mu2‖
@@ -1044,6 +1178,7 @@ theorem norm_smoothMap_le (ct st se ce : ℝ) {F : ℂ × ℂ → ℂ} (hF1 : �
         · rw [integral_undef hi]; simp
     _ = 1 := by simp
 
+/-- Lemma 4.9 of the article, third assertion: the smoothed map of a map of charge one has charge one. -/
 theorem smoothMap_rot2 (ct st se ce : ℝ) {F : ℂ × ℂ → ℂ}
     (hch : ∀ c v, ‖c‖ = 1 → F (rot2 c v) = c * F v) {c : ℂ} (hc : ‖c‖ = 1) (x : ℂ × ℂ) :
     smoothMap ct st se ce F (rot2 c x) = c * smoothMap ct st se ce F x := by
@@ -1070,8 +1205,10 @@ lemma memLp_smoothMap (ct st se ce : ℝ) {F : ℂ × ℂ → ℂ} (hFm : Measur
   MemLp.of_bound (measurable_smoothMap ct st se ce hFm).aestronglyMeasurable 1
     (Filter.Eventually.of_forall (norm_smoothMap_le ct st se ce hF1))
 
-/-! ### 5. Exact square-root-free binomial Hermite expansion `integral_H2_smoothMap` -/
+/-! ### 5. Hermite coefficients of the smoothed map (`bCoeff`, `integral_H2_smoothMap`) -/
 
+/-- `bCoeff u0 u1 v0 v1 a b j` is the coefficient of `x^j y^(a+b-j)` in `(u0 x + u1 y)^a (v0 x + v1 y)^b`. The
+coefficient `χ(a₁, a₂; k)` of Lemma 4.10 of the article is `bCoeff c_θ (-(s_η s_θ)) s_θ (s_η c_θ) a₁ a₂ k`. -/
 def bCoeff (u0 u1 v0 v1 : ℝ) : ℕ → ℕ → ℕ → ℝ
   | 0, 0, j => if j = 0 then 1 else 0
   | 0, b + 1, j =>
@@ -1210,6 +1347,7 @@ private lemma comm_linear_binom {V : Type*} [AddCommGroup V] [Module ℂ V]
     rw [show a + b + 1 - j = a + 1 + b - j by omega]
     simp only [bCoeff]
 
+/-- The exponent vector `(a, b)` of the monomial `X₀^a X₁^b` of `CPoly`. -/
 private def mk2 (a b : ℕ) : Fin 2 →₀ ℕ := Finsupp.equivFunOnFinite.symm ![a, b]
 
 @[simp] private lemma mk2_apply_zero (a b : ℕ) : mk2 a b 0 = a := rfl
@@ -1230,16 +1368,21 @@ private lemma mk2_sub_single0 (a b : ℕ) : mk2 a b - Finsupp.single 0 1 = mk2 (
 private lemma mk2_sub_single1 (a b : ℕ) : mk2 a b - Finsupp.single 1 1 = mk2 a (b - 1) := by
   ext i; fin_cases i <;> simp [mk2]
 
+/-- The coefficient function of a polynomial of `P4`, as a linear map. -/
 private def toFinsuppL : P4 →ₗ[ℂ] (Fin 4 →₀ ℕ) →₀ ℂ where
   toFun := AddMonoidAlgebra.coeff
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/-- The linear map `c ↦ c * mom (m 2) (m 3) * X₀^(m 0) X₁^(m 1)`: the integral of the monomial `c X^m` of `P4`
+over its second pair of variables. -/
 private def monomialMomL (m : Fin 4 →₀ ℕ) : ℂ →ₗ[ℂ] CPoly where
   toFun c := MvPolynomial.monomial (mk2 (m 0) (m 1)) (c * mom (m 2) (m 3))
   map_add' a b := by rw [add_mul, map_add]
   map_smul' r a := by rw [RingHom.id_apply, smul_monomial, smul_eq_mul, smul_eq_mul, mul_assoc]
 
+/-- Integration over the second pair of variables, as a linear map `P4 → CPoly`:
+`ev v (projW P) = ∫ ev4 (v, w) P dγ_ℂ(w)` (`ev_projW`). -/
 private def projW : P4 →ₗ[ℂ] CPoly :=
   (Finsupp.lsum ℂ monomialMomL).comp toFinsuppL
 
@@ -1343,6 +1486,8 @@ private lemma ev_projW (v2 : ℂ) (P : P4) : ev v2 (projW P) = ∫ w2, ev4 (v2, 
     simp_rw [hev4]
     exact (integral_add (integrable_ev4_snd v2 P) (integrable_ev4_snd v2 Q)).symm
 
+/-- The substitution `z ↦ s_η z₁ + c_η z₂` (and the same for the conjugates) from `CPoly` to `P4`:
+`ev4 u (sY2 se ce g) = ev (se * u.1 + ce * u.2) g`. -/
 private def sY2 (se ce : ℝ) : CPoly →ₐ[ℂ] P4 :=
   MvPolynomial.aeval
     ![MvPolynomial.C (se : ℂ) * MvPolynomial.X 0 + MvPolynomial.C (ce : ℂ) * MvPolynomial.X 2,
@@ -1403,12 +1548,6 @@ private lemma projW_sY2_A1 {se ce : ℝ} (he : se ^ 2 + ce ^ 2 = 1) (g : CPoly) 
     A1, ← projW_pderiv0, pderiv0_sY2, projW_C_mul]
   linear_combination (projW (sY2 se ce (pderiv 0 g))) * heC
 
-private lemma A0_C_mul' (k : ℂ) (g : CPoly) : A0 (MvPolynomial.C k * g) = MvPolynomial.C k * A0 g := by
-  simp only [A0, Derivation.leibniz, smul_eq_mul, pderiv_C, mul_zero, add_zero]; ring
-
-private lemma A1_C_mul' (k : ℂ) (g : CPoly) : A1 (MvPolynomial.C k * g) = MvPolynomial.C k * A1 g := by
-  simp only [A1, Derivation.leibniz, smul_eq_mul, pderiv_C, mul_zero, add_zero]; ring
-
 private lemma projW_sY2_H {se ce : ℝ} (he : se ^ 2 + ce ^ 2 = 1) (r s : ℕ) :
     projW (sY2 se ce (H r s)) = MvPolynomial.C ((se ^ (r + s) : ℝ) : ℂ) * H r s := by
   induction r with
@@ -1416,10 +1555,10 @@ private lemma projW_sY2_H {se ce : ℝ} (he : se ^ 2 + ce ^ 2 = 1) (r s : ℕ) :
     induction s with
     | zero => simp [H_zero_zero, projW_one]
     | succ s ih =>
-      rw [H_zero_succ, projW_sY2_A1 he, ih, A1_C_mul', ← mul_assoc, ← map_mul, ← H_zero_succ]
+      rw [H_zero_succ, projW_sY2_A1 he, ih, A1_C_mul, ← mul_assoc, ← map_mul, ← H_zero_succ]
       congr 2; push_cast; ring
   | succ r ih =>
-    rw [H_succ_left, projW_sY2_A0 he, ih, A0_C_mul', ← mul_assoc, ← map_mul, ← H_succ_left]
+    rw [H_succ_left, projW_sY2_A0 he, ih, A0_C_mul, ← mul_assoc, ← map_mul, ← H_succ_left]
     congr 2; push_cast; ring
 
 private lemma ou_one_coord {se ce : ℝ} (he : se ^ 2 + ce ^ 2 = 1) (r s : ℕ) (v2 : ℂ) :
@@ -1429,6 +1568,8 @@ private lemma ou_one_coord {se ce : ℝ} (he : se ^ 2 + ce ^ 2 = 1) (r s : ℕ) 
   rw [← ev_projW v2 (sY2 se ce (H r s)), projW_sY2_H he]
   simp [ev]
 
+/-- A polynomial in `z, conj z` as a polynomial of `P4` in the second pair of variables:
+`ev4 u (sZ g) = ev u.2 g`. -/
 private def sZ : CPoly →ₐ[ℂ] P4 := MvPolynomial.aeval ![MvPolynomial.X 2, MvPolynomial.X 3]
 
 private lemma ev4_sZ (u : ℂ × ℂ) (g : CPoly) : ev4 u (sZ g) = ev u.2 g := by
@@ -1455,21 +1596,25 @@ private lemma pderiv2_sZ (g : CPoly) : pderiv 2 (sZ g) = sZ (pderiv 0 g) := by
 private lemma pderiv3_sZ (g : CPoly) : pderiv 3 (sZ g) = sZ (pderiv 1 g) := by
   rw [sZ, pderiv_aeval2]; simp [pderiv_X]
 
+/-- The creation operator `P ↦ z₁ P - ∂P/∂(conj z₁)` on `P4` (the operator `A0` in the first coordinate). -/
 private def B0a : P4 →ₗ[ℂ] P4 where
   toFun P := MvPolynomial.X 0 * P - pderiv 1 P
   map_add' P Q := by simp only [mul_add, map_add]; ring
   map_smul' c P := by rw [Derivation.map_smul, mul_smul_comm, smul_sub]; rfl
 
+/-- The creation operator `P ↦ z₂ P - ∂P/∂(conj z₂)` on `P4` (the operator `A0` in the second coordinate). -/
 private def B0b : P4 →ₗ[ℂ] P4 where
   toFun P := MvPolynomial.X 2 * P - pderiv 3 P
   map_add' P Q := by simp only [mul_add, map_add]; ring
   map_smul' c P := by rw [Derivation.map_smul, mul_smul_comm, smul_sub]; rfl
 
+/-- The creation operator `P ↦ conj(z₁) P - ∂P/∂z₁` on `P4` (the operator `A1` in the first coordinate). -/
 private def B1a : P4 →ₗ[ℂ] P4 where
   toFun P := MvPolynomial.X 1 * P - pderiv 0 P
   map_add' P Q := by simp only [mul_add, map_add]; ring
   map_smul' c P := by rw [Derivation.map_smul, mul_smul_comm, smul_sub]; rfl
 
+/-- The creation operator `P ↦ conj(z₂) P - ∂P/∂z₂` on `P4` (the operator `A1` in the second coordinate). -/
 private def B1b : P4 →ₗ[ℂ] P4 where
   toFun P := MvPolynomial.X 3 * P - pderiv 2 P
   map_add' P Q := by simp only [mul_add, map_add]; ring
@@ -1560,6 +1705,8 @@ private lemma pderiv_aeval4 (ψ : Fin 4 → P4) (j : Fin 4) (P : P4) :
     simp only [map_mul, aeval_X, Derivation.leibniz, smul_eq_mul, map_add, hP]
     fin_cases i <;> simp [pderiv_X] <;> ring
 
+/-- The substitution on `P4` induced by the rotation `uRotInv ct st` of `ℂ²`:
+`ev4 u (rot4 ct st P) = ev4 (uRotInv ct st u) P` (`ev4_rot4`). -/
 private def rot4 (ct st : ℝ) : P4 →ₐ[ℂ] P4 :=
   MvPolynomial.aeval
     ![MvPolynomial.C (ct : ℂ) * MvPolynomial.X 0 - MvPolynomial.C (st : ℂ) * MvPolynomial.X 2,
@@ -1635,6 +1782,9 @@ private lemma iterate_linear_sum {V : Type*} [AddCommGroup V] [Module ℂ V] {ι
   | zero => rfl
   | succ n ih => rw [Function.iterate_succ_apply', ih, map_sum]; simp [map_smul, Function.iterate_succ_apply']
 
+/-- The product Wick monomials at a rotated point: for `c_θ² + s_θ² = 1`, `H2 i (uRotInv ct st u)` is the
+combination of the `H2 ((j₁, j₂), (a₁ + a₂ - j₁, b₁ + b₂ - j₂)) u` with the coefficients
+`bCoeff ct (-st) st ct a₁ a₂ j₁ * bCoeff ct (-st) st ct b₁ b₂ j₂`, where `i = ((a₁, b₁), (a₂, b₂))`. -/
 lemma H2_uRotInv {ct st : ℝ} (hd : ct ^ 2 + st ^ 2 = 1) (i : Idx2) (u : ℂ × ℂ) :
     H2 i (uRotInv ct st u) =
       ∑ j₁ ∈ range (i.1.1 + i.2.1 + 1), ∑ j₂ ∈ range (i.1.2 + i.2.2 + 1),
@@ -1815,6 +1965,10 @@ private lemma integral_coord2_ou {se ce : ℝ} (he : se ^ 2 + ce ^ 2 = 1)
   simp_rw [hrhs]
   exact integral_const_mul _ _
 
+/-- **Hermite coefficients of the smoothed map** (Lemma 4.10 of the article). For a measurable `F` with `|F| ≤ 1`,
+parameters with `c_θ² + s_θ² = 1` and `s_η² + c_η² = 1`, and `𝐚 = ((a₁, b₁), (a₂, b₂))`,
+`⟨:z^𝐚:, smoothMap F⟩ = ∑_{k ≤ a₁+a₂} ∑_{l ≤ b₁+b₂} χ(a₁, a₂; k) χ(b₁, b₂; l) ⟨:z^(k, l, a₁+a₂-k, b₁+b₂-l):, F⟩`,
+where `χ(a₁, a₂; k) = bCoeff ct (-(se * st)) st (se * ct) a₁ a₂ k`. -/
 theorem integral_H2_smoothMap {ct st se ce : ℝ} (hd : ct ^ 2 + st ^ 2 = 1)
     (he : se ^ 2 + ce ^ 2 = 1) {F : ℂ × ℂ → ℂ} (hFm : Measurable F)
     (hF1 : ∀ v, ‖F v‖ ≤ 1) (i : Idx2) :
@@ -1907,14 +2061,20 @@ theorem integral_H2_smoothMap {ct st se ce : ℝ} (hd : ct ^ 2 + st ^ 2 = 1)
     ← bCoeff_scale ct st se i.1.2 i.2.2 j₂ hj₂_le, pow_add]
   push_cast; ring
 
-/-! ### 6. Haagerup's phase channel `ph`, `phase2`, `haagCoeff`, and `phase_bivarKernel_eq` -/
+/-! ### 6. The phase channel: `ph`, `phase2`, `haagCoeff`, and `phase_bivarKernel_eq` -/
 
+/-- The rational numbers `(4 / π) r_k = binom(2k, k)² 16⁻ᵏ / (k + 1)`, where `r_k` are Haagerup's coefficients of
+equation (1.3) of the article; they are defined by `haagR 0 = 1` and
+`haagR (k + 1) = haagR k * (2k + 1)² / (4 (k + 1) (k + 2))`. -/
 def haagR : ℕ → ℚ
   | 0 => 1
   | k + 1 => haagR k * (((2 * k + 1) ^ 2 : ℕ) : ℚ) / ((4 * (k + 1) * (k + 2) : ℕ) : ℚ)
 
+/-- Haagerup's coefficient `r_k = π / (4 (k + 1)) * binom(2k, k)² 16⁻ᵏ` of equation (1.3) of the article: the
+coefficient of `t^(2k+1)` in `E[conj(ph X) ph Y]` for a Gaussian pair with correlation `t`. -/
 def haagCoeff (k : ℕ) : ℝ := Real.pi / 4 * haagR k
 
+/-- The phase `ph z = z / |z|` of a complex number, with `ph 0 = 0`. -/
 def ph (a : ℂ) : ℂ := a / ((‖a‖ : ℝ) : ℂ)
 
 lemma norm_ph_le (a : ℂ) : ‖ph a‖ ≤ 1 := by
@@ -1929,6 +2089,7 @@ lemma measurable_ph : Measurable ph := by unfold ph; fun_prop
 lemma memLp_ph : MemLp ph 2 gaussC :=
   MemLp.of_bound measurable_ph.aestronglyMeasurable 1 (Filter.Eventually.of_forall norm_ph_le)
 
+/-- The phase `ph` as an element of `L²(γ_ℂ)`. -/
 def phaseLp : Lp ℂ 2 gaussC := memLp_ph.toLp ph
 
 private lemma conj_monomial_mul_div_norm (n : ℕ) (z : ℂ) :
@@ -1967,6 +2128,7 @@ private lemma integrable_phase_pair (P : CPoly) :
     Integrable (fun z => ev z P * conj (ph z)) gaussC :=
   (memLp_ev P).integrable_mul memLp_ph.star
 
+/-- The linear functional `P ↦ ∫ P(z, conj z) conj(ph z) dγ_ℂ(z)` on `CPoly`. -/
 private def phaseMoment : CPoly →ₗ[ℂ] ℂ where
   toFun P := ∫ z, ev z P * conj (ph z) ∂gaussC
   map_add' P Q := by
@@ -2071,6 +2233,8 @@ private lemma integral_phase_eq_conj_phaseMoment (P : CPoly) :
     ∫ z, conj (ev z P) * ph z ∂gaussC = conj (phaseMoment P) := by
   rw [phaseMoment_apply, ← integral_conj]; congr 1; funext z; simp
 
+/-- The squared Hermite coefficient of the phase at `𝓗_{k+1,k}` is Haagerup's coefficient `r_k`
+(the computation in the proof of Lemma 3.8 of the article). -/
 theorem phase_energy (k : ℕ) : ‖⟪hvec (k + 1, k), phaseLp⟫_ℂ‖ ^ 2 = haagCoeff k := by
   rw [hvec, phaseLp, inner_toLp]
   simp only [hfun, map_mul, Complex.conj_ofReal]
@@ -2081,6 +2245,7 @@ theorem phase_energy (k : ℕ) : ‖⟪hvec (k + 1, k), phaseLp⟫_ℂ‖ ^ 2 = 
         ((k + 1).factorial * k.factorial : ℕ)) := by ring
     _ = _ := by rw [nrm_sq_mul, mul_one]
 
+/-- The phase map in the first coordinate, `(z₁, z₂) ↦ ph z₁`, of Section 3.4 (Phase channels). -/
 def phase2 (u : ℂ × ℂ) : ℂ := ph u.1
 
 lemma measurable_phase2 : Measurable phase2 := measurable_ph.comp measurable_fst
@@ -2094,6 +2259,7 @@ lemma memLp_phase2 : MemLp phase2 2 mu2 :=
   MemLp.of_bound measurable_phase2.aestronglyMeasurable 1
     (Filter.Eventually.of_forall norm_phase2_le)
 
+/-- Lemma 3.8 of the article: the energy of the phase map in bidegree `(2k + 1, 0)` is `r_k`. -/
 lemma energy_phase2_odd_zero (k : ℕ) :
     energy (memLp_phase2.toLp phase2) (2 * k + 1, 0) = haagCoeff k := by
   unfold energy
@@ -2140,6 +2306,9 @@ lemma energy_phase2_odd_zero (k : ℕ) :
     rw [hint, integral_H2_charge_one memLp_phase2 (fun _ u hc => phase2_rot2 hc u) hne]
     simp
 
+/-- Lemma 3.8 of the article, equation (3.4): the channel series of the phase map with first polynomial `P` is
+`hₙ = ∑_{k ≤ n} r_k [Xⁿ] (Xᵏ P^(2k+1)) = ∑_{k ≤ n} r_k [X^(n-k)] P^(2k+1)`. It is stated with second polynomial `0`,
+on which the series does not depend. -/
 theorem phase_bivarKernel_eq (P : ℝ[X]) (n : ℕ) :
     bivarKernel P 0 (energy (memLp_phase2.toLp phase2)) n =
       ∑ k ∈ range (n + 1), haagCoeff k * (Polynomial.X ^ k * P ^ (2 * k + 1)).coeff n := by
