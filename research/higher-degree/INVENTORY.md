@@ -221,6 +221,10 @@ The dense dimension-seven witness in row 4.30 uses the [search coefficients](cod
 The [derivation](sources/kappa-seven-codex-062a/PROOF.md) identifies the rational polynomial and its exact spherical
 fourth moment. The [standard-library replay](code/kappa-seven-codex-062a/verify.py) reads the coefficient table directly.
 
+The [vector-field proof](sources/spherical-defect-codex-062a/PROOF.md) gives the complementary lower bound in
+row 4.30 for every complex dimension other than the known equality cases. Its [rational arithmetic checks](code/spherical-defect-codex-062a/verify.py)
+cover the example floors, the evaluation kernel, and the spherical normalization on a mixed form.
+
 ## The attack plan and problem statements of 25 November 2026 (STATUS 4.39, tag ATK)
 
 - `sources/degree5-attack-2026-11-25/PLAN.md` and `problems/P1`–`P6`: written from the ledger and its sources by a
