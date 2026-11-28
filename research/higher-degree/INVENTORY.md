@@ -49,6 +49,10 @@ of the working folder, whose other outputs are described in the next two section
 | `smallt/assemble.py` (4.18: the exact assembly script) | 3,672 B | `3b37bfa22a174fdd17573e6f1ed86e60fb7bdaad7c05cf5e0d22de221c25041c` |
 | `smallt/cert.py` (4.18: the certificate solver and its verifier) | 18,169 B | `ca1320d9a95fa7f9c8a800edc48ceee88b5a1173bbb7e25f24de71597234aa9a` |
 
+## Directional phase and mass (#876)
+
+The [proof](sources/quintic-phase-angle-codex-a7c4/PROOF.md) derives the physical constraint and the [standard-library replay](code/quintic-phase-angle-codex-a7c4/verify.py) verifies the two radial integrals, six sector prices, interval coverage and failure controls. Its only numerical inputs are Gaussian factorial moments and the existing mass-row constants.
+
 ## Degree-5 progress of 16 November (STATUS 1.10, 4.9–4.13)
 
 `sources/degree5-progress-2026-11-16/` holds the reports. Their code and outputs stay in the working folder
