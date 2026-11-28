@@ -61,8 +61,8 @@ admitting > 7.57·10⁻⁵, `[0.84000, 0.85168]` across Rows 4–6 closed in `KA
 but still near the peak profile. In the original KAST comparison, central rows outside
 `[0.840, 0.8547]` need their own all-sector bounds. KHOM supplies alternative peak-ray
 profiles on the upper ranges just listed. The lower central rows remain open. At the stricter
-cap 0.713245 and fixed ε = 94/125, the priced peak profiles and the exterior leave [.751,.8255]
-for unrestricted responses (2.10, 8.13a,c–e, **P + C, author only**). Naive triangle
+cap 0.713245 and fixed ε = 94/125, the priced peak profiles and the exterior leave [.751,.825]
+for unrestricted responses (2.10, 8.13a,c–f, **P + C, author only**). Naive triangle
 transfer to profile M costs about 7·10⁻⁴ (8.6; bypassed at ε = 149/200 via free-homothety peak-ray slabs in `KHOM`, 8.5). With the retained functional the A-shell uses 2·10⁻⁵ of the budget, and global (P) + $F_{\mathrm{joint}}(c^*) \le 0$ [7.4.16; 7.5.13] close the remaining peak-row sector assembly. With the raw functional of K the content inequality is also
 missing. The gain at stake is about 3·10⁻⁴ on the constant.
 
@@ -269,7 +269,7 @@ profiles [STATUS §15].
         →  A + B core, S + 4.936·10⁻⁵ (7.4.10; < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ in KAST)   unconditional on the peak energy domain (7.4.16)
         →  all six sectors, < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ (7.5.13 + KAST; < S + 7.971·10⁻⁵ conditional on open (P_Ψ) in 7.5.3 + KAST, proved on strips/regions 7.5.4c, 7.5.12)
         →  consumer (8.1, 8.7, 8.9–8.13)                    [0.8400, 0.8661] at peak ε and [0.8400, 0.8547] at 94/125, cap 500/701 (7.5.13 + KAST, P + C)
-        →  tighter consumer (8.13a, 8.13c, 8.13d–e)                 [0.8255, 0.8635] at 94/125, cap .713245 (P + C, author only; uses 3.5a, P + C, and 3.3a, P + C with author-only 3.29/6.3.43)
+        →  tighter consumer (8.13a, 8.13c, 8.13d–f)                 [0.825, 0.8635] at 94/125, cap .713245 (P + C, author only; uses 3.5a, P + C, and 3.3a, P + C with author-only 3.29/6.3.43)
 
     through Λ (Conjecture K itself):
       remote sign D(q) ≥ 0 on the class handled  →  A-core by cost 6.2.1 and the content inequality
@@ -287,6 +287,8 @@ and over remote cores (5.4, 7.2.10), and the all-sector bound on an energy regio
 
 Remote K reduces to a moment problem for U = |q|²/u: two-point extremal laws, cubic Hermite majorants of the profile,
 a secant envelope in the variance [P · audit · 3.1]. At the peak visible profile and every price p ≥ 1.317, the supremum over remote cubics of arbitrary finite dimension is S(p). On the response band 0 < u ≤ 0.0463 every nonzero remote cubic gives strictly smaller mean modulus than the Gaussian of equal variance. At higher energies the priced payoff is strictly below an explicit Gaussian competitor. Independent cubic blocks approach the Gaussian supremum. With both linear drivers absent the same supremum holds after adding all three odd sectors, with a loss of at least (p − 32/25)‖O‖². [P + C, inheriting author-only 3.29 and 6.3.43 · codex-a7c4, checked by gemini-21d5 · 3.3a · proof](sources/peak-remote-deficit-codex-a7c4/PRICE.md)
+
+A spectral price for a fixed normalized cubic can also be transported in energy. Between nodes, a bound on the radial curvature uses the first two moments of $Y=|Q|^2$ and the first four derivatives of the peak profile. Beyond the final node, the law on $\{0,\mathbb E Y^2\}$ gives the sharp two-moment lower price for an earlier anchor. The checker bounds this anchor from below using derivatives through order eight. At $\varepsilon=.752$ the improved interpolation certifies the six-sector trial throughout $t\in[.824,.8255]$ on the box $u\in[.05060,.05062]$, $\chi\in[5.473,5.476]$, $V\in[.004077,.004081]$. The full amplitude interval still requires a cover of the other energies and shapes. [P + C, author only · 3.3b · proof and replay](sources/uncapped-peak-consumer-codex-a7c4/RADIAL_CONTINUATION.md)
 
 The independently replayed absolute cap of 3.3 was
 
@@ -1255,8 +1257,8 @@ Outward-rounded integer Rice enclosures certify nine central rows on [0.795, 0.8
 remote and retained rectangles of 2.1 and 2.6 with u/λ² < 0.0463 and λ = 1880/1891 < 1, closing directly at **`< 6.35·10⁻⁵` (`D_+`) and `< 6.11·10⁻⁵` (signed) `< 10⁻⁴ < η_{max,8}`** across all six sectors using 7.5.13 and Row 8's benchmark (8.13, author only) (and giving the same bound for `q + A + B` on Row 8's profile via 7.4.16), zero-profile-loss subdivided $t$-slabs of the fixed-scale peak row $(\lambda\ell_0, \lambda\beta_0)$ close **`[0.8400, 0.8547]`** at ε = 94/125, **`[0.84000, 0.85168]`** at ε = 3/4, and **`[0.84000, 0.84948]`** at ε = 299/400 [P + C · `KAST`], and free-homothety peak-ray slabs $(\mu\ell_0, \mu\beta_0)$ widen these below 500/701 to **`[0.8400, 0.8645]`** (closing **all of Rows 8–13** without 8.13(ii)'s benchmarks) at ε = 94/125 and **`[0.8400, 0.8580]`** (Rows 5–7) at ε = 3/4 in Track A (pure reviewed **P + C** + 3.14 [**C**], exempt-box-free), and to **`[0.8395, √π/2]`** at both ε = 94/125 and ε = 3/4 (closing **all of Rows 5–9** of 8.13(i)) plus `[0.8395, 0.8499] ∪ [0.8655, √π/2]` at ε = 299/400 in Track B (adding 3.5a + 3.3a) [P + C, author only · gemini-c1de ·
 STATUS 8.10, 8.13; `KHOM`; lower central rows `t < 0.8395` open].
 
-At ε = 94/125 the cubic witness is below 0.713245 for every actual six-sector response (8.13a,c–e, **P + C, author only**) on
-[.8255,.8635]. On [.8297,.8393] a single visible profile suffices even when normalized remote
+At ε = 94/125 the cubic witness is below 0.713245 for every actual six-sector response (8.13a,c–f, **P + C, author only**) on
+[.825,.8635]. On [.8297,.8393] a single visible profile suffices even when normalized remote
 energy exceeds .0463. Ninety-one radial bounds price the remote cubic by its energy and fourth
 excess. A bound on its second-chaos projection controls the covariance with the two even drivers,
 and the common trial pays for the three odd sectors at arbitrary energy. The physical clearance
@@ -1268,7 +1270,9 @@ millionths. On [.826,.82815], rescaling the same odd field between the two arms 
 odd-energy price. Supplemental radial duals at energy .06 cover the middle fourth-excess
 range [.1,27]. The adaptive trials cover both closed outer ranges. On [.8255,.82815] the proof incorporates the linear even price before completing the squares, tries five additional visible prices and continues the score estimate above normalized energy .06. These give clearance greater than one tenth of a millionth for every fourth excess with 2.12b alone. Adding the optional 2.12h bounds on the odd and second even energies shortens the replay. [8.13e · proof and exact replay](sources/uncapped-peak-consumer-codex-a7c4/WEIGHTED_SHOULDER.md)
 
-Together with the 8.12 exterior (**P + C, author only**), these estimates leave [.751,.8255] for unrestricted responses. The lower bound $K_G^{\mathbb C}\ge 200000/142649$ remains **conditional** on covering this interval. [Two-price certificate](sources/uncapped-peak-consumer-codex-a7c4/TWO_PRICES.md) · [Single-price certificate, 8.13d](sources/uncapped-peak-consumer-codex-a7c4/PROOF.md) · [Three profiles and exterior, 8.13a](sources/priced-peak-consumer-codex-a7c4/PROOF.md)
+On [.825,.8255] the odd-sector price depends on the remote energy and fourth excess. A concave majorant of the 320 conditional matrix bounds allows the remote and odd fields to share coordinates. After averaging the centered compensation term, the same visible trials clear the cap by more than $10^{-7}$ across all six sectors. [8.13f · odd-sector comparison](sources/uncapped-peak-consumer-codex-a7c4/ODD_RESPONSE.md)
+
+Together with the 8.12 exterior (**P + C, author only**), these estimates leave [.751,.825] for unrestricted responses. The lower bound $K_G^{\mathbb C}\ge 200000/142649$ remains **conditional** on covering this interval. [Two-price certificate](sources/uncapped-peak-consumer-codex-a7c4/TWO_PRICES.md) · [Single-price certificate, 8.13d](sources/uncapped-peak-consumer-codex-a7c4/PROOF.md) · [Three profiles and exterior, 8.13a](sources/priced-peak-consumer-codex-a7c4/PROOF.md)
 
 On [.8372,.8393], seven energy-dependent profiles give a second proof within the original normalized
 energy caps, with clearance above 5.05 millionths. The three profiles on [.8393,.8635] have respective
@@ -1351,7 +1355,7 @@ around it (2.6). The route gives the same conclusion as K_η, with larger numeri
    t-dependent energy caps, and state the consumer in Lean. The single peak row covers t ∈ [0.84, 0.851] at η = 10⁻⁴, 6 subdivided peak-row $t$-slabs widen this to **`[0.8400, 0.8661]`** (`KAST`), and free-homothety peak-ray slabs widen it to **`[0.8400, √π/2]`** (Track A) / **`[0.8395, √π/2]`** (Track B, `KHOM`, **P + C, author only**, leaving three lower response intervals uncovered, with certified benchmarks on parts of one of them, 2.10 · 8.7, 8.11). At ε = 149/200 (`K_G^ℂ > 1.40171`, below Lean's lower bound), **all 1,773 cells of `[0, √π/2]` are now closed end-to-end** via free-homothety peak-ray slabs from pure reviewed **P + C** / **Lean** inputs + 3.14 [**C**] (`KHOM`, **P + C, author only**; 8.5, 8.6). At ε = 299/400 only
    the central interval (0.8165, 0.866) is left, as ten explicit all-sector inequalities (binding rows 3.0–4.4·10⁻⁵; `[0.84000, 0.84948]` closed in `KAST` [**P + C**], widened to `[0.8400, 0.8498]` in Track A and `[0.8395, 0.8499] ∪ [0.8655, √π/2]` in Track B of `KHOM` [**P + C, author only**]). At ε = 94/125 the 8.12 exterior (**P + C, author only**) leaves (0.7515, 0.863) at its original cap, as
    thirteen central rows each admitting > 1.021·10⁻⁴ > 10⁻⁴ (and > 7.57·10⁻⁵ on nine rows at ε = 3/4 from `Lower.ρ`
-   alone), with `KAST` [**P + C**] closing **`[0.8400, 0.8547]`** at ε = 94/125 and **`[0.84000, 0.85168]`** at ε = 3/4, free-homothety slabs in `KHOM` [**P + C, author only**] closing **`[0.8400, 0.8645]`** (all of Rows 8–13) at ε = 94/125 and **`[0.8400, 0.8580]`** (Rows 5–7) at ε = 3/4 in Track A and **`[0.8395, √π/2]`** on both ε = 94/125 and ε = 3/4 (all of Rows 5–9 of 8.13(i)) in Track B, and two trial prices in 8.13d [**P + C, author only**] closing **`[0.826, 0.8635]`** at the stricter cap `0.713245` with 8.13e [**P + C, author only**] extending coverage down to 0.8255 and leaving `[0.751, 0.8255]`. For the remaining lower central intervals, non-peak all-sector bounds are needed; the named flank and upper rows have their own exact remote bounds (3.15a) and lie outside the peak retained A-core rectangle. Also open:
+   alone), with `KAST` [**P + C**] closing **`[0.8400, 0.8547]`** at ε = 94/125 and **`[0.84000, 0.85168]`** at ε = 3/4, free-homothety slabs in `KHOM` [**P + C, author only**] closing **`[0.8400, 0.8645]`** (all of Rows 8–13) at ε = 94/125 and **`[0.8400, 0.8580]`** (Rows 5–7) at ε = 3/4 in Track A and **`[0.8395, √π/2]`** on both ε = 94/125 and ε = 3/4 (all of Rows 5–9 of 8.13(i)) in Track B, and two trial prices in 8.13d [**P + C, author only**] closing **`[0.826, 0.8635]`** at the stricter cap `0.713245` with 8.13e–f [**P + C, author only**] extending this cover to **`[0.825, 0.8635]`** and leaving `[0.751, 0.825]`. For the remaining lower central intervals, non-peak all-sector bounds are needed; the named flank and upper rows have their own exact remote bounds (3.15a) and lie outside the peak retained A-core rectangle. Also open:
    the corner σ\* = 0 if a cover uses it (1.4), and the unchecked external remote claims (2.1 · 11.7–11.11).
    *Gives:* 1.402.
 4. **Numerics for Λ̂ with more than three remote variables** (chapter 5).
