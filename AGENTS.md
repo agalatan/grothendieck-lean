@@ -318,8 +318,9 @@ containing `[skip ci]` skips it) and as the **landing check** of a PR (`/land`, 
      lakefile and toolchain, `scratch/Axioms.lean`, `data/axioms/`, the root generator, the check scripts and their
      tests, the workflows). If not, the build is skipped and the run is green; documentation-only PRs still land
      (with the status "no proof change"). During a freeze, a topic branch with no proof changes since its staging
-     merge base inherits the proof only if a successful staging push built that exact commit and ran its axiom
-     reports. The route links the verified run in its summary. Otherwise it requests a proof check. Staging’s own
+     merge base is not built either: the proof is that staging commit's, which its own uncancelled staging check
+     verifies (#888, #894). The route links that run in its summary when it is green, and otherwise says it is not
+     yet green. Staging’s own
      check still compares with master, and landing uses the pinned master commit. A branch commit already contained
      in master is skipped too (master's own check covers it);
    - where to build: it computes the node caps' source digest (`scripts/caps_stamp.py --digest`, part of the cache
