@@ -39,8 +39,8 @@ piece facts; CI replays them from a verified build cache. No per-fact timing is 
 ## Upper bound
 
 This section covers the older single-channel upper proof (`Grothe/UpperTightFinal.lean`, `K < 1.404599395362`), which
-is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.404556392`, comes from the seven-channel proof. It uses the six-channel native comparisons and
-`Haagerup.AngularSelector.NumericWitness.budgets_ok` for the final mixed computation. The table below is not complete (the quadrature facts under
+is still in the tree. The upper bound of `main_bounds`, `K ≤ 1.404554025`, comes from the multi-channel bivariate proof (`Grothe/UpperBivar/`). It uses the six-channel native comparisons and
+`Haagerup.UpperBivar.budgets_ok` for the mixed head and linear-floor computation (while `Haagerup.AngularSelector.NumericWitness.budgets_ok` remains for the standalone seven-channel selector theorem). The table below is not complete (the quadrature facts under
 `Grothe/UpperQuad/` are not in it); `data/axioms/native.txt` is the full list.
 
 **Exact production phase moments (#40(b)).** `PhaseMomentEval` integrates the
