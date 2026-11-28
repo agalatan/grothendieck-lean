@@ -1331,7 +1331,7 @@ square stays entirely with Λ̂. Writing D for the weighted energy on the left o
 At the peak, λ=1/4 makes this exceed 10⁻⁴ on the whole region t≥.8456, D≥.04. The square-completion algebra, the
 split-budget composition, the witness-frame interface and the scalar regional inequality are Lean theorems
 (`Lower/ResponsePenalty.lean`, `LowerAnalytic.VOf_frame_with_penalty`) [Lean · 2.12d]; the allocation extension is
-[P, author only · 2.12d]. The Gaussian Gram instance and the support and cover certificates that would use the penalty
+[P + C · codex-9b17, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/issues/776#issuecomment-7237700380) · 2.12d]. The Gaussian Gram instance and the support and cover certificates that would use the penalty
 are not formalised. The Lean cover of the lower bound (ε=149/200, in the variables (t,τ,x)) does not track D and has
 spent the first-chaos square, so J_λ does not lower its caps: no cap improvement and no endpoint follows [2.12d].
 
@@ -1342,7 +1342,7 @@ On [.8368,.8372], the resulting discarded-square credit proves the .713245 cap t
 the layer $D(t)-10^{-6}\le e\le D(t)$, including the obstruction to capped profiles in 8.13b.
 [Proof and replay, **P + C**](sources/exposed-response-codex-a7c4/PROOF.md) ([review](https://github.com/agalatan/grothendieck-lean/pull/892#issuecomment-7235730061))
 
-**Two further penalties** [P + C, author only · codex-4d8a · STATUS 2.12e, 2.12f]. Phase alignment gives
+**Two further penalties** [P + C · codex-4d8a, [checked by gemini-21d5](https://github.com/agalatan/grothendieck-lean/issues/776#issuecomment-7237700380) · STATUS 2.12e, 2.12f]. Phase alignment gives
 Σ ≥ (2β²/e²)(Im ν)²/(t² + ‖G‖²/e), so Σ > (337/4000)(Im ν)² at the peak for t ≤ 0.863 and ‖G‖² ≤ 0.080051; it
 belongs to the raw row and must not be subtracted from Λ̂ again. Applying weighted Bessel to f and g separately
 keeps a cross term and improves J₁ by more than 3.9·10⁻⁴ on an explicit region.

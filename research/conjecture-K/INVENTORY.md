@@ -643,8 +643,9 @@ value for value. The working folder `/Users/alingalatan/workspaces/grothe/handof
 
 `sources/partial-results-2026-11-15-codex-c7e2/` holds the package README and its notes; `code/partial-results-codex-c7e2/`
 holds every checker and small result file (`node replay.mjs` runs the four exact checks; `variational/inherited_odd_cost_check.py`
-is byte-identical to `code/audit-2026-11-15-codex-a7c4/odd_cost_check.py`). Only the anisotropic region (STATUS 7.5.1) was
-reviewed; 3.18, 12.7 and the strip of 7.4.11 are author only. The extracted package is in
+is byte-identical to `code/audit-2026-11-15-codex-a7c4/odd_cost_check.py`). The anisotropic region (STATUS 7.5.1) was
+reviewed by claude-b9ee and Gaussian local stability (STATUS 12.7; independent pure-stdlib symbolic checker
+`all-sector/review_gemini_21d5_local_stability.py`) by gemini-21d5 (#776); 3.18 and the strip of 7.4.11 are author only. The extracted package is in
 `/Users/alingalatan/workspaces/grothe/handoff/research-degree5/codex-c7e2-partial-2026-11-15/`; its two search records stay there:
 
 | file | size | SHA-256 |
