@@ -8,6 +8,7 @@ prepared by fetch_sources.sh) and python-flint installed, it also runs the end-t
 angular-selector-transfer-codex-a7c4/verify.py on the live tree and on a tree with one coefficient changed.
 """
 import argparse
+import re
 import shutil
 import subprocess
 import sys
@@ -29,15 +30,30 @@ def pinned(path):
                           text=True).stdout
 
 
-def mutate(text):
-    """Change one digit of the first coefficient line (not a structure line)."""
+NUMERAL = re.compile(r"(?<![\w.])(\d+)(?![\w.])")
+
+
+def mutate(text, after="def "):
+    """Add 1 to the first numeric literal of code (not a comment, not part of a name) at or after the first line
+    starting with `after`: a coefficient of the data, the change a corrupted payload would show."""
     lines = text.splitlines(keepends=True)
+    depth, started = 0, False
     for i, line in enumerate(lines):
-        if payload(line) and any(c.isdigit() for c in line) and not line.lstrip().startswith(("--", "/-")):
-            j = next(k for k, c in enumerate(line) if c.isdigit())
-            lines[i] = line[:j] + str((int(line[j]) + 1) % 10) + line[j + 1:]
-            return "".join(lines)
-    raise AssertionError("no coefficient line")
+        started = started or line.startswith(after)
+        code, j = "", 0
+        while j < len(line):                       # drop block and line comments
+            if depth == 0 and line.startswith("--", j):
+                break
+            if line.startswith("/-", j):
+                depth += 1; j += 2; code += "  "; continue
+            if depth and line.startswith("-/", j):
+                depth -= 1; j += 2; code += "  "; continue
+            code += line[j] if depth == 0 else " "; j += 1
+        m = NUMERAL.search(code) if started and payload(line) else None
+        if m:
+            lines[i] = line[:m.start()] + str(int(m.group(1)) + 1) + line[m.end():]
+            return "".join(lines), m.group(1)
+    raise AssertionError("no numeric literal")
 
 
 class PayloadTests(unittest.TestCase):
@@ -52,7 +68,9 @@ class PayloadTests(unittest.TestCase):
         for old in ("Grothe/UpperSix/Haagerup/Data/OverlapData.lean", "Grothe/UpperSix/Haagerup/Parameters.lean"):
             with self.subTest(path=old):
                 live = (ROOT / LIVE[old]).read_text()
-                self.assertFalse(same_payload(mutate(live), pinned(old)))
+                mutated, literal = mutate(live)
+                self.assertTrue(literal.isdigit())
+                self.assertFalse(same_payload(mutated, pinned(old)))
 
     def test_live_paths_exist(self):
         for new in LIVE.values():
@@ -81,9 +99,18 @@ class ReplayTests(unittest.TestCase):
                 (Path(tmp) / new).parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy(ROOT / new, Path(tmp) / new)
             target = Path(tmp) / LIVE["Grothe/UpperSix/Haagerup/Data/OverlapData.lean"]
-            target.write_text(mutate(target.read_text()))
+            target.write_text(mutate(target.read_text())[0])
             with self.assertRaises(ArithmeticError):
                 self.replay(Path(tmp))
+        with tempfile.TemporaryDirectory() as tmp:          # a coefficient of the first preprocessor
+            for new in LIVE.values():
+                (Path(tmp) / new).parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy(ROOT / new, Path(tmp) / new)
+            target = Path(tmp) / LIVE["Grothe/UpperSix/Certificate/Parameters.lean"]
+            target.write_text(mutate(target.read_text(), after="def firstPolynomial")[0])
+            rows, caps, weights = self.replay(Path(tmp))
+            changed = verify.fixed_lower(rows, caps, weights)
+            self.assertFalse(verify.CURRENT <= changed < verify.CURRENT + verify.Fraction(1, 10**13))
 
 
 if __name__ == "__main__":
