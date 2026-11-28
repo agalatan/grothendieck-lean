@@ -6,7 +6,7 @@ Nothing here is built, imported or checked: the folder is outside the Lake libra
 folders, and `tools/gen_root_imports.py` does not import these modules (it only drops axiom-list entries that name
 declarations found here and not in the libraries).
 
-The repository proves 1.4020221627 < K_G^ℂ ≤ 1.404554025 (`Grothe.Statement.main_bounds`; the constants are stated
+The repository proves 1.4020221627 < K_G^ℂ ≤ 1.404550522 (`Grothe.Statement.main_bounds`; the constants are stated
 exactly in [`docs/CONSTANTS.md`](../docs/CONSTANTS.md)). No module of this folder is part of that proof.
 
 Policy (user, 4 and 15 November 2026): Lean code that `main_bounds` does not use leaves the libraries. On
@@ -43,7 +43,7 @@ modules still in this folder (`scripts/test_gen_root_imports.py`).
 
 | material | last present at | path at that commit |
 |---|---|---|
-| the conditional sharper upper route `fresh_upper_rounder` (K_G^ℂ < 1.404598148840 from fourteen Gaussian error estimates that were never proved; weaker than the proved 1.404554025) and the Gaussian-comparison programme built for those estimates: 192 modules | master `bfb5961e3` | `abandonware/Grothe/UpperChaos/`, `abandonware/Grothe/Upper/GroupedBridge.lean`; the list with one reason per module is `abandonware/MANIFEST-2026-11-15.tsv` |
+| the conditional sharper upper route `fresh_upper_rounder` (K_G^ℂ < 1.404598148840 from fourteen Gaussian error estimates that were never proved; weaker than the proved 1.404550522) and the Gaussian-comparison programme built for those estimates: 192 modules | master `bfb5961e3` | `abandonware/Grothe/UpperChaos/`, `abandonware/Grothe/Upper/GroupedBridge.lean`; the list with one reason per module is `abandonware/MANIFEST-2026-11-15.tsv` |
 | comparison budgets and other general lemmas with no planned use (`PolarizedGram`, `QuadraticDual`, `LowerAnalytic/JointDefect`, `LowerAnalytic/QuarticNewton`, `UpperQuad/CentralDerivative`), the exporter `LowerAnalytic/CapExport` (its reader `tools/caps_plan.py` is gone) | master `bfb5961e3` | `abandonware/Grothe/` |
 | nine files of removed lines of `Grothe/Upper/*.lean` and `Grothe/LowerAnalytic/CapTables.lean` | master `bfb5961e3` | `abandonware/Upper/`, `abandonware/LowerAnalytic/`; the modules they were cut from are in the libraries |
 | the other ~2,370 modules outside the import closure of `Grothe.MainResult` on 15 November 2026 (#422): generated modules, axiom audits, superseded certificates | master `36ab13004` | `Grothe/` |

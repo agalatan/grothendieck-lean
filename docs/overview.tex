@@ -30,22 +30,22 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4020253021\;<\;\KG\;\le\;1.404554025$\\[6pt]
+\Large $1.4020253021\;<\;\KG\;\le\;1.404550522$\\[6pt]
 \normalsize The Lean~4/Mathlib theorem
 \lean{Grothe.Statement.main\_bounds} proves these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
 The exact first-chaos-retuned lower endpoint is rounded down to $14020253021/10000000000$.
-The multi-channel bivariate Gaussian roundings give the upper bound rounded up to $1404554025/1000000000$.\vspace{4pt}
+The multi-channel bivariate Gaussian roundings give the upper bound rounded up to $1404550522/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
-The upper certificate combines the established channels of \path{Grothe/UpperSixExact/} with twelve additional
+The upper certificate combines the established channels of \path{Grothe/UpperSixExact/} with five additional
 preprocessors on the already-certified smoothed cell, phase and reflected tiger maps (\path{Grothe/UpperBivar/}),
-including degree-$3$ bivariate second-coordinate polynomials $Q(X)$ with $Q(0)=0$. Every new disk positivity check,
+including bivariate second-coordinate polynomials $Q(X)$ of degree up to $17$ in $X=t^2$ with $Q(0)=0$. Every new disk positivity check,
 Hardy circle budget and rational tail comparison reduces in Lean's kernel; the weighted interval head is formed
 before taking absolute values.
 The theorem \lean{Grothe.UpperBivar.bound} gives
-$V(A)\le[10^{27}/711969765819834623238463058]\,C(A)$ for every finite complex matrix $A$. Its factor is $1.4045540246340\ldots$, and \lean{Grothe.UpperBivar.constant\_le} states $K_G^{\mathbb C}\le1.404554025$.
+$V(A)\le[10^{30}/711971541341811014386385764712]\,C(A)$ for every finite complex matrix $A$. Its factor is $1.4045505219427\ldots$, and \lean{Grothe.UpperBivar.constant\_le} states $K_G^{\mathbb C}\le1.404550522$.
 
 The companion theorem \lean{Grothe.UpperBivar.constant\_lt\_inv\_gammaDagger}
 compares the infimum with the reciprocal phase integral.
@@ -53,7 +53,7 @@ compares the infimum with the reciprocal phase integral.
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
-first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0025303146$, and verify
+first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0025266412$, and verify
 the arguments in Lean. This note explains the problem, the two constructions, exactly what the computer checks, the new inequalities and
 obstructions found along the way, and why the remaining gap is hard: the two sides are dual optimisation problems, and the obstruction on both is the nonlinear (cubic and
 higher) structure of bounded functions of Gaussian vectors.
@@ -94,13 +94,13 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020253021}$ & $\mathbf{1.404554025}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020253021}$ & $\mathbf{1.404550522}$\\\bottomrule
 \end{tabular}
 \end{center}
-The upper bound is $1404554025/1000000000$ (the multi-channel bivariate transfer factor $1/(c-\delta)$ rounded up).
+The upper bound is $1404550522/1000000000$ (the multi-channel bivariate transfer factor $1/(c-\delta)$ rounded up).
 For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
-a separate estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404554025<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
+a separate estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404550522<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
 $1/\gamma^\dagger$, the value that Haagerup proposed for $\KG$ in 1987
 (\lean{Grothe.UpperBivar.constant\_lt\_inv\_gammaDagger}).
 For the real constant the corresponding
@@ -122,10 +122,10 @@ The six original channels, their data and their checker are in
 and the two reflected channels feed interval coefficients. The phase channel
 uses its analytic Hermite coefficients. The finite check takes absolute values
 after mixing the signed coefficients. Each infinite tail is controlled by a
-mean on its own circle. The certificate of the bound, in \path{Grothe/UpperBivar/}, adds twelve preprocessors
-to these six channels, acting on the same three certified maps: two reflected tiger channels at a steeper and a shallower scale,
-two odd phase polynomials of degrees 29 and 31, and eight smoothed cell channels whose second coordinate is a
-polynomial $t\,Q(t^2)$ with $Q(0)=0$, where $Q$ has degree at most three (so $t\,Q(t^2)$ has degree up to seven in $t$). For these eight cell channels, the smoothed second-coordinate covariance
+mean on its own circle. The certificate of the bound, in \path{Grothe/UpperBivar/}, adds five preprocessors
+to these six channels, acting on the same three certified maps: one reflected tiger channel at a steeper scale,
+one odd phase polynomial of degree 81 (evaluated through index 800), and three smoothed cell channels whose second coordinate is a
+polynomial $t\,Q(t^2)$ with $Q(0)=0$, where $Q$ has degree at most $17$ (so $t\,Q(t^2)$ has degree up to $35$ in $t$). For these three cell channels, the smoothed second-coordinate covariance
 keeps these preprocessors strictly contractive on their Hardy circles, so their tails are again controlled by circle means.
 The advertised rational bound follows from the reciprocal
 gap in the transfer theorem. The production theorem applies to every finite
@@ -836,7 +836,7 @@ of them (\lean{TaylorHardySound.lean}) and the rational tail comparisons directl
 norm witnesses and their overlap tables, for the weighted head with the six
 lower bounds of the linear coefficients, and for the contour of the first channel
 (\path{Grothe/UpperSixExact/}). Their soundness is proved in Lean.
-The twelve preprocessors of \path{Grothe/UpperBivar/} have all their disk and circle-mean contours and tail bounds
+The five preprocessors of \path{Grothe/UpperBivar/} have all their disk and circle-mean contours and tail bounds
 checked in the kernel; they add one \lean{native\_decide} comparison, for the mixed head and the linear floors.
 The physical meaning and the error budget of each integer are proved in the kernel.
 The report of the six channels is in \path{scratch/UpperSixAxioms.lean}; the repository-wide report covers the whole upper proof.
@@ -1277,7 +1277,7 @@ plans). Three epics are closed: \#12 (unconditional lower bound: the first part 
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
  locate $\KG$ to about $10^{-4}$ using higher-degree games. A first search
  (\path{research/higher-degree/}, [N]) gives model values $1.403648$, $1.404113$ and $1.40430$ for the best games of
- degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.404554025$. No rounding built from the binding responses
+ degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.404550522$. No rounding built from the binding responses
  beats Haagerup's $\gamma_H$ within that family. The independent multi-channel comparison is stated above.
 \item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
  appears to be open, and it is the largest single lever on the law side. The best proved constant is $0.93$; a constant

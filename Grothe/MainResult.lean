@@ -4,7 +4,7 @@ import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.FirstChaosProfile
 
 /-!
-# The main result: `1.4020253021 < K_G^ℂ ≤ 1.404554025`
+# The main result: `1.4020253021 < K_G^ℂ ≤ 1.404550522`
 
 The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`, without
 hypotheses: `main_bounds`.
@@ -14,7 +14,7 @@ hypotheses: `main_bounds`.
   visible cubic estimate covers the high-amplitude part of the same witness. The verified node caps give the exact reciprocal in
   `first_chaos_endpoint`.
 * **The upper bound** is `Grothe.UpperBivar.constant_le` (`Grothe/UpperResult.lean`), from multi-channel bivariate Gaussian roundings:
-  `Grothe.UpperBivar.bound` gives `V(A) ≤ 1.4045540246340… · C(A)` for every finite complex matrix `A`. The lower proof obtains the existence of an admissible
+  `Grothe.UpperBivar.bound` gives `V(A) ≤ 1.4045505219427… · C(A)` for every finite complex matrix `A`. The lower proof obtains the existence of an admissible
   bound from the original six channels.
 
 The upper bound is below Haagerup's value `1/γ†` (`Grothe.UpperBivar.constant_lt_inv_gammaDagger`).
@@ -33,7 +33,7 @@ theorem first_chaos_endpoint :
 rounded up. -/
 theorem main_bounds :
     (14020253021 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant ≤ 1404554025 / 1000000000 := by
+      complexGrothendieckConstant ≤ 1404550522 / 1000000000 := by
   have hlo : (14020253021 / 10000000000 : ℝ) < complexGrothendieckConstant := by
     refine lt_of_lt_of_le ?_ first_chaos_endpoint
     simpa only [Rat.cast_div, Rat.cast_ofNat] using

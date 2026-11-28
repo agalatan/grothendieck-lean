@@ -29,7 +29,7 @@ private lemma l1_ofListQ_le_one {l : List ℚ}
     l1 (ofListQ l) ≤ 1 :=
   (l1_ofListQ_le l).trans (by simpa only [Rat.cast_one] using Rat.cast_le.2 (of_decide_eq_true h))
 
-private lemma new_tail_cmp_of_fin (m : Fin 12) :
+private lemma new_tail_cmp_of_fin (m : Fin 5) :
     (((newBudgetQ m : ℝ) - (newLinearFloor m : ℝ) ^ 2 * (newRhoQ m : ℝ) ^ 2) /
       (newRhoQ m : ℝ) ^ 4) * (newRhoQ m : ℝ)⁻¹ ^ (2 * (2 * newLastIndex m + 1)) ≤
       (newTailCap m : ℝ) ^ 2 * (1 - (newRhoQ m : ℝ)⁻¹ ^ 4) := by
@@ -80,61 +80,32 @@ private lemma hq_nil : l1 (ofListQ []) ≤ 1 := l1_ofListQ_le_one (by decide +ke
 private lemma hnewP0_neg : l1 (ofListQ (newP0.map (- ·))) ≤ 1 :=
   l1_ofListQ_le_one (by decide +kernel)
 private lemma hnewP0 : l1 (ofListQ newP0) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewP1_neg : l1 (ofListQ (newP1.map (- ·))) ≤ 1 :=
-  l1_ofListQ_le_one (by decide +kernel)
 private lemma hnewP1 : l1 (ofListQ newP1) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
+private lemma hnewQ1 : l1 (ofListQ newQ1) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
 private lemma hnewP2 : l1 (ofListQ newP2) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
 private lemma hnewQ2 : l1 (ofListQ newQ2) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
 private lemma hnewP3 : l1 (ofListQ newP3) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewQ3 : l1 (ofListQ newQ3) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
 private lemma hnewP4 : l1 (ofListQ newP4) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
 private lemma hnewQ4 : l1 (ofListQ newQ4) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewP5 : l1 (ofListQ newP5) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewQ5 : l1 (ofListQ newQ5) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewP6 : l1 (ofListQ newP6) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewP7 : l1 (ofListQ newP7) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewQ7 : l1 (ofListQ newQ7) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewP8 : l1 (ofListQ newP8) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewQ8 : l1 (ofListQ newQ8) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewP9 : l1 (ofListQ newP9) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewP10 : l1 (ofListQ newP10) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewQ10 : l1 (ofListQ newQ10) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewP11 : l1 (ofListQ newP11) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
-private lemma hnewQ11 : l1 (ofListQ newQ11) ≤ 1 := l1_ofListQ_le_one (by decide +kernel)
 
-private def newHChan : Fin 12 → ℕ → ℝ
+private def newHChan : Fin 5 → ℕ → ℝ
   | ⟨0, _⟩ => bivarKernel (ofListQ (newP0.map (- ·))) (ofListQ newP0) (energy gTigLp)
-  | ⟨1, _⟩ => bivarKernel (ofListQ (newP1.map (- ·))) (ofListQ newP1) (energy gTigLp)
+  | ⟨1, _⟩ => bivarKernel (ofListQ newP1) (ofListQ newQ1) (energy gSmoothedLp)
   | ⟨2, _⟩ => bivarKernel (ofListQ newP2) (ofListQ newQ2) (energy gSmoothedLp)
-  | ⟨3, _⟩ => bivarKernel (ofListQ newP3) (ofListQ newQ3) (energy gSmoothedLp)
+  | ⟨3, _⟩ => bivarKernel (ofListQ newP3) (ofListQ []) (energy (memLp_phase2.toLp phase2))
   | ⟨4, _⟩ => bivarKernel (ofListQ newP4) (ofListQ newQ4) (energy gSmoothedLp)
-  | ⟨5, _⟩ => bivarKernel (ofListQ newP5) (ofListQ newQ5) (energy gSmoothedLp)
-  | ⟨6, _⟩ => bivarKernel (ofListQ newP6) (ofListQ []) (energy (memLp_phase2.toLp phase2))
-  | ⟨7, _⟩ => bivarKernel (ofListQ newP7) (ofListQ newQ7) (energy gSmoothedLp)
-  | ⟨8, _⟩ => bivarKernel (ofListQ newP8) (ofListQ newQ8) (energy gSmoothedLp)
-  | ⟨9, _⟩ => bivarKernel (ofListQ newP9) (ofListQ []) (energy (memLp_phase2.toLp phase2))
-  | ⟨10, _⟩ => bivarKernel (ofListQ newP10) (ofListQ newQ10) (energy gSmoothedLp)
-  | ⟨11, _⟩ => bivarKernel (ofListQ newP11) (ofListQ newQ11) (energy gSmoothedLp)
-  | ⟨_ + 12, h⟩ => absurd h (by omega)
+  | ⟨_ + 5, h⟩ => absurd h (by omega)
 
-private lemma newHChan_summable (m : Fin 12) : Summable fun n ↦ |newHChan m n| := by
+private lemma newHChan_summable (m : Fin 5) : Summable fun n ↦ |newHChan m n| := by
   fin_cases m
   · exact summable_abs_bivarKernel _ _ hnewP0_neg hnewP0 _ (summable_abs_energy gTigLp)
-  · exact summable_abs_bivarKernel _ _ hnewP1_neg hnewP1 _ (summable_abs_energy gTigLp)
+  · exact summable_abs_bivarKernel _ _ hnewP1 hnewQ1 _ (summable_abs_energy gSmoothedLp)
   · exact summable_abs_bivarKernel _ _ hnewP2 hnewQ2 _ (summable_abs_energy gSmoothedLp)
-  · exact summable_abs_bivarKernel _ _ hnewP3 hnewQ3 _ (summable_abs_energy gSmoothedLp)
+  · exact summable_abs_bivarKernel _ _ hnewP3 hq_nil _
+      (summable_abs_energy (memLp_phase2.toLp phase2))
   · exact summable_abs_bivarKernel _ _ hnewP4 hnewQ4 _ (summable_abs_energy gSmoothedLp)
-  · exact summable_abs_bivarKernel _ _ hnewP5 hnewQ5 _ (summable_abs_energy gSmoothedLp)
-  · exact summable_abs_bivarKernel _ _ hnewP6 hq_nil _
-      (summable_abs_energy (memLp_phase2.toLp phase2))
-  · exact summable_abs_bivarKernel _ _ hnewP7 hnewQ7 _ (summable_abs_energy gSmoothedLp)
-  · exact summable_abs_bivarKernel _ _ hnewP8 hnewQ8 _ (summable_abs_energy gSmoothedLp)
-  · exact summable_abs_bivarKernel _ _ hnewP9 hq_nil _
-      (summable_abs_energy (memLp_phase2.toLp phase2))
-  · exact summable_abs_bivarKernel _ _ hnewP10 hnewQ10 _ (summable_abs_energy gSmoothedLp)
-  · exact summable_abs_bivarKernel _ _ hnewP11 hnewQ11 _ (summable_abs_energy gSmoothedLp)
 
-private lemma newHChan_dominated (m : Fin 12) : DominatedKernel (radialKernel (newHChan m)) := by
+private lemma newHChan_dominated (m : Fin 5) : DominatedKernel (radialKernel (newHChan m)) := by
   have hsm_m := measurable_smoothMap (ctQ : ℝ) (stQ : ℝ) (seQ : ℝ) (ceQ : ℝ)
     (measurable_cellFn tcellCreArr tcellCimArr)
   have hsm_1 := norm_smoothMap_le (ctQ : ℝ) (stQ : ℝ) (seQ : ℝ) (ceQ : ℝ)
@@ -146,23 +117,13 @@ private lemma newHChan_dominated (m : Fin 12) : DominatedKernel (radialKernel (n
   · exact (rounding_diskKernel (measurable_cellFn tigCreArr tigCimArr)
       (norm_cellFn_le tig_sos_ok) (fun _ u hc ↦ cellFn_rot2 tigCreArr tigCimArr hc u)
       memLp_fTig hnewP0_neg hnewP0).dominated
-  · exact (rounding_diskKernel (measurable_cellFn tigCreArr tigCimArr)
-      (norm_cellFn_le tig_sos_ok) (fun _ u hc ↦ cellFn_rot2 tigCreArr tigCimArr hc u)
-      memLp_fTig hnewP1_neg hnewP1).dominated
+  · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP1 hnewQ1).dominated
   · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP2 hnewQ2).dominated
-  · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP3 hnewQ3).dominated
+  · exact (rounding_diskKernel measurable_phase2 norm_phase2_le
+      (fun _ u hc ↦ phase2_rot2 hc u) memLp_phase2 hnewP3 hq_nil).dominated
   · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP4 hnewQ4).dominated
-  · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP5 hnewQ5).dominated
-  · exact (rounding_diskKernel measurable_phase2 norm_phase2_le
-      (fun _ u hc ↦ phase2_rot2 hc u) memLp_phase2 hnewP6 hq_nil).dominated
-  · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP7 hnewQ7).dominated
-  · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP8 hnewQ8).dominated
-  · exact (rounding_diskKernel measurable_phase2 norm_phase2_le
-      (fun _ u hc ↦ phase2_rot2 hc u) memLp_phase2 hnewP9 hq_nil).dominated
-  · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP10 hnewQ10).dominated
-  · exact (rounding_diskKernel hsm_m hsm_1 hsm_rot memLp_fSmoothed hnewP11 hnewQ11).dominated
 
-private lemma newHChan_mem (m : Fin 12) (n : ℕ) (hn : n < newLastIndex m + 1) :
+private lemma newHChan_mem (m : Fin 5) (n : ℕ) (hn : n < newLastIndex m + 1) :
     mem (newHChan m n) ((newHeadIntervals m).getD n zeroI) := by
   have hdR : ((23187 : ℝ) / 24245) ^ 2 + ((7084 : ℝ) / 24245) ^ 2 = 1 := by norm_num
   have heR : ((87841 : ℝ) / 98209) ^ 2 + ((43920 : ℝ) / 98209) ^ 2 = 1 := by norm_num
@@ -171,58 +132,26 @@ private lemma newHChan_mem (m : Fin 12) (n : ℕ) (hn : n < newLastIndex m + 1) 
     rw [ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ newP0) n]
     exact mem_bivarT_oned (Q := 0) (memB_ofListQ newP0 251) (muTigOf tigCreArr tigCimArr)
       (fun _ hk ↦ mem_muTigOf tig_mu_ok hk) n hn
-  · dsimp only [newHChan, newHeadIntervals, gTigLp, memLp_fTig, fTig]
-    rw [ofListQ_map_neg, tig_bivarKernel_eq tig_sos_ok (ofListQ newP1) n]
-    exact mem_bivarT_oned (Q := 0) (memB_ofListQ newP1 251) (muTigOf tigCreArr tigCimArr)
-      (fun _ hk ↦ mem_muTigOf tig_mu_ok hk) n hn
+  · dsimp only [newHChan, newHeadIntervals]
+    rw [gSmoothedLp_eq_nat]
+    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ1, ofListQ])
+      (memB_ofListQ newP1 251) (memB_ofListQ newQ1 251) n hn
   · dsimp only [newHChan, newHeadIntervals]
     rw [gSmoothedLp_eq_nat]
     exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ2, ofListQ])
       (memB_ofListQ newP2 251) (memB_ofListQ newQ2 251) n hn
   · dsimp only [newHChan, newHeadIntervals]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ3, ofListQ])
-      (memB_ofListQ newP3 251) (memB_ofListQ newQ3 251) n hn
+    have heq : bivarKernel (ofListQ newP3) (ofListQ []) (energy (memLp_phase2.toLp phase2)) n =
+        bivarKernel (ofListQ newP3) 0 (onedTable haagCoeff) n :=
+      (phase_bivarKernel_eq (ofListQ newP3) n).trans
+        (bivarKernel_oned_eq_head (ofListQ newP3) 0 haagCoeff (Nat.lt_succ_self n)).symm
+    rw [heq]
+    exact mem_bivarT_oned (Q := 0) (memB_ofListQ newP3 801) haagCoeff
+      (fun _ hk ↦ mem_haagMuList hk) n hn
   · dsimp only [newHChan, newHeadIntervals]
     rw [gSmoothedLp_eq_nat]
     exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ4, ofListQ])
       (memB_ofListQ newP4 251) (memB_ofListQ newQ4 251) n hn
-  · dsimp only [newHChan, newHeadIntervals]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ5, ofListQ])
-      (memB_ofListQ newP5 251) (memB_ofListQ newQ5 251) n hn
-  · dsimp only [newHChan, newHeadIntervals]
-    have heq : bivarKernel (ofListQ newP6) (ofListQ []) (energy (memLp_phase2.toLp phase2)) n =
-        bivarKernel (ofListQ newP6) 0 (onedTable haagCoeff) n :=
-      (phase_bivarKernel_eq (ofListQ newP6) n).trans
-        (bivarKernel_oned_eq_head (ofListQ newP6) 0 haagCoeff (Nat.lt_succ_self n)).symm
-    rw [heq]
-    exact mem_bivarT_oned (Q := 0) (memB_ofListQ newP6 321) haagCoeff
-      (fun _ hk ↦ mem_haagMuList hk) n hn
-  · dsimp only [newHChan, newHeadIntervals]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ7, ofListQ])
-      (memB_ofListQ newP7 251) (memB_ofListQ newQ7 251) n hn
-  · dsimp only [newHChan, newHeadIntervals]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ8, ofListQ])
-      (memB_ofListQ newP8 251) (memB_ofListQ newQ8 251) n hn
-  · dsimp only [newHChan, newHeadIntervals]
-    have heq : bivarKernel (ofListQ newP9) (ofListQ []) (energy (memLp_phase2.toLp phase2)) n =
-        bivarKernel (ofListQ newP9) 0 (onedTable haagCoeff) n :=
-      (phase_bivarKernel_eq (ofListQ newP9) n).trans
-        (bivarKernel_oned_eq_head (ofListQ newP9) 0 haagCoeff (Nat.lt_succ_self n)).symm
-    rw [heq]
-    exact mem_bivarT_oned (Q := 0) (memB_ofListQ newP9 321) haagCoeff
-      (fun _ hk ↦ mem_haagMuList hk) n hn
-  · dsimp only [newHChan, newHeadIntervals]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ10, ofListQ])
-      (memB_ofListQ newP10 251) (memB_ofListQ newQ10 251) n hn
-  · dsimp only [newHChan, newHeadIntervals]
-    rw [gSmoothedLp_eq_nat]
-    exact mem_bivarT_smoothed tcell_sos_ok hdR heR tcell_rows_ok (by simp [newQ11, ofListQ])
-      (memB_ofListQ newP11 251) (memB_ofListQ newQ11 251) n hn
 
 private theorem lower_of_interval {x : ℝ} {I : Ival} {q : ℚ}
     (hm : Haagerup.mem x I) (h : ofRatHi q ≤ I.lo) : (q : ℝ) ≤ x := by
@@ -239,7 +168,7 @@ private theorem tail_after_linear (h : ℕ → ℝ) (r B L T : ℝ) (K : ℕ) (h
   simpa only [Nat.add_assoc] using hardy_tail (fun n ↦ h (n + 1)) r hr _
     (hardy_budget_after_linear h r B L (zero_lt_one.trans hr) hL h0 hB) K T hT hcmp
 
-private lemma newHChan_tail (m : Fin 12) :
+private lemma newHChan_tail (m : Fin 5) :
     ∑' n, |newHChan m (n + (newLastIndex m + 1))| ≤ (newTailCap m : ℝ) := by
   have hr1 : 1 < (newRhoQ m : ℝ) := by fin_cases m <;> norm_num [newRhoQ]
   have hT0 : 0 ≤ (newTailCap m : ℝ) := by fin_cases m <;> norm_num [newTailCap]
@@ -256,58 +185,30 @@ private lemma newHChan_tail (m : Fin 12) :
       (norm_cellFn_le tig_sos_ok) (fun _ u hc ↦ cellFn_rot2 tigCreArr tigCimArr hc u)
       memLp_fTig hnewP0 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
       (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg0_ok newMean0_ok J
-  · exact hardy_anti_channel_tm (measurable_cellFn tigCreArr tigCimArr)
-      (norm_cellFn_le tig_sos_ok) (fun _ u hc ↦ cellFn_rot2 tigCreArr tigCimArr hc u)
-      memLp_fTig hnewP1 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
+  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
+      (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
+      hnewP1 hnewQ1 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
       (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg1_ok newMean1_ok J
   · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
       (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
       hnewP2 hnewQ2 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
       (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg2_ok newMean2_ok J
-  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
-      (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hnewP3 hnewQ3 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
+  · exact hardy_phase_channel_tm measurable_phase2 norm_phase2_le
+      (fun _ u hc ↦ phase2_rot2 hc u) memLp_phase2 hnewP3
+      (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
       (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg3_ok newMean3_ok J
   · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
       (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
       hnewP4 hnewQ4 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
       (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg4_ok newMean4_ok J
-  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
-      (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hnewP5 hnewQ5 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
-      (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg5_ok newMean5_ok J
-  · exact hardy_phase_channel_tm measurable_phase2 norm_phase2_le
-      (fun _ u hc ↦ phase2_rot2 hc u) memLp_phase2 hnewP6
-      (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
-      (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg6_ok newMean6_ok J
-  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
-      (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hnewP7 hnewQ7 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
-      (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg7_ok newMean7_ok J
-  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
-      (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hnewP8 hnewQ8 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
-      (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg8_ok newMean8_ok J
-  · exact hardy_phase_channel_tm measurable_phase2 norm_phase2_le
-      (fun _ u hc ↦ phase2_rot2 hc u) memLp_phase2 hnewP9
-      (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
-      (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg9_ok newMean9_ok J
-  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
-      (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hnewP10 hnewQ10 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
-      (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg10_ok newMean10_ok J
-  · exact hardy_smoothed_channel_tm hdQ heQ (measurable_cellFn tcellCreArr tcellCimArr)
-      (norm_cellFn_le tcell_sos_ok) (fun _ v hc ↦ cellFn_rot2 tcellCreArr tcellCimArr hc v)
-      hnewP11 hnewQ11 (by norm_num [newRhoQ]) (by norm_num [newRhoQ, newRegRQ])
-      (by norm_num [newJCertQ]) (by norm_num [newBudgetQ, d6Q]) newReg11_ok newMean11_ok J
 
-theorem isBound : Statement.IsBound ((10 : ℝ) ^ 27 / 711969765819834623238463058) := by
+theorem isBound : Statement.IsBound ((10 : ℝ) ^ 30 / 711971541341811014386385764712) := by
   obtain ⟨hSix, hsSix, hdSix, hmSix, heSix⟩ := SixChannelExact.exists_certified_channels
-  have hlenSix (p : Fin 6) : (SixChannelExact.headIntervals p).length ≤ 320 + 1 := by
+  have hlenSix (p : Fin 6) : (SixChannelExact.headIntervals p).length ≤ 800 + 1 := by
     rw [SixChannelExact.head_length]; simp only [SixChannelExact.lastIndex]; split <;> decide
-  have hlenNew (m : Fin 12) : (newHeadIntervals m).length ≤ 320 + 1 := by
+  have hlenNew (m : Fin 5) : (newHeadIntervals m).length ≤ 800 + 1 := by
     rw [new_head_length]; fin_cases m <;> decide
-  have htr := convex_transfer_variable_ival (N := 320) (wQ := weight)
+  have htr := convex_transfer_variable_ival (N := 800) (wQ := weight)
     (h := combineAll hSix newHChan)
     (headI := allHeads SixChannelExact.headIntervals)
     (tl := fun i ↦ ((allCaps SixChannelExact.phaseTailCap i : ℚ) : ℝ))
@@ -337,7 +238,8 @@ theorem isBound : Statement.IsBound ((10 : ℝ) ^ 27 / 7119697658198346232384630
     head_ok
     (by dsimp only [residual]; push_cast; exact le_rfl)
     (by exact_mod_cast residual_lt_center)
-  have hv : 1 / ((center : ℝ) - (residual : ℝ)) = (10 : ℝ) ^ 27 / 711969765819834623238463058 := by
+  have hv :
+      1 / ((center : ℝ) - (residual : ℝ)) = (10 : ℝ) ^ 30 / 711971541341811014386385764712 := by
     rw [center, residual_eq]; norm_num
   rwa [← hv]
 

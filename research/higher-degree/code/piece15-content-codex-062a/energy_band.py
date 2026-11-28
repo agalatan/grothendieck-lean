@@ -32,7 +32,7 @@ def geometry(nodes, lo, hi, left, right):
     return low, high, minimum
 
 
-def bind(weights, group, nodes, t_lo):
+def bind(weights, group, nodes, t_lo, *, energy_index=0):
     lo, hi = group
     cursor = Q(0)
     result = []
@@ -48,7 +48,7 @@ def bind(weights, group, nodes, t_lo):
         for j in range(parts):
             cell_lo = interpolate(low, high, Q(j, parts))
             cell_hi = interpolate(low, high, Q(j + 1, parts))
-            result.append(dict(piece_idx=15, u_idx=0, row_tag="0.855", kind="JM1_BOUND", t_lo=t_lo,
+            result.append(dict(piece_idx=15, u_idx=energy_index, row_tag="0.855", kind="JM1_BOUND", t_lo=t_lo,
                                u_lo=first.enclose(cell_lo)[0], u_hi=first.enclose(cell_hi)[1],
                                chi_lo=lo, chi_hi=hi, F_claimed=w["F_claimed"], theta_allow=w["F_claimed"],
                                slicesA=w["slicesA"], slicesB=w["slicesB"]))

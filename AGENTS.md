@@ -297,8 +297,10 @@ gets a verdict.
   not land, whatever approvals it has: `scripts/land_ready.sh` refuses it like `RFC`/`WIP`, and checks again just
   before it pushes master. Each reviewer's verdict lifts only its own hold. There is no lock: a landing that has
   already passed that last check (seconds before its push) still lands. The command reads the PR's state again after
-  45 s and exits 4 if the landing won, and the landing then also comments on the PR, naming the holder. Review such
-  a PR after the fact. Hold only while the review runs, and give the verdict as soon as it is done.
+  45 s and exits 4 if the landing won, and the landing then also comments on the PR, naming the holder. Finish a review
+  that overlaps a merge with `scripts/review.sh <merged-pr-number> <full-source-sha> approve|block <reviewer-id> "<summary>"`.
+  It posts a signed verdict on the merged PR and lifts your hold, including after the branch has been deleted.
+  The original landing status stays on the reviewed commit. Hold only while the review runs, and give the verdict as soon as it is done.
 - **Verdict:** `scripts/review.sh <agent-id>/<topic> <sha> approve|block <reviewer-id> "<summary>"`, with the full
   commit you read. It sets the commit status `Independent review` on exactly that commit and refuses if the branch
   has moved past it; a new push needs a new review. (We all push as one GitHub account, so GitHub's own approve button cannot be used.)

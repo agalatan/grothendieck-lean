@@ -8,12 +8,12 @@ exact value, and that this page and the other documents state them.
 
 ## The current bounds
 
-$$1.4020253021 < K \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4020253021 < K \le 1.404550522 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
 | lower bound (strict) | `1.4020253021` | `14020253021 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
-| upper bound (weak, $\le$) | `1.404554025` | `1404554025 / 1000000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperBivar.constant_le` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
+| upper bound (weak, $\le$) | `1.404550522` | `1404550522 / 1000000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperBivar.constant_le` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperBivar.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
 `main_bounds` reads
@@ -21,7 +21,7 @@ $$1.4020253021 < K \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots$$
 ```lean
 theorem main_bounds :
     (14020253021 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
-      complexGrothendieckConstant ≤ 1404554025 / 1000000000
+      complexGrothendieckConstant ≤ 1404550522 / 1000000000
 ```
 
 It has no hypotheses. Its axioms are Lean's three standard ones and `native_decide` facts that are all among those
@@ -33,7 +33,7 @@ Each bound is the rounding of an exact value that Lean also states.
 | | exact value | decimal | theorem | rounding |
 |---|---|---|---|---|
 | lower endpoint ($\le K$) | `500000000000 / 356626944773` | $1.402025302149448476\ldots$ | `Grothe.Statement.first_chaos_endpoint` | strictly downward (`Grothe.Lower.FirstChaos.rounded_lt`) |
-| upper bound ($K \le$) | $10^{27}/711969765819834623238463058$ | $1.404554024634034818\ldots$ | `Grothe.UpperBivar.bound` | up to nine decimals (`Grothe.UpperBivar.constant_le`) |
+| upper bound ($K \le$) | $10^{30}/711971541341811014386385764712$ | $1.404550521942715068\ldots$ | `Grothe.UpperBivar.bound` | up to nine decimals (`Grothe.UpperBivar.constant_le`) |
 
 **What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
 $\lvert\sum a_{ij}\overline{\varepsilon_i}\delta_j\rvert$ over unimodular scalars and $V(A)$ the supremum of
@@ -41,8 +41,8 @@ $\lvert\sum a_{ij}\langle x_i,y_j\rangle\rvert$ over unit vectors of a complex H
 (`scalarOpt`, `vectorOpt` in `Grothe/Statement.lean`). A number $K$ is a *Grothendieck bound* (`IsBound K`) if
 $V(A)\le K\,C(A)$ for every $A$, and $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds.
 
-- Upper bound: `Grothe.UpperBivar.bound : IsBound ((10 : ℝ) ^ 27 / 711969765819834623238463058)`. For every finite
-  complex matrix, $V(A)\le [10^{27}/711969765819834623238463058]\,C(A)$.
+- Upper bound: `Grothe.UpperBivar.bound : IsBound ((10 : ℝ) ^ 30 / 711971541341811014386385764712)`. For every finite
+  complex matrix, $V(A)\le [10^{30}/711971541341811014386385764712]\,C(A)$.
 - Lower bound: every Grothendieck bound is at least the lower endpoint; for every $K$ below the endpoint some
   matrix has $V(A) > K\,C(A)$.
 
@@ -55,9 +55,9 @@ for $K$ in 1987.
 | fact | Lean |
 |---|---|
 | $0.711958633 < \gamma^\dagger < 0.711958683$ | `Haagerup.gammaDagger_bounds` (`Grothe/UpperSix/Haagerup/GammaDagger.lean`) |
-| $K < 1/\gamma^\dagger$ | `Grothe.UpperBivar.constant_lt_inv_gammaDagger`, from $K \le 1.404554025$ and $1.404554025\cdot 0.711958683 < 1$ |
+| $K < 1/\gamma^\dagger$ | `Grothe.UpperBivar.constant_lt_inv_gammaDagger`, from $K \le 1.404550522$ and $1.404550522\cdot 0.711958683 < 1$ |
 
-The upper bound is below Haagerup's value by about $2.19\cdot10^{-5}$. Haagerup's own 1987 theorem is the weaker
+The upper bound is below Haagerup's value by about $2.54\cdot10^{-5}$. Haagerup's own 1987 theorem is the weaker
 bound $K < 1.40490913\ldots$
 
 ## Behind the lower bound
@@ -91,18 +91,18 @@ at $v=c\delta/(\hat\varepsilon\tau)$. Lean checks both branches in the kernel. [
 
 ## Behind the upper bound
 
-The certificate mixes the established Gaussian rounding channels of `Grothe/UpperSixExact/` with twelve additional preprocessors on the same three certified maps (`Grothe/UpperBivar/`): eight smoothed cell channels (`tcellRows`, 251 head terms each, including degree-3 bivariate second-coordinate polynomials `Q(X)` with `Q(0) = 0`), two phase channels (`haagMuList 321`, 321 head terms each), and two reflected tiger channels (`tigMuList`, 251 head terms each). Sixteen of the eighteen slots carry positive weight. Taking absolute values after mixing all heads preserves signed cancellation, and every new disk positivity check, Hardy circle budget, and rational tail comparison reduces in Lean's kernel (`TaylorHardy`).
+The certificate mixes the established Gaussian rounding channels of `Grothe/UpperSixExact/` with five additional preprocessors on the same three certified maps (`Grothe/UpperBivar/`): three smoothed cell channels (`tcellRows`, 251 head terms each, with bivariate second-coordinate polynomials `Q(X)` of degree up to `17` in `X = t^2` and `Q(0) = 0`), one phase channel (`haagMuList 801`, 801 head terms), and one reflected tiger channel (`tigMuList`, 251 head terms). Seven of the eleven slots carry positive weight. Taking absolute values after mixing all heads preserves signed cancellation, and every new disk positivity check, Hardy circle budget, and rational tail comparison reduces in Lean's kernel (`TaylorHardy`).
 
 | quantity | exact value | Lean declaration |
 |---|---|---|
 | target slope | `1` | `UpperBivar.center` |
-| weighted head deviation | at most `288030166169678 / 10^15` | `UpperBivar.head_ok` |
-| weighted sum of the tail caps | `68010487376761536942 / 10^27` | weighted error in `UpperBivar.residual` |
-| total residual | `288030234180165376761536942 / 10^27` | `UpperBivar.residual_eq` |
-| transfer factor | `10^27 / 711969765819834623238463058` | `Haagerup.UpperBivar.isBound`, `Grothe.UpperBivar.bound` |
-| bound rounded upward | `1404554025 / 1000000000` | `Grothe.UpperBivar.constant_le`, `main_bounds` |
+| weighted head deviation | at most `288028401556608 / 10^15` | `UpperBivar.head_ok` |
+| weighted sum of the tail caps | `57101580985613614235288 / 10^30` | weighted error in `UpperBivar.residual` |
+| total residual | `288028458658188985613614235288 / 10^30` | `UpperBivar.residual_eq` |
+| transfer factor | `10^30 / 711971541341811014386385764712` | `Haagerup.UpperBivar.isBound`, `Grothe.UpperBivar.bound` |
+| bound rounded upward | `1404550522 / 1000000000` | `Grothe.UpperBivar.constant_le`, `main_bounds` |
 
-The analytic realization, kernel-checked Taylor-model contour budgets, and variable-cutoff transfer use Lean's kernel. One native comparison (`Haagerup.UpperBivar.budgets_ok`) evaluates the weighted interval head and the twelve linear floors from their definitions. [Parameters](../Grothe/UpperBivar/Parameters.lean) · [Contour checks](../Grothe/UpperBivar/ContourChecks.lean) · [Head comparison](../Grothe/UpperBivar/Head.lean) · [Transfer theorem](../Grothe/UpperBivar/Bound.lean).
+The analytic realization, kernel-checked Taylor-model contour budgets, and variable-cutoff transfer use Lean's kernel. One native comparison (`Haagerup.UpperBivar.budgets_ok`) evaluates the weighted interval head and the five linear floors from their definitions. [Parameters](../Grothe/UpperBivar/Parameters.lean) · [Contour checks](../Grothe/UpperBivar/ContourChecks.lean) · [Head comparison](../Grothe/UpperBivar/Head.lean) · [Transfer theorem](../Grothe/UpperBivar/Bound.lean).
 
 ## Other numbers you will meet
 
@@ -110,6 +110,7 @@ None of these is the current bound.
 
 | number | what it is | where |
 |---|---|---|
+| `1.404554025` | an earlier upper bound of this repository: the initial twelve-preprocessor bivariate certificate (#856), $10^{27}/711969765819834623238463058 = 1.4045540246340\ldots$ rounded up to nine decimals | git history |
 | `1.404556392` | an earlier upper bound of this repository: the seven-channel angular-selector certificate, $10^{27}/711968565817136711740669035 = 1.4045563919697\ldots$ rounded up to nine decimals | `Haagerup.AngularSelector.isBound` (`Grothe/UpperSelector/Bound.lean`) |
 | `1.4020110501` | earlier endpoint of the identity-tail witness with the original two Stein chord tables and their common gate, $1/B=4000000000000/2853044560237$ | [original profile and replay](../research/identity-tail/COUPLED_STEIN.md) |
 | `1.4019156097` | an earlier lower bound of this repository: the sharp envelope of the scalar rows with the common Gaussian gate of rows `0.835` and `0.845` (gain $243/10^8$, $1/B = 1.401915609708473171\ldots$) | [archived Lean certificate](https://github.com/agalatan/grothendieck-lean/blob/8c08cc4285123b688dbc5f6a796c0fe78a0509b1/Grothe/Lower/Cert/SharedGate.lean) |

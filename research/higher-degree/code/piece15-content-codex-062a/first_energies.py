@@ -60,11 +60,14 @@ def price(cache):
     return result
 
 
-def price_cell(search, evaluator, rho_a, rho_b, u, t_lo, lo, hi, bound, grid, test):
+def price_cell(search, evaluator, rho_a, rho_b, u, t_lo, lo, hi, bound, grid, test, *, seed=None):
     witness = dict(chi_lo=lo, chi_hi=hi, F_claimed=bound)
     for key, is_b in (("slicesA", False), ("slicesB", True)):
         args = evaluator, is_b, rho_a, rho_b, u, t_lo, lo, hi
-        _, slices = search.certify_sector_jm1(*args, bound)
+        if seed is None:
+            _, slices = search.certify_sector_jm1(*args, bound)
+        else:
+            slices = seed[key]
         bands = evaluator.eval_psi_g1_bounds(is_b, u, u * test)
         witness[key], _ = search.polish_slices_at_F(*args, bound, slices, grid, test, *bands)
     return witness

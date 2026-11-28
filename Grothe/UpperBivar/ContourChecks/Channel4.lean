@@ -14,72 +14,378 @@ namespace Haagerup.UpperBivar
 open HaagerupKernel.TaylorHardy
 
 def newRegSteps4 : List Nat := [
-  1, 1, 2, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16
+  77, 61, 44, 38, 35, 32, 28, 26, 23, 20, 17, 16, 14, 12, 9, 7, 5, 3, 3, 3, 3, 4, 6, 9, 13, 17, 22,
+  28, 36, 48, 70, 102, 85, 88, 67, 58, 49, 44, 42, 42, 42, 41, 41, 41, 40, 42, 47, 57, 62, 77, 120,
+  132
 ]
 
 private def newMeanSteps4_0 : List Nat := [
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-  4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
 ]
 
 private def newMeanSteps4_1 : List Nat := [
-  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-  8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-  16, 16, 16, 16, 8, 8
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
 ]
 
 private def newMeanSteps4_2 : List Nat := [
-  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16, 16, 16, 16,
-  16, 16
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
 ]
 
 private def newMeanSteps4_3 : List Nat := [
-  16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 32, 32, 32, 32, 32, 32, 32
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_4 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_5 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_6 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 2, 2, 2
+]
+
+private def newMeanSteps4_7 : List Nat := [
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+]
+
+private def newMeanSteps4_8 : List Nat := [
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_9 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_10 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_11 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_12 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_13 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_14 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_15 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_16 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_17 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_18 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_19 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_20 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_21 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_22 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_23 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_24 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_25 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_26 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_27 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_28 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+]
+
+private def newMeanSteps4_29 : List Nat := [
+  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 6, 8, 8, 8, 8, 8, 8,
+  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8
+]
+
+private def newMeanSteps4_30 : List Nat := [
+  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+  8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 16, 16, 16, 16, 8, 12, 16, 16, 16, 16, 16, 16, 16, 16, 8
 ]
 
 def newMeanSteps4 : List Nat :=
-  newMeanSteps4_0 ++ (newMeanSteps4_1 ++ (newMeanSteps4_2 ++ newMeanSteps4_3))
+  newMeanSteps4_0 ++ (newMeanSteps4_1 ++ (newMeanSteps4_2 ++ (newMeanSteps4_3 ++ (newMeanSteps4_4 ++
+    (newMeanSteps4_5 ++ (newMeanSteps4_6 ++ (newMeanSteps4_7 ++ (newMeanSteps4_8 ++
+    (newMeanSteps4_9 ++ (newMeanSteps4_10 ++ (newMeanSteps4_11 ++ (newMeanSteps4_12 ++
+    (newMeanSteps4_13 ++ (newMeanSteps4_14 ++ (newMeanSteps4_15 ++ (newMeanSteps4_16 ++
+    (newMeanSteps4_17 ++ (newMeanSteps4_18 ++ (newMeanSteps4_19 ++ (newMeanSteps4_20 ++
+    (newMeanSteps4_21 ++ (newMeanSteps4_22 ++ (newMeanSteps4_23 ++ (newMeanSteps4_24 ++
+    (newMeanSteps4_25 ++ (newMeanSteps4_26 ++ (newMeanSteps4_27 ++ (newMeanSteps4_28 ++
+    (newMeanSteps4_29 ++ newMeanSteps4_30)))))))))))))))))))))))))))))
 
 theorem newReg4_ok :
-    regQ1SmoothedOK ctQ stQ seQ newP4 newQ4 (newRegRQ (⟨4, by decide⟩ : Fin 12))
-      7 newRegSteps4 = true := by
+    regQ1SmoothedOK ctQ stQ seQ newP4 newQ4 (newRegRQ (⟨4, by decide⟩ : Fin 5))
+      11 newRegSteps4 = true := by
   decide +kernel
 
-private abbrev newMeanUnit4 : Nat := Nat.div D64N (Nat.mul 2 (Nat.pow 2 11))
+private abbrev newMeanUnit4 : Nat := Nat.div D64N (Nat.mul 2 (Nat.pow 2 13))
 
 private abbrev newMeanLeaf4 : Int → Int → Option TM2 :=
-  smoothedLeafInv ctQ stQ seQ newP4 newQ4 (newRhoQ (⟨4, by decide⟩ : Fin 12))
-    (newJCertQ (⟨4, by decide⟩ : Fin 12))
+  smoothedLeafInv ctQ stQ seQ newP4 newQ4 (newRhoQ (⟨4, by decide⟩ : Fin 5))
+    (newJCertQ (⟨4, by decide⟩ : Fin 5))
 
 private theorem newMean4_part0 :
     sumSimpsonPart newMeanUnit4 newMeanLeaf4 0 newMeanSteps4_0
-      0 = some 26829264706869478320117 := by
+      0 = some 59145017509408590380836 := by
   decide +kernel
 
 private theorem newMean4_part1 :
-    sumSimpsonPart newMeanUnit4 newMeanLeaf4 312 newMeanSteps4_1
-      26829264706869478320117 = some 83497583422478474744493 := by
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 256 newMeanSteps4_1
+      59145017509408590380836 = some 124119258698753460470836 := by
   decide +kernel
 
 private theorem newMean4_part2 :
-    sumSimpsonPart newMeanUnit4 newMeanLeaf4 992 newMeanSteps4_2
-      83497583422478474744493 = some 117966024372685002126397 := by
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 512 newMeanSteps4_2
+      124119258698753460470836 = some 182282989909923569810400 := by
   decide +kernel
 
 private theorem newMean4_part3 :
-    sumSimpsonPart newMeanUnit4 newMeanLeaf4 1568 newMeanSteps4_3
-      117966024372685002126397 = some 138500196236282632609517 := by
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 768 newMeanSteps4_3
+      182282989909923569810400 = some 237276579102925031426500 := by
+  decide +kernel
+
+private theorem newMean4_part4 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 1024 newMeanSteps4_4
+      237276579102925031426500 = some 293474112250408890826664 := by
+  decide +kernel
+
+private theorem newMean4_part5 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 1280 newMeanSteps4_5
+      293474112250408890826664 = some 355607236066831847182468 := by
+  decide +kernel
+
+private theorem newMean4_part6 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 1536 newMeanSteps4_6
+      355607236066831847182468 = some 411106217819312055354054 := by
+  decide +kernel
+
+private theorem newMean4_part7 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 1762 newMeanSteps4_7
+      411106217819312055354054 = some 466286545813509725266076 := by
+  decide +kernel
+
+private theorem newMean4_part8 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 1890 newMeanSteps4_8
+      466286545813509725266076 = some 573265921425145237081210 := by
+  decide +kernel
+
+private theorem newMean4_part9 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 2046 newMeanSteps4_9
+      573265921425145237081210 = some 652295201025782451174130 := by
+  decide +kernel
+
+private theorem newMean4_part10 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 2302 newMeanSteps4_10
+      652295201025782451174130 = some 712568763363990101941922 := by
+  decide +kernel
+
+private theorem newMean4_part11 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 2558 newMeanSteps4_11
+      712568763363990101941922 = some 764723230514318969633950 := by
+  decide +kernel
+
+private theorem newMean4_part12 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 2814 newMeanSteps4_12
+      764723230514318969633950 = some 816124889193200300236866 := by
+  decide +kernel
+
+private theorem newMean4_part13 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 3070 newMeanSteps4_13
+      816124889193200300236866 = some 871426627220429300837978 := by
+  decide +kernel
+
+private theorem newMean4_part14 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 3326 newMeanSteps4_14
+      871426627220429300837978 = some 928998166350008206085758 := by
+  decide +kernel
+
+private theorem newMean4_part15 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 3582 newMeanSteps4_15
+      928998166350008206085758 = some 980611518229236663519346 := by
+  decide +kernel
+
+private theorem newMean4_part16 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 3838 newMeanSteps4_16
+      980611518229236663519346 = some 1026082561765627810379058 := by
+  decide +kernel
+
+private theorem newMean4_part17 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 4094 newMeanSteps4_17
+      1026082561765627810379058 = some 1075530193300694104206870 := by
+  decide +kernel
+
+private theorem newMean4_part18 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 4350 newMeanSteps4_18
+      1075530193300694104206870 = some 1124950167610747202136118 := by
+  decide +kernel
+
+private theorem newMean4_part19 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 4606 newMeanSteps4_19
+      1124950167610747202136118 = some 1169973329028557265376470 := by
+  decide +kernel
+
+private theorem newMean4_part20 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 4862 newMeanSteps4_20
+      1169973329028557265376470 = some 1211846011420079066252698 := by
+  decide +kernel
+
+private theorem newMean4_part21 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 5118 newMeanSteps4_21
+      1211846011420079066252698 = some 1251660242780222096111226 := by
+  decide +kernel
+
+private theorem newMean4_part22 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 5374 newMeanSteps4_22
+      1251660242780222096111226 = some 1291484959366358808885762 := by
+  decide +kernel
+
+private theorem newMean4_part23 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 5630 newMeanSteps4_23
+      1291484959366358808885762 = some 1333209445617909575796806 := by
+  decide +kernel
+
+private theorem newMean4_part24 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 5886 newMeanSteps4_24
+      1333209445617909575796806 = some 1376148295899450599466090 := by
+  decide +kernel
+
+private theorem newMean4_part25 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 6142 newMeanSteps4_25
+      1376148295899450599466090 = some 1416110407229071284591362 := by
+  decide +kernel
+
+private theorem newMean4_part26 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 6398 newMeanSteps4_26
+      1416110407229071284591362 = some 1453785134727004681484526 := by
+  decide +kernel
+
+private theorem newMean4_part27 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 6654 newMeanSteps4_27
+      1453785134727004681484526 = some 1493009771184781357094242 := by
+  decide +kernel
+
+private theorem newMean4_part28 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 6910 newMeanSteps4_28
+      1493009771184781357094242 = some 1531968624664006664911214 := by
+  decide +kernel
+
+private theorem newMean4_part29 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 7166 newMeanSteps4_29
+      1531968624664006664911214 = some 1593784161681092361933918 := by
+  decide +kernel
+
+private theorem newMean4_part30 :
+    sumSimpsonPart newMeanUnit4 newMeanLeaf4 7628 newMeanSteps4_30
+      1593784161681092361933918 = some 1657767690608590597394906 := by
   decide +kernel
 
 theorem newMean4_ok :
-    meanQ1SmoothedOK ctQ stQ seQ newP4 newQ4 (newRhoQ (⟨4, by decide⟩ : Fin 12))
-      (newJCertQ (⟨4, by decide⟩ : Fin 12)) (newBudgetQ (⟨4, by decide⟩ : Fin 12))
-      11 newMeanSteps4 = true :=
+    meanQ1SmoothedOK ctQ stQ seQ newP4 newQ4 (newRhoQ (⟨4, by decide⟩ : Fin 5))
+      (newJCertQ (⟨4, by decide⟩ : Fin 5)) (newBudgetQ (⟨4, by decide⟩ : Fin 5))
+      13 newMeanSteps4 = true :=
   meanQ1SmoothedOK_of_acc
     (sumSimpsonPart_chain newMean4_part0
-      (sumSimpsonPart_chain newMean4_part1
-        (sumSimpsonPart_chain newMean4_part2 newMean4_part3)))
+    (sumSimpsonPart_chain newMean4_part1
+    (sumSimpsonPart_chain newMean4_part2
+    (sumSimpsonPart_chain newMean4_part3
+    (sumSimpsonPart_chain newMean4_part4
+    (sumSimpsonPart_chain newMean4_part5
+    (sumSimpsonPart_chain newMean4_part6
+    (sumSimpsonPart_chain newMean4_part7
+    (sumSimpsonPart_chain newMean4_part8
+    (sumSimpsonPart_chain newMean4_part9
+    (sumSimpsonPart_chain newMean4_part10
+    (sumSimpsonPart_chain newMean4_part11
+    (sumSimpsonPart_chain newMean4_part12
+    (sumSimpsonPart_chain newMean4_part13
+    (sumSimpsonPart_chain newMean4_part14
+    (sumSimpsonPart_chain newMean4_part15
+    (sumSimpsonPart_chain newMean4_part16
+    (sumSimpsonPart_chain newMean4_part17
+    (sumSimpsonPart_chain newMean4_part18
+    (sumSimpsonPart_chain newMean4_part19
+    (sumSimpsonPart_chain newMean4_part20
+    (sumSimpsonPart_chain newMean4_part21
+    (sumSimpsonPart_chain newMean4_part22
+    (sumSimpsonPart_chain newMean4_part23
+    (sumSimpsonPart_chain newMean4_part24
+    (sumSimpsonPart_chain newMean4_part25
+    (sumSimpsonPart_chain newMean4_part26
+    (sumSimpsonPart_chain newMean4_part27
+    (sumSimpsonPart_chain newMean4_part28
+    (sumSimpsonPart_chain newMean4_part29 newMean4_part30
+    ))))))))))))))))))))))))))))))
     (by decide +kernel)
 
 end Haagerup.UpperBivar

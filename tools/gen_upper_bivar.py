@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate or check Grothe/UpperBivar/ from data/upper-bivar/certificate.json.
 
-Agent-ID: gemini-40b2. Refs #793.
+Agent-ID: gemini-40b2. Refs #793, #879.
 All generated Lean files are byte-for-byte reproducible from data/upper-bivar/certificate.json.
 Acceptance and analytic soundness are independently verified in Lean:
   - Grothe/UpperBivar/ContourChecks/Channel*.lean (kernel-checked Taylor-Hardy contours)
@@ -107,15 +107,18 @@ def _tmc_horner(x, cs):
     return acc
 
 
-def _smoothed_subarc_checkpoints(c: dict, chunk_size: int = SUBARC_CHUNK) -> list[tuple[list[int], int, int, int]]:
+def _smoothed_subarc_checkpoints(
+    c: dict, p_scale: int, chunk_size: int = SUBARC_CHUNK
+) -> list[tuple[list[int], int, int, int]]:
     """Exact port of HaagerupKernel.TaylorHardy smoothed Simpson quadrature per chunk."""
     m00 = CT_Q * CT_Q + SE_Q * ST_Q * ST_Q
     m01 = CT_Q * ST_Q * (1 - SE_Q)
     m11 = ST_Q * ST_Q + SE_Q * CT_Q * CT_Q
     c00, c01sq = _of_rat_tm(m00 * m00), _of_rat_tm(m01 * m01)
     c0001, c0111, c11 = _of_rat_tm(m00 * m01), _of_rat_tm(m01 * m11), _of_rat_tm(m11 * m11)
-    P = [_of_rat_tm(Fraction(x, 10**9)) for x in c["p_ints"]]
-    Q = [_of_rat_tm(Fraction(x, 10**9)) for x in c["q_ints"]]
+    ch_pscale = int(c.get("p_scale", p_scale))
+    P = [_of_rat_tm(Fraction(x, ch_pscale)) for x in c["p_ints"]]
+    Q = [_of_rat_tm(Fraction(x, ch_pscale)) for x in c["q_ints"]]
     rhoQ = Fraction(c["rhoQ"][0], c["rhoQ"][1])
     jQ = Fraction(c["jQ"][0], c["jQ"][1])
     budgetQ = Fraction(c["budgetQ_num"], 10**6)
@@ -124,11 +127,22 @@ def _smoothed_subarc_checkpoints(c: dict, chunk_size: int = SUBARC_CHUNK) -> lis
     unit = D64 // (2 * M_grid)
 
     def inv_im(R, neg: bool):
-        ra, rb, rc = ((_tm_neg(R[0][0]), _tm_neg(R[0][1])), (_tm_neg(R[1][0]), _tm_neg(R[1][1])), (_tm_neg(R[2][0]), _tm_neg(R[2][1]))) if neg else R
+        ra, rb, rc = (
+            (
+                (_tm_neg(R[0][0]), _tm_neg(R[0][1])),
+                (_tm_neg(R[1][0]), _tm_neg(R[1][1])),
+                (_tm_neg(R[2][0]), _tm_neg(R[2][1])),
+            )
+            if neg
+            else R
+        )
         m_00 = (_tm_sub(TM_ONE, ra[0]), _tm_sub(TM_ZERO, ra[1]))
         m_01 = (_tm_neg(rb[0]), _tm_neg(rb[1]))
         m_11 = (_tm_sub(TM_ONE, rc[0]), _tm_sub(TM_ZERO, rc[1]))
-        d = (_tm_sub(_tmc_mul(m_00, m_11)[0], _tmc_mul(m_01, m_01)[0]), _tm_sub(_tmc_mul(m_00, m_11)[1], _tmc_mul(m_01, m_01)[1]))
+        d = (
+            _tm_sub(_tmc_mul(m_00, m_11)[0], _tmc_mul(m_01, m_01)[0]),
+            _tm_sub(_tmc_mul(m_00, m_11)[1], _tmc_mul(m_01, m_01)[1]),
+        )
         nd = _tm_add(_tm_mul(d[0], d[0]), _tm_mul(d[1], d[1]))
         ndi = _tm_inv_pos(nd)
         di = (_tm_mul(d[0], ndi), _tm_neg(_tm_mul(d[1], ndi)))
@@ -233,17 +247,17 @@ def wrap_list(items: list[str], indent: str = "  ", width: int = 100) -> str:
     return "\n".join(lines)
 
 
-def fmt_q_poly(ints_list: list[int]) -> list[str]:
+def fmt_q_poly(ints_list: list[int], p_scale: int, d_poly_name: str) -> list[str]:
     terms: list[str] = []
     for x in ints_list:
         if x == 0:
             terms.append("0")
-        elif x == 10**9:
+        elif x == p_scale:
             terms.append("1")
-        elif x == -(10**9):
+        elif x == -p_scale:
             terms.append("-1")
         else:
-            terms.append(f"{x} / d9Q")
+            terms.append(f"{x} / {d_poly_name}")
     return terms
 
 
@@ -260,15 +274,24 @@ def fin_fn(name: str, typ: str, vals: list[str], private: bool = False) -> list[
 
 def build_expected_files(dat: dict) -> dict[Path, str]:
     assert not dat.get("use_selector", False), "UpperBivar uses the 6+M polynomial mixture"
+    p_scale = int(dat.get("p_scale", 10**9))
+    w_scale = int(dat.get("w_scale", 10**12))
+    assert p_scale in (10**9, 10**12), f"unsupported p_scale={p_scale}"
+    assert w_scale in (10**12, 10**15), f"unsupported w_scale={w_scale}"
+    d_poly_name = "d12Q" if p_scale == 10**12 else "d9Q"
+    w_pow = 15 if w_scale == 10**15 else 12
+    d_pow = w_pow + 15
+
     w_ints: list[int] = dat["w_ints"]
     hb_num: int = dat["hb_num"]
-    exact_D27: int = dat["exact_D27"]
-    res_num27: int = 10**27 - exact_D27
+    exact_D: int = int(dat[f"exact_D{d_pow}"])
+    res_num: int = 10**d_pow - exact_D
     new_chs: list[dict] = dat["certified_new"]
     M = len(new_chs)
     K = 6 + M
+    n_max = max([320] + [int(c["K_cut"]) for c in new_chs])
     assert len(w_ints) == K
-    assert sum(w_ints) == 10**12 and all(w >= 0 for w in w_ints)
+    assert sum(w_ints) == w_scale and all(w >= 0 for w in w_ints)
 
     files: dict[Path, str] = {}
 
@@ -289,16 +312,19 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
         "",
         "namespace Haagerup.UpperBivar",
         "",
-        "def d9Q : ℚ := 1000000000",
-        "",
     ]
+    if p_scale == 10**9:
+        p_lines += ["def d9Q : ℚ := 1000000000", ""]
+
     for m, c in enumerate(new_chs):
-        p_terms = fmt_q_poly(c["p_ints"])
+        ch_pscale = int(c.get("p_scale", p_scale))
+        assert ch_pscale == p_scale
+        p_terms = fmt_q_poly(c["p_ints"], p_scale, d_poly_name)
         p_lines.append(f"def newP{m} : List ℚ := [")
         p_lines.append(wrap_list(p_terms))
         p_lines.append("]")
         if c["kind"] == "tcell":
-            q_terms = fmt_q_poly(c["q_ints"])
+            q_terms = fmt_q_poly(c["q_ints"], p_scale, d_poly_name)
             p_lines.append(f"def newQ{m} : List ℚ := [")
             p_lines.append(wrap_list(q_terms))
             p_lines.append("]")
@@ -311,7 +337,7 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
     p_lines += fin_fn("newBudgetQ", "ℚ", [f"{c['budgetQ_num']} / d6Q" for c in new_chs])
     p_lines += fin_fn("newLinearFloor", "ℚ", [f"{c['linearFloor_num']} / 10 ^ 6" for c in new_chs])
     p_lines += fin_fn("newTailCap", "ℚ", [f"{c['tailCap_num']} / 10 ^ 15" for c in new_chs])
-    p_lines += fin_fn("weight", "ℚ", [f"{w} / 10 ^ 12" for w in w_ints])
+    p_lines += fin_fn("weight", "ℚ", [f"{w} / 10 ^ {w_pow}" for w in w_ints])
 
     p_lines += [
         "def center : ℚ := 1",
@@ -356,7 +382,7 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
             "",
         ]
         if use_subarc:
-            ckpts = _smoothed_subarc_checkpoints(c, SUBARC_CHUNK)
+            ckpts = _smoothed_subarc_checkpoints(c, p_scale, SUBARC_CHUNK)
             step_names = [f"newMeanSteps{m}_{j}" for j in range(len(ckpts))]
             for j, (ch_steps, _, _, _) in enumerate(ckpts):
                 ch_lines += [
@@ -391,14 +417,11 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
                     "",
                 ]
             n_parts = len(part_names)
-            chain_lines = [
-                " " * (4 + 2 * j) + f"(sumSimpsonPart_chain {part_names[j]}"
-                for j in range(n_parts - 2)
-            ] + [
-                " " * (4 + 2 * (n_parts - 2))
-                + f"(sumSimpsonPart_chain {part_names[-2]} {part_names[-1]}"
-                + ")" * (n_parts - 1)
-            ]
+            chain_lines: list[str] = []
+            for j in range(n_parts - 2):
+                chain_lines.append(f"    (sumSimpsonPart_chain {part_names[j]}")
+            chain_lines.append(f"    (sumSimpsonPart_chain {part_names[-2]} {part_names[-1]}")
+            chain_lines.append("    " + ")" * (n_parts - 1))
             ch_lines += [
                 f"theorem newMean{m}_ok :",
                 f"    meanQ1SmoothedOK ctQ stQ seQ newP{m} newQ{m} (newRhoQ {m_fin})",
@@ -495,11 +518,17 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
     head_vals: list[str] = []
     for m, c in enumerate(new_chs):
         if c["kind"] == "tcell":
+            assert c["K_cut"] == 250
             head_vals.append(f"bivarT 251 tcellRows (newP{m}.map ofRatI) (newQ{m}.map ofRatI) 501 167")
         elif c["kind"] == "tig":
+            assert c["K_cut"] == 250
             head_vals.append(f"bivarT 251 (onedRowsI 251 tigMuList) (newP{m}.map ofRatI) [] 503 0")
         else:
-            head_vals.append(f"bivarT 321 (onedRowsI 321 (haagMuList 321)) (newP{m}.map ofRatI) [] 643 0")
+            assert c["kind"] == "haag"
+            k_len = int(c["K_cut"]) + 1
+            head_vals.append(
+                f"bivarT {k_len} (onedRowsI {k_len} (haagMuList {k_len})) (newP{m}.map ofRatI) [] {2 * k_len + 1} 0"
+            )
 
     h_lines = [
         "import Grothe.UpperBivar.Parameters",
@@ -568,12 +597,13 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
         "",
         "def residual : ℚ := headBudget + ∑ i, weight i * allCaps SixChannelExact.phaseTailCap i",
         "",
-        f"theorem residual_eq : residual = {res_num27} / 10 ^ 27 := by decide +kernel",
+        "theorem residual_eq :",
+        f"    residual = {res_num} / 10 ^ {d_pow} := by decide +kernel",
         "",
         "theorem residual_lt_center : residual < center := by rw [residual_eq]; decide +kernel",
         "",
         "theorem reciprocal_eq :",
-        f"    1 / (center - residual) = 10 ^ 27 / {exact_D27} := by",
+        f"    1 / (center - residual) = 10 ^ {d_pow} / {exact_D} := by",
         "  rw [residual_eq]",
         "  decide +kernel",
         "",
@@ -753,6 +783,7 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
                 "      (fun _ hk ↦ mem_muTigOf tig_mu_ok hk) n hn",
             ]
         else:
+            k_len = int(c["K_cut"]) + 1
             b_lines += [
                 "  · dsimp only [newHChan, newHeadIntervals]",
                 f"    have heq : bivarKernel (ofListQ newP{m}) (ofListQ []) (energy (memLp_phase2.toLp phase2)) n =",
@@ -760,7 +791,7 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
                 f"      (phase_bivarKernel_eq (ofListQ newP{m}) n).trans",
                 f"        (bivarKernel_oned_eq_head (ofListQ newP{m}) 0 haagCoeff (Nat.lt_succ_self n)).symm",
                 "    rw [heq]",
-                f"    exact mem_bivarT_oned (Q := 0) (memB_ofListQ newP{m} 321) haagCoeff",
+                f"    exact mem_bivarT_oned (Q := 0) (memB_ofListQ newP{m} {k_len}) haagCoeff",
                 "      (fun _ hk ↦ mem_haagMuList hk) n hn",
             ]
     b_lines.append("")
@@ -820,13 +851,13 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
     b_lines.append("")
 
     b_lines += [
-        f"theorem isBound : Statement.IsBound ((10 : ℝ) ^ 27 / {exact_D27}) := by",
+        f"theorem isBound : Statement.IsBound ((10 : ℝ) ^ {d_pow} / {exact_D}) := by",
         "  obtain ⟨hSix, hsSix, hdSix, hmSix, heSix⟩ := SixChannelExact.exists_certified_channels",
-        "  have hlenSix (p : Fin 6) : (SixChannelExact.headIntervals p).length ≤ 320 + 1 := by",
+        f"  have hlenSix (p : Fin 6) : (SixChannelExact.headIntervals p).length ≤ {n_max} + 1 := by",
         "    rw [SixChannelExact.head_length]; simp only [SixChannelExact.lastIndex]; split <;> decide",
-        f"  have hlenNew (m : Fin {M}) : (newHeadIntervals m).length ≤ 320 + 1 := by",
+        f"  have hlenNew (m : Fin {M}) : (newHeadIntervals m).length ≤ {n_max} + 1 := by",
         "    rw [new_head_length]; fin_cases m <;> decide",
-        "  have htr := convex_transfer_variable_ival (N := 320) (wQ := weight)",
+        f"  have htr := convex_transfer_variable_ival (N := {n_max}) (wQ := weight)",
         "    (h := combineAll hSix newHChan)",
         "    (headI := allHeads SixChannelExact.headIntervals)",
         "    (tl := fun i ↦ ((allCaps SixChannelExact.phaseTailCap i : ℚ) : ℝ))",
@@ -856,7 +887,8 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
         "    head_ok",
         "    (by dsimp only [residual]; push_cast; exact le_rfl)",
         "    (by exact_mod_cast residual_lt_center)",
-        f"  have hv : 1 / ((center : ℝ) - (residual : ℝ)) = (10 : ℝ) ^ 27 / {exact_D27} := by",
+        "  have hv :",
+        f"      1 / ((center : ℝ) - (residual : ℝ)) = (10 : ℝ) ^ {d_pow} / {exact_D} := by",
         "    rw [center, residual_eq]; norm_num",
         "  rwa [← hv]",
         "",
@@ -866,6 +898,11 @@ def build_expected_files(dat: dict) -> dict[Path, str]:
         "",
     ]
     files[OUT_DIR / "Bound.lean"] = "\n".join(b_lines)
+
+    for path, content in files.items():
+        for lineno, line in enumerate(content.splitlines(), 1):
+            assert len(line) <= 100, f"{path}:{lineno} exceeds 100 chars ({len(line)}): {line}"
+
     return files
 
 
@@ -879,6 +916,8 @@ def main() -> int:
         return 1
     dat = json.loads(CERT_PATH.read_text())
     expected = build_expected_files(dat)
+    contour_dir = OUT_DIR / "ContourChecks"
+    stale = sorted(p for p in contour_dir.glob("Channel*.lean") if p not in expected) if contour_dir.is_dir() else []
 
     if args.check:
         mismatches: list[str] = []
@@ -887,6 +926,8 @@ def main() -> int:
                 mismatches.append(f"missing {path.relative_to(ROOT)}")
             elif path.read_text() != content:
                 mismatches.append(f"stale {path.relative_to(ROOT)}")
+        for path in stale:
+            mismatches.append(f"unexpected {path.relative_to(ROOT)}")
         if mismatches:
             for msg in mismatches:
                 print(f"ERROR: {msg}", file=sys.stderr)
@@ -900,7 +941,11 @@ def main() -> int:
         if not path.is_file() or path.read_text() != content:
             path.write_text(content)
             written += 1
-    print(f"Synced {len(expected)} files under {OUT_DIR.relative_to(ROOT)} ({written} updated)")
+    removed = 0
+    for path in stale:
+        path.unlink()
+        removed += 1
+    print(f"Synced {len(expected)} files under {OUT_DIR.relative_to(ROOT)} ({written} updated, {removed} removed)")
     return 0
 
 

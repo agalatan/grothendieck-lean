@@ -3,7 +3,7 @@
 This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.4020253021 < K_G^{\mathbb C} \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots
+1.4020253021 < K_G^{\mathbb C} \le 1.404550522 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
@@ -16,7 +16,7 @@ value.
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
 | lower bound | $1.4020253021 < K_G^{\mathbb C}$ | `14020253021 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
-| upper bound | $K_G^{\mathbb C} \le 1.404554025$ | `1404554025 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperBivar.constant_le` |
+| upper bound | $K_G^{\mathbb C} \le 1.404550522$ | `1404550522 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperBivar.constant_le` |
 | Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperBivar.constant_lt_inv_gammaDagger` |
 
 The two bounds are 0.00253 apart. [`docs/CONSTANTS.md`](docs/CONSTANTS.md) states every constant exactly, with the
@@ -33,7 +33,7 @@ Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's v
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020253021 < K}$ | $\mathbf{K\le 1.404554025}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020253021 < K}$ | $\mathbf{K\le 1.404550522}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -49,7 +49,7 @@ where $1/\gamma^\dagger$ is the value that Haagerup proposed in 1987.
 - **The Lean proof.** The article's ancillary folder [`haagerup-article/anc/`](haagerup-article/anc) is a
   Lean package of its own that proves the article's bound without hypotheses. The article is frozen: it states
   its own bound and is not updated when the bounds of this repository change. The upper bound of `main_bounds`
-  adds twelve bivariate smoothed-cell, phase and multi-scale tiger channels to the six channels
+  adds five bivariate smoothed-cell, phase and reflected-tiger channels to the six channels
   ([the upper bound](#the-upper-bound)).
   [Build instructions and trust](haagerup-article/anc/README.md) · [The article's exact bound](docs/CONSTANTS.md#other-numbers-you-will-meet).
 - **How it was found.** The construction was found by numerical optimisation with the assistance of AI systems,
@@ -91,11 +91,11 @@ definitions, so reading it is enough to know what the theorems say:
 - `Grothe.Statement.main_bounds`: the two bounds of the table above, as the rationals given there. Since
   $K_G^{\mathbb C}$ is the infimum of the Grothendieck bounds, the first part says that every $K$ with `IsBound K`
   is above the lower bound.
-- `Grothe.UpperBivar.bound : IsBound ((10 : ℝ) ^ 27 / 711969765819834623238463058)`: for every finite complex matrix
-  $A$, $V(A) \le 1.4045540246340\ldots \cdot C(A)$. This is what the upper bound means for a single matrix;
-  `Grothe.UpperBivar.constant_le` restates it, rounded up to nine decimals, as $K_G^{\mathbb C} \le 1.404554025$.
+- `Grothe.UpperBivar.bound : IsBound ((10 : ℝ) ^ 30 / 711971541341811014386385764712)`: for every finite complex matrix
+  $A$, $V(A) \le 1.4045505219427\ldots \cdot C(A)$. This is what the upper bound means for a single matrix;
+  `Grothe.UpperBivar.constant_le` restates it, rounded up to nine decimals, as $K_G^{\mathbb C} \le 1.404550522$.
 - `Grothe.UpperBivar.constant_lt_inv_gammaDagger`: $K_G^{\mathbb C} < 1/\gamma^\dagger$. Lean proves
-  $\gamma^\dagger < 0.711958683$ from rational bounds on the integral, and $1.404554025 \cdot 0.711958683 < 1$.
+  $\gamma^\dagger < 0.711958683$ from rational bounds on the integral, and $1.404550522 \cdot 0.711958683 < 1$.
 - `Grothe.Statement.first_chaos_endpoint`: $K_G^{\mathbb C}$ is at least an exact rational, the reciprocal of the
   bound $B$ below; the lower bound of `main_bounds` is this rational rounded strictly downward.
 
@@ -137,9 +137,9 @@ Its scalar cap is $B=356626944773/500000000000$. Its reciprocal is `Grothe.Lower
 
 ### The upper bound
 
-The certificate mixes the established Gaussian rounding channels of `Grothe/UpperSixExact/` with twelve additional preprocessors on the already-certified smoothed cell (`tcellRows`), phase (`haagMuList 321`) and reflected tiger (`tigMuList`) maps, including degree-3 bivariate second-coordinate polynomials `Q(X)` with `Q(0) = 0`.
+The certificate mixes the established Gaussian rounding channels of `Grothe/UpperSixExact/` with five additional preprocessors on the already-certified smoothed cell (`tcellRows`), phase (`haagMuList 801`) and reflected tiger (`tigMuList`) maps, including bivariate second-coordinate polynomials `Q(X)` of degree up to `17` in `X = t^2` with `Q(0) = 0`.
 
-Every new disk positivity check, Hardy circle budget, and rational tail comparison reduces in Lean's kernel (`TaylorHardy`). The transfer takes absolute values after summing all interval heads, then adds their weighted tail caps. The resulting factor is `10^27 / 711969765819834623238463058`. [Bivariate mixture](Grothe/UpperBivar/Bound.lean) · [Exact parameters and budgets](docs/CONSTANTS.md#behind-the-upper-bound).
+Every new disk positivity check, Hardy circle budget, and rational tail comparison reduces in Lean's kernel (`TaylorHardy`). The transfer takes absolute values after summing all interval heads, then adds their weighted tail caps. The resulting factor is `10^30 / 711971541341811014386385764712`. [Bivariate mixture](Grothe/UpperBivar/Bound.lean) · [Exact parameters and budgets](docs/CONSTANTS.md#behind-the-upper-bound).
 
 An older proof with a single rounding channel is still in the repository. It is independent of the upper proof of `main_bounds` and gives the weaker bound $K_G^{\mathbb C}<1.404599395362$, which is above Haagerup's value. Its quadrature and energy-table construction are documented separately. [Single-channel proof](Grothe/UpperTightFinal.lean) · [Construction notes](docs/UPPER_STATUS.md).
 
@@ -156,8 +156,8 @@ An older proof with a single rounding channel is still in the repository. It is 
   certificate and the node caps (chord nodes, ranges of nodes, pieces and their coverage); for the upper
   bound, the cell witnesses, the overlap tables, the weighted head with the lower bounds of the linear
   coefficients, the disk and circle-mean checks of the first channel, and one comparison for the mixed head and
-  linear floors of the twelve additional preprocessors (`Haagerup.UpperBivar.budgets_ok`). The mass row and the
-  envelope of the lower bound, the disk and circle-mean checks of the other five channels, those of the twelve
+  linear floors of the five additional preprocessors (`Haagerup.UpperBivar.budgets_ok`). The mass row and the
+  envelope of the lower bound, the disk and circle-mean checks of the other five channels, those of the five
   preprocessors and the rational tail comparisons reduce in the kernel. The precise list is in the axiom report.
 - **The axiom report** is produced and checked by
   `lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py`. The check fails if a theorem of
@@ -178,7 +178,7 @@ An older proof with a single rounding channel is still in the repository. It is 
 |---|---|
 | `Grothe/Statement.lean`, `Grothe/StatementBridges.lean` | the statement (definitions only) and what its targets say about the constant |
 | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorem `main_bounds` with both bounds; the upper bound (`Grothe.UpperBivar.constant_le`) and the comparison with Haagerup's value |
-| `Grothe/UpperBivar/` | the certificate of the upper bound of `main_bounds`: twelve preprocessors added to the six channels of `UpperSixExact` (parameters generated from `data/upper-bivar/`, kernel-checked contours and tails, mixed head, `isBound`) |
+| `Grothe/UpperBivar/` | the certificate of the upper bound of `main_bounds`: five preprocessors added to the six channels of `UpperSixExact` (parameters generated from `data/upper-bivar/`, kernel-checked contours and tails, mixed head, `isBound`) |
 | `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six channels on which it builds: the library (channels, transfer theorem, interval and Hardy soundness, cell data) and the certificate of the bound (parameters, head, contour of the first channel, unequal cutoffs, `isBound`) |
 | `haagerup-article/` | the article, frozen, with its own Lean package under `anc/` |
 | `Grothe/UpperClose.lean` | certified energy-table accuracy `hclose_final` |

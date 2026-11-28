@@ -3,13 +3,6 @@ import Grothe.UpperBivar.ContourChecks.Channel1
 import Grothe.UpperBivar.ContourChecks.Channel2
 import Grothe.UpperBivar.ContourChecks.Channel3
 import Grothe.UpperBivar.ContourChecks.Channel4
-import Grothe.UpperBivar.ContourChecks.Channel5
-import Grothe.UpperBivar.ContourChecks.Channel6
-import Grothe.UpperBivar.ContourChecks.Channel7
-import Grothe.UpperBivar.ContourChecks.Channel8
-import Grothe.UpperBivar.ContourChecks.Channel9
-import Grothe.UpperBivar.ContourChecks.Channel10
-import Grothe.UpperBivar.ContourChecks.Channel11
 
 set_option warningAsError true
 
@@ -23,7 +16,7 @@ Agent-ID: gemini-40b2
 namespace Haagerup.UpperBivar
 
 theorem new_tails_rat_ok :
-    (List.finRange 12).all (fun m ↦
+    (List.finRange 5).all (fun m ↦
       decide (((newBudgetQ m - newLinearFloor m ^ 2 * newRhoQ m ^ 2) / newRhoQ m ^ 4) *
         (newRhoQ m)⁻¹ ^ (2 * (2 * newLastIndex m + 1)) ≤
           newTailCap m ^ 2 * (1 - (newRhoQ m)⁻¹ ^ 4))) = true := by
