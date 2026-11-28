@@ -105,6 +105,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.CircularCellNodeBounds.chord
 #print axioms Grothe.LowerAnalytic.CoupledStein.Grid.worst_le
 #print axioms Grothe.LowerAnalytic.H32_eq_span_projected_quintics
+#print axioms Grothe.LowerAnalytic.H32_le_H21_orthogonal
+#print axioms Grothe.LowerAnalytic.H32_le_orthogonal
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
@@ -231,6 +233,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_two_cubic_supports
 #print axioms Grothe.LowerAnalytic.quinticPayoff_mass_envelope
 #print axioms Grothe.LowerAnalytic.quinticPayoff_projection_envelope
+#print axioms Grothe.LowerAnalytic.quinticScalarCap_of_payoff_le
 #print axioms Grothe.LowerAnalytic.quintic_projection_energy_le
 #print axioms Grothe.LowerAnalytic.radAB_sq_le_radC1_mul_radC2
 #print axioms Grothe.LowerAnalytic.radial_cut

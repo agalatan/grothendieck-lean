@@ -25,6 +25,29 @@ def require(ok, message):
         raise ValueError(message)
 
 
+def checked_model(verifier, row, knots):
+    result = verifier.verify_spiked_row(
+        row,
+        ABC,
+        [WEIGHTS, [Q(1)] * 5],
+        [Q(0), BETA**2],
+        {"new": knots},
+        quiet=True,
+    )
+    require(result["ok"], "pointwise spiked Stein certificate")
+    endpoints = []
+    for name in ("lo", "hi"):
+        price = Q(row["sec_dual"][name]["y_sec"][0])
+        require(price >= 0, "nonnegative Gram price")
+        # Only the first right-hand side was zeroed to expose the
+        # intercept. The simplex contribution is already included.
+        slope = price * BETA**2
+        intercept = result["bounds"][name]
+        den = 10**12
+        endpoints.append((Q(-(-slope * den // 1), den), Q(-(-intercept * den // 1), den)))
+    return Slab(Q(row["s_lo"]), Q(row["s_hi"]), tuple(endpoints))
+
+
 def read_models(verifier, weights, path=HERE / "p7_stein_rows.json"):
     """Return checked affine functions of the *normalized* Gram charge.
 
@@ -47,27 +70,37 @@ def read_models(verifier, weights, path=HERE / "p7_stein_rows.json"):
             (Q(row["s_lo"]), Q(row["s_hi"])) == (low, high),
             "contiguous fourth-excess intervals",
         )
-        result = verifier.verify_spiked_row(
-            row,
-            ABC,
-            [weights, [Q(1)] * 5],
-            [Q(0), BETA**2],
-            {"new": source["knots"]},
-            quiet=True,
-        )
-        require(result["ok"], "pointwise spiked Stein certificate")
-        endpoints = []
-        for name in ("lo", "hi"):
-            price = Q(row["sec_dual"][name]["y_sec"][0])
-            require(price >= 0, "nonnegative Gram price")
-            # Only the first right-hand side was zeroed to expose the
-            # intercept. The simplex contribution is already included.
-            slope = price * BETA**2
-            intercept = result["bounds"][name]
-            den = 10**12
-            endpoints.append((Q(-(-slope * den // 1), den), Q(-(-intercept * den // 1), den)))
-        checked.append(Slab(low, high, tuple(endpoints)))
+        checked.append(checked_model(verifier, row, source["knots"]))
     return tuple(checked)
+
+
+def repriced_model(verifier):
+    """Check the original potential with different final Hölder prices at both ends."""
+    source = json.loads((HERE / "p7_stein_rows.json").read_text())
+    row = next(row for row in source["rows"] if Q(row["s_lo"]) == Q("5.3"))
+    require(Q(row["s_hi"]) == Q("6.6"), "repriced interval")
+    # Nonnegative Gram multiplier followed by five positive Hölder coefficients.
+    prices = {
+        "lo": (
+            "74523083/625000000",
+            "120064247/10000000000",
+            "4523397/500000000",
+            "42878311/10000000000",
+            "99476747/10000000000",
+            "148935403/10000000000",
+        ),
+        "hi": (
+            "650388707/5000000000",
+            "66240817/5000000000",
+            "3290649/312500000",
+            "2503039/500000000",
+            "106659217/10000000000",
+            "41845097/2500000000",
+        ),
+    }
+    for end, (multiplier, *holder) in prices.items():
+        row["sec_dual"][end].update(y_sec=[multiplier, "0"], a_hol=holder)
+    return checked_model(verifier, row, source["knots"])
 
 
 def energy_cap(slabs, chi_lo, chi_hi, t_lo, normalized_charge, prior):
