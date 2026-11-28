@@ -42,6 +42,10 @@ The original Linux replay integrated all 15 source rows and passed the parent co
 The largest reported residuals were below $-2.10\times10^{-7}$ for A and $-1.01\times10^{-7}$ for B.
 [Native replay at the recorded input digest](https://github.com/agalatan/grothendieck-lean/actions/runs/46131175115).
 
+The Linux replay of all 65 rectangles enclosed four Gaussian rows and passed all three low-energy controls.
+The largest reported upper bounds on the residual were $-1.15090\times10^{-7}$ for A and $-1.01342\times10^{-7}$ for B.
+[Full 65-rectangle replay](https://github.com/agalatan/grothendieck-lean/actions/runs/46137361974).
+
 Run the following commands from the repository root.
 
 ```sh
