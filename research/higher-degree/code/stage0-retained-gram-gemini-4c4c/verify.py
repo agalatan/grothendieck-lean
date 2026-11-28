@@ -745,6 +745,72 @@ def verify_gram_and_sos_identities(gram_cone_flags=None):
         rhs_sos = lc([(lam1, cmm_4), (lam2, n_minus_b), (lam3, z_minus_y), (lam4, nh_diff_sq)])
         check(lhs_sos == rhs_sos, f"Theorem 3 4-term SOS identity failed on basis index {idx_c}")
 
+    # 6) Common-normalisation one-direction Taylor / Fenchel-Young / Hessian check (§3 Q^{ret} definition):
+    #    Verify that Re<dh, f0 + g0> + B(dh) - ||dh_adv||^2/eta + ||xi_def||^2/e1 (with NO extra 1/2 before B)
+    #    matches both the exact second-order expansion of |A_+ + dh| + |A_- + dh| - |A_+| - |A_-| and the
+    #    (P +- Q)/2 block formulas M22_re = 1/eta - (P00 - Q00)/2, M22_im = 1/eta - (P00 + Q00)/2,
+    #    K11_dd = 1/e1 + (P00 - Q00)/2, and sup_x {g*x - M22_re*x^2} = g^2 / (4*M22_re).
+    hess_scale = Fraction(1, 2) if gram_cone_flags.get("corrupt_hessian_half", False) else Fraction(1)
+    # (6a) Canonical unit-phase test A_+ = A_- = a0 > 0, dh = x + i*t:
+    #      |a0 + x + i*t| + |a0 + x + i*t| - 2*a0 = 2*sqrt((a0 + x)^2 + t^2) - 2*a0 = 2*x + t^2/a0 + O(|(x,t)|^3).
+    for a0 in (Fraction(1), Fraction(3, 2)):
+        for x_t, y_t in ((Fraction(0), Fraction(1)), (Fraction(2, 7), Fraction(-3, 5))):
+            # Polynomial Taylor identity: (2*a0 + 2*x + t^2/a0)^2 - 4*((a0 + x)^2 + t^2) == 4*x*t^2/a0 + t^4/a0^2 (pure deg >= 3)
+            approx_mod = 2 * a0 + 2 * x_t + (y_t * y_t) / a0
+            exact_sq4 = 4 * ((a0 + x_t) * (a0 + x_t) + y_t * y_t)
+            rem_deg34 = (4 * x_t * y_t * y_t) / a0 + (y_t ** 4) / (a0 * a0)
+            check(approx_mod * approx_mod - exact_sq4 == rem_deg34, "Unit-phase modulus Taylor polynomial identity failed")
+            quad_mod = (y_t * y_t) / a0
+            b_val = hess_scale * ((y_t * y_t) / (2 * a0) + (y_t * y_t) / (2 * a0))
+            p00_1d = Fraction(1, 2) / a0 + Fraction(1, 2) / a0
+            q00_1d = Fraction(1, 2) / a0 + Fraction(1, 2) / a0
+            pq_quad = ((p00_1d - q00_1d) / 2) * (x_t * x_t) + ((p00_1d + q00_1d) / 2) * (y_t * y_t)
+            check(b_val == quad_mod == pq_quad, f"Hessian normalisation mismatch at a0={a0}: B={b_val}, Taylor={quad_mod}, PQ={pq_quad}")
+
+    # (6b) Non-trivial conjugate-symmetric Pythagorean 2-point law A_+ in {3+4i, 3-4i} (|A_+|=5),
+    #      A_- in {5-12i, 5+12i} (|A_-|=13), testing non-zero (P00 - Q00)/2, (P00 + Q00)/2, Fenchel-Young & saddle:
+    pyth_states = (
+        ((Fraction(3), Fraction(4)), Fraction(5), (Fraction(5), Fraction(-12)), Fraction(13)),
+        ((Fraction(3), Fraction(-4)), Fraction(5), (Fraction(5), Fraction(12)), Fraction(13)),
+    )
+    p00_py = Fraction(0)
+    q00_py = Fraction(0)
+    g0_re = Fraction(0)
+    for ap, rap, am, ram in pyth_states:
+        check(qi_norm_sq(ap) == rap * rap and qi_norm_sq(am) == ram * ram, "Invalid Pythagorean state")
+        ph_p = (ap[0] / rap, ap[1] / rap)
+        ph_m = (am[0] / ram, am[1] / ram)
+        g0_re += Fraction(1, 2) * (ph_p[0] + ph_m[0])
+        p00_py += Fraction(1, 2) * (Fraction(1) / (2 * rap) + Fraction(1) / (2 * ram))
+        ph_p_c2 = qi_mul(qi_conj(ph_p), qi_conj(ph_p))
+        ph_m_c2 = qi_mul(qi_conj(ph_m), qi_conj(ph_m))
+        q00_py += Fraction(1, 2) * (ph_p_c2[0] / (2 * rap) + ph_m_c2[0] / (2 * ram))
+
+    eta_t = Fraction(1, 4)
+    e1_t = Fraction(4, 5)
+    dh_test = (Fraction(3, 7), Fraction(-2, 11))
+    quad_taylor = Fraction(0)
+    b_py = Fraction(0)
+    for ap, rap, am, ram in pyth_states:
+        for a_vec, ra in ((ap, rap), (am, ram)):
+            ph_a = (a_vec[0] / ra, a_vec[1] / ra)
+            prod = qi_mul(qi_conj(ph_a), dh_test)  # u + i*v = conj(ph A) * dh
+            # sqrt(|A|^2 + 2*|A|*u + |dh|^2) - |A| = u + (|dh|^2 - u^2)/(2*|A|) + O(|dh|^3)
+            quad_taylor += Fraction(1, 2) * ((qi_norm_sq(dh_test) - prod[0] * prod[0]) / (2 * ra))
+            b_py += Fraction(1, 2) * ((prod[1] * prod[1]) / (2 * ra))
+
+    pq_py = ((p00_py - q00_py) / 2) * (dh_test[0] ** 2) + ((p00_py + q00_py) / 2) * (dh_test[1] ** 2)
+    check(hess_scale * b_py == quad_taylor == pq_py, "2-state Pythagorean Taylor / B(dh) / (P+-Q)/2 mismatch")
+    # Fenchel-Young cost consistency for h = (f + g)/2: sup_{dh} {Re<dh, f+g> - ||dh||^2/eta} == eta * ||(f+g)/2||^2:
+    h_re = g0_re / 2
+    opt_dh_fy = eta_t * h_re
+    check(opt_dh_fy * g0_re - (opt_dh_fy * opt_dh_fy) / eta_t == eta_t * (h_re * h_re), "Fenchel-Young 1/eta cost check failed")
+    m22_re_py = Fraction(1) / eta_t - (p00_py - q00_py) / 2
+    k11_dd_py = Fraction(1) / e1_t + (p00_py - q00_py) / 2
+    opt_x = g0_re / (2 * m22_re_py)
+    check(g0_re * opt_x - m22_re_py * (opt_x * opt_x) == (g0_re * g0_re) / (4 * m22_re_py), "Block 1 g^2/(4*M22_re) saddle check failed")
+    check(k11_dd_py > Fraction(1) / e1_t, "Defender curvature K11_dd sign check failed")
+
 
 # ============================================================================
 # Layer 3: Zero-Float Outward-Rounded Jet2 Shifted-Polar Integrator
