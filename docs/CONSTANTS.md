@@ -8,11 +8,11 @@ exact value, and that this page and the other documents state them.
 
 ## The current bounds
 
-$$1.4020253021 < K \le 1.404550522 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4020271882 < K \le 1.404550522 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.4020253021` | `14020253021 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
+| lower bound (strict) | `1.4020271882` | `14020271882 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
 | upper bound (weak, $\le$) | `1.404550522` | `1404550522 / 1000000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperBivar.constant_le` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperBivar.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -20,7 +20,7 @@ $$1.4020253021 < K \le 1.404550522 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 ```lean
 theorem main_bounds :
-    (14020253021 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
+    (14020271882 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404550522 / 1000000000
 ```
 
@@ -32,7 +32,7 @@ Each bound is the rounding of an exact value that Lean also states.
 
 | | exact value | decimal | theorem | rounding |
 |---|---|---|---|---|
-| lower endpoint ($\le K$) | `500000000000 / 356626944773` | $1.402025302149448476\ldots$ | `Grothe.Statement.first_chaos_endpoint` | strictly downward (`Grothe.Lower.FirstChaos.rounded_lt`) |
+| lower endpoint ($\le K$) | `500000000000 / 356626465021` | $1.402027188224960895\ldots$ | `Grothe.Statement.signed_fifth_endpoint` | strictly downward (`Grothe.Lower.SignedFifth.rounded_lt`) |
 | upper bound ($K \le$) | $10^{30}/711971541341811014386385764712$ | $1.404550521942715068\ldots$ | `Grothe.UpperBivar.bound` | up to nine decimals (`Grothe.UpperBivar.constant_le`) |
 
 **What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
@@ -63,27 +63,29 @@ bound $K < 1.40490913\ldots$
 ## Behind the lower bound
 
 Let $T_0=P_{1,0}-(191/250)P_{2,1}+(47/2000)(I-P_{1,0}-P_{2,1})$. The witness is
-$T=(1-w)T_0+wP_{1,0}$. Its vector payoff tends to one, so its scalar cap $B$ gives $K\ge 1/B$.
-[Payoff and transfer](../Grothe/LowerAnalytic/FirstChaosProfile.lean) · [Exact endpoint](../Grothe/Lower/Cert/FirstChaos.lean).
+$T=(1-w)T_0+wP_{1,0}-dP_{3,2}$. Its vector payoff tends to one, so its scalar cap $B$ gives $K\ge 1/B$.
+[Payoff and transfer](../Grothe/LowerAnalytic/Fifth/Profile.lean) · [Exact endpoint](../Grothe/Lower/Cert/SignedFifth.lean).
 
 | Quantity | Exact value | Role |
 |---|---|---|
-| $w$ | $391473741/6250000000000$ | weight on the first-chaos projector |
+| $w$ | $49315639/10^{12}$ | weight on the first-chaos projector |
+| $d$ | $10^{-8}$ | amount subtracted from the fifth eigenvalue |
 | $\hat\varepsilon,\hat\nu$ | $25/31,\ 47/1953$ | normalized coefficients of the original identity-tail rows |
-| $B$ | `356626944773 / 500000000000` | physical scalar cap |
-| $1/B$ | `500000000000 / 356626944773` | exact lower endpoint in `Grothe.Lower.FirstChaos.endpoint` |
+| $B$ | `356626465021 / 500000000000` | physical scalar cap |
+| $1/B$ | `500000000000 / 356626465021` | exact lower endpoint in `Grothe.Lower.SignedFifth.endpoint` |
 
 For $h=(f+g)/2$, $k=(f-g)/2$ and $t=\|P_{1,0}h\|$, the first-chaos payoff is $t^2-\|P_{1,0}k\|^2$.
-The certificate bounds the sum of the original normalized row payoff and the $t^2$ term with their retuned coefficients.
-At this weight the certified profile attains its maximum at $t=16767/20000$ in cell 25. Reverting to the quadratic Rice price exceeds the stated cap by more than $284/10^9$ in cell 26. Omitting the signed high-amplitude estimate exceeds the cap by more than $69/10^9$ in cell 34. [Exact arithmetic replay](../research/identity-tail/PRICED_RICE.md).
+The signed operator subtracts $d\Delta_5$, where $\Delta_5=\|P_{3,2}h\|^2-\|P_{3,2}k\|^2$.
+For all physical amplitudes $\Delta_5\ge(41/20)t^2-3371/2000$. For $t\ge0.885868$ the radial fifth estimate gives $\Delta_5\ge13/500$. The rational checker uses these bounds together with the central row prices, including sixteen central segments with retuned mixture weights. [Fifth-energy proof](../Grothe/LowerAnalytic/Fifth/Energy.lean) · [Rational budget](../Grothe/Lower/SignedFifthBudget.lean).
+
+At the same $w$, removing the fifth debit raises the rounded cap from $713252930042/10^{12}$ to $713252930302/10^{12}$. The high-arm price at the specified switch already exceeds the signed cap by more than $249/10^{12}$, as proved by `signedFifth_sameWeight_high_price`. Retuning the zero-debit weight to $9856587/200000000000$ gives a smaller cap of $713252927947/10^{12}$. [Signed and zero-debit replays](../research/identity-tail/code/signed_rice_profile.py).
 
 In the central rows (0.835 and 0.845), a single circular cubic supplies the fourth excess and the residual scale.
 Dilating eleven plain Stein polynomials gives fourteen additional bounds for the row expectations. Lean checks
-the two expectations on each common shape interval at seventeen mixture weights, globally and on scales
-up to 0.21. The Gaussian shift inequality for the physical response certifies 27 further prices on 13 restricted scales. The Schur curvature floor $2019911/10^{10}$ and the small-scale prices yield a quadratic
+the two expectations on each common shape interval at 43 mixture weights. The signed schedule selects prices on the physical scale intervals. The Gaussian shift inequality for the physical response certifies additional prices on restricted scales. The Schur curvature floor $2019911/10^{10}$ and the small-scale prices yield a quadratic
 discount between the weights. Rows 0.82 and 0.83 use quadratic bounds for their potentials and their
 joint gate. The existing scalar rows 13 and 14 interpolate on the amplitude interval containing their crossover.
-On each closed segment the checker bounds the weighted sum of the row estimate and the $t^2$ term. The signed visible-cubic estimate covers the remaining high-amplitude region. Taking the maximum of these two estimates gives $B$. [Physical Rice price](../research/identity-tail/PRICED_RICE.md) · [Mixed amplitude profile](../Grothe/LowerAnalytic/FirstChaosProfile.lean) · [Original row estimates](../research/identity-tail/CURVED_SCHUR.md).
+On each closed segment the checker bounds the weighted sum of the row estimate and the $t^2$ term. The signed visible-cubic estimate covers the remaining high-amplitude region. Taking the maximum of these two estimates gives $B$. [Physical Rice price](../research/identity-tail/PRICED_RICE.md) · [Mixed amplitude profile](../Grothe/LowerAnalytic/Fifth/Profile.lean) · [Original row estimates](../research/identity-tail/CURVED_SCHUR.md).
 
 The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
 At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine

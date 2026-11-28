@@ -1,6 +1,6 @@
 # First-chaos retuning of the identity-tail witness
 
-The retuned witness gives $K_G^{\mathbb C}\ge 10^{12}/713254612582=1.402023880897137614\ldots$. It uses the node caps of the original identity-tail endpoint $25000000000000/17831387166289$.
+The 55-piece retuning below precedes the [physical Rice refinement](PRICED_RICE.md). It gives $K_G^{\mathbb C}\ge 10^{12}/713254612582=1.402023880897137614\ldots$. It uses the node caps of the original identity-tail endpoint $25000000000000/17831387166289$.
 
 Let $P,Q$ be the charge-one Wick projections of bidegrees $(1,0),(2,1)$. Set $\nu=47/2000$, $T_0=P-(191/250)Q+\nu(I-P-Q)$ and $T=(1-w)T_0+wP$, where $w=358503031/5000000000000$. This is the identity-tail operator with both its cubic and its tail coefficient multiplied by $1-w$. Its vector payoff tends to one by the original vector test.
 
