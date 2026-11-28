@@ -62,8 +62,10 @@ if [ "$verdict" = hold ]; then
   state=$(pr_state)
   if [ "$state" = UNREADABLE ]; then
     echo "the label ${hold_label} is placed, but the state of PR #$pr could not be read afterwards: check the PR yourself" >&2; exit 5
+  elif [ "$state" = MERGED ]; then
+    echo "too late: PR #$pr is MERGED; a landing that had already passed its final check won the race. Review it after the fact" >&2; exit 4
   elif [ "$state" != OPEN ]; then
-    echo "too late: PR #$pr is $state; a landing that had already passed its final check won the race. Review it after the fact" >&2; exit 4
+    echo "PR #$pr was $state during the hold (not landed); the label ${hold_label} stays on it" >&2; exit 4
   fi
   echo "hold placed and in force on PR #$pr (${branch} at ${sha:0:12}): label ${hold_label}"
   exit 0
