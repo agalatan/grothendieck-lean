@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay the four piece-15 JM1 certificates using the original content-cell verifier. Agent-ID: codex-062a."""
+"""Replay the piece-15 JM1 certificates using the original content-cell verifier. Agent-ID: codex-062a."""
 from decimal import Decimal
 from fractions import Fraction as Q
 import json
@@ -15,8 +15,8 @@ sys.path.insert(0, str(SOURCE))
 import verify as original
 
 # Exact decimals in the proof note. The C++ verifier works with dyadic inputs.
-PUBLIC_BOUNDS = {(1, 2): Q("8.375"), (2, 3): Q("6.72"), (16, 20): Q("6.545"), (20, 42): Q(12)}
-NEW_BIN_ENDS = [2, 3, 20, 24, 30, 36, 42]
+PUBLIC_BOUNDS = {(0, 8): Q("4.8218"), (16, 20): Q("6.545"), (20, 42): Q(12)}
+COVERED_BIN_ENDS = [1, 2, 3, 4, 6, 8, 20, 24, 30, 36, 42]
 
 
 def check(ok, message):
@@ -63,7 +63,7 @@ def bind_cells(cfg, weights):
         # theta_allow labels the stream. Proof checks use F_claimed, audited above as an exact binary64.
         cells.append({**ref, **c, "theta_allow": c["F_claimed"]})
         closed.extend(b for _, b in inside)
-    check(closed == NEW_BIN_ENDS, "unexpected set of covered bins")
+    check(closed == COVERED_BIN_ENDS, "unexpected set of covered bins")
     return cells
 
 
@@ -101,7 +101,7 @@ def main():
         check(rec["worst_M_A"] < 0 and rec["worst_M_B"] < 0, "continuous residual is nonnegative")
         print(f"chi in [{rec['chi_lo']}, {rec['chi_hi']}], F = {Q(rec['F_certified'])}, "
               f"sup bounds A, B = {rec['worst_M_A']:.6g}, {rec['worst_M_B']:.6g}")
-    print(f"Verified {len(NEW_BIN_ENDS)} whole funded bins at piece 15, u/u_cap = 0.78.")
+    print(f"Verified {len(COVERED_BIN_ENDS)} whole funded bins at piece 15, u/u_cap = 0.78 (10 additional).")
 
 
 if __name__ == "__main__":

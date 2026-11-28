@@ -4,26 +4,33 @@ import json
 from pathlib import Path
 import sys
 
-from replay import SOURCE
+from replay import PUBLIC_BOUNDS, SOURCE
 import generate_certificates as search
 import verify as original
 
 
 def price(row_cache):
     cfg = original.load_full_cfg(str(SOURCE / "dual_certs.json"))
-    seeds = {c["chi_hi"]: c for c in cfg["cells"] if c["piece_idx"] == 15 and c["u_idx"] == 2}
+    base, = [c for c in cfg["cells"] if c["piece_idx"] == 15 and c["u_idx"] == 2
+             and c["chi_lo"] == c["chi_hi"] == 20]
     row, = [r for r in json.loads(row_cache.read_text())["rows"] if r["tag"] == "0.855"]
     evaluator = search.CppRowEvaluator(row)
     rho_a, rho_b = search.build_verified_rice_polygon()
-    for seed, lo, hi, bound in [(1, 1, 2, 8.375), (1, 2, 3, 6.72), (20, 20, 42, 12)]:
-        base = seeds[seed]
-        u = (base["u_lo"] + base["u_hi"]) / 2
-        _, grid, test = search.make_u_grids(u)
+    u = (base["u_lo"] + base["u_hi"]) / 2
+    _, grid, test = search.make_u_grids(u)
+    for lo, hi in [(0, 8), (20, 42)]:
+        bound = float(PUBLIC_BOUNDS[lo, hi])
         witness = dict(chi_lo=lo, chi_hi=hi, F_claimed=bound)
         for sector, is_b in [("slicesA", False), ("slicesB", True)]:
+            args = evaluator, is_b, rho_a, rho_b, u, base["t_lo"]
+            if lo == 0:
+                # Set the mean-parameter slices on the tightest funded bin,
+                # then solve the dual constraints over the entire [0, 8].
+                _, models = search.certify_sector_jm1(*args, 6, 8, bound)
+            else:
+                models = base[sector]
             bands = evaluator.eval_psi_g1_bounds(is_b, u, u * test)
-            witness[sector], _ = search.polish_slices_at_F(
-                evaluator, is_b, rho_a, rho_b, u, base["t_lo"], lo, hi, bound, base[sector], grid, test, *bands)
+            witness[sector], _ = search.polish_slices_at_F(*args, lo, hi, bound, models, grid, test, *bands)
         yield witness
 
 

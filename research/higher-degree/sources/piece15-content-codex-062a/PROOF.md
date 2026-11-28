@@ -8,22 +8,23 @@ funded bins in the first column. Upper bounds in the second column round the che
 
 | Fourth excess χ | Content ratio at most | Smallest allowance | Funded bin upper endpoints |
 |---|---:|---:|---|
-| [1, 2] | 8.375 | 8.386495963199698 | 2 |
-| [2, 3] | 6.72 | 6.730009865768297 | 3 |
+| [0, 8] | 4.8218 | 4.82187613512015 | 1, 2, 3, 4, 6, 8 |
 | [16, 20] | 6.545 | 6.545210245012058 | 20 |
 | [20, 42] | 12 | 50 | 24, 30, 36, 42 |
 
-A funded bin has an open left endpoint and a closed right endpoint. The older certificate for this energy covered
-χ from 0 through 1 and separately evaluated χ = 20. These four closed intervals cover seven additional whole
-bins. The seven intervening bins in (3, 16] remain open at this energy.
+A funded bin has an open left endpoint and a closed right endpoint. These intervals cover eleven of the
+fifteen bins at this energy. The older certificate covered the first bin with bound 5.61012 and separately
+evaluated χ = 20. The three certificates close ten additional whole bins and tighten the first.
+The four bins ending at 10, 12, 14 and 16 remain open.
 
 ## Certificate
 
-For [16, 20], use the two lists of slice multipliers from the published χ = 20 certificate and set the ratio
-bound to the binary64 encoding of 6.545. For the other three intervals, keep the existing row profiles and global
-Rice tangents. Re-optimize the dual multipliers against each full interval, starting from the original χ ≤ 1
-slices for the first two intervals and the χ = 20 slices for the last. The numerical optimization proposes the
-three [witnesses](../../code/piece15-content-codex-062a/cells.json).
+For [0, 8], fit the slices of the mean parameter on the tightest funded bin, (6, 8], separately for each sector.
+With those slice endpoints and profile prices, re-optimize the dual multipliers on the full [0, 8]. For [16, 20],
+use the original χ = 20 slice multipliers with the binary64 encoding of 6.545. For [20, 42], start with the same
+χ = 20 slices and re-optimize on the wider interval. Both [new witnesses](../../code/piece15-content-codex-062a/cells.json)
+use the original profiles and Rice tangents. The numerical optimizer proposes the multipliers, and the replay
+verifies each proposed witness.
 
 The [replay](../../code/piece15-content-codex-062a/replay.py) reads the exact funded energy, bin endpoints and
 allowances. It compares each exact dyadic certificate bound with the decimal quoted above and checks the rational
