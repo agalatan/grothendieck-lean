@@ -528,7 +528,7 @@ python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/dir
 |---|---:|---|
 | `code/quintic-double-ellipse-codex-a7c4/carrier_tilt.py` | 2,699 | `4773919d80880a4603dc8eb958a6da1baf0f69a90f8940987968996b854c558f` |
 | `code/quintic-double-ellipse-codex-a7c4/diagonal.py` | 2,775 | `0502d6f0c1dfb446cecb86a378a5c6f6ad499a0eb8a28e111749d6f65ac7f8da` |
-| `code/quintic-double-ellipse-codex-a7c4/direct.py` | 9,528 | `28c3130ce567d00d580101470c1f190a189084dc0757522fb58d782119dacfb2` |
+| `code/quintic-double-ellipse-codex-a7c4/direct.py` | 10,067 | `d471e446c9745053b8905feb055ae84e42b7cf88365db74caa072690bd10b182` |
 | `code/quintic-double-ellipse-codex-a7c4/gaussian_block.py` | 4,975 | `1889020c3b6525c9ef17fcbaeeb71210a109141eccb92f6e22efe52f189cbea4` |
 | `code/quintic-double-ellipse-codex-a7c4/mixed.json` | 246 | `37381adcd42c8181181a44ef5b22214d7b922e72079d15c88792c626ae6a1672` |
 | `code/quintic-double-ellipse-codex-a7c4/remote_debit.py` | 2,908 | `921bd9863de43e8e8d6a90c1b3bdc75bb04dc2effe6f366550c248e02e16a221` |
@@ -537,7 +537,7 @@ python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/dir
 | `code/quintic-double-ellipse-codex-a7c4/tilt_cover.py` | 1,968 | `6707888331d1798fcd40575b080db4b294f4670b26b3072bf5b756b717652b2d` |
 | `code/quintic-double-ellipse-codex-a7c4/unmixed.json` | 247 | `95cdd89dd709cb14736bbf2727e5e0f23f9a8776824c73339882f513d3a2ce98` |
 | `sources/quintic-double-ellipse-codex-a7c4/DIAGONAL.md` | 5,286 | `b552b28ddf8f2896ed9acab4f75cc3c664d58c8a84c4cadc1cdf1f7881f5772c` |
-| `sources/quintic-double-ellipse-codex-a7c4/DIRECT.md` | 4,069 | `5905988d5348e8d53c0801a4ae3c9cde6f8ca881a489320f00caa339582260fe` |
+| `sources/quintic-double-ellipse-codex-a7c4/DIRECT.md` | 4,406 | `e8fcd425d642d3876d8d8f4ea9842930ea86a1493217f572e57a512a24e6ff1c` |
 | `sources/quintic-double-ellipse-codex-a7c4/GAUSSIAN_BLOCK.md` | 6,988 | `c144b3d57dd9689178897c47504b0eeb842772e48e150062e220331b6d2a16c4` |
 | `sources/quintic-double-ellipse-codex-a7c4/PROOF.md` | 8,330 | `4c05d91ae743fa5ac672c316088b80a902814c60ebdf1043c8bb59731d4fa996` |
 | `sources/quintic-double-ellipse-codex-a7c4/REMOTE.md` | 2,803 | `1f6b4b790db2c8f50faf3c3e18010c4266daf76474587f4955bffe18f8ceeee1` |

@@ -68,9 +68,11 @@ def radii(repo, grams, which):
     for index in which:
         ray = cert["rays"][index]
         abc = ray["abc"]
+        check(tuple(abc) == (28, 45, 53), "matched support ray")
         ell, beta = F(abc[0], abc[2]), F(abc[1], abc[2])
         for row in ray["rows"][:1]:
             lo, hi = map(F, (row["s_lo"], row["s_hi"]))
+            check((lo, hi) == (0, 1), "matched fourth-excess slab")
             check(row["v3_mode"] == "holder", "holder row")
             for sd in row["sec_dual"].values():
                 sd["y_sec"] = ["0"]
@@ -118,7 +120,7 @@ def setup(repo):
     usable = radii(repo, gs, [1])
     target = pr.target
 
-    def box(t0, t1, y0, y1, *, with_support=True):
+    def box(t0, t1, y0, y1, *, with_support=True, open_energy=None):
         base, _, A0, A1 = pr.energy_interval(t0, t1, y0, y1)
         if A1 is None or A0 > A1:
             return True
@@ -185,6 +187,11 @@ def setup(repo):
         def at(z):
             return min(((s * z + r) * z + q) * z + c for c, q, r, s in pol)
 
+        if open_energy is not None:
+            x, margin = open_energy
+            check(A0 < x*x < A1 and at(x) > margin,
+                  "strict interior counterexample to the retained polynomial tests")
+
         # Look for a single certificate on this interval first, or bisect A.
         q = [(a, b, 0)]
         while q:
@@ -245,7 +252,8 @@ if __name__ == "__main__":
     t, y = F(".46051"), F(".701")
     check(
         pr.box(t, t, y, y) > pr.target and direct(t, t, y, y)
-        and not direct(t, t, y, y, with_support=False),
+        and not direct(t, t, y, y, with_support=False,
+                       open_energy=(F(".7932919598734375"), F(".0000129553"))),
         "deleting the direct support revives a known point",
     )
     a = cover(pr, direct, low, high)
@@ -257,5 +265,7 @@ if __name__ == "__main__":
     for tilts in ((F(1), F(19, 20)), (F(1), F(19, 20), F(471, 500))):
         pr.tilts = tilts
         check(pr.box(t, t, y, y) - pr.target > F(1024217, 10**12)
-              and not direct(t, t, y, y), "next amplitude still open")
+              and not direct(t, t, y, y,
+                             open_energy=(F(".7939880344296875"), F(".0000073439"))),
+              "next amplitude still open")
     print("At t=.46053, y=1.232 both carrier choices and the direct bank miss.")
