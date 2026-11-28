@@ -95,7 +95,6 @@ Grothe.LowerAnalytic.transferInputs_of_witnessCap
 Grothe.Statement.constant_lt_tight_upper
 Grothe.Statement.first_chaos_endpoint
 Grothe.Statement.main_bounds
-Grothe.Statement.quintic_perturbation_scalar_cap
 Grothe.Statement.upper_below_tight
 Grothe.Statement.upper_bound_tight
 Grothe.Upper.BandComparison.compare
