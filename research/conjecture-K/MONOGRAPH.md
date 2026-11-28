@@ -269,7 +269,7 @@ profiles [STATUS §15].
         →  A + B core, S + 4.936·10⁻⁵ (7.4.10; < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ in KAST)   unconditional on the peak energy domain (7.4.16)
         →  all six sectors, < S + 2.936·10⁻⁵ / 2.700·10⁻⁵ (7.5.13 + KAST; < S + 7.971·10⁻⁵ conditional on open (P_Ψ) in 7.5.3 + KAST, proved on strips/regions 7.5.4c, 7.5.12)
         →  consumer (8.1, 8.7, 8.9–8.13)                    [0.8400, 0.8661] at peak ε and [0.8400, 0.8547] at 94/125, cap 500/701 (7.5.13 + KAST, P + C)
-        →  tighter consumer (8.13a, 8.13c, 8.13d–f)                 [0.825, 0.8635] at 94/125, cap .713245 (P + C, [reviewed by gemini-21d5](https://github.com/agalatan/grothendieck-lean/pull/892#issuecomment-7235730061); uses 3.5a, P + C, and 3.3a/7.5.16, P + C with author-only 3.19/3.19a/3.29/6.3.43 and 11.61's exempt box)
+        →  tighter consumer (8.13a, 8.13c, 8.13d–f)                 [0.825, 0.8635] at 94/125, cap .713245 (P + C, reviewed by gemini-21d5 in #892; uses 3.5a and 3.19a, P + C, and 3.3a/7.5.16, P + C with author-only 3.19 KSLIV §§2–4, 3.29, 6.3.43 and 11.61's exempt box)
 
     through Λ (Conjecture K itself):
       remote sign D(q) ≥ 0 on the class handled  →  A-core by cost 6.2.1 and the content inequality
