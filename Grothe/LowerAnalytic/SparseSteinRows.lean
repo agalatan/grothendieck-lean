@@ -10,7 +10,7 @@ import Grothe.LowerAnalytic.AntiRows.Row09
 
 set_option warningAsError true
 
-/-! # Actual row deductions at the fifteen sparse common-law prices -/
+/-! # Actual row deductions for the two coupled rows at a common Gaussian scale -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
 open Grothe.Lower.SharedGate (surplus)
@@ -32,22 +32,25 @@ private theorem extras_of_plans {Ω : Type*} [MeasurableSpace Ω] {μ : Measure 
   obtain ⟨p,hp,rfl⟩ := List.mem_map.mp he
   exact p.sound sparseMesh_ok hcap (checks p hp) (List.all_eq_true.mp priced p hp) hM hC hr hl hh hi
 
-private theorem margin (w : ℚ) (hw : w ∈ prices.map Prod.fst) : price w ≤ smallPrice w := by
-  have h : (prices.map Prod.fst).all (fun y ↦ decide (price y ≤ smallPrice y)) := by decide +kernel
+private theorem margin (band : ScaleBand) (w : ℚ) (hw : w ∈ prices.map Prod.fst) : band.lookup w ≤ smallPrice w := by
+  have h : (prices.map Prod.fst).all (fun y ↦ decide (band.lookup y ≤ smallPrice y)) := by
+    cases band <;> decide +kernel
   exact of_decide_eq_true (List.all_eq_true.mp h w hw)
 
 /-- The interpolated endpoint discounts apply to the two actual rows simultaneously. -/
-theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    {V t : ℝ} {Qh v : E} (hred : CircularSharedReduction rowData V t Qh v)
-    (w z : ℚ) (hwmem : w ∈ prices.map Prod.fst) (hzmem : z ∈ prices.map Prod.fst)
+theorem actual_deductions_band {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {V t : ℝ} {Qh v : E} {scaleOK : ℝ → Prop} (band : ScaleBand)
+    (hred : CircularSharedReduction rowData V t Qh v scaleOK)
+    (hBand : ∀ τ : ℝ, 0 ≤ τ → τ ≤ 93/100 → scaleOK τ → (row08.delta : ℝ)*τ ≤ band.stop)
+    (w z : ℚ) (hwmem : w ∈ band.table.map Prod.fst) (hzmem : z ∈ band.table.map Prod.fst)
     (hw₀ : 0 ≤ w) (hw₁ : w ≤ 1) (hz₀ : 0 ≤ z) (hz₁ : z ≤ 1)
     {x : ℝ} (hx₀ : 0 ≤ x) (hx₁ : x ≤ 1) :
     let θ := (1-x)*(w : ℝ)+x*(z : ℝ)
-    ∃ d8 d9 : ℝ, (1-x)*(price w : ℝ)+x*(price z : ℝ)+(bonus w z : ℝ)*x*(1-x) ≤ (1-θ)*d8+θ*d9 ∧
+    ∃ d8 d9 : ℝ, (1-x)*(band.lookup w : ℝ)+x*(band.lookup z : ℝ)+(band.curvatureBonus w z : ℝ)*x*(1-x) ≤ (1-θ)*d8+θ*d9 ∧
       RowHolds ε TightShared.row8.ell TightShared.row8.beta ((TightShared.row8.C : ℝ)-d8) V t Qh v ∧
       RowHolds ε TightShared.row9.ell TightShared.row9.beta ((TightShared.row9.C : ℝ)-d9) V t Qh v := by
   dsimp only
-  obtain ⟨d,J,A,B,X1,X2,X3,τ,ex,hA,haa,hc,hM,hGI,hτ₀,hτ₁,_,hX,hshared⟩ := hred
+  obtain ⟨d,J,A,B,X1,X2,X3,τ,ex,hA,haa,hc,hM,hGI,hτ₀,hτ₁,hscale,hX,hshared⟩ := hred
   obtain ⟨P8,h8,hi8⟩ := hshared row08 (List.mem_of_getElem? (i := 7) (by rfl))
   obtain ⟨P9,h9,hi9⟩ := hshared row09 (List.mem_of_getElem? (i := 8) (by rfl))
   let σ : ℝ := row08.delta*τ
@@ -99,24 +102,25 @@ theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
       field_simp [hd.ne']
     rwa [hscale] at he
   have hwidth := small_weights
-  have hOrdW := endprice w hw₀ hw₁ _ (price w) hσstop (price_le false sl hsl w hwmem)
-  have hOrdZ := endprice z hz₀ hz₁ _ (price z) hσstop (price_le false sl hsl z hzmem)
-  have hbon₀ : 0 ≤ bonus w z := le_min (le_min (mul_nonneg (by norm_num) (sub_nonneg.mpr (margin w hwmem)))
-    (mul_nonneg (by norm_num) (sub_nonneg.mpr (margin z hzmem)))) (by positivity)
-  have hbonW : bonus w z ≤ 4*(smallPrice w-price w) := (min_le_left _ _).trans (min_le_left _ _)
-  have hbonZ : bonus w z ≤ 4*(smallPrice z-price z) := (min_le_left _ _).trans (min_le_right _ _)
-  have hbonB : bonus w z ≤ (2019911/10^10)*(w-z)^2*((21/100)/row08.delta)^2 := min_le_right _ _
+  have hband : σ ≤ band.stop := hBand τ hτ₀ hτ₁ hscale
+  have hOrdW := endprice w hw₀ hw₁ _ (band.lookup w) hband (price_le_band band sl hsl w hwmem)
+  have hOrdZ := endprice z hz₀ hz₁ _ (band.lookup z) hband (price_le_band band sl hsl z hzmem)
+  have hbon₀ : 0 ≤ band.curvatureBonus w z := le_min (le_min (mul_nonneg (by norm_num) (sub_nonneg.mpr (margin band w (band.mem_prices hwmem))))
+    (mul_nonneg (by norm_num) (sub_nonneg.mpr (margin band z (band.mem_prices hzmem))))) (by positivity)
+  have hbonW : band.curvatureBonus w z ≤ 4*(smallPrice w-band.lookup w) := (min_le_left _ _).trans (min_le_left _ _)
+  have hbonZ : band.curvatureBonus w z ≤ 4*(smallPrice z-band.lookup z) := (min_le_left _ _).trans (min_le_right _ _)
+  have hbonB : band.curvatureBonus w z ≤ (2019911/10^10)*(w-z)^2*((21/100)/row08.delta)^2 := min_le_right _ _
   have hded := SharedGate.WeightedSchur.Strong.twoScale_chord
     (w := (w:ℝ)) (z := (z:ℝ)) (τ := τ) (σ := σ) (cut := (21/100:ℚ))
     ⟨Rat.cast_nonneg.mpr hw₀, hw⟩ ⟨Rat.cast_nonneg.mpr hz₀, hz⟩ ⟨hx₀,hx₁⟩
     (Rat.cast_nonneg.mpr hbon₀) hOrdW hOrdZ
     (fun hσ ↦ by
-      have hp := endprice w hw₀ hw₁ (21/100) (smallPrice w) hσ (price_le true sl hsl w (hwidth ▸ hwmem))
+      have hp := endprice w hw₀ hw₁ (21/100) (smallPrice w) hσ (price_le true sl hsl w (hwidth ▸ band.mem_prices hwmem))
       have hh := (Rat.cast_le (K := ℝ)).mpr hbonW
       push_cast at hh
       linarith only [hh,hp])
     (fun hσ ↦ by
-      have hp := endprice z hz₀ hz₁ (21/100) (smallPrice z) hσ (price_le true sl hsl z (hwidth ▸ hzmem))
+      have hp := endprice z hz₀ hz₁ (21/100) (smallPrice z) hσ (price_le true sl hsl z (hwidth ▸ band.mem_prices hzmem))
       have hh := (Rat.cast_le (K := ℝ)).mpr hbonZ
       push_cast at hh
       linarith only [hh,hp])
@@ -127,7 +131,7 @@ theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
       apply mul_le_mul_of_nonneg_left _ (by positivity)
       apply pow_le_pow_left₀ (by positivity)
       exact (div_le_iff₀ hd).mpr (by simpa [σ,mul_comm] using hσ))
-  change (1-x)*(price w : ℝ)+x*(price z : ℝ)+(bonus w z : ℝ)*x*(1-x) ≤
+  change (1-x)*(band.lookup w : ℝ)+x*(band.lookup z : ℝ)+(band.curvatureBonus w z : ℝ)*x*(1-x) ≤
     (1-θ)*a8+θ*a9+pairGain θ*τ^2 at hded
   have hg := pair_surplus θ hθ₀ hθ₁ hM hX h8.2.2.1 h9.2.2.1
   change pairGain θ*τ^2 ≤ (1-θ)*s8+θ*s9 at hg
@@ -141,5 +145,19 @@ theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
     rw [hδ]
     dsimp only [a9,F,σ]
     linarith
+
+/-- The original shared-radius deductions. -/
+theorem actual_deductions {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {V t : ℝ} {Qh v : E} (hred : CircularSharedReduction rowData V t Qh v)
+    (w z : ℚ) (hwmem : w ∈ prices.map Prod.fst) (hzmem : z ∈ prices.map Prod.fst)
+    (hw₀ : 0 ≤ w) (hw₁ : w ≤ 1) (hz₀ : 0 ≤ z) (hz₁ : z ≤ 1)
+    {x : ℝ} (hx₀ : 0 ≤ x) (hx₁ : x ≤ 1) :
+    let θ := (1-x)*(w : ℝ)+x*(z : ℝ)
+    ∃ d8 d9 : ℝ, (1-x)*(price w : ℝ)+x*(price z : ℝ)+(bonus w z : ℝ)*x*(1-x) ≤ (1-θ)*d8+θ*d9 ∧
+      RowHolds ε TightShared.row8.ell TightShared.row8.beta ((TightShared.row8.C : ℝ)-d8) V t Qh v ∧
+      RowHolds ε TightShared.row9.ell TightShared.row9.beta ((TightShared.row9.C : ℝ)-d9) V t Qh v := by
+  exact actual_deductions_band .whole hred (fun τ _ hτ _ ↦ by
+    simpa [ScaleBand.stop] using mul_le_mul_of_nonneg_left hτ (Rat.cast_pos.mpr row08_delta_pos).le)
+    w z hwmem hzmem hw₀ hw₁ hz₀ hz₁ hx₀ hx₁
 
 end Grothe.LowerAnalytic.SparseStein

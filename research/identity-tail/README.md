@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.4020238808 (`main_bounds`) uses [a first-chaos retuning of this identity-tail witness](FIRST_CHAOS_RETUNING.md). Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Fourteen transported ordinates, a joint gate for rows 0.82 and 0.83 and the curvature of the central Schur complement give the [scalar cap](CURVED_SCHUR.md). It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.4020253021 (`main_bounds`) uses [a first-chaos retuning with a physical Rice price](PRICED_RICE.md). The [preceding retuning](FIRST_CHAOS_RETUNING.md) used the unrestricted remote radius. Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Fourteen transported ordinates, a joint gate for rows 0.82 and 0.83 and the curvature of the central Schur complement give the [scalar cap](CURVED_SCHUR.md). It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 

@@ -29,12 +29,39 @@ def clipped_model(model, cut):
     return restricted
 
 
+def physical_deductions(model, restricted_digits=13):
+    """Return the full and restricted prices and the certified consumer for any amplitude cell."""
+    coeff = curvature(8, 9)
+    @lru_cache(maxsize=None)
+    def price(cut, mix):
+        bank = model if cut is None else clipped_model(model, cut)
+        denominator = 10**restricted_digits if cut in CUTS.values() else 10**13
+        return Q(floor(bank.discount(mix) * denominator), denominator)
+
+    def bonus(cut, w, z):
+        return min(4 * (price(SMALL, w) - price(cut, w)),
+                   4 * (price(SMALL, z) - price(cut, z)),
+                   coeff * (w - z)**2 * (SMALL / model.delta)**2)
+
+    def endpoints(cuts, index, lo, hi, w, z):
+        cut = cuts.get(index)
+        if cut is not None:
+            checked(SMALL <= cut and lo <= MU_UP, "invalid scale or amplitude")
+            checked(2 * MU_UP * (MU_UP - lo) * model.delta**2 <= cut**2,
+                    "scale cut excludes a possibly admissible response")
+        gain = bonus(cut, w, z)
+        checked(gain >= 0, "rounding reversed the two-scale price order")
+        return price(cut, w), price(cut, z), gain
+
+    return price, bonus, endpoints
+
+
 def verify():
     sparse.base.TestWeightedTightGate.setUpClass()
     source = sparse.base.TestWeightedTightGate()
     model = sparse.law(source, True)
     checked(len(model.pieces) == 945, "unexpected common chord bank")
-    # pi < 3.141592654 (also follows from Real.pi_lt_d9).
+    # pi < 3.141592654 (also follows from Real.pi_lt_d20).
     checked(4 * MU_UP**2 > Q(3141592654, 10**9), "Gaussian mean rounded down")
     coeff = curvature(8, 9)
     checked(coeff == Q(2019911, 10**10), "wrong curvature for rows 08/09")
@@ -44,34 +71,19 @@ def verify():
         last = hi
     checked(last == Q(9, 10), "incomplete amplitude domain")
 
-    @lru_cache(maxsize=None)
-    def price(cut, mix):
-        bank = model if cut is None else clipped_model(model, cut)
-        return Q(floor(bank.discount(mix) * 10**13), 10**13)
-
+    price, bonus, cell_price = physical_deductions(model)
     weights = {a for l, h, i, j, old in source.cells if {i, j} <= {8, 9}
                for _, _, b, c in affine_pieces(source.rows, 8, 9, l, h, old) for a in (b, c)}
     checked(len(weights) == 9, "unexpected mixing weights")
     full = {w: price(None, w) for w in weights}
 
-    def bonus(cut, w, z):
-        return min(4 * (price(SMALL, w) - price(cut, w)),
-                   4 * (price(SMALL, z) - price(cut, z)),
-                   coeff * (w - z)**2 * (SMALL / model.delta)**2)
-
     def replay(cuts):
         visited = set()
 
         def endpoints(index, lo, hi, w, z):
-            cut = cuts.get(index)
-            if cut is not None:
-                checked(SMALL <= cut and lo <= MU_UP, "invalid scale or amplitude")
-                checked(2 * MU_UP * (MU_UP - lo) * model.delta**2 <= cut**2,
-                        "scale cut excludes a possibly admissible response")
+            if index in cuts:
                 visited.add(index)
-            gain = bonus(cut, w, z)
-            checked(gain >= 0, "rounding reversed the two-scale price order")
-            return price(cut, w), price(cut, z), gain
+            return cell_price(cuts, index, lo, hi, w, z)
 
         result = weighted_profile(source, full, lambda w, z: bonus(None, w, z),
                                   central_endpoints=endpoints)

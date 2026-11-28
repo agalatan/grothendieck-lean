@@ -161,7 +161,7 @@ def production_deductions(law, weights, coeff):
     return prices, curvature_deduction(law, coeff, prices, small_prices)
 
 
-def check_lean_prices(declaration, expected):
+def check_lean_prices(declaration, expected, *, allow_additional=False):
     source = Path("Grothe/LowerAnalytic/SparseSteinWeights.lean").read_text()
     start = f"def {declaration} : List (ℚ × ℚ) := ["
     body = source.split(start, 1)[1].split("]", 1)[0]
@@ -171,7 +171,9 @@ def check_lean_prices(declaration, expected):
         checked(pair.startswith("(") and pair.endswith(")"), "invalid Lean price entry")
         weight, price = pair[1:-1].split(",")
         entries.append((Q(weight.strip()), Q(price.strip())))
-    checked(entries == sorted(expected.items()), f"Lean {declaration} differs from the physical replay")
+    checked(entries == sorted(dict(entries).items()), f"Lean {declaration} weights must be unique and sorted")
+    selected = [(w, price) for w, price in entries if w in expected] if allow_additional else entries
+    checked(selected == sorted(expected.items()), f"Lean {declaration} differs from the physical replay")
 
 
 def main():

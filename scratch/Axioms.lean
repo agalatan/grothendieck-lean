@@ -113,6 +113,14 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
+#print axioms Grothe.LowerAnalytic.PhysicalRice.fibre_mean_energy_priced
+#print axioms Grothe.LowerAnalytic.PhysicalRice.joint_fibre_energy_priced
+#print axioms Grothe.LowerAnalytic.PhysicalRice.pres_sq_le
+#print axioms Grothe.LowerAnalytic.PhysicalRice.pres_sq_le_priced
+#print axioms Grothe.LowerAnalytic.PhysicalRice.rice_price
+#print axioms Grothe.LowerAnalytic.PhysicalRice.rice_tangent
+#print axioms Grothe.LowerAnalytic.QhOf_sq_ge_visible_tangent
+#print axioms Grothe.LowerAnalytic.QkOf_sq_le_two_visible_gap
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
 #print axioms Grothe.LowerAnalytic.SparseStein.actual_deductions
 #print axioms Grothe.LowerAnalytic.SparseStein.lower_of_nodeCaps
@@ -121,6 +129,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.VOf_eq_hat
 #print axioms Grothe.LowerAnalytic.VOf_frame_with_penalty
 #print axioms Grothe.LowerAnalytic.VhatOf_frame
+#print axioms Grothe.LowerAnalytic.VhatOf_le_visible_cubic_profile
 #print axioms Grothe.LowerAnalytic.anchored_pair_nu
 #print axioms Grothe.LowerAnalytic.antiStein_I
 #print axioms Grothe.LowerAnalytic.antiStein_II
@@ -151,6 +160,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.circularCellNodes_row08
 #print axioms Grothe.LowerAnalytic.circularCellNodes_row09
 #print axioms Grothe.LowerAnalytic.circularReductionHyp_of_nodeCaps
+#print axioms Grothe.LowerAnalytic.circularReductionHyp_of_nodeCaps_rice
 #print axioms Grothe.LowerAnalytic.circularRowBound_row08
 #print axioms Grothe.LowerAnalytic.circularRowBound_row09
 #print axioms Grothe.LowerAnalytic.coupled_circular
@@ -185,6 +195,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.integral_abs_normSq_sub_one
 #print axioms Grothe.LowerAnalytic.integral_conj_zc_mul_wc
 #print axioms Grothe.LowerAnalytic.integral_gaussC_polar
+#print axioms Grothe.LowerAnalytic.integral_invRad_fibre
+#print axioms Grothe.LowerAnalytic.integral_invRadius_cubic_of_unit
 #print axioms Grothe.LowerAnalytic.integral_norm_gauss2
 #print axioms Grothe.LowerAnalytic.integral_norm_le_93_mul_norm_of_mem_H21
 #print axioms Grothe.LowerAnalytic.integral_norm_le_93_of_mem_H21
@@ -192,6 +204,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.integral_norm_linL
 #print axioms Grothe.LowerAnalytic.integral_rad_ge
 #print axioms Grothe.LowerAnalytic.integral_two_linear
+#print axioms Grothe.LowerAnalytic.invRadius_energy_of_pieces
 #print axioms Grothe.LowerAnalytic.joint_scalar
 #print axioms Grothe.LowerAnalytic.kside
 #print axioms Grothe.LowerAnalytic.majEll_le_psiT_of_le
