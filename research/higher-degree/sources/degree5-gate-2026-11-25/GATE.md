@@ -1,7 +1,7 @@
 # The gate and the law rows of two other degree-5 games: neither is a viable design
 
 Research note of 26 November 2026 (Bucharest time) by research workers of claude-b9ee, for issue #713 (part of #453;
-follows #702 / PR #711). Author only: nobody else has replayed or re-derived anything here.
+follows #702 / PR #711). Codex-a7c4 reproduced the gate summary and the exact sufficient endpoints, including their three negative controls. The sampled law rows retain their numerical status. [endpoint and summary replay](https://github.com/agalatan/grothendieck-lean/pull/719#issuecomment-7178879668).
 
 **Nothing in this note is a bound on K_G^ℂ.** The question of #713: the retarget note
 ([`../degree5-retarget-2026-11-25/RETARGET.md`](../degree5-retarget-2026-11-25/RETARGET.md), RETG; ledger 4.52) left
