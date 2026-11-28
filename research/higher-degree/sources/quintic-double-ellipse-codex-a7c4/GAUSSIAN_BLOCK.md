@@ -18,7 +18,7 @@ Fix any \(s_0,s_1,\ell\ge0\). The nonremote plus carrier component is \(Z D\), w
 
 Every recorded KRS501 bound from the original and refined slabs applicable to this interval gives a complex radius at least \(\mu=\sqrt{\pi}/2\). The KNG505 and global radius bounds also exceed or equal \(\mu\). For all \(c\le.864\), the verified inequality \(c^2t^2+A<\pi/4\) implies by weighted Cauchy–Schwarz that the support left side stays below \(\mu\) times the square root of its variance. This covers every choice of the separate sector weights and of the carrier amplitude, including the uniform choice and zero endpoints. The remote diffuse support tests with coefficient one also pass because \(t^2+\|R\|^2<\pi/4\) and the lifted remote shape is at most \(1/2\).
 
-The exact replay verifies the global mass cut, each of the 24 shape-specific mass cuts, Parseval, and both new radial Gram upper estimates evaluated with the actual sector allocation. The least of the three payoff estimates exceeds \(C\) by more than .001311995. The cubic field is genuine; no claim is made that actual phase responses realize this simultaneous scalar tuple. Thus it rules out proving the full inequality at \(t=.47\) with these radius tests and these scalar debit estimates alone.
+The exact replay verifies the global mass cut, each of the 24 shape-specific mass cuts, Parseval, and both new radial Gram upper estimates evaluated with the actual sector allocation. The least of the three payoff estimates exceeds \(C\) by more than .001311995. The cubic field is genuine; no claim is made that actual phase responses realize this simultaneous scalar tuple. Thus it rules out proving the full inequality at \(t=.47\) with these radius tests and these scalar debit estimates alone. At this particular fourth excess a [direct Stein test](DIRECT.md) excludes every allocation.
 
 ## A quantitative result from conditioning on a Gaussian block
 
@@ -57,7 +57,7 @@ The folded term follows from the independently checked remote ball. The expressi
 | .480 | .0006 | 24 | 13685563 |
 | .470 | .005 | 21 | 19990035 |
 
-At \(t=.4815\) the fixed scalar estimate with zero discarded energy exceeds the target. At \(t=.47\), the new structural energy cap for \(U_0=U\) excludes the example's proposed energy by more than .007. Finding a large enough common Gaussian block in a general cubic remains an additional requirement.
+At \(t=.4815\) the fixed scalar estimate with zero discarded energy exceeds the target. At \(t=.47\), the new structural energy cap for \(U_0=U\) excludes the example's proposed energy by more than .007. For a diagonal Wick cubic, every coordinate block retains at most half its energy, even at arbitrarily small excess. At the very same scalar tuple above one can force the discarded energy to be at least .28. [Sharp coordinate-block obstruction](DIAGONAL.md)
 
 Replay from the repository root:
 

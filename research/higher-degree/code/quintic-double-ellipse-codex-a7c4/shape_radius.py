@@ -143,7 +143,8 @@ class Proof:
             for p, a, b, c in self.pool
         ]
 
-    def box(self, t0, t1, y0, y1, *, refined=True, paid_cross=True):
+    def energy_interval(self, t0, t1, y0, y1, *, refined=True, paid_cross=True):
+        """Return the possible cubic energies under a violation, with the small-energy arm."""
         j = self.j
         base = j.H + (1 - j.H) * t1**2
         floor = max(j.A_MIN, j.down((self.target - base) / (j.E - j.H)))
@@ -153,7 +154,7 @@ class Proof:
         au = j.up(self.rho**2 - d0)
         for _ in range(4):
             if au < floor:
-                return max(small, base + (j.E - j.H) * au)
+                break
             cross = self.cross * y1
             best = max(
                 self.costs(y0, y1),
@@ -171,7 +172,7 @@ class Proof:
                     + max((price_base - mass * mass_lower(a)) / a for a in (floor, au))
                 )
                 if z < 0:
-                    return small
+                    return base, small, floor, None
                 cross = min(cross, cross_price * z)
             new = min(
                 au,
@@ -183,6 +184,15 @@ class Proof:
             if new == au:
                 break
             au = new
+        return base, small, floor, au
+
+    def box(self, t0, t1, y0, y1, *, refined=True, paid_cross=True):
+        j = self.j
+        base, small, floor, au = self.energy_interval(
+            t0, t1, y0, y1, refined=refined, paid_cross=paid_cross
+        )
+        if au is None:
+            return small
         if au < floor:
             return max(small, base + (j.E - j.H) * au)
         low_mass = max(

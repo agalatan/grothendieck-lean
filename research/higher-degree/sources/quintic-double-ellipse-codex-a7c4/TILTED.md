@@ -19,3 +19,5 @@ Run `python3 -IB tilt_cover.py --repo /path/to/grothendieck-lean`. It rebuilds e
 The exact continuation through $.460505$, $.46050502$ and $.460505023$ takes another 347, 129 and 183 closed cells. At the next $10^{-9}$ step, $t=.460505024$ and $y=\sqrt\chi=.7011355$, the upper enclosure exceeds the trigger by more than $289/10^{12}$. This gives a reproducible obstruction for these two amplitudes and these fixed profiles. It imposes no restriction on the amplitude range of a different proof.
 
 A third amplitude, $\alpha=471/500$, clears that obstruction. Its full replay covers $[.460505023,.46051]$ in 252 closed cells, with an extra contradiction margin above $1988/10^{12}$. At $t=.47$ there is a [different obstruction that survives every choice of carrier amplitude](GAUSSIAN_BLOCK.md), even allowing the remote and nonremote energies to be reweighted separately.
+
+The [direct spiked support test](DIRECT.md) extends the complete unrestricted amplitude interval through $.46052$.
