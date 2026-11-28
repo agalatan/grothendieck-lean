@@ -21,7 +21,7 @@ def identity_call(*args):
     )
 
 
-def review_call(branch, reviewer, tip=REVIEWED, verdict="approve"):
+def review_call(branch, reviewer, tip=REVIEWED, verdict="approve", env=None):
     mocks = r"""
         git() {
             if [[ "$1" == ls-remote && "$2" == origin && "$3" == refs/heads/* ]]; then
@@ -34,6 +34,9 @@ def review_call(branch, reviewer, tip=REVIEWED, verdict="approve"):
             case "$1 $2" in
                 'repo view') echo 'owner/repo' ;;
                 'api -X') printf 'Mock API %s\n' "$*" >&2 ;;
+                'pr list') echo "${MOCK_PR:-}" ;;
+                'label create'|'pr edit'|'pr comment') printf 'Mock %s\n' "$*" >&2 ;;
+                'pr view') [[ "$*" == *labels* ]] && echo "${MOCK_HELD:-false}" || echo "${MOCK_HOLD_COMMENT:-}" ;;
                 *) return 98 ;;
             esac
         }
@@ -42,7 +45,7 @@ def review_call(branch, reviewer, tip=REVIEWED, verdict="approve"):
     return subprocess.run(
         ["bash", "-c", mocks, "bash", str(SCRIPTS / "review.sh"), branch, REVIEWED, verdict,
          reviewer, "checked"],
-        env={**os.environ, "MOCK_REVIEW_TIP": tip},
+        env={**os.environ, "MOCK_REVIEW_TIP": tip, **(env or {})},
         capture_output=True,
         text=True,
         timeout=5,
@@ -100,6 +103,29 @@ class AgentIdentityTests(unittest.TestCase):
         self.assertEqual(stale.returncode, 3, stale.stderr)
         self.assertIn("gemini-a12b/topic has moved", stale.stderr)
         self.assertNotIn("Mock API", stale.stderr)
+
+
+class HoldTests(unittest.TestCase):
+    def test_hold_labels_and_comments_without_a_status(self):
+        result = review_call("codex-a12b/topic", "claude-3e2a", verdict="hold", env={"MOCK_PR": "42"})
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("pr edit 42 --add-label HOLD", result.stderr)
+        self.assertIn("[claude-3e2a] HOLD", result.stderr)
+        self.assertNotIn("statuses/", result.stderr)
+
+    def test_hold_needs_an_open_pull_request(self):
+        result = review_call("codex-a12b/topic", "claude-3e2a", verdict="hold", env={"MOCK_PR": ""})
+        self.assertEqual(result.returncode, 2, result.stderr)
+
+    def test_verdict_lifts_only_the_holders_own_hold(self):
+        own = review_call("codex-a12b/topic", "claude-3e2a", env={
+            "MOCK_PR": "42", "MOCK_HELD": "true", "MOCK_HOLD_COMMENT": "[claude-3e2a] HOLD: a longer review"})
+        self.assertEqual(own.returncode, 0, own.stderr)
+        self.assertIn("--remove-label HOLD", own.stderr)
+        other = review_call("codex-a12b/topic", "claude-3e2a", env={
+            "MOCK_PR": "42", "MOCK_HELD": "true", "MOCK_HOLD_COMMENT": "[gemini-1111] HOLD: a longer review"})
+        self.assertEqual(other.returncode, 0, other.stderr)
+        self.assertNotIn("--remove-label HOLD", other.stderr)
 
 
 if __name__ == "__main__":

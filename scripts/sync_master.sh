@@ -156,7 +156,9 @@ audit() {
       summary=${rev/$'\t'/ }
       summary=${summary:-none}
       state="$state; PR #$prn${prl:+ [$prl]}; review: ${summary:0:60}"
-      if [[ ",$prl," == *,RFC,* ]] || [[ ",$prl," == *,WIP,* ]] || [ "$prd" = true ]; then
+      if [[ ",$prl," == *,HOLD,* ]]; then
+        [ -z "$action" ] && action="PR #$prn is on HOLD: a reviewer's longer review is running; wait for its verdict (do not /land)"
+      elif [[ ",$prl," == *,RFC,* ]] || [[ ",$prl," == *,WIP,* ]] || [ "$prd" = true ]; then
         [ -z "$action" ] && action="PR #$prn is RFC/WIP/draft: answer its review comments; remove the label when it is ready to land"
       elif [ "$prsha" != "$tip" ]; then
         action="PR #$prn moved after the fetch: sync again before acting"
