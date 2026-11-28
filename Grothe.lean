@@ -3385,6 +3385,7 @@ import Grothe.LowerAnalytic.FibreSup
 import Grothe.LowerAnalytic.Fluctuation
 import Grothe.LowerAnalytic.Frame
 import Grothe.LowerAnalytic.Gaussian
+import Grothe.LowerAnalytic.GaussianBlockEmbedding
 import Grothe.LowerAnalytic.GaussianRadial
 import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.GramSpectral
@@ -3401,6 +3402,8 @@ import Grothe.LowerAnalytic.NodeListParse
 import Grothe.LowerAnalytic.Pieces
 import Grothe.LowerAnalytic.Potential
 import Grothe.LowerAnalytic.PotentialReg
+import Grothe.LowerAnalytic.QuinticDiffuseCarrier
+import Grothe.LowerAnalytic.QuinticDiffuseRealization
 import Grothe.LowerAnalytic.QuinticEllipse
 import Grothe.LowerAnalytic.QuinticRemoteSupport
 import Grothe.LowerAnalytic.QuinticSmallAmplitude
