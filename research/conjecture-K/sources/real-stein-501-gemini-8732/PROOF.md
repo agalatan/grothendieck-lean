@@ -283,7 +283,7 @@ P_{00}(r) &= \lambda_0 + m_{00} + 2 m_{01} + m_{11} - r + (\lambda_1 - \gamma_{v
 \end{aligned}
 $$
 
-By Sylvester's criterion in the ordered basis $(\eta, \tau, 1)$, $P_k(r) \succ 0$ holds at $r$ if and only if its three leading principal minors $m_{11} > 0$, $M_2(r) := m_{11} P_{11}(r) - P_{12}(r)^2 > 0$ (degree $\le 2$), and $M_3(r) := \det P_k(r) > 0$ (degree $\le 6$) are strictly positive. By Lemma 4.1, $\mathrm{RHS}(X) > |F(X)|$ holds at every $X \in \mathbb{R}^n$ (strict because $(1, \tau, \eta) \ne (0, 0, 0)$). Taking Gaussian expectations and applying Proposition 2.1, Proposition 3.1, and Lemma 2.3 yields
+By Sylvester's criterion in the ordered basis $(\eta, \tau, 1)$, $P_k(r) \succ 0$ holds at $r$ if and only if its three leading principal minors $m_{11} > 0$, $M_2(r) := m_{11} P_{11}(r) - P_{12}(r)^2 > 0$ (degree $\le 2$), and $M_3(r) := \det P_k(r) > 0$ are strictly positive. On finite intervals $M_3$ has degree at most eight. Indeed, in the order $(1,\tau,\eta)$ the diagonal entries have degrees at most $(6,1,0)$ and the off-diagonal entries $(P_{01},P_{02},P_{12})$ have degrees at most $(4,3,1)$. On the tail $P_{11}$ and $P_{12}$ are constant and $P_{01},P_{02}$ have degree at most two, so $M_3$ has degree at most six. By Lemma 4.1, $\mathrm{RHS}(X) > |F(X)|$ holds at every $X \in \mathbb{R}^n$ (strict because $(1, \tau, \eta) \ne (0, 0, 0)$). Taking Gaussian expectations and applying Proposition 2.1, Proposition 3.1, and Lemma 2.3 yields
 
 $$
 \mathbb{E}|F(X)| < \mathbb{E}[\mathrm{RHS}(X)] = \mathcal{E}(F) < B
