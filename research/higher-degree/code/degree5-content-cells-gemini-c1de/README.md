@@ -31,3 +31,9 @@ The C++17 replay integrates each cell profile and the three low-energy control p
 ```bash
 python3 -IB verify.py --replay-cpp
 ```
+
+This command compares every regenerated JSON field with the committed receipt. It reproduces the committed values on the tested macOS toolchain. On Ubuntu with GCC 13.3, the old and new certifiers produce identical numerical fields with the same build flags, but some floating-point endpoints differ from the macOS receipt. To audit the locally generated intervals on that platform, run the following in a disposable checkout of the package. It replaces that checkout’s `result.json` and applies the full receipt audit to the replacement.
+
+```bash
+python3 -IB verify.py --replay-cpp --update-result
+```

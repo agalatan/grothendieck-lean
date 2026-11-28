@@ -397,7 +397,7 @@ All files of `CONTCELL` are committed in the repository (< 220 KB per file), wit
 | file | size | SHA-256 |
 |---|---:|---|
 | `sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md` | 37,592 B | `cdbb3ed041e94b7496518ac38f482a3257ed0ed06f897512c6a3b51c798dd72f` |
-| `code/degree5-content-cells-gemini-c1de/README.md` | 4,274 B | `3fb456da780714df085a100c393c819ffa33cf26b49feb46a630a09a68b2c1d1` |
+| `code/degree5-content-cells-gemini-c1de/README.md` | 4,880 B | `f581bb5d5d6bc070ab423cab05022c789a3180fd1d0804430dc0b07f19a071d0` |
 | `code/degree5-content-cells-gemini-c1de/certify_content_cells.cpp` | 167,042 B | `5a62c27cd2975816e31233fcdd3d2c43f22b426bf7de15b3ece7bcc435f7422c` |
 | `code/degree5-content-cells-gemini-c1de/generate_certificates.py` | 60,974 B | `037db9afd0aaa5f9994e2b0d2b399d023aa5c2c6b2bda0df2163f877c7164590` |
 | `code/degree5-content-cells-gemini-c1de/verify.py` | 47,698 B | `5b86fef882b2107f097e01d3555d32368e452727cb2b86de002719e872ba1d67` |
