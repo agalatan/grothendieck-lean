@@ -55,9 +55,40 @@ def curvature(i, j):
     return lower
 
 
-def weighted_profile(src, prices, curve, *, central_endpoints=None, bisect_binding=False):
-    maxima = []
-    outer_maxima = []
+
+def refinement_knots(source):
+    """Amplitude cuts in the two increasing 08/09 affine pieces; keep the parent row data."""
+    result = {}
+    for cell, expected in ((23, (Q(3429,4096), Q(8577,10240))), (26, (Q(4293,5120), Q(2151,2560)))):
+        lo, hi, i, j, fallback = source.cells[cell]
+        checked((lo, hi) == expected and (i, j) == (8, 9), "binding cell changed")
+        moving = [(l, h) for l, h, w, z in affine_pieces(source.rows, i, j, lo, hi, fallback) if w < z]
+        checked(len(moving) == 1, "expected one rising price segment")
+        l, h = moving[0]
+        cuts = [(l+h)/2]
+        if cell == 23:
+            cuts.extend(map(Q, (".837431408", ".837436036", ".837437149", ".837447529")))
+        checked(len(set(cuts)) == len(cuts) and all(l < t < h for t in cuts), "invalid refinement cut")
+        result[cell] = tuple(sorted(cuts))
+    return result
+
+
+def split_pieces(rows, i, j, low, high, fallback, cuts):
+    """Restrict one affine weight path; clipping points remain actual segment endpoints."""
+    for l, h, w, z in affine_pieces(rows, i, j, low, high, fallback):
+        stops = [l, *(t for t in cuts if l < t < h), h]
+        for x, y in zip(stops, stops[1:]):
+            yield x, y, w+(z-w)*(x-l)/(h-l), w+(z-w)*(y-l)/(h-l)
+
+
+def central_weights(source, cuts):
+    return {weight for n, (l,h,i,j,fallback) in enumerate(source.cells) if {i,j} <= {8,9}
+            for _,_,a,b in split_pieces(source.rows, 8, 9, l, h, fallback, cuts.get(n, ()))
+            for weight in (a,b)}
+
+
+def weighted_segments(src, prices, curve, *, central_endpoints=None, cuts=None):
+    """Yield the normalized quadratic on each closed amplitude segment."""
     for n,(lo,hi,i,j,old_weight) in enumerate(src.cells):
         rows = dict(src.rows)
         mid = (lo+hi)/2
@@ -73,13 +104,8 @@ def weighted_profile(src, prices, curve, *, central_endpoints=None, bisect_bindi
         el,beta,C = rows[i]
         er,br,D = rows[j]
         penalty = 2*(br-beta)**2/EPS
-        pieces = affine_pieces(rows, i, j, lo, hi, old_weight)
-        if bisect_binding and (lo, hi) == (Q(3429, 4096), Q(8577, 10240)):
-            (l, h, w, z), = pieces
-            checked((i, j, l, h) == (8, 9, lo, hi), "unexpected binding interval")
-            t_mid, w_mid = (l + h) / 2, (w + z) / 2
-            pieces = [(l, t_mid, w, w_mid), (t_mid, h, w_mid, z)]
-        for l,h,w,z in pieces:
+        extra_cuts = () if cuts is None else cuts.get(n, ())
+        for l,h,w,z in split_pieces(rows, i, j, lo, hi, old_weight, extra_cuts):
             dw,dz = price(w),price(z)
             extra = curve(w,z) if (i,j)==(8,9) else Q(0)
             if (i,j)==(8,9) and central_endpoints is not None:
@@ -90,10 +116,17 @@ def weighted_profile(src, prices, curve, *, central_endpoints=None, bisect_bindi
                         -penalty*theta*(1-theta)-(1-x)*dw-x*dz-extra*x*(1-x))
             y0,ym,y1 = f(Q(0)),f(Q(1,2)),f(Q(1))
             a = 2*(y0+y1-2*ym)
-            val,at = quadratic_maximum((a,y1-y0-a,y0),Q(0),Q(1),True)
-            maxima.append((val,n))
-            if (i,j)!=(8,9):
-                outer_maxima.append((val,n,i,j,l+at*(h-l)))
+            yield n, i, j, l, h, (a, y1-y0-a, y0)
+
+
+def weighted_profile(src, prices, curve, *, central_endpoints=None, cuts=None):
+    maxima = []
+    outer_maxima = []
+    for n, i, j, l, h, coeffs in weighted_segments(src, prices, curve, central_endpoints=central_endpoints, cuts=cuts):
+        val, at = quadratic_maximum(coeffs, Q(0), Q(1), True)
+        maxima.append((val, n))
+        if (i, j) != (8, 9):
+            outer_maxima.append((val, n, i, j, l+at*(h-l)))
     val,cell=max(maxima)
     cap=Q(ceil(val*10**11),10**11)
     outside,outer_cell,i,j,t=max(outer_maxima)
@@ -101,6 +134,31 @@ def weighted_profile(src, prices, curve, *, central_endpoints=None, bisect_bindi
     ceiling=1/(Q(47,2000)+Q(1953,2000)*Q(ceil(outside*10**11),10**11))
     checked(ceiling==Q(100000000000000,71325509501647), "rounded outer amplitude ceiling changed")
     return cap,cell,1/(Q(1953,2000)*cap+Q(47,2000))
+
+
+def price_tables(law, weights):
+    """Replay the two central price tables and their curvature deduction."""
+    cut=Q(21,100)
+    small=copy(law)
+    small.pieces=[(l,min(h,cut),a,b,c,d) for l,h,a,b,c,d in law.pieces if l<=cut]
+    prices={w:Q(floor(law.discount(w)*10**13),10**13) for w in weights}
+    small_prices={w:Q(floor(small.discount(w)*10**13),10**13) for w in weights}
+    return prices, small_prices
+
+
+def curvature_deduction(law, coeff, prices, small_prices):
+    cut=Q(21,100)
+    margins={w:small_prices[w]-d for w,d in prices.items()}
+    checked(min(margins.values())>=0,"invalid small-scale margins")
+    def curved(w,z):
+        return min(4*margins[w],4*margins[z],coeff*(w-z)**2*(cut/law.delta)**2)
+    return curved
+
+
+def production_deductions(law, weights, coeff):
+    """The original replay API, including the physical Rice callback consumer."""
+    prices, small_prices = price_tables(law, weights)
+    return prices, curvature_deduction(law, coeff, prices, small_prices)
 
 
 def check_lean_prices(declaration, expected):
@@ -140,40 +198,27 @@ def main():
     ceiling=1/(Q(47,2000)+Q(1953,2000)*required_cap)
     checked(t==Q(17149473,20480000) and Q("1.402022188813") < ceiling < Q("1.402022188814"),
             "fixed central weight-path ceiling changed")
-    cut=Q(21,100)
-    small=copy(law)
-    small.pieces=[(l,min(h,cut),a,b,c,d) for l,h,a,b,c,d in law.pieces if l<=cut]
-    prices={w:Q(floor(law.discount(w)*10**13),10**13) for w in weights}
-    small_prices={w:Q(floor(small.discount(w)*10**13),10**13) for w in weights}
-    margins={w:small_prices[w]-d for w,d in prices.items()}
-    checked(min(margins.values())>=0,"invalid small-scale margins")
-    def curved(w,z):
-        return min(4*margins[w],4*margins[z],coeff*(w-z)**2*(cut/law.delta)**2)
+    prices, curved = production_deductions(law, weights, coeff)
     result=weighted_profile(src,prices,curved)
     control=weighted_profile(src,prices,lambda w,z:Q(0))
     checked(result==(Q(8829435313,12500000000),23,Q(25000000000000,17831387166289)),
             "curved interpolation result changed")
     checked(control==(Q(7063549609,10000000000),26,Q(20000000000000,14265112386377)),
             "affine interpolation control changed")
-    midpoint = (w + z) / 2
-    checked(midpoint == Q(6955791291089081748998024723729, 13412622789067932927021702497500),
-            "binding midpoint weight changed")
-    prices[midpoint] = Q(floor(law.discount(midpoint) * 10**13), 10**13)
-    small_prices[midpoint] = Q(floor(small.discount(midpoint) * 10**13), 10**13)
-    checked((prices[midpoint], small_prices[midpoint]) ==
-            (Q(10853361, 10**12), Q(251609893, 10**13)), "midpoint prices changed")
-    margins[midpoint] = small_prices[midpoint] - prices[midpoint]
-    checked(len(prices) == len(small_prices) == 10 and margins[midpoint] >= 0,
-            "invalid refined schedule")
-    check_lean_prices("prices", prices)
-    check_lean_prices("smallPrices", small_prices)
-    refined = weighted_profile(src, prices, curved, bisect_binding=True)
-    checked(refined[0] == Q(70635481227, 10**11) and
-            refined[1:] == (23, Q(200000000000000, 142651094836331)), "refined endpoint changed")
-    checked(refined[2] > result[2], "removing the midpoint no longer weakens the bound")
-    print("midpoint", midpoint, "prices", prices[midpoint], small_prices[midpoint], "refined", refined)
-    print("certified curvature", coeff, "shape pieces", len(law.pieces),
-          "original weights", len(weights), "refined weights", len(prices))
+    # Historical pure identity-tail midpoint; it uses only the first cut on parent cell 23.
+    cuts = {23: ((l+h)/2,)}
+    refined_weights = central_weights(src, cuts)
+    prices, small_prices = price_tables(law, refined_weights)
+    midpoint = (w+z)/2
+    checked(len(refined_weights) == 10 and
+            (prices[midpoint], small_prices[midpoint]) == (Q(10853361,10**12), Q(251609893,10**13)),
+            "pure midpoint discounts changed")
+    curved = curvature_deduction(law, coeff, prices, small_prices)
+    refined = weighted_profile(src, prices, curved, cuts=cuts)
+    checked(refined == (Q(70635481227,10**11), 23, Q(200000000000000,142651094836331))
+            and refined[2] > result[2], "pure midpoint result changed")
+    print("pure midpoint", midpoint, "refined", refined)
+    print("certified curvature",coeff,"shape pieces",len(law.pieces),"original weights",len(weights))
     print("curved",result,"affine control",control)
     print("fixed central path ceiling at amplitude",t,"< 1.402022188814")
 

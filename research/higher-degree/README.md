@@ -1,7 +1,8 @@
 # Higher-degree games: start here
 
-The proved lower bound K_G^ℂ > 1.4020221627 comes from the cubic witness P₁,₀ − (191/250)P₂,₁ with an identity tail
-([`../identity-tail/`](../identity-tail/README.md)). Even a perfect evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
+The proved lower bound K_G^ℂ > 1.4020237104 comes from retuning the identity-tail witness with the first-chaos projector. A companion family adds a positive fifth-chaos coefficient up to 3645203/2500000000000000000 and reaches the same rounded scalar cap. The original 38-cell schedule gives the smaller unrounded maximum at zero. [Certificate and controls](../identity-tail/RETUNED_QUINTIC.md).
+
+Even a perfect evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
 ledger 12.2). Larger lower bounds need games of higher degree. In particular, the third decimal of K_G^ℂ needs a
 certified 1.404, because the upper bound 1.404554025 is already below 1.4046.
 

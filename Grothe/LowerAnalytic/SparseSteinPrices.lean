@@ -1,7 +1,7 @@
 import Grothe.LowerAnalytic.SparseSteinSlabs
 import Grothe.LowerAnalytic.CoupledSteinGrid
 
-/-! # Ten certified mixture discounts on nineteen synchronized shape slabs
+/-! # Fifteen certified mixture discounts on nineteen synchronized shape slabs
 
 For each physical value of the fourth excess, both row potentials use the same
 slab. Inside it their bracketing scale intervals are allowed to meet on a face.
