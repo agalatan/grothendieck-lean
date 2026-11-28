@@ -252,6 +252,13 @@ def main() -> None:
             d["summary"].update({"total_boxes": int(d["summary"]["total_boxes"]) + 1}),
         ),
     )
+    expect_target_reject(
+        "Part 2 even diagonal sign-flip to negative",
+        "row6",
+        row6_data,
+        cpp_sha,
+        lambda d: d["part2_origin_strip"][0][7].__setitem__(0, "-0x1.0p-2"),
+    )
     expect_obs_reject(
         "Row 4 obstruction M0_im deflated below p = 125/94",
         obs_data,
@@ -294,7 +301,7 @@ def main() -> None:
                 verify.check(f"CONTROL_PASS[{tname}]" in hot.stdout, f"missing CONTROL_PASS[{tname}]")
             print("  [PASS] live C++ false-hotspot control across peak, row7, row6")
 
-    print("[test_controls] ALL 23 CONTROLS PASSED (zero-float, zero-assert)")
+    print("[test_controls] ALL 24 CONTROLS PASSED (zero-float, zero-assert)")
 
 
 if __name__ == "__main__":

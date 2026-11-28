@@ -79,12 +79,29 @@ def check(cond: bool, msg: str) -> None:
 
 
 def fmt_dec(q: F, digits: int = 8) -> str:
+    """Truncate toward -infinity for certified lower bounds (for q >= 0, floor; for q < 0, away from 0)."""
     q = F(q)
-    sign = "-" if q < 0 else ""
-    aq = -q if q < 0 else q
     unit = 10**digits
+    if q >= 0:
+        scaled = (q.numerator * unit) // q.denominator
+        return f"{scaled // unit}.{str(scaled % unit).zfill(digits)}"
+    aq = -q
+    scaled = (aq.numerator * unit + aq.denominator - 1) // aq.denominator
+    return f"-{scaled // unit}.{str(scaled % unit).zfill(digits)}"
+
+
+def fmt_dec_up(q: F, digits: int = 8) -> str:
+    """Round toward +infinity for certified upper bounds (guaranteed F(result) >= q)."""
+    q = F(q)
+    unit = 10**digits
+    if q >= 0:
+        scaled = (q.numerator * unit + q.denominator - 1) // q.denominator
+        return f"{scaled // unit}.{str(scaled % unit).zfill(digits)}"
+    aq = -q
     scaled = (aq.numerator * unit) // aq.denominator
-    return f"{sign}{scaled // unit}.{str(scaled % unit).zfill(digits)}"
+    if scaled == 0:
+        return f"0.{'0' * digits}"
+    return f"-{scaled // unit}.{str(scaled % unit).zfill(digits)}"
 
 
 def parse_hex(s: str) -> F:
@@ -609,11 +626,27 @@ def check_target_foundations(name: str, sp: dict) -> dict:
         bp0 = q_AA * (Ar * Ar + Ai * Ai) + q_BB * (Br * Br + Bi * Bi) + 2 * q_AB * (Ar * Br + Ai * Bi)
         check(bp0 + F(1, 4) * R2 - p * Sr == -c_iso * (1 + rho * rho) * Sr, f"{name}: retained cancellation failed")
 
-    # 2. Odd quadratic budget B_odd > (3/4) I_6:
+    # 2. Odd quadratic budget B_odd > (3/4) I_6 and exact sign of -C_inv(Q, nu):
     lam_odd_lo = F(3, 4)
+    anu, gamma = sp["alpha_nu"], dc["gamma"]
+    expected_gammas = {"peak": F(-6801, 37820), "row7": F(-2171, 9400), "row6": F(-2297, 9400)}
+    check(gamma == expected_gammas[name], f"{name}: gamma={gamma} != {expected_gammas[name]}")
     check(p > lam_odd_lo and d_nu > lam_odd_lo, f"{name}: B_odd diagonal <= 3/4")
     check((p - lam_odd_lo) * (d_nu - lam_odd_lo) > kc * kc, f"{name}: B_odd <= (3/4) I_6")
-    check(p + (p - 1) * sp["alpha_nu"] ** 2 + 2 * dc["gamma"] * sp["alpha_nu"] == d_nu, f"{name}: d_nu identity failed")
+    check(p + (p - 1) * anu * anu + 2 * gamma * anu == d_nu, f"{name}: d_nu identity failed")
+    # Verify -(O')^T B_odd O' == +|c*|^2 - p*(|Q|^2 + |P|^2 + |nu|^2) - C_inv(Q, nu) with C_inv = 2*gamma*Re(Q*conj(nu))
+    # on nonzero rational (Q, P, nu) triples:
+    for Qr, Qi, Pr, Pi, nr, ni in [(F(3, 5), F(-2, 7), F(1, 3), F(4, 9), F(5, 11), F(-3, 8)), (F(1), F(0), F(0), F(0), F(1), F(0))]:
+        Qpr, Qpi = Qr - anu * nr, Qi - anu * ni
+        b_odd_prime = (
+            p * (Qpr * Qpr + Qpi * Qpi + Pr * Pr + Pi * Pi)
+            + 2 * kc * (Qpr * nr + Qpi * ni)
+            + d_nu * (nr * nr + ni * ni)
+        )
+        c_star_sq = (anu * anu) * (nr * nr + ni * ni)
+        c_inv = 2 * gamma * (Qr * nr + Qi * ni)
+        rhs = -p * (Qr * Qr + Qi * Qi + Pr * Pr + Pi * Pi + nr * nr + ni * ni) - c_inv
+        check(-b_odd_prime == c_star_sq + rhs, f"{name}: odd compensation sign/expansion mismatch")
 
     # 3. Amplitude exterior ||v||_2 >= 7 (S_r >= 49) for ALL w >= 0 and ALL (Q, P, nu) in C^3:
     # K = (1/2 A + c1 B)*1 + A*(T - 1) + conj(B)*(z_1^2/sqrt(2)); {1, T-1, z_1^2/sqrt(2)} orthonormal =>
@@ -691,15 +724,17 @@ def check_target_foundations(name: str, sp: dict) -> dict:
     # Global 7.1.6 centered error bound (valid on every row without a 79-cell g_B - rho*g cover):
     # 0 <= k_B(v) - rho*k_A(v) <= (1/sqrt(2) - rho)*k_A(0) => ||e^(i)(q)||_2 <= m_i * sqrt(u)
     m_i_hi = (((F(1) / SQRT_2 - rho) * kA0) / 2).hi
-    check(m_i_hi < F(9, 100), f"{name}: 7.1.6 centered m_i >= 9/100")
+    expected_m_caps = {"peak": F(84269, 10**6), "row7": F(84839, 10**6), "row6": F(84966, 10**6)}
+    check(m_i_hi < expected_m_caps[name] < F(9, 100), f"{name}: 7.1.6 centered m_i exceeded cap")
 
     return {
         "q_min": fmt_dec(q_min),
+        "gamma": f"{gamma.numerator}/{gamma.denominator}",
         "d_nu": f"{d_nu.numerator}/{d_nu.denominator}",
-        "j0_iv": [fmt_dec(j0.lo, 12), fmt_dec(j0.hi, 12)],
+        "j0_iv": [fmt_dec(j0.lo, 12), fmt_dec_up(j0.hi, 12)],
         "kB0_over_kA0_lo": fmt_dec(ratio_kb_ka.lo, 8),
         "rho": fmt_dec(rho, 6),
-        "global_7_1_6_err_coeff_hi": fmt_dec(m_i_hi, 8),
+        "global_7_1_6_err_coeff_hi": fmt_dec_up(m_i_hi, 8),
         "c_iso_times_1_plus_rho2": fmt_dec(c_iso * (1 + rho * rho), 8),
     }
 
@@ -712,6 +747,7 @@ def check_q0_minus_sym2(arr: list, q_AA: F, q_BB: F, q_AB: F, ctx: str) -> F:
     a00_h = parse_hex(arr[0])
     a01_l, a01_h = parse_iv(arr[1])
     a11_h = parse_hex(arr[2])
+    check(a00_h >= 0 and a11_h >= 0, f"{ctx}: negative even diagonal upper bound")
     d00 = q_AA - a00_h
     d11 = q_BB - a11_h
     d01_abs = max(abs(q_AB - a01_l), abs(q_AB - a01_h))
@@ -723,12 +759,16 @@ def check_q0_minus_sym2(arr: list, q_AA: F, q_BB: F, q_AB: F, ctx: str) -> F:
 
 def check_b3_minus_sym3(arr: list, p: F, d_nu: F, k_comp: F, ctx: str) -> F:
     check(isinstance(arr, list) and len(arr) == 6, f"{ctx}: expected 6-entry Sym3")
-    d00 = p - parse_hex(arr[0])
+    m00_h = parse_hex(arr[0])
     iv01 = parse_iv(arr[1])
     iv02 = parse_iv(arr[2])
-    d11 = p - parse_hex(arr[3])
+    m11_h = parse_hex(arr[3])
     iv12 = parse_iv(arr[4])
-    d22 = d_nu - parse_hex(arr[5])
+    m22_h = parse_hex(arr[5])
+    check(m00_h > 0 and m11_h > 0 and m22_h > 0, f"{ctx}: non-positive odd diagonal upper bound")
+    d00 = p - m00_h
+    d11 = p - m11_h
+    d22 = d_nu - m22_h
     check(d00 > 0 and d11 > 0 and d22 > 0, f"{ctx}: odd diagonal <= 0")
     c01 = (-iv01[0], -iv01[1])
     c02 = (k_comp - iv02[0], k_comp - iv02[1])
@@ -889,7 +929,7 @@ def verify_single_target_cert(name: str, sp: dict, data: dict, expected_cpp_sha:
         "part3_slabs": len(p3),
         "part3_total_boxes": tot_boxes,
         "part3_w_splits": tot_ws,
-        "part3_worst_margin": fmt_dec(worst_m, 14),
+        "part3_worst_margin": fmt_dec_up(worst_m, 14),
         "part3_min_odd_piv": fmt_dec(min_piv, 10),
     }
 
@@ -927,12 +967,12 @@ def verify_peak_corollaries(repo_root: Path) -> dict:
     check(half_j0_20_hi < F(179, 2500), "j_0 / 20 >= 179/2500")
     c12_lin_hi = F(139, 1000) + F(179, 2500)  # 1053/5000 = 0.2106
     check(c12_lin_hi == F(1053, 5000), "c12_lin_hi mismatch")
-    alpha_lin_hi = (sqrt_1pr2 * c12_lin_hi + F(7, 2000)).hi  # < 0.23946
-    check(alpha_lin_hi < F(12, 50), "alpha_lin_hi >= 0.24")
+    alpha_lin_hi = (sqrt_1pr2 * c12_lin_hi + F(7, 2000)).hi  # < 0.239460
+    check(alpha_lin_hi < F(23946, 10**5), "alpha_lin_hi >= 0.239460")
 
     # All-(V, W) quadratic gain coefficient: sup_{V >= 0} {2*alpha_lin*sqrt(u*V) - c_shell*V} = (alpha_lin^2 / c_shell) * u
     kappa_uncap_hi = (alpha_lin_hi * alpha_lin_hi) / c_shell
-    check(kappa_uncap_hi < F(191, 1000), "kappa_uncap_hi >= 191/1000")
+    check(kappa_uncap_hi < F(190325, 10**6), "kappa_uncap_hi >= 0.190325")
 
     # 2. Corollary (i) — Low remote energy, ALL (V, W) in [0, inf)^2:
     # (a) Pure 3.3 + 7.5.13/KAST (no moment polynomial needed on high-V branch):
@@ -1060,8 +1100,8 @@ def verify_peak_corollaries(repo_root: Path) -> dict:
     check(c0_tail + 2 * (c1_tail - p_net) < S_LO, "high-u affine tail value at u=2 >= S_LO")
 
     return {
-        "alpha_lin_hi": fmt_dec(alpha_lin_hi),
-        "kappa_uncap_hi": fmt_dec(kappa_uncap_hi),
+        "alpha_lin_hi": fmt_dec_up(alpha_lin_hi),
+        "kappa_uncap_hi": fmt_dec_up(kappa_uncap_hi),
         "low_u_all_VW_pure_3_3_max": "11/500",
         "low_u_all_VW_with_moments_max": "23/1000",
         "band_u_0_0463_V_min_exempt_free": "1/16",
@@ -1071,13 +1111,21 @@ def verify_peak_corollaries(repo_root: Path) -> dict:
 
 
 def verify_lower_central_obstructions(repo_root: Path, obs_data: dict, expected_cpp_sha: str, check_hash: bool = True) -> dict:
-    """Verify exact obstructions on Rows 1-2 (zero-core odd) and Rows 3-4 (O_{sec,im}(29/64) > 125/94)."""
+    """Verify Rows 1-2 zero-core odd obstructions and Rows 3-4 2-sign secant-majorant obstructions."""
     cert_path = repo_root / "research/conjecture-K/code/exterior-94-125-gemini-9a4e/central_94_125_certificate.json"
     cert_raw = cert_path.read_bytes()
     check(hashlib.sha256(cert_raw).hexdigest() == CENTRAL_94_125_SHA256, "central_94_125_certificate.json SHA-256 mismatch")
     cert = json.loads(cert_raw.decode("utf-8"), parse_float=F)
     rows = cert["eps_94_125"]["rows"]
     p_94_125 = F(125, 94)
+    expected_r14_ivs = [
+        (F(1503, 2000), F(77, 100)),
+        (F(77, 100), F(157, 200)),
+        (F(157, 200), F(4, 5)),
+        (F(4, 5), F(203, 250)),
+    ]
+    for idx0, (elo, ehi) in enumerate(expected_r14_ivs):
+        check(F(rows[idx0]["lo"]) == elo and F(rows[idx0]["hi"]) == ehi, f"Row {idx0 + 1} pinned interval mismatch")
 
     # Cross-check row6 and row7 parameters against central_94_125_certificate.json:
     for tname in ("row6", "row7"):
@@ -1090,8 +1138,10 @@ def verify_lower_central_obstructions(repo_root: Path, obs_data: dict, expected_
         check(ai == sp["a"] and bi == sp["b"], f"{tname}: (a, b) mismatch vs central_94_125_certificate.json")
 
     # 1. Rows 1 & 2 zero-core odd obstruction (220-bit zero-float): J_1(a_i, b_i) > 125/94!
-    # At (q, A, B) = (0, 0, 0), taking P = 0, nu = 0 and any remote Q in H_{1,1} with E|Q|^2 = 1 gives
-    # c* = 0, C(Q, nu) = 0, and E[R_joint(L, 0, z_1 Q)] = J_1(a_i, b_i) > 125/94 = p!
+    # At (q, A, B, P, nu) = (0, 0, 0, 0, 0), taking purely imaginary scalar Q = i*h as h -> 0+ gives
+    # Re((i*h*z_1)*conj(L_i)) = 0, c* = 0, C_inv(Q, nu) = 0, and exact h^2 coefficient
+    # lim_{h -> 0+} h^{-2} E_{z_1}[|L_i + i*h*z_1| + |L_i - i*h*z_1| - 2|L_i|] = J_1(a_i, b_i) > 125/94 = p,
+    # proving F_joint^{(0, i)}(c*) > 0 for all sufficiently small h > 0 on Rows 1 & 2!
     zcore = {}
     for idx in (0, 1):
         rw = rows[idx]
@@ -1102,7 +1152,8 @@ def verify_lower_central_obstructions(repo_root: Path, obs_data: dict, expected_
         check(j1.lo > p_94_125, f"Row {idx + 1} J_1.lo <= 125/94")
         zcore[f"row{idx + 1}_J1_lo"] = fmt_dec(j1.lo)
 
-    # 2. Rows 3 & 4 secant odd obstruction at exact dyadic w_0 = 29/64 from `cert_obstructions.json`:
+    # 2. Rows 3 & 4 2-sign secant-majorant obstruction at exact dyadic w_0 = 29/64 from `cert_obstructions.json`
+    # (obstructs the factor-1/2 confocal-ellipse / KJSEC L=1 secant matrix O_{sec,im}(29/64), not the factor-1 Hessian):
     if check_hash:
         check(obs_data.get("cpp_sha256") == expected_cpp_sha, "cert_obstructions.json cpp_sha256 mismatch")
     check(obs_data.get("format") == "uncapped-obstructions-v1", "cert_obstructions.json bad format")
