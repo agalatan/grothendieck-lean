@@ -1,12 +1,26 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.SmoothedRows
 
-/-! The smoothed row checker encloses the signed head of the actual rounding kernel.
+/-!
+# Soundness of the energy computation
 
+The theorem `smoothedRowsCheck_table_sound` is the soundness of Computation 3 (energies), Appendix A.4 (the
+energies of the smoothed map) of the article: if `smoothedRowsCheck` returns `true` for a cell table and a table
+`rows` of intervals, then every interval of `rows` contains the corresponding energy `E(d₁, d₂)` of the smoothed
+cell map, the table has exactly one entry for every pair with `d₁ + 3 d₂ ≤ 501` and `d₁ + d₂` odd, and the energies
+with `d₁ + d₂` even vanish.
+
+The proof assembles the steps of Appendix A.4, which are proved in `CellOverlapCore.lean`,
+`SmoothedMidpoints.lean` (step 2), `SmoothedContraction.lean` (steps 3 and 4), `SmoothedEnergy.lean` (step 5) and
+`SmoothedRows.lean` (one term of the energy formula (A.5), `smoothed_energy_eq` in `CellHermite.lean`), for the
+description of the checker by named stages in `HaagerupKernel/SmoothedStages.lean`.
 -/
 
 set_option warningAsError true
-set_option maxRecDepth 4096
-set_option exponentiation.threshold 2048
+
 namespace Haagerup
 open Finset Polynomial HaagerupKernel HaagerupKernel.Cell
 noncomputable section
@@ -45,11 +59,13 @@ private theorem entry_mem {cr ci qr qi : Array Int} {ct st se ce : ℝ}
     exact array_ofFn_getD _ k _ (by omega : k < 251)
   have hgood := List.all_eq_true.mp hok k (List.mem_range.mpr (by omega))
   rw [hat] at hgood ⊢
-  apply mem_sumIval
-  intro p hp
-  exact smoothedTerms_sound hk hdm (hg k hk) hb hb' hgood p hp
+  exact mem_sumIval _ _ _ (smoothedTerms_sound hk hdm (hg k hk) hb hb' hgood)
 
-/-- The checked rows enclose every nonzero smoothed-channel mode overlap in `headIdx 501`. -/
+/-- **Soundness of Computation 3 (energies).** Let `G` be the smoothed map of the cell map with the tables `creArr`,
+`cimArr`, with rational parameters `ct = cn / chyp`, `st = sn / chyp`, `se / ehyp`, `ce / ehyp`. If
+`smoothedRowsCheck … rows = true`, then: `energy G p = 0` for `p = (d₁, d₂)` with `d₁ + d₂` even; the index pairs of
+`rows` are distinct and lie in `headIdx 501` (`d₁ + 3 d₂ ≤ 501`); the energy vanishes at every pair of
+`headIdx 501` that is not in `rows`; and every interval `e.2` of a row `r` contains `energy G (e.1, r.1)`. -/
 theorem smoothedRowsCheck_table_sound {creArr cimArr qreArr qimArr : Array Int}
     (hsos : sosAllOK creArr cimArr qreArr qimArr = true)
     {cn sn chyp se ce ehyp : ℕ}

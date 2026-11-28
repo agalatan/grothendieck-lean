@@ -7,8 +7,10 @@ Paper      : the subsection "Cell maps" (the lemma "Sum-of-squares bound") and t
 Lean       : `Haagerup.Data.tig_sos_ok`, `Haagerup.Data.tcell_sos_ok` (the same integer inequality, evaluated by
              `sosAllOK` of HaagerupKernel/CellKernel.lean), `Haagerup.norm_cellFn_le` (it implies |F| <= 1) and
              `Haagerup.cellFn_rot2` (charge one), in CellMap.lean.
-Runtime    : about 5 seconds.
-Needs      : numpy for the floating-point part.
+Runtime    : about 7 seconds.
+Needs      : numpy for the sampled maximum (without numpy that check is reported as failed).
+Prints     : for each map the largest sum-of-squares bound (to compare with 2^48), the sampled maximum of |F|,
+             and one line per check.  The random points come from a fixed seed, so the output is deterministic.
 
 The map (on a cell (i, j): |z_1| in [3i/32, 3(i+1)/32), |z_2| in [3j/32, 3(j+1)/32); zero outside [0,6)^2 and on
 the axes):
@@ -103,7 +105,7 @@ def main() -> int:
                      f"{vals.min(axis=0)[per_cell > 0].min():.6f}")
 
         rng = random.Random(20261125)
-        err_charge = err_fft = 0.0
+        err_charge = excess = 0.0
         outside = 0.0
         for _ in range(2000):
             z1 = cmath.rect(rng.uniform(0.0, 6.0), rng.uniform(0, 2 * math.pi))
@@ -111,12 +113,12 @@ def main() -> int:
             u = cmath.rect(1.0, rng.uniform(0, 2 * math.pi))
             f = cell_fn(tab, z1, z2)
             err_charge = max(err_charge, abs(cell_fn(tab, u * z1, u * z2) - u * f))
-            err_fft = max(err_fft, abs(f) - 1.0)
+            excess = max(excess, abs(f) - 1.0)
             outside = max(outside, abs(cell_fn(tab, 6.5 * z1 / abs(z1), z2)))
         rep.check("floating point", "charge one: |F(u z_1, u z_2) - u F(z_1, z_2)| <= 1e-12 at 2000 random points",
                   err_charge <= 1e-12)
         rep.check("floating point", "|F| <= 1 at the same random points, and F = 0 for |z_1| >= 6",
-                  err_fft <= 0 and outside == 0)
+                  excess <= 0 and outside == 0)
     rep.section("The reflected partner")
     rep.info("  g_tig(z_1, z_2) = f_tig(-z_1, z_2) replaces w by -w, i.e. multiplies the coefficient of the")
     rep.info("  harmonic m = l - 17 by (-1)^m; it has the same supremum norm (the modulus at a given point can")

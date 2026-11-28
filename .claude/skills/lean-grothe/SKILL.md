@@ -134,8 +134,8 @@ version.
   `docs/LEAN_DETAILS.md` in the same PR, until `scripts/check_constants.py` passes.
 - `README.md` is not edited by ordinary PRs (a wrong number is corrected in place).
 - Never write counts of axioms or of native facts. Documents describe the current state: no errata, no "v2".
-- On Haagerup: "K is strictly below Haagerup's value 1/γ†, resolving this conjecture of Haagerup". Never
-  "refutes"; credit Haagerup only. Heilman–Jones–Malavolta and Guo–Fang–Lu are prior work that the repository cites.
+- On Haagerup: "K is strictly below Haagerup's value 1/γ†". Never "Haagerup's conjecture" or "conjecture of
+  Haagerup" (he called 1/γ† "a perhaps more plausible candidate"), never "refutes"; credit Haagerup only. Heilman–Jones–Malavolta and Guo–Fang–Lu are prior work that the repository cites.
 - Generated `.lean` files are reproducible byte for byte from `data/` with their generator; change the inputs,
   never the output. Inputs never live only in `/tmp` or a scratchpad.
 - Research ledgers (`research/*/STATUS.md`) are books of the current state, edited in place; history goes under

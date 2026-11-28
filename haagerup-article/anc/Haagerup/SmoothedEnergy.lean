@@ -1,9 +1,21 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.CellOverlapCore
 import HaagerupKernel.SmoothedStages
 
+/-!
+# The energies of the smoothed map: from the outer sum to one term of the energy
+
+Step (5) of Appendix A.4 (the energies of the smoothed map) of the article. The outer sum `𝒯` of step (4) is known
+through an integer dot product with an error bound at scale `2⁻⁸⁰⁰`, for the real and for the imaginary part.
+`energyBox` divides by `2⁵¹²` with outward rounding (scale `2⁻²⁸⁸`), squares and adds (scale `2⁻⁵⁷⁶`), multiplies by
+the product of binomial coefficients and divides by `(k + 1) * 2⁴⁴⁸`; `energyBox_sound` states that the result is an
+interval at scale `2⁻¹²⁸` which contains the term `binom * ‖𝒯‖² / (k + 1)` of the energy formula (A.5).
+-/
 
 set_option warningAsError true
-set_option maxRecDepth 4096
 set_option exponentiation.threshold 2048
 
 namespace Haagerup
@@ -19,6 +31,9 @@ private lemma shrinkDot {x : ℝ} {dot err : ℤ}
   exact ⟨ediv_le_of_mul hp (by rw [hs, Int.cast_sub]; linarith),
     le_neg_ediv_neg_of_mul hp (by rw [hs, Int.cast_add]; linarith)⟩
 
+/-- The interval of step (5) of Appendix A.4 for one term of the energy formula (A.5). The integers `r ± e` and
+`i ± f` enclose the real and the imaginary part of a complex number `z` at scale `2⁻⁸⁰⁰`; the result is an interval at
+scale `2⁻¹²⁸` for `binom * ‖z‖² / (k + 1)` (`energyBox_sound`). -/
 def energyBox (k binom : Nat) (r e i f : Int) : Ival :=
   let cr := ivDivPosL (r-e,r+e) sh512
   let ci := ivDivPosL (i-f,i+f) sh512
@@ -28,6 +43,8 @@ def energyBox (k binom : Nat) (r e i f : Int) : Ival :=
     (Int.ofNat (k+1)*sh448)
   ⟨v.1,v.2⟩
 
+/-- If `|Re z * 2⁸⁰⁰ - r| ≤ e` and `|Im z * 2⁸⁰⁰ - i| ≤ f`, then `energyBox k b r e i f` contains
+`b * ‖z‖² / (k + 1)`. -/
 theorem energyBox_sound {z : ℂ} (k b : ℕ) {r e i f : ℤ}
     (hr : |z.re * (2:ℝ)^800 - (r:ℝ)| ≤ (e:ℝ))
     (hi : |z.im * (2:ℝ)^800 - (i:ℝ)| ≤ (f:ℝ)) :

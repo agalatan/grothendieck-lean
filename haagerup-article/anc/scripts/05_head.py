@@ -11,7 +11,9 @@ Lean       : `Haagerup.head_sum_ok` (HeadCheck.lean) with `Haagerup.head_residua
              in fixed-point arithmetic at scale 2^-80 with a rounding budget; here the arithmetic is exact, so the
              enclosure below is slightly tighter than what Lean certifies, and the two need not agree digit by
              digit.
-Runtime    : about 40 seconds.
+Runtime    : about 20 to 40 seconds.
+Prints     : per channel h_0, sum |h_k| and D_250 at the midpoints; the enclosure of H_0, of sum |H_k| and of
+             the quantity compared with the head cap; the largest coefficients of the mixture.
 
 Inputs: the certified intervals of Haagerup/Data/OverlapData.lean (mu_n of the reflected pair, the energies
 E(d1, d2) of the smoothed map) and Haagerup/Parameters.lean.  The series are formed by `common.channel_head`;
@@ -42,6 +44,12 @@ def main() -> int:
     total = sum(b for _, b in en.values())
     rep.check("interval", f"the energies of the table sum to at most 1 (upper bound {dec_up(Fraction(total, common.SCALE), 12)})",
               total <= common.SCALE and all(a >= 0 for a, _ in en.values()))
+    # part (a) of the paper's computation "Head", on the integer endpoints (mu^-, mu^+) and (e^-, e^+)
+    rep.check("exact", "part (a) of the computation: mu^+ - mu^- <= 2^48, sum_n |mu_n^-| <= 2^128; "
+                       "e^- >= 0, e^+ - e^- <= 2^48, sum e^- <= 2^128",
+              all(b - a <= 1 << 48 for a, b in mu) and sum(abs(a) for a, _ in mu) <= common.SCALE
+              and all(a >= 0 and b - a <= 1 << 48 for a, b in en.values())
+              and sum(a for a, _ in en.values()) <= common.SCALE)
 
     rep.section("Per channel, at the midpoints of the intervals (exact arithmetic on the midpoints)")
     rep.info("  p   h_0                      sum_{k=1..250}|h_k|       D_250 = h_0 - sum       1/D_250")
@@ -49,7 +57,8 @@ def main() -> int:
         h = [v for v, _ in common.channel_head(p, "midpoint")]
         s = sum(abs(x) for x in h[1:])
         d = h[0] - s
-        rep.info(f"  {p}   {dec(h[0], 18):>22}   {dec(s, 18):>22}   {dec(d, 12):>16}   {dec(1 / d, 6):>10}")
+        inv = dec(1 / d, 6) if d > 0 else "-"
+        rep.info(f"  {p}   {dec(h[0], 18):>22}   {dec(s, 18):>22}   {dec(d, 12):>16}   {inv:>10}")
     rep.info(f"  (channel 2 alone has D_250 < 0; its weight is {sci(w[2], 3)}.)")
 
     rep.section("The mixture H_k = sum_p w_p h_k^(p), interval arithmetic with exact endpoints")
