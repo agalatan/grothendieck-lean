@@ -1,6 +1,7 @@
 """Retained six-sector witness using two prices and a shared odd response. Agent-ID: codex-a7c4."""
 import importlib.util
 import json
+import re
 import sys
 from fractions import Fraction as Q
 from functools import cache
@@ -17,9 +18,43 @@ THETA = (P1-ODD)/(P0-ODD)
 EXTENSION_LOW = Q('.826')
 INNER_LEFT, INNER_RIGHT = Q('.1'), Q(27)
 HARMONIC_THETA = P0*(P1-ODD)/(P1*(P0-ODD))
-# Additional published rows of 11.49 and 11.62 below U0.
-EXTENDED_CONTENT = base.CONTENT + tuple((Q(u),Q(g)) for u,g in
-    [('.008','.049'),('.015','.0467'),('.0375','.0346'),('.042','.0331')])
+
+
+def read_extended_content(repo):
+    """Read the published lower energies and rounded score bounds in 11.49 and 11.62."""
+    src = repo/'research/conjecture-K/sources'
+    legacy = src/'received-2026-11-15-tilted-sector/deficit_structure_refine_results.txt'
+    records = [json.loads(line) for line in legacy.read_text().splitlines()]
+    selected = [r for r in records if r.get('tag') == '015']
+    base.require(len(selected) == 1, 'missing or duplicate 11.49 score row')
+    row = selected[0]
+    lo, hi = map(Q, row['u'])
+    gamma = Q(row['rounded_content_coefficient'])
+    base.require(row['passed'] is True and lo == Q('.015') and hi == base.U0
+                 and 0 < Q(row['content_coefficient']) <= gamma, 'invalid 11.49 score row')
+
+    # The 11.62 proof publishes exact fractions, matching decimals, and a directed
+    # angular upper bound in the four-column table of section 1.
+    proof = (src/'ab-sector-2026-11-15-codex-91d4/route2/a_content/A_CONTENT_PROOF.md').read_text()
+    upper = re.search(r'lower endpoint and `([\d/]+)`', proof)
+    base.require(upper is not None and Q(upper[1]) == base.U0, 'invalid 11.62 energy domain')
+    wanted = {Q('.008'), Q('.0375'), Q('.042')}
+    rows = {}
+    table_row = r'^\| `([\d/]+)=(\.[\d]+)` \| `([\d/]+)=(\.[\d]+)` \| `[\d/]+` \| `(\.[\d]+)` \|$'
+    for fields in re.findall(table_row, proof, re.MULTILINE):
+        energy, energy_decimal, coefficient, coefficient_decimal, angular = map(Q, fields)
+        if energy in wanted:
+            base.require(energy not in rows and energy == energy_decimal
+                         and coefficient == coefficient_decimal and 0 < angular <= coefficient,
+                         'invalid 11.62 score row')
+            rows[energy] = coefficient
+    base.require(rows.keys() == wanted, 'missing 11.62 score row')
+    return base.CONTENT + tuple(sorted([(lo, gamma), *rows.items()]))
+
+
+# Default rows are also consumed by the weighted shoulder.
+EXTENDED_CONTENT = read_extended_content(HERE.parents[3])
+
 
 def add_stein_rows(repo,nodes):
     old = json.loads((HERE/'duals.json').read_bytes())
@@ -37,11 +72,11 @@ def add_stein_rows(repo,nodes):
     base.require(not raw.check_stein_node(damaged,knots,caps),'accepted corrupt supplementary Stein row')
     return augmented
 
-def prove(polys,nodes,lower=LOW,prices=(P0,P1),extension=False):
+def prove(polys,nodes,lower=LOW,prices=(P0,P1),extension=False,repo=None):
     high = LOW if extension else HIGH
     if extension:
         base.require(lower == EXTENSION_LOW, 'wrong extension amplitude')
-    content = EXTENDED_CONTENT if extension else base.CONTENT
+    content = read_extended_content(repo or HERE.parents[3]) if extension else base.CONTENT
     balanced = HARMONIC_THETA if extension else THETA
     clearance = Q(1,10**8 if extension else 10**6)
     H=(base.PI_HI/4-lower**2)/P0**2
@@ -136,15 +171,26 @@ def prove(polys,nodes,lower=LOW,prices=(P0,P1),extension=False):
 def check_outer_shapes(repo):
     adaptive=base.load('outer_shapes',HERE.parent/'uncapped-six-sector-codex-a7c4/adaptive.py')
     source=adaptive.fixed.inputs(repo)
-    for mixed,shape,slabs,filename,high,expected in [
-        (True,INNER_LEFT,adaptive.LOW,'adaptive-low.json',Q('.833'),372985),
-        (False,INNER_RIGHT,adaptive.REGIONS,'adaptive.json',Q('.8393'),14774073),
+    outer = []
+    for mixed,slabs,filename,high,expected in [
+        (True,adaptive.LOW,'adaptive-low.json',Q('.833'),372985),
+        (False,adaptive.REGIONS,'adaptive.json',Q('.8393'),14774073),
     ]:
-        index=next(i for i,slab in enumerate(slabs) if tuple(map(Q,slab))==(EXTENSION_LOW,shape))
+        matches = [i for i,slab in enumerate(slabs) if Q(slab[0]) == EXTENSION_LOW]
+        base.require(len(matches) == 1, 'missing or duplicate exterior amplitude')
+        index = matches[0]
+        outer.append(adaptive.shape_interval(slabs[index], mixed))
         base.require(EXTENSION_LOW<=LOW<=high, 'outer certificate does not span extension')
         data=json.loads((adaptive.HERE/filename).read_bytes())
         _,gap=adaptive.run(source,data[index],slabs[index],mixed)
         base.require(gap>Q(expected,10**12), 'outer shape clearance')
+    verify_shape_partition(outer[0], (INNER_LEFT, INNER_RIGHT), outer[1])
+
+
+def verify_shape_partition(low, middle, high):
+    base.require(low[0] == 0 and low[1] == middle[0] and middle[1] == high[0]
+                 and high[1] == 42 and all(a < b for a,b in (low,middle,high)),
+                 'extension shape intervals do not partition [0,42]')
 
 if __name__=='__main__':
     repo=Path(sys.argv[1]).resolve() if len(sys.argv)>1 else HERE.parents[3]
@@ -163,7 +209,7 @@ if __name__=='__main__':
     print('Single-price cover fails and unsupported price selection is rejected.')
 
     new_nodes=add_stein_rows(repo,nodes)
-    count,spare=prove(polys,new_nodes,lower=EXTENSION_LOW,extension=True)
+    count,spare=prove(polys,new_nodes,lower=EXTENSION_LOW,extension=True,repo=repo)
     base.require(spare>Q(1,10**8),'middle shape clearance')
     check_outer_shapes(repo)
     print(f'{count} middle-shape cells; physical clearance > {spare*10**12//1}/10^12.')
@@ -173,7 +219,7 @@ if __name__=='__main__':
         subset=dict(new_nodes)
         subset[energy]=new_nodes[energy][:i]+new_nodes[energy][i+1:]
         try:
-            prove(polys,subset,lower=EXTENSION_LOW,extension=True)
+            prove(polys,subset,lower=EXTENSION_LOW,extension=True,repo=repo)
         except ValueError as error:
             base.require(str(error).startswith('unproved shared-response cell'),'wrong missing-data control')
         else:
