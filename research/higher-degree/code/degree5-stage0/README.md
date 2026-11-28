@@ -22,6 +22,7 @@ scipy 1.18.1, clarabel 0.11.1, highspy 1.16.0). The raw outputs are in the hando
 | `a/run_task.sh`, `a/mk_tasks.sh`, `a/mk_band_tasks.py`, `a/games.txt` | task lists (`xargs -P`) |
 | `a/prof_cell.py` | profile of one oracle point of E3 (conic solve against the quadrature of Ψ₅), for the time profile of the report |
 | `a_table.py` | the tables of part (a) from the result files |
+| `a_transport.py` | transport of the stored rows of one game in t (exact rationals): the largest over t of the minimum of the stored rows' scores (`python3 -I a_transport.py results/a gA`) |
 
 ```sh
 cd a
@@ -61,7 +62,9 @@ Not the whole task list: the runs were cut to what the verdict needs (report §7
 exist), and E3 at t = 0, 0.05 for gA, g84, g83 and at t = 0.3, 0.4, 0.55 for gA (`a/tasks_final.txt`,
 `a/tasks_final2.txt`). The cell gA, E3, t = 0.25 lost its result file (report §7); `results/a/gA__E3_KOUL3__0.25.json`
 is rebuilt from its log by hand and marked so. Part (b): `b_all.sh` for gC, gA, gA1, gA2, g84, g83, and `b_game.sh g80
-0.80 0.1364 10000/14025`; gA1 and gA2 stopped after their first rows, the band tables of all games stopped part-way.
+0.80 0.1364 10000/14025`; gA1 and gA2 stopped after their first rows, the band tables of all games stopped part-way. After the review of PR #817 one
+gA2 point was computed on yo: `D5_E1=0.848 D5_ETA=0.2795 python run_sp2_line.py 7 sp2_7.json 0.1 <sigma*>` in a copy of
+`../degree5-gate/pipeline/gate/` with `results/b/gA2/rows5.lines` (→ `results/b/gA2/sp2_7.json`).
 
 ## Results kept here
 

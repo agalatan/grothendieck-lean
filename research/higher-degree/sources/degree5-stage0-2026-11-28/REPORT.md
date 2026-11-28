@@ -8,15 +8,17 @@ a usage limit at 01:35; the second took the runs over, cut them to what the verd
 
 ## 0. Summary and verdict
 
-- **Verdict under the stop rule of #751, as written: degree 5 does not continue.** No game of the list of #751 (cubic
-  weight 0.83–0.849) has a quintic share below 0.35 on the band. At t = 0.80, the lowest band row and the row where
-  each game's share is smallest on the band, the shares are 0.522 (g83), 0.673 (g84), 0.842 (gA); they grow with t and
-  pass 1 at t = 0.875 (g83), 0.845 (g84) and by 0.84 (gA). The share is measured on explicit one-spike responses and
-  contains no radius, so no assumed quintic radius can lower it (§6). The second condition of the rule fails for every
-  listed game, so the rule closes degree 5 whatever part (a) gives.
+- **Verdict under the stop rule of #751, as written: degree 5 does not continue.** Each of the five games of the list of #751
+  (cubic weight 0.83–0.849) has an in-band one-spike point with quintic share above 0.35: κ_h = 0.522 (g83), 0.673
+  (g84), 0.820 (gA2), 0.842 (gA), all at t = 0.80, and 1.314 (gA1) at t = 0.84 (§5, witness table). The gate was run in
+  full for g83, g84 and gA, on 4 rows for gA1, and at one point for gA2 (computed after review). The share is measured
+  on explicit one-spike responses and contains no radius, so no assumed quintic radius can lower it (§6). Condition
+  (ii) of the rule fails for every listed game, so the rule closes degree 5 whatever part (a) gives.
 - **Part (a) alone would have passed** (§4). In the class E3 (moments, the radius table of 114/125, the first- and third-order
   antiholomorphic identities) the best rows found for the optimum gA are at most 0.7070140 on the eight sampled t in
-  [0, 0.55] (the worst at t = 0.05), room 5.9·10⁻³ at 1/1.4027, with dual gaps ≤ 3·10⁻⁶ against the laws found; g84
+  [0, 0.55] (the worst at t = 0.05), room 5.9·10⁻³ at 1/1.4027, with printed bundle gaps ≤ 3·10⁻⁶ (§2.1 says what they are and are
+  not); transporting the seven stored rows of gA in t gives 0.7085202 as the largest value over all t in [0, 0.55]
+  (room 4.4·10⁻³, §4); g84
   and g83 have rooms ≥ 1.36·10⁻² and 2.19·10⁻² on the t computed.
   The plain class of the record (moments + radius 2287/2500) exceeds every target by up to 2.4·10⁻², as before. So the
   small-t obstruction of ledger 4.54 comes from the law class; the obstruction that remains is the sector one.
@@ -77,8 +79,14 @@ Two sides are computed for every (game, t, class), by `CODE/a/rows0.py`:
   with weights λ on the pool, every p with |p − p̂|∞ ≤ 3 has max_i f_i(p) ≥ Σλ_i f_i(p̂) − 3|Σλ_i∇f_i(p̂)|₁
   (`CODE/a/s0core.py`, `master`). The **gap** of a cell is the row value minus this bound.
 
-So a cell "v (gap g)" means: the row found has value v in the class, and no row of the type of ledger 4.1 with
-|p − p̂|∞ ≤ 3 has a value below v − g against the laws found. This replaces the trust-box master and the local Stein
+**What the printed gap is, and is not** (corrected after codex-a7c4's review of PR #817). Each iteration k of the
+bundle (`CODE/a/s0core.py`, lines 103–113) gives a bound lb_k valid on the box |p − p̂_k|∞ ≤ 3 around that iteration's
+master point p̂_k; the bundle keeps max_k lb_k over different centres and reports the best primal row, which need not be
+the centre of the winning bound, and the centres are not recorded. So a cell "v (gap g)" means only: the row found has
+value v in the class, and at some iteration k no row within 3 of the (unrecorded) centre p̂_k has a value below v − g
+against the laws found by then. **The printed gap is not a certificate for a neighbourhood of the printed row.** Since
+every row found has |p|∞ ≤ 0.53 and the steps between iterations are small, the boxes overlap on most of the rows in
+play, but this was not checked. The stored primal values v can still be compared, and they are what the tables use. This replaces the trust-box master and the local Stein
 oracle of the run of 25–26 November; "global" in this report means exactly this (the inner supremum over a fixed grid
 of the whole class, and a master without trust box). What stays numerical: the grids (atoms, (σ, ν, s)), the
 quadrature of Ψ₅ (40 × 8 Gauss–Legendre nodes in |z|, 128 angles), floating point, and the finite family of 27 hat
@@ -150,7 +158,7 @@ B2, last column).
 | gC θ (4.16: −0.037 at 0.70, −0.091 at the peak, −0.20 at 0.88; shells ≤ 0.16) | −0.037 (0.70), −0.091 (0.85), −0.203 (0.88); κ_h ≤ 0.163 | 4.16 | reproduced (0.163 against "at most 0.16": rounding of the record) |
 | gA Gaussian rows, 20 rows | largest difference 1.5·10⁻¹⁰ | `../../code/degree5-gate/results/gA/rows_all.lines` | reproduced |
 | gA quintic share / band minimum, row 0.80 | 0.841627 / 0.01816 | 0.841627 / 0.01816 | reproduced |
-| gA θ on 0.82–0.875 (4.54: +0.009 to +0.075) and κ_h from 0.82 on (1.04–1.68) | θ +0.044, +0.055, +0.069, +0.069 and κ_h 1.327, 1.440, 1.518, 1.526 at 0.84, 0.845, 0.865, 0.87 | 4.54 | consistent on the rows computed (4 of the 9 rows 0.82–0.875; the others were stopped, §7) |
+| gA θ on 0.82–0.875 (4.54: +0.009 to +0.075) and κ_h from 0.82 on (1.04–1.68) | θ +0.009 to +0.075 and κ_h 1.042 to 1.681 on 0.82–0.87; at 0.875 θ +0.007, κ_h 0.945 (Table B) | 4.54 | consistent on 0.82–0.87; at 0.875 the share is below the record's lower end 1.04 (unconverged Gaussian row, maximiser at c = 1, §5) |
 | gA plain class 2287/2500, t = 0.25 | 0.7366375 (gap −8·10⁻¹⁰) | 0.7364982 (4.54) | **not to the digit**: 1.4·10⁻⁴ higher now. The new oracle is global on its grid, the record's was local; higher is the expected direction (a better law found). No conclusion changes |
 | gC plain class 2287/2500, t = 0.25 | 0.6816657 | 0.6815588 (first worker's reading of the record) | not to the digit: 1.1·10⁻⁴ higher, same reason |
 | plain class through the LP code and through the conic code (gA, t = 0.25) | 0.7366375 and 0.7366741 | — | agree to 3.7·10⁻⁵ (different atom grids) |
@@ -197,11 +205,16 @@ computed (stopped, §7). Targets: 1/1.4027 = 0.7129108.
   0.7014 at 0.55: the room is smallest at t = 0.05 (5.9·10⁻³) and the next smallest is 6.1·10⁻³ at 0.1. The E3 laws sit at
   s = 5.49–5.50 for t ≤ 0.3, the point where the radius table of 114/125 changes piece (11/2): **the radius input binds,
   so a part of the gain of E3 rests on the table of 114/125 (P + C, author only)**.
+- **Transport in t (N, exact rational arithmetic on the stored JSON decimals; `CODE/a_transport.py`; suggested by
+  codex-a7c4).** Only the constant t² − 2ℓt of a row depends on t, so the row stored at t_i with value v_i scores
+  v_i + t² − t_i² − 2ℓ_i(t − t_i) at any t (same laws, same oracle grid). The minimum over the seven stored E3 rows of gA
+  (t = 0, 0.05, 0.1, 0.2, 0.3, 0.4, 0.55; the recovered t = 0.25 cell excluded) has its largest value on [0, 0.55]
+  **0.7085201661 at t = 0.1497258386, room 0.0043906488 to 1/1.4027**. This covers every t in [0, 0.55] for these
+  seven rows, up to the numerical uncertainty of the inner maximisation over the class at each stored row.
 - E2 alone already gives room 2.4·10⁻³ at t = 0.1 and 0.25 for gA (t = 0 and 0.05 not computed in E2).
 - **What these numbers are.** Upper side: the best row found, evaluated over the class on a grid. Lower side: the dual
   bound over the laws found, for rows within |p − p̂|∞ ≤ 3. Neither is a certificate: the true supremum over the class
-  at the row found may exceed the grid value (finer grids raised the plain value by 3.7·10⁻⁵, §3), and the t not sampled
-  are not covered. With rooms of 5.9·10⁻³ and above, both effects would have to be a hundred times larger than measured
+  at the row found may exceed the grid value (finer grids raised the plain value by 3.7·10⁻⁵, §3), and the t not sampled are covered only through the transport above. With rooms of 5.9·10⁻³ and above, both effects would have to be a hundred times larger than measured
   to change the conclusion of part (a).
 - g80 has no part (a) cells (its queue was stopped, §7).
 
@@ -211,39 +224,64 @@ Full tables: `CODE/results/b_tables.md` (B1 controls; B2: θ, κ_h, A/B share, o
 points and σ\*²/ℓ² for every row computed; B3: the band table; B4: the radius-only bound of the quintic gain) and
 `CODE/results/b_groups.md` (the shell groups of κ_h).
 
-**Table B. The quintic share κ_h (gate points) and θ per row** (N; "—" = not computed in the time; gA1 and gA2 were
-stopped after their first rows, which agree with gA to 0.013 in κ_h: gA1 0.387, 0.761, 1.314, 1.687 at 0.70, 0.79,
-0.84, 0.865).
+**Table B. The quintic share κ_h (gate points) and θ per row**, every row saved in `CODE/results/b/<game>/sp2_<k>.json`
+(N; the B2 table of `CODE/results/b_tables.md`, 3 decimals). gA1 was stopped after 4 rows: κ_h 0.387, 0.761, 1.314, 1.687
+at t = 0.70, 0.79, 0.84, 0.865. gA2 had no gate in the run; one point was computed afterwards (below).
 
 | t | gC κ_h / θ | g80 κ_h / θ | g83 κ_h / θ | g84 κ_h / θ | gA κ_h / θ |
 |---|---|---|---|---|---|
 | 0.70 | 0.073 / −0.037 | 0.143 / −0.033 | 0.277 / −0.028 | 0.334 / −0.027 | 0.389 / −0.026 |
-| 0.76 | 0.093 / −0.045 | 0.190 / −0.040 | 0.396 / −0.033 | 0.493 / −0.031 | — |
-| 0.80 | 0.111 / −0.056 | 0.233 / −0.048 | 0.522 / −0.039 | 0.673 / −0.035 | 0.842 / −0.022 |
-| 0.82 | 0.121 / −0.065 | 0.259 / −0.055 | 0.611 / −0.042 | 0.808 / −0.029 | — |
+| 0.72 | 0.079 / −0.039 | 0.157 / −0.035 | 0.310 / −0.030 | 0.378 / −0.028 | 0.443 / −0.027 |
+| 0.74 | 0.086 / −0.042 | 0.173 / −0.037 | 0.349 / −0.031 | 0.430 / −0.030 | 0.509 / −0.028 |
+| 0.76 | 0.093 / −0.045 | 0.190 / −0.040 | 0.396 / −0.033 | 0.493 / −0.031 | 0.592 / −0.030 |
+| 0.78 | 0.102 / −0.050 | 0.210 / −0.043 | 0.453 / −0.035 | 0.572 / −0.033 | 0.699 / −0.031 |
+| 0.79 | 0.106 / −0.052 | 0.221 / −0.045 | 0.485 / −0.037 | 0.619 / −0.034 | 0.766 / −0.032 |
+| 0.8 | 0.111 / −0.056 | 0.233 / −0.048 | 0.522 / −0.039 | 0.673 / −0.035 | 0.842 / −0.022 |
+| 0.81 | 0.116 / −0.060 | 0.245 / −0.051 | 0.563 / −0.040 | 0.735 / −0.037 | 0.932 / −0.007 |
+| 0.82 | 0.121 / −0.065 | 0.259 / −0.055 | 0.611 / −0.042 | 0.808 / −0.029 | 1.042 / +0.009 |
+| 0.83 | 0.127 / −0.072 | 0.274 / −0.060 | 0.664 / −0.045 | 0.895 / −0.014 | 1.174 / +0.026 |
 | 0.84 | 0.133 / −0.080 | 0.290 / −0.066 | 0.726 / −0.048 | 0.993 / +0.002 | 1.327 / +0.044 |
 | 0.845 | 0.136 / −0.085 | 0.299 / −0.070 | 0.755 / −0.042 | 1.048 / +0.010 | 1.440 / +0.055 |
-| 0.85 | 0.139 / −0.091 | 0.308 / −0.074 | 0.796 / −0.034 | 1.124 / +0.020 | — |
-| 0.86 | 0.146 / −0.108 | 0.328 / −0.085 | — | — | — |
+| 0.85 | 0.139 / −0.091 | 0.308 / −0.074 | 0.796 / −0.034 | 1.124 / +0.020 | 1.552 / +0.065 |
+| 0.855 | 0.143 / −0.099 | 0.317 / −0.079 | 0.836 / −0.027 | 1.192 / +0.029 | 1.681 / +0.075 |
+| 0.86 | 0.146 / −0.108 | 0.328 / −0.085 | 0.878 / −0.019 | 1.269 / +0.038 | 1.677 / +0.075 |
 | 0.865 | 0.151 / −0.121 | 0.338 / −0.093 | 0.925 / −0.011 | 1.359 / +0.047 | 1.518 / +0.069 |
 | 0.87 | 0.154 / −0.138 | 0.350 / −0.104 | 0.980 / −0.002 | 1.461 / +0.058 | 1.526 / +0.069 |
-| 0.875 | 0.159 / −0.162 | 0.362 / −0.118 | 1.026 / +0.005 | 1.557 / +0.066 | — |
-| 0.88 | 0.163 / −0.203 | 0.373 / −0.140 | 1.063 / +0.011 | 1.627 / +0.073 | — |
-| 0.886 | 0.154 / −0.137 | 0.374 / −0.106 | — | — | — |
+| 0.875 | 0.159 / −0.162 | 0.362 / −0.118 | 1.026 / +0.005 | 1.557 / +0.066 | 0.945 / +0.007 |
+| 0.88 | 0.163 / −0.203 | 0.373 / −0.140 | 1.063 / +0.011 | 1.627 / +0.073 | 0.803 / −0.016 |
+| 0.886 | 0.154 / −0.137 | 0.374 / −0.106 | 0.841 / −0.022 | 0.652 / −0.042 | 0.528 / −0.057 |
 
-The gA rows 0.865 and 0.87 are the unconverged Gaussian rows of 4.54 (σ\* = 0); their values are quoted as computed.
+**The shares are not monotone in t, and the table claims no trend.** For gA κ_h passes 1 at t = 0.82, peaks at 1.681
+(0.855) and falls to 0.945 (0.875), 0.803 (0.88), 0.528 (0.886); for g84 and g83 it falls at t = 0.886 (0.652, 0.841). On
+gA from t = 0.865 on, and on every game at t = 0.886, the maximising coupling is c = 1, not c = 0.1, and the Gaussian rows
+of gA at t ≥ 0.865 are the unconverged rows of 4.54 (σ\* = 0 at 0.886; the spike grid is then σ ∈ {0.03, 0.06, 0.1,
+0.16}). So the rows above about 0.86 are on a different grid and partly on unconverged rows; the verdict uses none of
+them.
+
+**One witnessed failure per listed game** (κ_h > 0.35 at one in-band gate point, the record's definition; N):
+
+| game | t | point (c, σ) | κ_h | file |
+|---|---|---|---|---|
+| g83 | 0.80 | (0.1, σ\* = 0.31601) | 0.52180138 | `CODE/results/b/g83/sp2_7.json` |
+| g84 | 0.80 | (0.1, σ\* = 0.31987) | 0.67300020 | `CODE/results/b/g84/sp2_7.json` |
+| gA2 | 0.80 | (0.1, σ\* = 0.32294) | 0.82041949 | `CODE/results/b/gA2/sp2_7.json` |
+| gA1 | 0.84 | (0.1, σ\* = 0.23953) | 1.31401555 | `CODE/results/b/gA1/sp2_11.json` |
+| gA | 0.80 | (0.1, σ\* = 0.32344) | 0.84160921 | `CODE/results/b/gA/sp2_7.json` |
+
+The gA2 point was computed after the review of PR #817, on yo (one core, 36 s), with the unchanged `gate/spike2.py` at
+the gA2 row t = 0.80 of `CODE/results/b/gA2/rows_all.lines` (D5_E1 = 0.848, D5_ETA = 0.2795): θ at that point
+−0.0255, groups H₂,₂ 0.489, H₃,₁ 0.151, H₁,₁ 0.138, H₂,₀/H₀,₂ 0.042 of the deficit. It is one point, not a gate.
 Band table (room of 1/1.4025; 500/701 for gC): band minimum of θ_room at t = 0.80 / 0.82: gC 0.495 / 0.785; g80
 0.288 / 0.454 (then 0.829 at 0.84, 1.102 at 0.845); g83 0.092 / 0.125; g84 0.049 / 0.052; gA 0.018 / none.
 
-**What makes up the share** (`CODE/results/b_groups.md`; at the maximising point, which is always c = 0.1, σ = σ\*):
+**What makes up the share** (`CODE/results/b_groups.md`; at the maximising point; on the rows 0.70–0.86 shown there this is c = 0.1, σ = σ\*):
 H₂,₂ takes about 60 % of κ_h, H₃,₁ about 18 %, H₁,₁ about 17 %, H₂,₀/H₀,₂ about 5 %; for gA at t = 0.80:
-0.502 + 0.155 + 0.142 + 0.043. **The maximiser sits at the edge c = 0.1 of the grid of spike couplings**, so the largest
-share over all c is at least the value shown: the tabulated shares are lower estimates, which only strengthens the
-verdict.
+0.502 + 0.155 + 0.142 + 0.043. On those rows **the maximiser sits at the edge c = 0.1 of the grid of spike couplings**; every tabulated share
+is a value at an explicit point, hence a lower estimate of the largest share over the points.
 
 **The share scales with the quintic weight.** At t = 0.80: η = 0.078, 0.136, 0.224, 0.255, 0.283 give κ_h = 0.111,
 0.233, 0.522, 0.673, 0.842. By linear interpolation in η the share 0.35 is reached at t = 0.80 near η ≈ 0.17
-(ε ≈ 0.81; the cap-0.81 game of 4.53 had 0.31 there), and on the whole band 0.70–0.886 only for η ≲ 0.13.
+(ε ≈ 0.81; the cap-0.81 game of 4.53 had 0.31 there), and on all rows 0.70–0.886 of g80 (η = 0.136) the largest is 0.374.
 
 ## 6. The two errors of the brief
 
@@ -300,16 +338,18 @@ missing.
 The rule needs, for one game, (i) rows below 1/1.4027 = 0.7129108 on all of [0, 0.55] in a class whose constraints are
 proved or look provable, and (ii) a quintic share below 0.35 at a quintic radius the evidence makes plausible.
 
-- **(ii) fails for every game of the list.** The smallest share of each on the band is at t = 0.80, the lower end:
-  0.522 (g83), 0.673 (g84), 0.842 (gA); gA1 and gA2 lie between g84 and gA (gA1: 0.761 at t = 0.79, against 0.619 for
-  g84 and 0.766 for gA). The share is a lower estimate (grid edge, §5) and contains no radius (§6), so no radius changes
-  this.
+- **(ii) fails for every game of the list**, each by one witnessed in-band point (§5): κ_h = 0.52180138 (g83,
+  t = 0.80), 0.67300020 (g84, 0.80), 0.82041949 (gA2, 0.80; one point computed after review), 1.31401555 (gA1, 0.84),
+  0.84160921 (gA, 0.80), all at c = 0.1, σ = σ\*, against 0.35. A share at an explicit point is a lower estimate of the
+  largest share, and it contains no radius (§6), so no radius changes this. No claim is made about the trend of the share
+  in t (§5).
 - **(i)** would hold in E3 on the sampled t for gA, g84 and g83 (largest rows 0.7070140, 0.6992993, 0.6910039, rooms
   ≥ 5.9·10⁻³ at 1/1.4027); the class rests on proved constraints (Lean, P + C) plus the radius table of 114/125
-  (P + C, author only). It fails in the plain class of the record. Since (ii) fails, (i) does not decide anything.
+  (P + C, author only); the transport of the seven stored gA rows gives at most 0.7085202 on all of [0, 0.55]
+  (room 4.4·10⁻³). It fails in the plain class of the record. Since (ii) fails, (i) does not decide anything.
 
 **Decision: degree 5 is closed for the games of #751; by the rule the effort goes to degree 7.** Deciding numbers:
-κ_h(t = 0.80) = 0.522, 0.673, 0.842 for g83, g84, gA, against 0.35.
+κ_h = 0.522, 0.673, 0.820, 0.842 at t = 0.80 for g83, g84, gA2, gA and 1.314 at t = 0.84 for gA1, against 0.35.
 
 ## 9. Not part of the stop rule: g80, and what could lower the quintic share
 
@@ -344,17 +384,21 @@ points, about an hour on 8 cores.
   1/1.4027 on the sampled t.* E3 = moments + the radius table of 114/125 + the first- and third-order antiholomorphic
   identities (27 hat tests) + the kernel moment facts of K 3.7; global oracle on a fixed grid, master without trust box.
   Largest rows found on the sampled t: gA 0.7070140 (t = 0.05; t ∈ {0, 0.05, 0.1, 0.2, 0.25, 0.3, 0.4, 0.55}),
-  g84 0.6992993, g83 0.6910039 (t ≤ 0.25); E2 at t = 0.1, 0.25: gA 0.7105116; dual gaps ≤ 3·10⁻⁶; the E3 laws sit at
+  g84 0.6992993, g83 0.6910039 (t ≤ 0.25); E2 at t = 0.1, 0.25: gA 0.7105116; printed bundle gaps ≤ 3·10⁻⁶ (not certificates for a neighbourhood of the row); transported over
+  all t ∈ [0, 0.55], the seven stored gA rows give at most 0.7085201661 (t = 0.1497, room 4.39·10⁻³); the E3 laws sit at
   the piece boundary s = 11/2 of the radius table. The plain class of the record exceeds every target by up to 2.4·10⁻² (gA, t = 0.25: 0.7366375, 1.4·10⁻⁴
   above the record's 0.7364982). E3 cuts the mass at U ≤ 10⁻³ from 12.2 % to about 1 %. | the games gA, g84, g83 (and
   E2/E3 at t = 0.1, 0.25 for all six listed games); sampled t only | **N** (research workers of claude-b9ee; author
   only) | STAGE0 §4.
-- **4.57** *Stage 0, part (b): the quintic shares of the games with ε = 0.83–0.8493 are 0.52–0.84 at t = 0.80 and pass 1
-  from t = 0.84–0.875; θ > 0 from t = 0.84 (g84, gA) and 0.875 (g83).* Controls: gC and gA reproduce 4.16 and 4.54
+- **4.57** *Stage 0, part (b): each of the five games with ε = 0.83–0.8493 has an in-band one-spike point with quintic
+  share above 0.35.* g83 0.522, g84 0.673, gA2 0.820, gA 0.842 at t = 0.80, gA1 1.314 at t = 0.84 (c = 0.1, σ = σ\*); the
+  gate was run in full for g83, g84, gA, on 4 rows for gA1, at one point for gA2. θ > 0 on some rows of g84, gA (from
+  t = 0.84 and 0.82) and g83 (0.875, 0.88). The shares are not monotone in t (gA: 1.68 at 0.855, 0.53 at 0.886, with the
+  maximiser at c = 1 above 0.86). Controls: gC and gA reproduce 4.16 and 4.54
   (rows to 1.5·10⁻¹⁰, shares to 10⁻⁶). The share contains no radius; any universal quintic radius is ≥ √π/2 (K 3.30 (a)).
   g80 (ε = 0.80, outside #751): θ ≤ 0 on all rows, κ_h 0.143–0.374, above 0.35 only on 0.87–0.886. | the pipeline of
-  D5GATE unchanged; maximisers at the edge c = 0.1 of the grid | **N** | STAGE0 §5, §6.
-- **4.58** *Decision of #751: degree 5 closed.* By the rule of #751, condition (ii) fails for every listed game. Not
+  D5GATE unchanged; maximisers at the edge c = 0.1 of the grid on the rows ≤ 0.86 | **N** | STAGE0 §5, §6.
+- **4.58** *Decision of #751: degree 5 closed.* By the rule of #751, condition (ii) fails for every listed game, each by one witnessed point. Not
   excluded: other sector decompositions (STAGE0 §9). | **N** | STAGE0 §8.
 
 with the sources line `STAGE0 | sources/degree5-stage0-2026-11-28/REPORT.md and code/degree5-stage0/: issue #751, Stage 0
