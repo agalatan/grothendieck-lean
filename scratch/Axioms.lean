@@ -286,6 +286,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
 #print axioms Grothe.LowerAnalytic.qf_nonneg_of_ldlOK
 #print axioms Grothe.LowerAnalytic.quartic_identity
+#print axioms Grothe.LowerAnalytic.quinticHybrid_eq_tail_add_quintic
+#print axioms Grothe.LowerAnalytic.quinticHybrid_le_retuned_profile
 #print axioms Grothe.LowerAnalytic.quinticPayoff_energy_envelope
 #print axioms Grothe.LowerAnalytic.quinticPayoff_eq_scaled_hat
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_centeredRadius_25373041
@@ -301,6 +303,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_tailWitnessCap
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_two_cubic_supports
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_visible_endpoint_885868_of_tailNodeCaps
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_retuned_hat
 #print axioms Grothe.LowerAnalytic.quinticPayoff_mass_envelope
 #print axioms Grothe.LowerAnalytic.quinticPayoff_projection_envelope
 #print axioms Grothe.LowerAnalytic.quinticScalarCap_of_payoff_le
@@ -313,14 +316,17 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.radiusRows_chain
 #print axioms Grothe.LowerAnalytic.radiusRows_ok
 #print axioms Grothe.LowerAnalytic.re_inner_cubic_subprojection
+#print axioms Grothe.LowerAnalytic.re_inner_quinticHybridWitness
 #print axioms Grothe.LowerAnalytic.re_inner_quinticWitness
 #print axioms Grothe.LowerAnalytic.re_inner_visibleDirection
+#print axioms Grothe.LowerAnalytic.re_pairVal_quinticHybridWitness
 #print axioms Grothe.LowerAnalytic.reductionHyp_of_nodeCaps
 #print axioms Grothe.LowerAnalytic.remoteCubic_le
 #print axioms Grothe.LowerAnalytic.remote_cubic_lift_of_couplings
 #print axioms Grothe.LowerAnalytic.remote_frame_cubic_lift
 #print axioms Grothe.LowerAnalytic.remote_frame_cubic_lift_unconditional
 #print axioms Grothe.LowerAnalytic.remote_frame_phase_support
+#print axioms Grothe.LowerAnalytic.retunedHybrid_transferInputs_of_profile
 #print axioms Grothe.LowerAnalytic.rotD_reW
 #print axioms Grothe.LowerAnalytic.rowOf_of_circular
 #print axioms Grothe.LowerAnalytic.rowSharedWith_frame
@@ -349,6 +355,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.tenTT_le_sixth
 #print axioms Grothe.LowerAnalytic.trace3_circular
 #print axioms Grothe.LowerAnalytic.trace4_circular
+#print axioms Grothe.LowerAnalytic.transferInputs_of_quinticHybrid
 #print axioms Grothe.LowerAnalytic.transferInputs_of_quinticPayoff
 #print axioms Grothe.LowerAnalytic.transferInputs_of_witnessCap
 #print axioms Grothe.LowerAnalytic.visibleDirection_mem
@@ -363,6 +370,7 @@ import Grothe
 #print axioms Grothe.Statement.bounds_bddBelow
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
+#print axioms Grothe.Statement.lower_14020236979_of_retunedHybrid
 #print axioms Grothe.Statement.lower_14023_of_quintic_largeAmplitude
 #print axioms Grothe.Statement.lower_14023_of_remaining_centeredRadius
 #print axioms Grothe.Statement.lower_of_quinticPayoff

@@ -3409,6 +3409,7 @@ import Grothe.LowerAnalytic.QuinticEllipse
 import Grothe.LowerAnalytic.QuinticEndpoint
 import Grothe.LowerAnalytic.QuinticPhaseAlignment
 import Grothe.LowerAnalytic.QuinticPhaseStability
+import Grothe.LowerAnalytic.QuinticHybridTransfer
 import Grothe.LowerAnalytic.QuinticRemoteSupport
 import Grothe.LowerAnalytic.QuinticSignedSupport
 import Grothe.LowerAnalytic.QuinticSmallAmplitude
