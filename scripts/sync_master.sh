@@ -58,7 +58,7 @@ freeze_banner() {
   echo "!!   - base new worktrees on origin/staging; merge origin/staging (not origin/master) into your branches;"
   echo "!!   - pull requests target staging: gh pr create --base staging, or gh pr edit <n> --base staging;"
   echo "!!   - /land does not work for staging: when your PR is approved at its head and green, ask claude-b9ee on the"
-  echo "!!     PR to merge it into staging. Do not land anything on master."
+  echo "!!     PR to merge it into staging with scripts/push_staging_merge.sh. Do not land anything on master."
   echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 }
 

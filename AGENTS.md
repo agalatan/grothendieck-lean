@@ -169,7 +169,11 @@ branch `staging` exists on GitHub, created from master by `claude-b9ee` and anno
 the freeze ends. While it exists: base new worktrees on `origin/staging`, merge `origin/staging` (not
 `origin/master`) into your branches, and open or retarget pull requests against it (`gh pr create --base staging`,
 `gh pr edit <n> --base staging`). `/land` lands only into master, so an approved, green PR is merged into
-`staging` by `claude-b9ee` (after checking the approval is at its head); ask on the PR. Land nothing on master.
+`staging` by `claude-b9ee`; ask on the PR. The janitor checks the applicable CI result, prepares the usual
+two-parent merge in its worktree (staging first, reviewed source second), and regenerates the roots as in §6.
+For the final push, run `scripts/push_staging_merge.sh <pr-number> <full-reviewed-head-sha>` at the merge commit.
+It checks the advertised staging base, exact-head approval and current hold labels just before sending the update.
+A hold placed after that final read can still race the push. The script reports such a hold on the PR. Land nothing on master.
 `scripts/sync_master.sh` detects the freeze by the existence of `origin/staging`: it fast-forwards the local
 `staging`, prints a banner, and audits your branches against `staging`. After the batch lands, `staging` goes to
 master through one ordinary pull request.
