@@ -6,7 +6,8 @@ Writes
   Grothe/LowerAnalytic/SixthMomentData.lean  (line majorants, scalar polynomials, covers)
 
 Usage:  python3 -I tools/gen_moment_certs.py [ARCHIVE_DIR]
-ARCHIVE_DIR defaults to handoff/lower-moments and must contain local/split-moment-parameters.json.
+By default the parameters come from data/lower-moments/split-moment-parameters.json.
+If ARCHIVE_DIR is supplied, read its local/split-moment-parameters.json instead.
 Every polynomial, Bernstein coefficient and cover is computed here in exact rational arithmetic
 (the subdivisions adaptively).  All covers are checked in Lean by `decide +kernel` (no `native_decide`).
 """
@@ -18,7 +19,10 @@ from math import comb
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ARCH = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'handoff' / 'lower-moments'
+if len(sys.argv) > 1:
+    PARAM_FILE = Path(sys.argv[1]).resolve() / 'local' / 'split-moment-parameters.json'
+else:
+    PARAM_FILE = ROOT / 'data' / 'lower-moments' / 'split-moment-parameters.json'
 OUT = ROOT / 'Grothe' / 'LowerAnalytic'
 
 C6 = Q(4045313, 100000)
@@ -132,7 +136,7 @@ def mat_lean(M):
     return "[" + ",\n    ".join(rows) + "]"
 
 # ================================================================ sixth moment data
-PARAMS = json.loads((ARCH / 'local' / 'split-moment-parameters.json').read_text())
+PARAMS = json.loads(PARAM_FILE.read_text())
 LINES = {k: tuple(Q(v) for v in PARAMS['lines'][k]) for k in ('a', 'u')}   # rational affine majorants
 THETA = Q(PARAMS['theta']); R0 = Q(PARAMS['r0']); assert Q(PARAMS['blend']) == 0
 Q0, Q2, T0 = Q(PARAMS['q0']), Q(PARAMS['q2']), Q(PARAMS['t0'])
