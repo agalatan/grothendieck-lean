@@ -1,0 +1,115 @@
+=== Exact Oscillation-Preserving Two-Step OU Cone Verification (zero floats, zero asserts) ===
+1. Symbolic IBP identities, boundary vanishing, K_{a,b} positivity & P_13 Bernstein (3 leaves): PASS
+2. Machin pi in [3.1415926535, 3.1415926536], c = sqrt(2/pi) in [0.7978845608, 0.7978845609]
+3. Centered rational envelopes |g_{k,l}(x) - c_{k,l}| <= A_{k,l} + B_{k,l}|x| (512 z-cells + exact tail):
+   (k=2, l=0): |c|=0.0000000000, A=0.2137132591, B=0.0000000000
+   (k=2, l=2): |c|=0.1110890086, A=0.2193110584, B=0.0000000000
+   (k=2, l=4): |c|=0.0765704269, A=0.2560944533, B=0.0000000000
+   (k=2, l=6): |c|=0.0000000000, A=0.3547509504, B=0.0035765109
+   (k=2, l=8): |c|=0.0000000000, A=0.9771512839, B=0.0496782412
+   (k=4, l=0): |c|=0.0000000000, A=0.2234802806, B=0.0000000000
+   (k=4, l=2): |c|=0.1064031557, A=0.2326466666, B=0.0000000000
+   (k=4, l=4): |c|=0.0617310226, A=0.2861360554, B=0.0000000000
+   (k=4, l=6): |c|=0.0000000000, A=0.4018899779, B=0.0044731124
+   (k=4, l=8): |c|=0.0000000000, A=1.1393815364, B=0.0596140183
+4. Whole-interval Bernstein certificate on y in [0, 8661/10000]:
+   R_* <= 21/20 = 1.0500000000  (was 86/25 = 3.44 in KSR; PASS in 1 Bernstein leaves)
+5. Certified explicit near-Gaussian sharp thresholds:
+   Real V_3(R^n) [STATUS.md 3.21 (e1)]:
+     C_{3/2,real} <= 1.2727427733
+     kappa_0 = 1/5900 = 0.0001694915 < 0.0001705753  (was 1/49000; 8.30x larger)
+     kappa_1 = 1/1475 = 0.0006779661 < 0.0006823015  (was 1/12250; 8.30x larger)
+   Complex H_{2,1}(C^n) [STATUS.md 3.18]:
+     C_{3/2,cplx} <= 2.8389961184
+     chi_0 = 1/8300 = 0.0001204819 < 0.0001211631  (was 1/72000; 8.67x larger)
+     chi_1 = 1/2075 = 0.0004819277 < 0.0004846524  (was 1/18000; 8.67x larger)
+     (Via U(1) transfer: chi_0 = 1/8850 < 0.0001137169, chi_1 = 1/2215 < 0.0004548677)
+ALL OSCILLATION-PRESERVING NEAR-GAUSSIAN CONE CHECKS PASSED.
+
+V_3 row  0  s in [     0,    2/5]  K=40  PASS  bound <= 0.7982422200
+V_3 row  1  s in [   2/5,   9/10]  K=40  PASS  bound <= 0.7985116300
+V_3 row  2  s in [  9/10,    3/2]  K=40  PASS  bound <= 0.7987069900
+V_3 row  3  s in [   3/2,   11/5]  K=40  PASS  bound <= 0.7987630000
+V_3 row  4  s in [  11/5,      3]  K=40  PASS  bound <= 0.7987342200
+V_3 row  5  s in [     3,      4]  K=40  PASS  bound <= 0.7986085200
+V_3 row  6  s in [     4,      5]  K=40  PASS  bound <= 0.7983140100
+V_3 row  7  s in [     5,   11/2]  K=40  PASS  bound <= 0.7978066100
+V_3 row  8  s in [  11/2,      6]  K=40  PASS  bound <= 0.7975227000
+V_3 row  9  s in [     6,   15/2]  K=40  PASS  bound <= 0.7973384500
+V_3 row 10  s in [  15/2,   19/2]  K=40  PASS  bound <= 0.7964445300
+V_3 row 11  s in [  19/2,     12]  K=40  PASS  bound <= 0.7950883700
+V_3 row 12  s in [    12,     15]  K=40  PASS  bound <= 0.7933802800
+V_3 row 13  s in [    15,     19]  K=40  PASS  bound <= 0.7913384100
+V_3 row 14  s in [    19,     24]  K=40  PASS  bound <= 0.7887412900
+V_3 row 15  s in [    24,     31]  K=40  PASS  bound <= 0.7855533800
+V_3 row 16  s in [    31,     39]  K=40  PASS  bound <= 0.7807081600
+V_3 row 17  s in [    39,     49]  K=40  PASS  bound <= 0.7750404400
+V_3 row 18  s in [    49,     61]  K=40  PASS  bound <= 0.7679021300
+V_3 row 19  s in [    61,     75]  K=40  PASS  bound <= 0.7589977300
+V_3 row 20  s in [    75,     90]  K=40  PASS  bound <= 0.7426660900
+[Sturm V_3] cert_v3_458.json: all 21 rows PASS, max <= 0.7987630000 <= 1997/2500; sharp [>=5] <= 0.7978066100 <= 19946/25000 < sqrt(2/pi); complex H_{2,1} <= 8873/10000 (sharp [>=10/3] <= 4431/5000) [23712 ms]
+V_5 row  0  s in [     0,    1/2]  K=51  PASS  bound <= 0.8093071700
+V_5 row  1  s in [   1/2,      2]  K=51  PASS  bound <= 0.8170583300
+V_5 row  2  s in [     2,      6]  K=51  PASS  bound <= 0.8313694900
+V_5 row  3  s in [     6,     15]  K=51  PASS  bound <= 0.8504956100
+V_5 row  4  s in [    15,     39]  K=51  PASS  bound <= 0.8766711000
+V_5 row  5  s in [    39,    120]  K=51  PASS  bound <= 0.9141925200
+V_5 row  6  s in [   120,    360]  K=51  PASS  bound <= 0.9455425100
+V_5 row  7  s in [   360,    900]  K=51  PASS  bound <= 0.9803527500
+V_5 row  8  s in [   900,   1800]  K=51  PASS  bound <= 0.9823791400
+V_5 row  9  s in [  1800,   3000]  K=51  PASS  bound <= 0.9824849600
+V_5 row 10  s in [  3000,   4650]  K=51  PASS  bound <= 0.9801315100
+H32 row  0  s in [     0,    1/2]  PASS  slice_real <= 0.8047250100
+H32 row  1  s in [   1/2,      2]  PASS  slice_real <= 0.8124607200
+H32 row  2  s in [     2,      6]  PASS  slice_real <= 0.8267616900
+H32 row  3  s in [     6,     15]  PASS  slice_real <= 0.8458963600
+H32 row  4  s in [    15,     39]  PASS  slice_real <= 0.8720710300
+[Sturm V_5] cert_v5_458.json: all 11 V_5 rows PASS, max <= 0.9824849600 <= 983/1000; H_{3,2} [0, 26] <= 97/100, global <= 999999/1000000 [6320 ms]
+
+[Bern V_3] row  0  [     0,    2/5]  PASS  leaves= 356  bound <= 0.7982422200
+[Bern V_3] row  1  [   2/5,   9/10]  PASS  leaves= 435  bound <= 0.7985116300
+[Bern V_3] row  2  [  9/10,    3/2]  PASS  leaves= 433  bound <= 0.7987069900
+[Bern V_3] row  3  [   3/2,   11/5]  PASS  leaves= 461  bound <= 0.7987630000
+[Bern V_3] row  4  [  11/5,      3]  PASS  leaves= 492  bound <= 0.7987342200
+[Bern V_3] row  5  [     3,      4]  PASS  leaves= 514  bound <= 0.7986085200
+[Bern V_3] row  6  [     4,      5]  PASS  leaves= 530  bound <= 0.7983140100
+[Bern V_3] row  7  [     5,   11/2]  PASS  leaves= 510  bound <= 0.7978066100
+[Bern V_3] row  8  [  11/2,      6]  PASS  leaves= 530  bound <= 0.7975227000
+[Bern V_3] row  9  [     6,   15/2]  PASS  leaves= 499  bound <= 0.7973384500
+[Bern V_3] row 10  [  15/2,   19/2]  PASS  leaves= 521  bound <= 0.7964445300
+[Bern V_3] row 11  [  19/2,     12]  PASS  leaves= 527  bound <= 0.7950883700
+[Bern V_3] row 12  [    12,     15]  PASS  leaves= 528  bound <= 0.7933802800
+[Bern V_3] row 13  [    15,     19]  PASS  leaves= 536  bound <= 0.7913384100
+[Bern V_3] row 14  [    19,     24]  PASS  leaves= 534  bound <= 0.7887412900
+[Bern V_3] row 15  [    24,     31]  PASS  leaves= 511  bound <= 0.7855533800
+[Bern V_3] row 16  [    31,     39]  PASS  leaves= 539  bound <= 0.7807081600
+[Bern V_3] row 17  [    39,     49]  PASS  leaves= 547  bound <= 0.7750404400
+[Bern V_3] row 18  [    49,     61]  PASS  leaves= 559  bound <= 0.7679021300
+[Bern V_3] row 19  [    61,     75]  PASS  leaves= 558  bound <= 0.7589977300
+[Bern V_3] row 20  [    75,     90]  PASS  leaves= 535  bound <= 0.7426660900
+[Bernstein + Symbolic 8-var] cert_v3_458.json (v3_enhanced): PASS (10658 Bernstein leaves, max_depth=10, 46663 ms)
+[Bern V_5] row  0  [     0,    1/2]  PASS  leaves= 337  bound <= 0.8093071700
+[Bern V_5] row  1  [   1/2,      2]  PASS  leaves= 332  bound <= 0.8170583300
+[Bern V_5] row  2  [     2,      6]  PASS  leaves= 329  bound <= 0.8313694900
+[Bern V_5] row  3  [     6,     15]  PASS  leaves= 334  bound <= 0.8504956100
+[Bern V_5] row  4  [    15,     39]  PASS  leaves= 323  bound <= 0.8766711000
+[Bern V_5] row  5  [    39,    120]  PASS  leaves= 270  bound <= 0.9141925200
+[Bern V_5] row  6  [   120,    360]  PASS  leaves= 284  bound <= 0.9455425100
+[Bern V_5] row  7  [   360,    900]  PASS  leaves= 289  bound <= 0.9803527500
+[Bern V_5] row  8  [   900,   1800]  PASS  leaves= 248  bound <= 0.9823791400
+[Bern V_5] row  9  [  1800,   3000]  PASS  leaves= 252  bound <= 0.9824849600
+[Bern V_5] row 10  [  3000,   4650]  PASS  leaves= 244  bound <= 0.9801315100
+[Bernstein + Symbolic 8-var] cert_v5_458.json (v5_tower): PASS (4922 Bernstein leaves, max_depth=15, 19877 ms)
+
+[Part 1] Enhanced V_3(R^n): E[nu^2], E[(eta-1)^3,4], op-norm (140 pts) & nodal (21 rows) across 7 tensors: PASS
+[Part 2] Fifth chaos V_5(R^n): L tau_1=8(tau_2-tau_1), a_k moments, 35 Br, 100 cones, 9 Frob & nodal (16 rows): PASS
+[Part 3] Complex quintic H_{3,2}(C^d): F_theta in V_5, kappa_4=(3/2)chi, E[F_theta^6]=(5/2)E|q|^6 (12 checks): PASS
+ALL EXACT IDENTITY CHECKS PASSED  [33301 ms, zero floats, zero asserts]
+
+[1] Zero-float & zero-assert AST audit across 5 stdlib scripts: PASS
+[2] Part I oscillation-preserving OU cone controls (2 checks): PASS
+[3] Part II enhanced V_3 & downstream controls (Sturm + Bernstein + 8-var): 100 checks ALL REJECTED
+[4] Part III V_5 & H_{3,2} controls (Sturm + Bernstein + 8-var): 46 checks ALL REJECTED
+ALL EXACT IDENTITY CHECKS PASSED  [19544 ms, zero floats, zero asserts]
+[5] Isolated `python3 -IB -O` CLI parity across all 4 verifiers: PASS
+ALL 157 ADVERSARIAL, AST & -O PARITY CONTROLS PASSED  [116779 ms, zero floats, zero asserts]
