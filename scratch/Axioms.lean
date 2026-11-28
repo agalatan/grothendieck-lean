@@ -110,6 +110,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
+#print axioms Grothe.LowerAnalytic.RealCubicCarrier.has_full_lift
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
 #print axioms Grothe.LowerAnalytic.SparseStein.actual_deductions
 #print axioms Grothe.LowerAnalytic.SparseStein.lower_of_nodeCaps
@@ -145,6 +146,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.capsRow11
 #print axioms Grothe.LowerAnalytic.capsRow12
 #print axioms Grothe.LowerAnalytic.capsRow13
+#print axioms Grothe.LowerAnalytic.centeredRadiusCarrier
 #print axioms Grothe.LowerAnalytic.chaos3_reW
 #print axioms Grothe.LowerAnalytic.chargeOne5_decomposition
 #print axioms Grothe.LowerAnalytic.chargeSplit_circular
@@ -160,6 +162,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.coverOK_sound
 #print axioms Grothe.LowerAnalytic.cubicFirstMomentRadius_93
 #print axioms Grothe.LowerAnalytic.cubicTrace_circular
+#print axioms Grothe.LowerAnalytic.cubic_energy_centeredRadius_ellipse
 #print axioms Grothe.LowerAnalytic.cubic_energy_ellipse_of_lift
 #print axioms Grothe.LowerAnalytic.cubic_lift_of_diffuse_couplings
 #print axioms Grothe.LowerAnalytic.cubic_subprojection_alignment_deficit
@@ -210,6 +213,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.hasLaw_finiteDiffuseCopy
 #print axioms Grothe.LowerAnalytic.hasLaw_unitLinearSample
 #print axioms Grothe.LowerAnalytic.hasLaw_unit_H10
+#print axioms Grothe.LowerAnalytic.has_full_centeredRadius_lift
 #print axioms Grothe.LowerAnalytic.identDistrib_neg_of_mem_H10
 #print axioms Grothe.LowerAnalytic.indep_blockLeft_blockRight
 #print axioms Grothe.LowerAnalytic.indep_visible_remoteCubic
@@ -261,6 +265,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.norm_starProjection_H21_le_93
 #print axioms Grothe.LowerAnalytic.norm_sub_finiteDiffuseCubic_sq
 #print axioms Grothe.LowerAnalytic.norm_visibleDirection_of_pos
+#print axioms Grothe.LowerAnalytic.phase_pair_abs_signed
 #print axioms Grothe.LowerAnalytic.phase_pair_ae_re_orthogonal
 #print axioms Grothe.LowerAnalytic.phase_pair_radial_square_le
 #print axioms Grothe.LowerAnalytic.phase_pair_support
@@ -278,6 +283,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.quartic_identity
 #print axioms Grothe.LowerAnalytic.quinticPayoff_energy_envelope
 #print axioms Grothe.LowerAnalytic.quinticPayoff_eq_scaled_hat
+#print axioms Grothe.LowerAnalytic.quinticPayoff_le_centeredRadius_25373041
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_cubic_energy_ellipse
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_cubic_radius_30629
 #print axioms Grothe.LowerAnalytic.quinticPayoff_le_of_elliptic_lift_29082
@@ -348,6 +354,7 @@ import Grothe
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
 #print axioms Grothe.Statement.lower_14023_of_quintic_largeAmplitude
+#print axioms Grothe.Statement.lower_14023_of_remaining_centeredRadius
 #print axioms Grothe.Statement.lower_of_quinticPayoff
 #print axioms Grothe.Statement.main_bounds
 #print axioms Grothe.Statement.sparse_stein_endpoint
