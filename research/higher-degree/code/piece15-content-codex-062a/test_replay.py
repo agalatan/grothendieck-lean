@@ -43,7 +43,7 @@ class WitnessTest(unittest.TestCase):
         cell = replay.bind_cells(self.cfg, self.weights)[0]
         rec = {k: cell[k] for k in ("kind", "u_idx", "u_lo", "u_hi", "t_lo", "chi_lo", "chi_hi")}
         rec.update(piece=cell["piece_idx"], row=cell["row_tag"], F_certified=cell["F_claimed"],
-                   worst_M_A=-0.01, worst_M_B=-0.01)
+                   worst_M_A=-0.01, worst_M_B=-0.01, g1_range_A=[-0.02, 0.10], g1_range_B=[-0.01, 0.10])
         digest = "a" * 64
         receipt = {"dat_sha256": digest, "status": "CERTIFIED", "cells": [rec]}
         with self.assertRaisesRegex(ValueError, "certificate input"):
@@ -51,6 +51,20 @@ class WitnessTest(unittest.TestCase):
         for field, value in [("kind", "INFEAS_R1"), ("u_hi", 0.5)]:
             with self.subTest(field=field), self.assertRaisesRegex(ValueError, "cell mismatch"):
                 replay.check_receipt({**receipt, "cells": [{**rec, field: value}]}, [cell], digest)
+
+        replay.check_receipt(receipt, [cell], digest)
+        for field in ("g1_range_A", "g1_range_B"):
+            for value in (None, [0.01, 0.10], [-1, 0.10], [-0.01, 1], [False, 0.10]):
+                with self.subTest(field=field, value=value), self.assertRaisesRegex(ValueError, field):
+                    replay.check_receipt({**receipt, "cells": [{**rec, field: value}]}, [cell], digest)
+
+    def test_gap_in_either_sector(self):
+        for sector in ("slicesA", "slicesB"):
+            cells = replay.bind_cells(self.cfg, copy.deepcopy(self.weights))
+            slices = cells[0][sector]
+            slices[1]["a_r"] = (slices[0]["b_r"] + slices[1]["b_r"]) / 2
+            with self.subTest(sector=sector), self.assertRaisesRegex(ValueError, "gap"):
+                replay.audit_tails(self.cfg, cells)
 
     def test_invalid_multiplier_on_either_sector(self):
         for sector in ("slicesA", "slicesB"):

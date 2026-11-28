@@ -81,8 +81,11 @@ def audit_tails(cfg, cells):
         cell = {k + "_q": Q(c[k]) for k in ("u_lo", "u_hi", "t_lo", "chi_lo", "chi_hi")}
         cell.update(F_q=Q(c["F_claimed"]), P_max_q=Q(2))
         for key in ("slicesA", "slicesB"):
-            check(c[key] and all(s["a_r"] <= s["b_r"] for s in c[key]), "empty or reversed slice")
-            for s in c[key]:
+            slices = c[key]
+            check(slices and all(s["a_r"] <= s["b_r"] for s in slices), "empty or reversed slice")
+            check(all(left["b_r"] >= right["a_r"] for left, right in zip(slices, slices[1:])),
+                  f"gap in {key} at chi = {c['chi_hi']}")
+            for s in slices:
                 original.verify_slice_rational_tail_and_signs(s, cell, params, exp_bounds, False)
 
 
@@ -108,6 +111,13 @@ def check_receipt(result, cells, stream_digest):
               (c["piece_idx"], c["row_tag"], c["u_idx"], c["u_lo"], c["u_hi"], c["t_lo"],
                c["chi_lo"], c["chi_hi"], c["kind"], c["F_claimed"]), "cell mismatch")
         check(rec["worst_M_A"] < 0 and rec["worst_M_B"] < 0, "continuous residual is nonnegative")
+        for key, field in (("slicesA", "g1_range_A"), ("slicesB", "g1_range_B")):
+            bounds = rec.get(field)
+            check(isinstance(bounds, list) and len(bounds) == 2 and all(type(v) in (int, float) for v in bounds),
+                  f"missing or invalid {field}")
+            slices = c[key]
+            check(slices and slices[0]["a_r"] <= bounds[0] <= 0 <= bounds[1] <= slices[-1]["b_r"],
+                  f"{field} misses zero or extends beyond the witness slices")
         left = "(" if rec["chi_lo"] == 0 else "["
         print(f"u in [{rec['u_lo']}, {rec['u_hi']}], chi in {left}{rec['chi_lo']}, {rec['chi_hi']}], "
               f"F = {Q(rec['F_certified'])}, "

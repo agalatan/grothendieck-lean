@@ -1,5 +1,5 @@
 import Grothe.UpperBivar.Parameters
-import Grothe.UpperBivar.SubArc
+import Grothe.UpperSix.HaagerupKernel.TaylorHardy
 
 set_option warningAsError true
 
@@ -14,83 +14,26 @@ namespace Haagerup.UpperBivar
 open HaagerupKernel.TaylorHardy
 
 def newRegSteps3 : List Nat := [
-  1, 1, 2, 4, 8, 8, 8, 8, 8, 16, 16, 16, 16, 16
+  223, 128, 96, 79, 67, 58, 53, 50, 48, 46, 46, 46, 48, 51, 55, 61, 70, 88, 126, 274, 262, 144,
+  101, 78, 65, 56, 49, 44, 40, 37, 33, 30, 28, 26, 25, 25, 26, 25, 25, 24, 23, 21, 19, 17, 16, 15,
+  15, 15, 17, 20, 24, 30, 36, 45, 56, 72, 97, 141, 254, 307
 ]
 
-private def newMeanSteps3_0 : List Nat := [
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-  2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+def newMeanSteps3 : List Nat := [
+  96, 56, 40, 33, 28, 24, 22, 20, 18, 18, 17, 17, 17, 17, 17, 17, 18, 19, 20, 22, 24, 28, 31, 35,
+  44, 62, 128, 86, 56, 41, 33, 28, 24, 22, 20, 18, 17, 16, 15, 14, 14, 13, 12, 11, 11, 11, 10, 11,
+  11, 11, 12, 12, 12, 11, 10, 9, 8, 7, 6, 5, 5, 5, 5, 6, 6, 7, 8, 10, 11, 13, 15, 17, 20, 23, 28,
+  34, 42, 56, 84, 168
 ]
-
-private def newMeanSteps3_1 : List Nat := [
-  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8
-]
-
-private def newMeanSteps3_2 : List Nat := [
-  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8
-]
-
-private def newMeanSteps3_3 : List Nat := [
-  8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
-]
-
-private def newMeanSteps3_4 : List Nat := [
-  8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-  8, 8, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
-  16, 16, 16, 16, 16, 16, 16
-]
-
-def newMeanSteps3 : List Nat :=
-  newMeanSteps3_0 ++ (newMeanSteps3_1 ++ (newMeanSteps3_2 ++ (newMeanSteps3_3 ++ newMeanSteps3_4)))
 
 theorem newReg3_ok :
-    regQ1SmoothedOK ctQ stQ seQ newP3 newQ3 (newRegRQ (⟨3, by decide⟩ : Fin 12))
-      7 newRegSteps3 = true := by
-  decide +kernel
-
-private abbrev newMeanUnit3 : Nat := Nat.div D64N (Nat.mul 2 (Nat.pow 2 11))
-
-private abbrev newMeanLeaf3 : Int → Int → Option TM2 :=
-  smoothedLeafInv ctQ stQ seQ newP3 newQ3 (newRhoQ (⟨3, by decide⟩ : Fin 12))
-    (newJCertQ (⟨3, by decide⟩ : Fin 12))
-
-private theorem newMean3_part0 :
-    sumSimpsonPart newMeanUnit3 newMeanLeaf3 0 newMeanSteps3_0
-      0 = some 12913856731178060314598 := by
-  decide +kernel
-
-private theorem newMean3_part1 :
-    sumSimpsonPart newMeanUnit3 newMeanLeaf3 164 newMeanSteps3_1
-      12913856731178060314598 = some 41815872807048029793150 := by
-  decide +kernel
-
-private theorem newMean3_part2 :
-    sumSimpsonPart newMeanUnit3 newMeanLeaf3 488 newMeanSteps3_2
-      41815872807048029793150 = some 82519204445832522830150 := by
-  decide +kernel
-
-private theorem newMean3_part3 :
-    sumSimpsonPart newMeanUnit3 newMeanLeaf3 1000 newMeanSteps3_3
-      82519204445832522830150 = some 101059941491881585243222 := by
-  decide +kernel
-
-private theorem newMean3_part4 :
-    sumSimpsonPart newMeanUnit3 newMeanLeaf3 1296 newMeanSteps3_4
-      101059941491881585243222 = some 136245989298274435982638 := by
+    regQ1DiagOK newP3 (newRegRQ (⟨3, by decide⟩ : Fin 5)) 12 newRegSteps3 = true := by
   decide +kernel
 
 theorem newMean3_ok :
-    meanQ1SmoothedOK ctQ stQ seQ newP3 newQ3 (newRhoQ (⟨3, by decide⟩ : Fin 12))
-      (newJCertQ (⟨3, by decide⟩ : Fin 12)) (newBudgetQ (⟨3, by decide⟩ : Fin 12))
-      11 newMeanSteps3 = true :=
-  meanQ1SmoothedOK_of_acc
-    (sumSimpsonPart_chain newMean3_part0
-      (sumSimpsonPart_chain newMean3_part1
-        (sumSimpsonPart_chain newMean3_part2
-          (sumSimpsonPart_chain newMean3_part3 newMean3_part4))))
-    (by decide +kernel)
+    meanQ1PhaseOK newP3 (newRhoQ (⟨3, by decide⟩ : Fin 5))
+      (newJCertQ (⟨3, by decide⟩ : Fin 5)) (newBudgetQ (⟨3, by decide⟩ : Fin 5))
+      11 newMeanSteps3 = true := by
+  decide +kernel
 
 end Haagerup.UpperBivar

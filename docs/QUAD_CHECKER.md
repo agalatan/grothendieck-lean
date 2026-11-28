@@ -1,7 +1,7 @@
 # The quadrature checker for the energy table (`hclose`), design and status
 
 This file documents the quadrature of the older single-channel upper proof, which is still in the tree. The upper
-bound of the main theorem `main_bounds` does not come from it: it is `K_G^ℂ ≤ 1.404554025`, from the multi-channel
+bound of the main theorem `main_bounds` does not come from it: it is `K_G^ℂ ≤ 1.404550522`, from the multi-channel
 bivariate proof in `Grothe/UpperBivar/` ([upper result](../Grothe/UpperResult.lean)).
 
 **Single-channel quadrature (15 November 2026).** `Grothe.UpperQuad.Final.hclose_final` proves

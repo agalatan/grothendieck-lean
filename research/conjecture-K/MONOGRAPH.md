@@ -25,7 +25,7 @@ Conjecture K says that Λ(G) never exceeds S, its supremum over the diffuse Gaus
 complex Gaussian, independent of z₁), on the box ε ∈ [0.74, 0.76], ℓ ∈ [0.76, 0.90], β ∈ [0.12, 0.16] with
 a = ℓ − 2β, b = β.
 
-**Why it matters.** The proved bounds are 1.4020221627 < K_G^ℂ ≤ 1.404554025 (Lean, `main_bounds`, [exact bounds](../../docs/CONSTANTS.md)). The lower bound of
+**Why it matters.** The proved bounds are 1.4020221627 < K_G^ℂ ≤ 1.404550522 (Lean, `main_bounds`, [exact bounds](../../docs/CONSTANTS.md)). The lower bound of
 the cubic witness alone is 1.401700322371 (12.1); Lean's lower bound uses an identity tail, transported Stein cuts and joint Gaussian gates. The cubic witness is T_ε = P₁,₀ − εP₂,₁: every pair of unimodular functions satisfies
 Re⟨f, T_εg⟩ ≤ t² − 2ℓt + 2β²/ε + Λ(G), exactly, and the proof replaces sup Λ by scalar relaxations. K with an error
 η ≤ 10⁻⁴ would turn the row into an explicit one-dimensional function and give about 1.402; exact K would give about
@@ -736,6 +736,8 @@ Under the Rice hypothesis (R1), both funded Case I profiles on piece 15, row 0.8
 their content allowances on eleven of fifteen fourth-excess bins, ten more than previously certified. The bound on [16, 20] is 6.545, below the funded
 allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
 [C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
+
+On the entire interval from 0.70 to 0.78 u_cap, the same two profiles meet the interpolated allowance under (R1) in the six bins in (0, 8] and the five bins in (16, 42]. [C, author only · piece 15, row 4.56b](../higher-degree/sources/piece15-content-codex-062a/SECOND_BAND.md).
 
 Above the 0.70 node on the same row, both profiles satisfy the affine funding under (R1) on the four middle bins
 (8, 10], (10, 12], (12, 14] and (14, 16] through $x=51/256$, $13/64$, $37/128$ and $43/256$, respectively.
