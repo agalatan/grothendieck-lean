@@ -288,7 +288,8 @@ gets a verdict.
   reviewer does not build it locally or on a droplet, and does not keep a PR on hold to do so: read the statement,
   what each new `native_decide` fact checks, whether hypotheses are proved in Lean rather than assumed, the
   generators (`--check`, cheap) and the axiom lists, and let CI do the build. A build error missed by reading is
-  caught there. Do replay research checkers (Python, C++) and build code the root does not reach: CI checks neither.
+  caught there. Replay the relevant research checkers (Python, C++). For Lean code outside the root, check which
+  CI jobs cover the PR head (the article's package has its own) and build only the changed targets they leave unchecked.
 - **Comments:** in the PR, each starting with your ID. Suggestions that do not block say so.
 - **A longer review holds the PR.** A reviewer whose review will take longer than a round (a replay, an independent
   recomputation, a long certificate, never a Lean build that CI does anyway) puts the PR on hold first: `scripts/review.sh <branch> <sha> hold <reviewer-id>
