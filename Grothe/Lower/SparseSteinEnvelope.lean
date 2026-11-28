@@ -87,11 +87,33 @@ theorem segment_bound {cap : ℚ} (a b : EnvRow) (l h w z dl dh bonus : ℚ) (x 
   simpa using tilted_segment_bound (tilt := 0) a b l h w z dl dh bonus x
     hx0 hx1 hv ht hcap d₁ d₂ ha hb hθ0 hθ1 hsave
 
+/-- Insert an interior amplitude on the segment's affine path. The inherited
+mass point is the one used to prove the parent row. -/
+private def splitAtAmplitude (t : ℚ) (s : Segment) : List Segment :=
+  if s.base.lo < t ∧ t < s.base.hi then
+    let x := (t - s.base.lo) / (s.base.hi - s.base.lo)
+    let w := (1 - x) * s.leftWeight + x * s.rightWeight
+    [{s with base := {s.base with hi := t}, rightWeight := w},
+     {s with base := {s.base with lo := t}, leftWeight := w}]
+  else [s]
+
+/-- The first and last refinements are midpoints of the two binding central
+pieces. The four additional ordinates resolve the maximum inside cell 23. -/
+private def refineCentral (s : Segment) : List Segment :=
+  let midpoint := (s.base.lo + s.base.hi) / 2
+  if s.base.lo = 3429/4096 ∧ s.base.hi = 8577/10240 then
+    let knots : List ℚ := [midpoint, 837431408/10^9, 837436036/10^9,
+      837437149/10^9, 837447529/10^9]
+    knots.foldl (fun pieces t ↦ pieces.flatMap (splitAtAmplitude t)) [s]
+  else if s.base.lo = 4293/5120 ∧ s.leftWeight < s.rightWeight then
+    splitAtAmplitude midpoint s
+  else [s]
+
 private def segments (c : EnvCell) : List Segment :=
   if (c.i = 6 ∨ c.i = 7) ∧ (c.j = 6 ∨ c.j = 7) then
     WeightedTight.affineSegments row06.env row07.env {c with i := 6, j := 7} true
   else if (c.i = 8 ∨ c.i = 9) ∧ (c.j = 8 ∨ c.j = 9) then
-    WeightedTight.affineSegments TightShared.row8 TightShared.row9 {c with i := 8, j := 9} true
+    (WeightedTight.affineSegments TightShared.row8 TightShared.row9 {c with i := 8, j := 9} true).flatMap refineCentral
   else if c.i = 13 ∧ c.j = 13 then WeightedTight.segments true {c with j := 14}
   else WeightedTight.segments true c
 

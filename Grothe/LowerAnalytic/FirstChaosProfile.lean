@@ -16,8 +16,8 @@ namespace Grothe.LowerAnalytic.FirstChaosProfile
 open Grothe.Lower
 
 private theorem check : SparseEnvelope.mixedCheck
-    (97642880918541/100000000000000) (3645203/50000000000)
-    (2349828675459/100000000000000) FirstChaos.cap = true := by decide +kernel
+    (9764299843580457/10000000000000000) (358503031/5000000000000)
+    (234983150357543/10000000000000000) FirstChaos.cap = true := by decide +kernel
 
 /-- Convex mixing with the first-chaos projector scales the original cubic and tail coefficients. -/
 theorem payoff_split (n : ℕ) (w : ℝ) (f g : L2G n) :

@@ -3,7 +3,7 @@
 This repository proves, in Lean 4 with Mathlib and without hypotheses ([what is trusted](#what-the-computer-checks-and-what-is-trusted)),
 
 $$
-1.4020237104 < K_G^{\mathbb C} \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots
+1.4020238808 < K_G^{\mathbb C} \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots
 $$
 
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
@@ -15,7 +15,7 @@ value.
 
 | | value | exact form in Lean | theorem |
 |---|---|---|---|
-| lower bound | $1.4020237104 < K_G^{\mathbb C}$ | `14020237104 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
+| lower bound | $1.4020238808 < K_G^{\mathbb C}$ | `14020238808 / 10000000000` | `Grothe.Statement.main_bounds` (first part) |
 | upper bound | $K_G^{\mathbb C} \le 1.404554025$ | `1404554025 / 1000000000` | `Grothe.Statement.main_bounds` (second part), `Grothe.UpperBivar.constant_le` |
 | Haagerup's value | $K_G^{\mathbb C} < 1/\gamma^\dagger = 1.40457593\ldots$ | `1 / gammaDagger` | `Grothe.UpperBivar.constant_lt_inv_gammaDagger` |
 
@@ -33,7 +33,7 @@ Theorems: [both bounds](Grothe/MainResult.lean) · [upper bound and Haagerup's v
 | 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
 | Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
 | Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020237104 < K}$ | $\mathbf{K\le 1.404554025}$ |
+| Oct–Nov 2026 | **this repository (Lean theorem)** | $\mathbf{1.4020238808 < K}$ | $\mathbf{K\le 1.404554025}$ |
 
 ## Haagerup's value is a strict upper bound
 
@@ -105,8 +105,8 @@ definitions, so reading it is enough to know what the theorems say:
 
 On standard complex Gaussian space let $P_{p,q}$ project onto the Wick chaos of bidegree $(p,q)$.
 The witness is $T=(1-w)T_0+wP_{1,0}$, with
-$T_0=P_{1,0}-(191/250)P_{2,1}+(47/2000)(I-P_{1,0}-P_{2,1})$ and $w=3645203/50000000000$.
-Its scalar cap is $B=713254699303/1000000000000$. Its reciprocal is `Grothe.Lower.FirstChaos.endpoint`.
+$T_0=P_{1,0}-(191/250)P_{2,1}+(47/2000)(I-P_{1,0}-P_{2,1})$ and $w=358503031/5000000000000$.
+Its scalar cap is $B=713254612582/1000000000000$. Its reciprocal is `Grothe.Lower.FirstChaos.endpoint`.
 [Witness and transfer](Grothe/LowerAnalytic/FirstChaosProfile.lean) · [Exact constants](docs/CONSTANTS.md#behind-the-lower-bound).
 
 1. **Transfer.** For $u_\ell=z_\ell/\lVert z\rVert$, the real vector payoff of the mixture is at least
@@ -124,7 +124,7 @@ Its scalar cap is $B=713254699303/1000000000000$. Its reciprocal is `Grothe.Lowe
    cubic part $\lVert P_{2,1} k \rVert$ (`massRow`, `Grothe/Lower/MassRow.lean`).
 3. **The common scale and the amplitude envelope.** Rows 0.835 and 0.845 use a single circular cubic.
    Its fourth excess selects one of nineteen common shape intervals. Dilating eleven ordinary Stein polynomials
-   provides fourteen further bounds on the row expectations. Nine mixture weights have separate discounts for
+   provides fourteen further bounds on the row expectations. Fifteen mixture weights have separate discounts for
    the whole scale range and for scales up to 0.21. The curvature of their common Schur complement gives
    an additional quadratic discount between the weights. Two outer rows combine quadratic potential bounds
    with their joint gate. The existing scalar rows 13 and 14 interpolate across their crossover. The kernel maximizes the mixed payoff bound on every closed segment of the 38 amplitude cells, including interior vertices. [Central row inequalities](Grothe/LowerAnalytic/SparseSteinRows.lean) ·

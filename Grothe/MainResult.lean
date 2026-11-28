@@ -4,7 +4,7 @@ import Grothe.LowerAnalytic.CapNodes
 import Grothe.LowerAnalytic.FirstChaosProfile
 
 /-!
-# The main result: `1.4020237104 < K_G^ℂ ≤ 1.404554025`
+# The main result: `1.4020238808 < K_G^ℂ ≤ 1.404554025`
 
 The double inequality of the repository's goal, stated for the constant `K_G^ℂ` of `Grothe/Statement.lean`, without
 hypotheses: `main_bounds`.
@@ -32,9 +32,9 @@ theorem first_chaos_endpoint :
 /-- **The main result**: the exact lower endpoint rounded strictly downward, and the multi-channel upper bound
 rounded up. -/
 theorem main_bounds :
-    (14020237104 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
+    (14020238808 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404554025 / 1000000000 := by
-  have hlo : (14020237104 / 10000000000 : ℝ) < complexGrothendieckConstant := by
+  have hlo : (14020238808 / 10000000000 : ℝ) < complexGrothendieckConstant := by
     refine lt_of_lt_of_le ?_ first_chaos_endpoint
     simpa only [Rat.cast_div, Rat.cast_ofNat] using
       (Rat.cast_lt (K := ℝ)).mpr Grothe.Lower.FirstChaos.rounded_lt
