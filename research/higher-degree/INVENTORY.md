@@ -548,3 +548,20 @@ python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/dir
 | `sources/quintic-double-ellipse-codex-a7c4/PROOF.md` | 8,330 | `4c05d91ae743fa5ac672c316088b80a902814c60ebdf1043c8bb59731d4fa996` |
 | `sources/quintic-double-ellipse-codex-a7c4/REMOTE.md` | 2,803 | `1f6b4b790db2c8f50faf3c3e18010c4266daf76474587f4955bffe18f8ceeee1` |
 | `sources/quintic-double-ellipse-codex-a7c4/TILTED.md` | 3,700 | `c05251123d592022670efa17653f3d6ca5b737a2e2925f0502c31f3a1e7a9caf` |
+
+## Antisymmetric slice-Gram inequality and $c \to 0^+$ retained-defender saddle bounds (gemini-4c4c, 28 November 2026, #849; STATUS 4.57, tag S0RG)
+
+All files of `S0RG` are committed in the repository (< 80 KB per file), with zero external dependencies in `verify.py` and `test_controls.py` and SHA-256 provenance + exact `(id, game, t_key, e1, eta, cap_upper)` binding to `code/degree5-stage0/results/b/{gC,g83,g84,gA}/rows_all.lines`:
+- [`sources/stage0-retained-gram-gemini-4c4c/PROOF.md`](sources/stage0-retained-gram-gemini-4c4c/PROOF.md): self-contained proofs of Theorem 1 (4-channel slice-Gram decomposition of `ctC` in `Grothe/LowerAnalytic/GramTensor.lean`, antisymmetric involution inequality $4\lVert C_{--}\rVert_{\mathrm{HS}}^2 = n + b - (3y - z) \ge 0$, three sharp dimension-free chaos bounds, and rational 5-scalar counterexamples), Theorem 2 (retained-defender gate-free dual rows across all $n \ge 2$ and $O(c^8) = O(D^2)$ vanishing of scalar $\nu_5$ re-optimisation), Theorem 3 (exact Bargmann–Laguerre 5-shell odd-visible $c \to 0^+$ quadratic/local diffuse-spike saddle at $\sigma = \sigma_*$ across all $d \ge 1$ and 4-term SOS collapse onto $e_{2,1}$), and Theorem 4 (zero-`erf` full-line Radon shifted-polar reduction, `Jet2` iterated midpoint enclosure, $r \ge 5$ analytic tails, and outward-rounded $c \to 0^+$ bounds at 9 Stage 0 sample rows; finite gate points $c > 0$ and off-peak $\sigma \ne \sigma_*$ remain open, so Stage 0's stop rule is not yet discharged).
+- [`code/stage0-retained-gram-gemini-4c4c/`](code/stage0-retained-gram-gemini-4c4c/):
+  - `python3 -IB research/higher-degree/code/stage0-retained-gram-gemini-4c4c/verify.py` (and `python3 -IB -O ... --quiet`): zero-float, zero-`assert` Python 3 stdlib verifier performing AST self-audit, symbolic, $\mathbb{Q}[i]$-tensor, physical Gaussian Wick polynomial & 1-direction Hessian normalisation verification, SHA-256 + row/weight/cap/flag pinning across all 9 sample rows, and from-scratch outward `Jet2` interval re-integration.
+  - `python3 -IB research/higher-degree/code/stage0-retained-gram-gemini-4c4c/test_controls.py` (and `python3 -IB -O ...`): 24-check adversarial corruption and mathematical negative-control suite.
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/stage0-retained-gram-gemini-4c4c/PROOF.md` | 68,515 B | `0644d6714a18b48d3d6c59e7d2e0cc26c369a5c1eb2fc641fae7c0a7d081ceea` |
+| `code/stage0-retained-gram-gemini-4c4c/README.md` | 4,479 B | `8f0478fd1dee576c8c527ae761728f03b3b10f19d579deb770577692f7bd9749` |
+| `code/stage0-retained-gram-gemini-4c4c/verify.py` | 79,002 B | `96d11d5c137faa3da8942301e7ec38120f29e1ac53171721654572f66c5b51be` |
+| `code/stage0-retained-gram-gemini-4c4c/test_controls.py` | 11,762 B | `bd9f84a2ca1bb9ceb349e1b2971f223bcb87e1c6b841d80534e92a351b698297` |
+| `code/stage0-retained-gram-gemini-4c4c/make_cert.py` | 6,658 B | `b2db7bb4ebf1ae4b3f50156def0e854bcd5ecf3923dfb4d6f0c65b9d36706439` |
+| `code/stage0-retained-gram-gemini-4c4c/cert_stage0_gram.json` | 14,532 B | `43629bc0fb30ea5c445318d70f5d4edeb27c9696f6b203c4b44620c9282f877c` |
