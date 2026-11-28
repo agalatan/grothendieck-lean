@@ -4,12 +4,11 @@ open Lean Meta Elab Command
 /-!
 # Dead-code report (audit tool, not part of the library)
 
-`lake env lean scratch/DeadCode.lean` lists, per module, the declarations of `Grothe`/`GrotheKernel`/`GrotheCapsKernel`
+`lake env lean scratch/DeadCode.lean` lists, per module, the declarations of `Grothe`/`GrotheCapsKernel`
 that are not reachable from the current headline theorems and selected standalone results below
 (auto-generated names filtered). Missing roots are errors.
 
-This reports on the default `Grothe` target; declarations available only through the separate
-`GrotheCaps` target are outside its scope. "Unused" means unreachable from the selected roots, not
+"Unused" means unreachable from the selected roots, not
 deletable: other standalone results or external users may still depend on a declaration.
 -/
 
@@ -29,7 +28,7 @@ partial def usedClosure (env : Environment) (roots : List Name) : NameSet := Id.
 
 elab "#deadcode" : command => do
   let env ← getEnv
-  let roots := [`Grothe.Statement.main_bounds, `Grothe.UpperSeven.constant_lt_inv_gammaDagger,
+  let roots := [`Grothe.Statement.main_bounds,
     `Grothe.LowerAnalytic.tailNodeCaps_cert,
     `Grothe.LowerAnalytic.gaussian_steinInputs,
     `Grothe.LowerAnalytic.sixth_moment_complex, `Grothe.LowerAnalytic.first_moment_lt_rho,
@@ -43,7 +42,7 @@ elab "#deadcode" : command => do
     if n.isInternal then continue
     let some mod := env.getModuleIdxFor? n | continue
     let modName := env.header.moduleNames[mod.toNat]!
-    if !(`Grothe).isPrefixOf modName && !(`GrotheKernel).isPrefixOf modName &&
+    if !(`Grothe).isPrefixOf modName &&
         !(`GrotheCapsKernel).isPrefixOf modName then continue
     if used.contains n then continue
     -- skip auxiliary compiler/equation names

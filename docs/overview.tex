@@ -43,11 +43,11 @@ The upper certificate adds a Gaussian angular selector to three smoothed cell ch
 two reflected tiger channels. The six original channels retain their certified interval heads and Hardy tails.
 At angle $17/100$ with preprocessor $23/25-(2/25)X$, Lean computes the selector's signed head and a bound
 on its full absolute coefficient error. The weighted sum is formed before taking absolute values.
-The theorem \lean{Grothe.UpperSeven.bound} gives
-$V(A)\le[10^{27}/711968565817136711740669035]\,C(A)$ for every finite complex matrix $A$. Its factor is $1.4045563919697\ldots$, and \lean{Grothe.UpperSeven.constant\_le} states $K_G^{\mathbb C}\le1.404556392$.
+The theorem \lean{Grothe.Upper.bound} gives
+$V(A)\le[10^{27}/711968565817136711740669035]\,C(A)$ for every finite complex matrix $A$. Its factor is $1.4045563919697\ldots$, and \lean{Grothe.Upper.constant\_le} states $K_G^{\mathbb C}\le1.404556392$.
 
-The companion theorem \lean{Grothe.UpperSeven.constant\_lt\_inv\_gammaDagger}
-compares the infimum with the reciprocal phase integral.
+The comparison of the infimum with the reciprocal phase integral is proved in the article's own Lean package
+(\path{haagerup-article/anc}, \lean{Haagerup.constant\_lt\_inv\_gammaDagger}).
 
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
@@ -99,9 +99,9 @@ Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020221627}$ & $\mathbf{1.404556
 The upper bound is $1404556392/1000000000$ (the seven-channel transfer factor $1/(c-\delta)$ rounded up).
 For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
-a separate estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404556392<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
-$1/\gamma^\dagger$, the value that Haagerup proposed for $\KG$ in 1987
-(\lean{Grothe.UpperSeven.constant\_lt\_inv\_gammaDagger}).
+an estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404556392<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
+$1/\gamma^\dagger$, the value that Haagerup proposed for $\KG$ in 1987 (proved in the article's own Lean package,
+\path{haagerup-article/anc}, \lean{Haagerup.constant\_lt\_inv\_gammaDagger}).
 For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 
@@ -117,11 +117,11 @@ independently of the lower row certificates.
 \subsection{Upper bounds by rounding}
 
 The six original channels, their data and their checker are in
-\path{Grothe/UpperSix/}, and their certificate is in \path{Grothe/UpperSixExact/}. Cell-map energies for the three smoothed channels
+\path{Grothe/Upper/}, and their certificate is in \path{Grothe/Upper/Certificate/}. Cell-map energies for the three smoothed channels
 and the two reflected channels feed interval coefficients. The phase channel
 uses its analytic Hermite coefficients. The finite check takes absolute values
 after mixing the signed coefficients. Each infinite tail is controlled by a
-mean on its own circle. The seventh channel, in \path{Grothe/UpperSelector/}, adds a Gaussian angular selector.
+mean on its own circle. The seventh channel, in \path{Grothe/Upper/Selector/}, adds a Gaussian angular selector.
 A finite Fourier sum and the scalar phase expansion give its signed head and its full Wiener allowance.
 The advertised rational bound follows from the reciprocal
 gap in the transfer theorem. The production theorem applies to every finite
@@ -129,577 +129,9 @@ complex matrix and uses the scalar and vector optima in \path{Grothe/Statement.l
 The article in \path{haagerup-article/} is frozen; it has its own Lean package under
 \path{haagerup-article/anc} and states a bound of its own.
 
-\subsubsection*{Earlier single-channel construction}
-
-The formal quadrature development includes exact polynomial identities for
-each original Gauss order from $1$ to $64$.  Rational polynomial certificates,
-interpreted through LeanCert, prove orthogonality and the weight identity;
-these give exact integration for polynomials of degree below $2n$ at order $n$.
-The certificates use kernel reduction and are part of the main Lean build.
-The selected numerical nodes are bound to these rules on every production
-panel (\lean{QuadRem.source\_rule\_exact}), and the analytic remainders have their
-own proofs, described in the rest of this paragraph.
-For the energy table, \texttt{EllCheck.quadRemainderHyp} proves the covered-set
-quadrature error bound $\|G^{\mathrm c}-G_{\mathrm{full}}\|_{\ell^2}\le1.5\cdot10^{-12}$.
-The proof combines an entire conditional-coefficient extension, a finite complex
-Mehler bound and a Banach-space Bernstein-ellipse remainder theorem. Sharded
-interval checks of the committed panel plans certify a canonical error sum below
-$1.04\cdot10^{-12}$; reflection gives the full bound. Its axiom report uses the
-standard axioms and registered native facts. With the tail bound, the omitted
-pairs and the native energy facts it gives the accuracy of the energy table
-(\lean{Final.hclose\_final}). The twisted-source estimates follow.
-For the twisted source, \texttt{TwistPanels.remainder\_of\_ellipses} reduces the
-covered-set remainder to complex extensions and boundary caps on every actual
-production panel. The Euclidean vector retains every mode
-$q<Q$, $c\le q+1$, $d\le q$; its panel errors are summed without a reflection
-factor. The theorem assumes differentiability through each closed ellipse,
-agreement on the positive real slice, and the numerical bound on the total
-Gauss remainder. The following steps supply these inputs.
-The auxiliary canonical shell bound, with $\theta=|A|^2/\Re(A^2)$ and
-$\Re(A^2)>0$, is
-\[
- \sum_{g=0}^{m}|U_{g,m-g}(A)|
- \le 2\sqrt{\theta}\,(m+1)\sqrt{m!}
-       \left(\frac{\sqrt{8}\,\theta}{|A|}\right)^m.
-\]
-For the twisted factorization, columns with squared energies at most
-$E N_m^2$ give the squared output-vector bound
-\[
- 4E\theta\left(\sum_{m=0}^{D+35j}(m+1)\sqrt{m!N_m^2}
-       \left(\frac{\sqrt8\,\theta}{\sqrt{\lambda}|A|}\right)^m\right)^2,
- \qquad \lambda=1+j\varepsilon,\quad \Re(A^2)>0.
-\]
-The common-triangle padding and Euclidean triangle inequality add no
-output-dimension factor. Concrete column and geometric bounds are separate
-inputs to the certificate application.
-The K adapter instantiates the production column estimates and identifies
-the factorization with the actual Gaussian-shift coefficients. Upper bounds
-for $\theta$ and the imaginary square, and a positive lower bound for
-$|A|^2$, give exactly the checker expression \texttt{coarseKSq}; multiplying
-by the primary radial envelope bounds the actual full descended vector.
-No column-energy premise remains in this adapter.
-The concrete descended twisted vector supplies the analytic extension
-in this reduction, including at the origin wherever $v_C$ is nonzero.
-Its finite-Mehler estimate retains the full graded vector and combines
-directly with the coupled Gaussian-translation Y bound. The actual profile
-sign is constant on each zero-free real panel and may be fixed at its left
-endpoint. Consequently,
-\lean{UpperQuad.TwistRadialExt.remainder\_of\_descended\_ellipses} requires only
-profile nonvanishing through each closed ellipse, boundary norm caps and
-their summed numerical remainder. The accepted panel certificates described
-below provide all three.
-The analytic Y adapter bounds this actual vector from coordinate bounds
-$r^2=s$, $S_{\rm lo}\le\Re s$, $(\Re r)^2\le X$, $(\Im r)^2\le Y$ and
-$(\Im A)^2\le B^2$, where $A$ is the signed production shift. For
-$0<t,\eta<1$, $|\sigma|=1$ and $D=D_{\rm out}$, its squared bound is
-\[
- e^{-2S_{\rm lo}}\frac{t^{-D}}{1-t^2}
- e^{\frac{2tX}{1+t}+\frac{2tY}{1-t}}
- \frac{\eta^{-35j}}{(1-\eta)^2}
- e^{\frac{4j(21/20)(Y+B^2)}{1-\eta}}
- e^{2B^2+2\sqrt{2D}\sqrt{B^2}}.
-\]
-This pointwise theorem also supplies a norm cap from a certified squared cap.
-It introduces no interval premise or new native fact; enclosure soundness and
-the complete panel sum are the next two steps.
-The finite assembly fixes one power and one certificate array across all
-accepted shards. Explicit coverage of every source index and the checked
-array length give every actual panel predicate; the checked rational total
-bounds the real sum of those same error caps. Overlapping shards do not
-duplicate a panel in this sum. The finite acceptance facts are native checks
-(\lean{TwistEllCheck.Facts}); their analytic interpretation is the mass bound
-below.
-Accepted disk-cover geometry and strict profile separation on every disk
-also give nonvanishing throughout the closed ellipse. The same separation
-identifies the checker's sign with the physical profile sign at every real
-panel point and hence with the continuation's fixed left-endpoint sign.
-Certificate acceptance itself supplies this geometry and the exact
-real Gauss error. Together with complete acceptance and the checked total,
-the actual remainder follows from the interpretation of each
-certificate's squared mass cap on its ellipse boundary, given below.
-
-For the twisted sources, exact panel certificates for all three production powers
-are stored in \texttt{data/twist-ellipse/plans.json}. Registered native checks
-verify their disk-majorant caps. The tighter total error budgets are checked
-by kernel reduction, with a reserve of $10^{-15}$ below each full quadrature radius. Arithmetic soundness and disk-geometry
-lemmas expose the checked expressions. \lean{UpperQuad.TwistEllipseMassSound}
-identifies them with the actual twisted vector: an accepted certificate bounds
-the squared norm of the actual descended vector on its closed ellipse by its
-mass cap. \lean{TwistEllCheck.remainder\_of\_prodShards} then proves the
-covered-set remainders \lean{TightTwist.remainder1}--\lean{3} that
-\lean{upper\_below\_tight} uses.
-
-For an accepted Y-mode disk evaluation, the geometric and interval witnesses
-bound the actual descended vector throughout the disk, uniformly for
-every real sign of absolute value one. The proof covers the fallback that
-bounds the imaginary shift by its full norm when the angle check fails.
-The same profile separation excludes every profile zero in the disk.
-Accepted lower-norm and angle witnesses also transport to the signed shift
-for K consumers. The K and automatic modes are covered in the same way:
-every accepted disk, in any mode, bounds the actual vector
-(\lean{norm\_descendedVector\_sq\_le\_diskM2}).
-Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
-correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
-\[
- \E\bigl[\overline{f(\cdot)}\,g(\cdot)\bigr]=H(t)=\sum_{k\ge0}c_k\,t|t|^{2k}.
-\]
-If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
-$\KG\le1/(c-\|r\|_A)$. The shared Gaussian phase identity is proved from the Hermite basis and Mehler formula. The single-channel rounding is a smoothed two-coordinate phase rounding,
-$F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
-polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
-$|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ (hence $|\varphi|<1$) give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
-The phase certificate checks 119,077 leaves in 512 cubes through six native range facts, with an analytic far field.
-Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
-$\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
-powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, Lean proves that the residual is at most
-$\delta\approx1.542247969222724\cdot10^{-6}$
-(the exact rational \lean{tightResidualQ}):
-\[
- \KG\le\frac1{c-\delta}=1.404599395361207\ldots<1.404599395362 .
-\]
-The coefficient-cost improvement has an analytic tail bound. For a polynomial
-$A$, dilation gives
-\[
- \sum_{j=L}^{K-1}|[X^j]A|
- \le r^{-L}\|A(rX)\|_A \qquad(r\ge1).
-\]
-Writing the unshifted block as $P^n\overline Q^{\,m}$, where
-$\overline Q=Q/X$ and $n\le501$, $m\le167$, the certified dilated norms imply
-\[
- \frac{(10049/10000)^{501}(10023/10000)^{167}}{(3/2)^{51}}
- \le 2\cdot10^{-8}.
-\]
-Thus 51 interval-enclosed coefficients and this uniform remainder bound the
-whole retained coefficient cost. The minimum with the previous cost and one
-is still a valid cost. The finite fact \lean{improved\_high\_mass\_native}
-checks mass square-root ceilings $0.091510352921874$ for both high bands above
-51 and $0.198919845892412$ for the high band above 11, within the finite head
-and including the inherited table-error allowance. These masses are used by \lean{UpperTightComparison};
-the $2\cdot10^{-8}$ polynomial remainder is distinct from the infinite Hardy tail.
-
-\paragraph{Gaussian amplitudes in the Hardy estimate.}
-The proof retains the known Gaussian amplitude after the $L^*L$ step.
-Write $A=(I-R^2)^{-1}$, $B=A-jI$, $C=RA$, $Z=\Re B$,
-$T=Z-(\Re C)Z^{-1}(\Re C)$ and
-$E=((\Re C)Z^{-1}(\Re C)+(\Im C)Z^{-1}(\Im C))/2$.
-Exact Gaussian integration, under $j>0$, $Z\succ0$ and $T\succ0$, gives
-\[
- |H(R)|^2\le
- \frac{1}{16j^2|\det(I-R^2)|^2\det Z\,\det(T+jI)\,\det(T+2E+jI)}.
-\]
-The two determinants come from the sum and difference coordinates in the
-positive Gaussian pair integral. The interval certificate bounds this
-expression by the angular polynomial
-\[
- Q(\cos\theta)=\frac{513+297\cos^2\theta-204\cos^4\theta}{500}
-\]
-on the whole Hardy circle, with $j=9/20$. The exact means of $\cos^2\theta$
-and $\cos^4\theta$ are $1/2$ and $3/8$, so the mean of $Q$ is $117/100$.
-Consequently the actual kernel satisfies
-$\sum_{n<J}c_n^2(4149/4000)^{4n+2}\le117/100$ for every $J$.
-The finite head then supplies the linear-energy deduction used by
-\lean{upper\_below\_tight}. The modules \path{GaussianPair},
-\path{GaussianAmplitude}, \path{SchurMainGaussian} and
-\path{HardyGaussian} under \path{Grothe/UpperChaos/} prove this chain;
-\path{HardyGaussianCheck}, \path{HardyGaussianFacts} and
-\path{HardyGaussianSound} certify the entire circle.
-
-The rounding was designed for the smaller residual $455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$, which
-would give $\KG\le500000000000000000/355973699960428191<1.404598148840$. The conditional theorem for this
-value (\lean{fresh\_upper\_concrete\_taylor}), whose hypotheses are fourteen finite-band Gaussian error estimates
-and the accuracy of the energy table, is archived and not built. The table accuracy is proved
-(\lean{Final.hclose\_final}). The unconditional theorem does not use the fourteen estimates: it uses six weaker
-ones, which are proved (Section~\ref{sec:trust}).
-The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
-$c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
-
-\paragraph{Supporting results.}
-The paragraphs from here to the end of this subsection, and the one after the
-references, record further Lean results about the same rounding, all in the
-import closure of the single-channel theorem. They include bindings of the stored source data and
-analytic lemmas. Several are
-interfaces that take numerical estimates as hypotheses, and the text says which.
-The earlier single-channel theorem has discharged its Gaussian hypotheses: \lean{upper\_below\_tight}
-has no hypotheses, and it obtains its six Gaussian estimates and the accuracy of
-the energy table from the quadrature above. Other ways of certifying these inputs
-were removed from the libraries; the text mentions them briefly. Throughout,
-\emph{archived} means removed from the libraries and not built: a few modules that
-later work would reuse are kept in \path{abandonware/}, and the others are in git
-history only (\path{abandonware/README.md} lists both, with the commits).
-
-A second route to the energy table, through a saved table of binary64
-conditional Hermite values with its source-error assembly, exceptional-row
-models and zero-profile phase-Taylor bounds, is archived; the energy table is
-certified by the quadrature checker instead.
-
-The complete stored third Taylor center also has exact total and
-comparison-band energies checked by the Lean kernel. The proof assembles every
-grade's integer sum and divides by $2^{210}$, then identifies the rational
-targets. The authoritative witness consists of ordered scaled-integer grade
-arrays regenerated from the same pinned binary64 input, preserving every
-coefficient. Its public energy and source-size theorems add no native axiom.
-The exact center energies enter the whole-error estimates of the final theorem
-(\lean{WholeCenterEnergies}); by themselves they are not Gaussian error bounds.
-
-For the retained head through degree $501$,
-\texttt{ProductionSmoothingApprox.production\_smoothing\_error} proves a
-relative $L^2$ error at most $4\cdot10^{-15}$ for the concrete rational
-smoothing matrices. The exact action in grade $q$ is
-$S_{q+1}C_qS_q^{\mathsf T}$; orthogonality aggregates all $251$ grades
-without multiplying the error allowance by their number. The entry rounding
-uses an integer square-root floor and only the standard logical axioms.
-The final theorem uses this estimate: the retained Gaussian coefficient
-enclosures and the comparison with the energy table are supplied by the
-quadrature checker (\lean{UpperQuad.hclose\_of\_blocks}, \lean{Final.hclose\_final}).
-
-The actual-source consumer projects $F_0$ to total degree $501$, identifies
-the complete Gaussian coefficient-error norm, inserts the frozen correction
-once and applies the proved rational smoothing error. The degree projection,
-rather than the nonrectangular energy-head projection, commutes with smoothing.
-
-\paragraph{Primary radial reconstruction.}
-The actual primary Hermite factor at a real radius is invariant under index
-swap. Combining this with conditional reflection proves reflection of the
-full Gaussian tensor coefficients after radial contraction. The full source
-error is bounded by $10/7$ times its coupled canonical tensor error plus the
-separate discrepancy between mathematical square-root completion and the
-stored rational coefficients. Both quantities are hypotheses of this bound.
-The exact tensor radial reduction also removes the first Gaussian angle by
-charge cancellation, including at profile zeros. Each coefficient is an
-integral of the actual conditional coefficient at $\sqrt{s}$ with density
-$e^{-s}$ exactly once. Substitution in the complete source-error identity
-introduces no numerical quadrature or stored-matrix equality assumption.
-
-The actual Taylor sources also admit a proved finite auxiliary reduction in
-\texttt{ProductionFiniteLaplace}. With softening $\eta=10^{-15}$ and cutoff
-$T=(2^{53})^2$, softening plus truncation costs less than $5\cdot10^{-15}$
-in the full Gaussian $L^2$ norm. Smoothing and every Hermite-band projection
-preserve this bound. The regular auxiliary interval is $[0,2^{53}]$, with
-$\eta^2T\ge40$. A LeanCert certificate proves $e^{-40}\le10^{-17}$ by
-kernel reduction. The finite Fubini identity binds the truncated response to
-the coefficient integrals. Their numerical quadrature is not part of this
-reduction: the final theorem evaluates the Taylor-source coefficients by the
-twisted quadrature described earlier.
-\texttt{ProductionCompactLaplace} also restricts the first squared Gaussian
-radius to $[0,80]$. Its radial error is at most $10^{-17}$, and the combined
-softening and both truncation errors still fit the same $5\cdot10^{-15}$ reserve.
-\texttt{WholeCenterEnergies} identifies the original centers' total energies
-with their exact finite energy certificates and retains those values in the
-three whole Taylor-error identities. Its norm bounds $0.00161$, $0.000024$ and
-$0.0000036$ specialize the complete compact source reserve to inner-product
-cutoff costs $8.05\cdot10^{-18}$, $1.2\cdot10^{-19}$ and $1.8\cdot10^{-20}$.
-The reserve is charged once; original coefficients and factorial scaling are
-unchanged. The first two center adapters retain the registered native energy
-facts, and the source adapters retain the existing phase-cover facts.
-In the final theorem the lower bounds for the three inner products and the
-three low-band errors come from the port facts and the twisted quadrature
-remainders (\lean{re\_inner\_ge\_of\_facts}, \lean{band\_le\_of\_facts}).
-
-\begin{sloppypar}
-A second way of certifying the band estimates of the Taylor sources, adaptive
-rectangle quadrature of a retained source (\lean{ProfileAdaptiveSource},
-\lean{SmallProfile...}, \lean{AdaptiveRectangle...}, \lean{Q0BasePair...}, the
-unit-mode rational Wick compiler and their helpers), is archived; it is
-incomplete, and the final theorem bounds these errors through the twisted
-quadrature instead.
-\end{sloppypar}
-
-The generic complex growth theorem
-\lean{UpperQuad.PolynomialGaussianGrowth.norm\_damped\_eval\_sq\_le} controls
-a degree-$N$ polynomial $P$ satisfying
-$|P(z,\bar z)|\le\exp(\varepsilon|z|^2)$ for every $z\in\mathbb C$.
-For $\varepsilon>0$, $0<\tau<1$, and complex $r,x$, it proves
-\[
- \left|P(r+ix,r-ix)e^{-\varepsilon(r^2+x^2)}\right|^2
- \le \frac{\exp\!\left(\frac{4\varepsilon}{1-\tau}
-       ((\Im r)^2+(\Im x)^2)\right)}{\tau^N(1-\tau)^2}.
-\]
-The proof combines a finite degree-controlled Hermite expansion, its Gaussian
-norm identity, the complex Mehler bound, and a change of Gaussian rate to
-$\varepsilon(1+\tau)/\tau$. The real-coordinate exponent cancels exactly.
-The generic theorem uses only standard axioms.
-\lean{UpperQuad.PhasePolynomialComplex} applies it to the actual phase:
-at fixed real $y$, the polynomial in $(r,x)$ has degree at most $35$ and retains
-$e^{-\varepsilon y^2}$ in its coefficients. The continuation is jointly complex
-analytic and agrees with the production phase on real slices. For every positive
-integer $j$, the bound applies directly with degree $35j$ and damping
-$j\varepsilon$, with the same $(1-\tau)^{-2}$ prefactor. Its certificate
-dependencies are the existing registered phase-cover facts.
-Integration of finite Mehler also gives
-\[
- \|P(\sqrt L\,\cdot)\|_{L^2(\gamma)}^2
- \le \|P\|_{L^2(\gamma)}^2
-       \frac{\tau^{-N}}{(1-\tau)(1-(2L-1)\tau)},
- \qquad L\ge1,\quad (2L-1)\tau<1.
-\]
-\lean{UpperQuad.PolynomialDilationNorm} supplies this standard-axiom bound and
-its normalized Hermite-column specialization. The certified contour bounds and
-twisted quadrature remainders built on these estimates are the ellipse
-certificates described at the start of this subsection.
-
-\lean{UpperQuad.PhasePolynomialParity} proves simultaneous phase parity and
-the degree sign of the formal Hermite factors. The full graded radial vector
-is controlled by \lean{UpperQuad.HermiteRadialVector}: its index map is
-injective into the product of two degree triangles of cutoff $2Q-1$.
-Its squared norm is bounded by the primary finite-Mehler factor, including
-$e^{-2\operatorname{Re}(r^2)}$, times the conditional coefficient energy,
-with no factor for the number of modes. These results use standard axioms;
-the actual-source continuation is \lean{UpperQuad.TwistRadialVector}, and the
-certified contour bounds are the ellipse certificates.
-
-\lean{UpperQuad.EvenSquareDescent.analyticOnNhd\_descend} removes the origin
-square-root singularity for an even analytic complex Banach-valued function.
-If $F$ is analytic on $|r|<R$, $R>0$, and $F(-r)=F(r)$ there, then
-$g(s)=F(\sqrt{s})$ is analytic on $|s|<R^2$, with $g(r^2)=F(r)$.
-The square map is locally invertible away from zero; continuity and the
-removable-singularity theorem handle zero. Uniform norm bounds transport
-unchanged, including on closed balls. The concrete twisted integrand's parity
-and analyticity are proved in \lean{UpperQuad.TwistRadialParity} and
-\lean{UpperQuad.TwistRadialAnalytic}; its contour bounds are the ellipse
-certificates.
-
-The twisted conditional coefficient also has a finite entire factorization.
-For $\lambda=1+j\varepsilon$, its matrix is the normalized Hermite expansion of
-$H_{d,c}Q_r^j$ after rescaling by $\sqrt\lambda$, multiplied by
-$\lambda^{-1}e^{-j\varepsilon r^2}$. The polynomial $Q_r$ includes the factor $i$,
-and the support is $g+h\le c+d+35j$. The swapped extraction index $(h,g)$
-pairs with $U_{g,h}(\sqrt\lambda A)$. The real signed-shift integral determines
-this continuation uniquely, identifying it with the shifted Gaussian
-coefficient. Each matrix column is an actual Hermite inner-product family;
-Bessel bounds its squared norm by the production phase envelope times the
-Hermite dilation bound, with no second Jacobian. These statements provide
-the analytic finite-factorization estimate; the ellipse certificates turn it
-into certified contour suprema and twisted quadrature remainders.
-
-The original Legendre brackets for orders $1$ through $64$ have exact
-integer sign certificates and Lean proofs of root existence and uniqueness.
-The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
-their selected contraction indices and profile sign exponent $c+d$ are
-identified in Lean. Reflection is proved for the actual phase integrals and
-their normalized production coefficients, with the exact factor
-$\sqrt{(d+1)/c}$ for the lookup $(c,d)\mapsto(d+1,c-1)$ when $d+1<c$.
-This factor is at most one; the identity does not bound numerical
-reconstruction errors.
-A shared quadrature theorem derives the original weight
-formula and exactness below twice the rule order from finite polynomial
-identities, using integrated root quotients, Lagrange interpolation and
-polynomial division. The identities are instantiated for the original rules
-of all $64$ orders (\lean{Q0GaussPolynomialCertificates.exactness}), and
-\lean{QuadRem.source\_rule\_exact} transports the result to every production
-panel; the analytic remainder is the Bernstein-ellipse theorem.
-The semantic bridge uses LeanCert's exact polynomial operations.
-Generated certificates for all $64$ orders include the recurrence,
-orthogonality, derivative and Bezout identities, squared norms, and leading
-coefficients. The kernel replays them in the main build
-(\lean{Q0GaussPolynomialOrder01}--\lean{64}).
-
-\paragraph{Selected-spectrum comparison.}
-The finite head only sees $S=\{(n,m):n+3m\le501\}$. Write its approximation error as
-$G_T-X=\sum_r D_r$, where $D_r$ is supported in degree band $B_r$ with $\|D_r\|_2\le e_r$.
-Let $w_p\in[0,1]$ bound the retained absolute coefficient sum of the preprocessed block $p$.
-For nonnegative radii $A_r^2\ge\sum_{p\in S\cap B_r}w_p^2E_X(p)$, Lean proves
-\[
- \sum_{p\in S}w_p|E_{G_T}(p)-E_X(p)|
- \le2\sum_r A_re_r+\left(\sum_{g=0}^3\sqrt{\sum_{r\in I_g}e_r^2}\right)^2.
-\]
-Here $I_0$ contains the rounding remainder and $I_1,I_2,I_3$ are the three Taylor orders.
-Their bands are disjoint within each group, so their errors combine in quadrature before the groups are added.
-All pieces may share coordinates. Lean proves each coefficient cost by outward interval polynomial arithmetic;
-native arithmetic checks eighteen weighted radii from the stored table and its error allowance.
-In this theorem the Gaussian component-error bounds $e_r$ are hypotheses. The final theorem uses a regrouped form with
-seven linear pieces and four whole sources (\lean{ThreeBandRegrouping.localized\_comparison\_tight\_three\_band}),
-whose error bounds are the six proved estimates. The eighteen-piece instance
-(\lean{localized\_comparison\_grouped}) is archived.
-
-\paragraph{Conditional coefficients.}
-The conditional coefficients of the actual phase are defined in
-\texttt{F0ConditionalNode} and satisfy a coupled Bessel bound.
-For nonnegative radius and nonzero profile, \texttt{F0ConditionalEvaluator}
-identifies them with the signed historical shifted integral.
-\texttt{ConditionalNodeIndices} proves the exact selection of $31{,}877$
-distinct pairs from the larger $35{,}777$-pair storage.
-The actual Gaussian integral reflection, proved by finite Stein/Ward
-recurrences and absolute Fubini, yields the production multiplier
-$\sqrt{(d+1)/c}\le1$ when $d+1<c$. All these identities use only the
-standard logical axioms. In the final theorem the node values are enclosed by
-the quadrature checker in dyadic interval arithmetic (\lean{UpperQuad.NodeSound},
-\lean{UpperQuad.PairsSound}), so no floating-point error model is needed.
-
-The actual shifted coefficients $C_{cd}(A)$ also satisfy the charge relation
-\[
- A\bigl(\sqrt{c+1}\,C_{c+1,d}(A)-\sqrt{d+1}\,C_{c,d+1}(A)\bigr)
-   =(d+1-c)C_{cd}(A).
-\]
-Finite shifted-moment identities and absolute Fubini establish this relation;
-Hermite normalization supplies the square-root factors. For $A>0$ it reduces
-each row to the preceding row and the existing zero-row moment seeds, without
-a hypergeometric diagonal recurrence.
-
-For the actual seed integral and every $x\ge0$, LeanCert's exponential Taylor
-remainder on $[-x,0]$ with derivative bound one gives
-\[
- \left|J_0(x)-\sum_{n=0}^{N}\frac{(-x)^n J_n(0)}{n!}\right|
- \le \frac{x^{N+1}J_{N+1}(0)}{(N+1)!}.
-\]
-
-\paragraph{Common scalar.}
-\texttt{ConditionalSeedNormalization} uses the positive actual seed
-$S(A)=(\sqrt\pi/2)A J_0(A^2)$ for $A>0$ to write $C_i(A)=S(A)U_i(A)$.
-The normalized coefficients have $U_{00}=1$, retain the zero-row and charge
-recurrences, and satisfy $\sum_{i\in E}|U_i(A)|^2\le S(A)^{-2}$ for every
-finite set of modes $E$.
-
-\texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
-at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.
-Reflection therefore extends to all nonnegative radii. The exact completion
-of the selected $31{,}877$ mathematical modes has weighted error at most
-$10/7$ times the coupled canonical error at the same nodes and weights.
-This consumes explicit canonical error and nonnegative-weight premises;
-it does not cover physical quadrature, primary contraction or table agreement.
-
-\paragraph{Exact phase moments.}
-For $\varphi=D e^{-\varepsilon(U+V)}S(U,V,W)$, clear the rational coefficients
-as $A=LS$. Each even moment is a finite rational sum over the coefficients of
-$A^{2j}$, divided by $L^{2j}$, at Gaussian rate $1+2j\varepsilon$.
-The integral identity applies directly to the stored phase and does not use
-the numerical phase-cover certificate. Separate native checks give exact
-rational values for $\E\varphi^2$, $\E\varphi^4$, and $\E\varphi^6$,
-approximately $2.56852947444587\cdot10^{-6}$,
-$5.71439509703932\cdot10^{-10}$, and $1.68238736430120\cdot10^{-11}$.
-These equal the squared norms of the three positive Taylor sources.
-The same finite evaluator with a restricted Gaussian measure also proves
-$\int_{|z_1|^2>50}\varphi^2\,d\gamma_2<(5\cdot10^{-15})^2$.
-A native check bounds the exact rational factor after extracting $e^{-155}$;
-the Taylor polynomial through degree twelve at $5$ gives $e^5>148$, hence
-$e^{-155}<148^{-31}$. This certifies the radial tail of the production phase.
-Since $|\varphi|<1$, every positive Taylor source restricted to this event
-also has $L^2(\gamma_2)$ norm below $5\cdot10^{-15}$.
-The total moments enter the whole-error estimates of the final theorem
-($\|h_j\|^2=\E\varphi^{2j}$); band errors need the captured Hermite energies and
-approximation bounds as well.
-The orthogonal tail interface subtracts the separate captured energies
-$\sum_i\max(0,\ell_i-e_i)^2$ from the total moment, retaining each band's
-error cap. An alternative interface uses one real inner product and the
-approximant norm to bound the whole approximation error. The numerical
-coefficient and integral bounds are explicit hypotheses of both interfaces;
-the final theorem bounds its three whole errors in the second way
-(\lean{whole\_of\_inner}), with the inner products bounded from the port facts
-and the twisted quadrature remainders.
-Finite normalized Hermite expansions have exact rational squared norms.
-The preserved coefficient inputs supply a complete finite check for the third
-approximant: all 6,552 coefficients through degree 51, its total norm, and its
-four projected band norms. Injective graded indexing also proves that its
-higher-degree tail vanishes. Its Gaussian approximation error is a separate
-matter; the stored error arrays are not treated as proofs.
-A continuous finite-polynomial representative satisfies the charge-one
-function interface. The third-order tail cap follows from four explicit
-finite-band Gaussian error caps by subtracting captured energy from the exact
-sixth moment; the Gaussian caps themselves are hypotheses of this derivation.
-The finite rounding difference $c_1+c_2/2+c_3/6-v$ has norm at most $10^{-18}$,
-proved by exact integer squares at a common dyadic denominator. The three
-other preserved center sources and retained sizes are checked separately from
-Gaussian approximation errors. The frozen witness uses typed integer grades at
-scale $2^{206}$. Standard-axiom proofs establish all grade sizes.
-The first and second centers also have exact certificates for their six and
-four captured bands. The concrete comparison interface
-(\lean{comparisonInputs\_taylorCenters}) fixes every center and
-its polynomial representative and derives the rounding and all three omitted
-tails internally. Its inputs are fourteen explicit finite-band
-Gaussian error inequalities, which are not proved. The
-slightly tighter finite error caps are generated from the original allowances.
-The conditional theorem that adds the table accuracy and would give the sharper
-value below $1.404598149141$ (\lean{fresh\_upper\_concrete\_taylor}) is archived.
-
-\begin{sloppypar}
-The Hilbert--Schmidt route for the Taylor multiplier operators (parameter
-gates, coherent transforms, Fock coefficients, Gram and rectangle-tail bounds:
-\lean{OriginalHS...}, \lean{Actual...}, \lean{IndependentSource...},
-\lean{QuadraticPolynomial...}) is archived.
-\end{sloppypar}
-
-A Gaussian Laplace representation of complex phase is proved exactly,
-including the zero argument, integrability and a uniform absolute-integral
-bound. Absolute Fubini exchange applies this representation to the actual
-Taylor inner products. Affine completion of squares and translated Gaussian
-Wick sums give exact conditional monomial integrals with the inverse-rate mass.
-Finite support extends this evaluation to the same complex polynomials used
-by the Hermite basis, with integrability proved term by term.
-For any positive radial rate $r$ and fixed complex source $a$, translation by
-$\overline a/r$ evaluates finite polynomials in $z$ and $\overline z$ under
-the tilt $\exp(-(r-1)|z|^2+2\operatorname{Re}(az))$ through shifted Wick sums.
-The factor $\exp(|a|^2/r)$ and the Gaussian mass $1/r$ are retained.
-A half-rate majorant proves integrability of these polynomial insertions.
-The radial normalization is identified directly with the production
-Hermite polynomial: for $s\ge0$,
-\[
- h_{m+k,m}(\sqrt{s})=(-1)^m(\sqrt{s})^k
- \sqrt{\frac{m!}{(m+k)!}}\,L_m^k(s).
-\]
-The value is real, so conjugation introduces no additional sign. The natural
-power of the radius includes zero radius and zero charge. This identity gives
-no numerical radial Gram bound or quadrature error.
-
-For each finite center, fixing the first coordinate gives its exact polynomial
-slice in the second coordinate. The actual source $\overline c(i\varphi)^j$
-factors into this polynomial and Gaussian damping with conditional rate
-$\alpha=1+j\varepsilon$, giving an exact conditional finite Wick sum.
-Fixed-parameter boundedness justifies Gaussian product Fubini, and the actual
-inner product becomes the auxiliary and first-coordinate Gaussian integral
-of this finite evaluator, with no numerical integration premise.
-Smooth angular moments
-\[
- M_h(x)=\int_0^{\pi/2}\sin^{2h}\!\theta\,\cos^2\!\theta\,
-         e^{-x\sin^2\!\theta}\,d\theta
-\]
-are positive, have consecutive ratios in $(0,1]$, and satisfy the exact
-three-term recurrence. For $x\ge0$ their ratio update equals a monotone
-abstract update, for which finite backward interval propagation is proved
-from a terminal interval in $[0,1]$. The angular ratio is bounded by the
-iterations with terminal values zero and one.
-The original moment integrand is interval integrable even at order zero, and
-the continuity, derivative, range and open-interval pullback identity for
-the angular substitution are proved. The integral change of variables gives
-$J_h(x)=(4/\pi)M_h(x)$, with endpoint equality handled almost everywhere.
-The original moments inherit positivity, the recurrence, and finite backward
-ratio enclosures for $x\ge0$. The substitution $v=t/(1+t)$ gives the
-integrable real half-line kernel identity
-\[
- \int_0^\infty \left(\frac{t}{1+t}\right)^h t^{-1/2}
- \frac{e^{-xt/(1+t)}}{(1+t)^2}\,dt=\frac{\pi}{2}J_h(x).
-\]
-Absolute Fubini and the exact shifted Gaussian moment identify the normalized
-zero-row coefficient with
-\[
- I_{0,d}(A)=\frac{\sqrt{\pi}}{2}\,
- \frac{A(-A)^d J_d(A^2)}{\sqrt{d!}}.
-\]
-This is connected to the actual canonical evaluator and production coefficient,
-including the profile sign to power $d$. At $d=0$ that factor is one.
-These identities use only Lean's standard axioms. The exact zero-row recurrence
-$I_{0,d+1}(A)=-A r_d(A^2)I_{0,d}(A)/\sqrt{d+1}$, which is proved for the
-actual Gaussian coefficient and transferred to the signed production value.
-The canonical coefficient has norm at most one by Cauchy--Schwarz in Gaussian
-$L^2$. Its two-term raising sum has norm at most
-$\sqrt{c+1}+\sqrt{d+1}<35$ on the stored index rectangle. A parameter
-derivative identity and a midpoint transfer are not part of these results.
-Conjugation invariance of the Gaussian and rational Hermite coefficients prove
-reality of every canonical coefficient and the corresponding signed production
-coefficient. Their complex distance to a real stored center equals the absolute
-real-part error.
-The recurrence $M_{p+1,q}=\mu M_{p,q}+(q/\beta)M_{p,q-1}$ preserves the affine
-cancellation for every mixed degree, including zero mean and $q=0$.
-The saved-center, phase-Taylor and phase-stability bounds (\lean{ZeroProfile...},
-\lean{PhaseStability}) and the base-moment tail bounds are archived.
-
-\paragraph{Kernel stability.}
-For charge-one responses and any same feasible preprocessors, Lean proves that
-the full coefficient change obeys
-\[
- \|K_H-K_G\|_A\le(\|H\|_2+\|G\|_2)\|H-G\|_2.
-\]
-The polynomial radial repair $z\mapsto zS_6(1-|z|^2)$ of the disk map and the
-resulting ceiling $2\sqrt{\E\varphi^6/1225}$ on outward radial changes of disk
-responses are archived.
+An earlier proof of $\KG<1.404599395362$ by a single Gaussian rounding channel, with a certified
+quadrature of its energy table, was removed from the Lean libraries because the main theorem does not use it;
+it last existed at commit \texttt{460c76731}.
 
 \subsection{Lower bounds: Hermite projection games}
 A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ while its \emph{scalar} value is small. We use
@@ -799,11 +231,6 @@ The true mixture differs from this polynomial by at most
 $\sum_p w_p\sum_{n\ge m_p}|h_p(n)|$ in $\ell^1$.
 The resulting finite-matrix bound is \lean{convex\_transfer\_variable\_ival}.
 
-For the six established channels, a common rational vector in the 320-dimensional cube
-bounds the signed transfer score by $0.7119685648573$ for every real convex weight vector.
-The proof fixes each map, preprocessor, coefficient cutoff and tail allowance. Its finite
-comparison uses the actual dyadic enclosures (\path{Grothe/UpperSixExact/ScoreCeiling.lean}).
-
 Separate paper results in the Conjecture K monograph strengthen the common-response
 energy ellipsoid and reduce a joint-sector estimate to a specified pointwise remainder
 inequality. An exact rational checker verifies the conditional error budget, but
@@ -834,12 +261,11 @@ The six-channel proof checks the Hardy-space disk and circle-mean contours of fi
 Lean's kernel. \lean{native\_decide} is used for the two bounded cell-map
 norm witnesses and their overlap tables, for the weighted head with the six
 lower bounds of the linear coefficients, and for the contour of the first channel
-(\path{Grothe/UpperSixExact/}). Their soundness is proved in Lean.
+(\path{Grothe/Upper/Certificate/}). Their soundness is proved in Lean.
 The seven-channel proof adds one \lean{native\_decide} comparison for the mixed head and selector allowance.
 The physical meaning and the error budget of each integer are proved in the kernel.
-The six-channel report is in \path{scratch/UpperSixAxioms.lean}.
-The discussion below also records the independent single-channel proof and the
-lower certificates.
+The report of the upper proof alone, selector included, is in \path{scratch/UpperAxioms.lean}.
+The discussion below records the lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
@@ -858,98 +284,23 @@ the inherited scalar and spectral row checks for rows 01--07 and 10--14, and the
 for all fourteen potentials, including localised pieces and chord nodes. The kernel checks the
 two tightened row laws and the joint prices.
 The node-cap facts live in computation-only modules; CI replays them from a verified build cache or, when their sources
-change, evaluates them on its own runner.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Earlier single-channel upper bound.}\newline\lean{upper\_below\_tight}: some Grothendieck bound is below $1.404599395362$, without hypotheses. \lean{TightTwist.six\_of\_facts} derives six Gaussian estimates from the accepted port facts and tighter panel remainders. The longer-prefix costs feed the actual comparison; \lean{Final.hclose\_final} supplies the head's table accuracy. The finite head forces linear energy that \lean{HeadHardy} deducts before bounding the tail.}\\[2pt]
-the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
-the transfer inequality (tensor powers); kernel composition and locality; the explicit decomposition of $G_T-X$
-(\lean{difference\_pieces}) and the weighted comparison; the Hardy tail (holomorphic continuation, Schur bound, circle
-Parseval, real identification); the reduction of the Hermite coefficients to radial integrals, Gauss exactness of the
-production rules, the analytic continuation of the integrands and the Bernstein-ellipse remainder; the soundness of
-every checker; the endpoint arithmetic
-&
-the head through degree 501 from the stored energies by a verified interval evaluator (\lean{head\_check}); the phase
-cover; the Gaussian circle check of the Hardy tail (\lean{HardyGaussianCheck.charts\_checked}) and its decay region (\lean{hardy\_region\_check}); exact phase moments; exact energies of the stored
-expansions; band masses of the energy table, its blocks, even entries and omitted pairs; the port facts of the three
-Taylor powers; the ellipse checks of both quadratures; the high-band masses for the longer polynomial prefixes (\lean{improved\_high\_mass\_native}).
-Residual $\delta\approx1.5422479692\cdot10^{-6}$: comparison
-$1.4921263584\ldots\cdot10^{-6}$ ($96.75\%$), Hardy tail $219549168/10^{16}$
-($1.42\%$, after deducting forced linear energy from $117/100$ at radius
-$4149/4000$, \lean{HardyReal.hardy\_GT\_gaussian}), head $28153/10^{12}$ ($1.83\%$),
-table accuracy $6847009/(5\cdot10^{17})$ (about $0.00089\%$).\\
+change, evaluates them on its own runner.\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 The right-hand column lists finite computational inputs. Checks performed with \lean{native\_decide}
 run as compiled code and register an axiom named after the fact; these trust the Lean compiler and its runtime
-in addition to the kernel. Other finite calculations, including the tighter panel-total checks and budget
-arithmetic, reduce in Lean's kernel and add no axiom. The analytic deductions use the standard axioms
+in addition to the kernel. Other finite calculations reduce in Lean's kernel and add no axiom. The analytic deductions use the standard axioms
 \lean{propext}, \lean{Classical.choice} and \lean{Quot.sound}, together with the stated finite inputs.
 No step of either bound rests on a certificate that is checked outside Lean.
 
-The sharper value that the rounding was designed for,
-\[
- \KG\le\frac{500000000000000000}{355973699960428191}<1.404598148840,
-\]
-has only a conditional theorem (\lean{UpperChaos.fresh\_upper\_rounder}), archived and not built: it needs
-fourteen finite Gaussian band-error estimates that are not proved.
-
-The single-channel comparison used by \lean{upper\_below\_tight} retains only
-the lowest bands $(0,51]$, $(0,51]$, $(0,11]$ and groups the remaining supports
-orthogonally. It assumes those three low-band estimates, three independent
-whole Taylor-error estimates and the frozen-response table accuracy. The linear
-comparison charges low and high parts separately, while the quadratic term uses
-each whole error only once. The table accuracy is proved (\lean{Final.hclose\_final}),
-and the six estimates are proved with tighter radii (\lean{TightTwist.six\_of\_facts}).
-
-The complex Gaussian shift route has a formal analytic estimate. For
-$j>0$, $0<\tau<1$, and any finite family of conditional Hermite modes with
-total degree at most $D$, write $A=a+ib$ and $\varepsilon=21/20$. Then
-\[
- \sum_i |J_i(r,A)|^2 \le
- e^{2b^2+2|b|\sqrt{2D}}\,
- \tau^{-35j}(1-\tau)^{-2}
- \exp\!\left(\frac{4j\varepsilon}{1-\tau}
-              ((\operatorname{Im}r)^2+b^2)\right).
-\]
-There is no factor for the number of selected modes. The finite Hermite
-translation shifts both formal variables together. An exact real Gaussian
-change of variables identifies the coefficient with a fixed-phase integral;
-a locally uniform integrable majorant permits analytic parameter dependence
-and bounded holomorphic substitutions on closed disks. On the production
-real slice, $s\ge0$ and $v(s)\ne0$, the actual coefficient is
-$\sigma J_i(\sqrt{s},\sigma A_+(s))$, where
-$\sigma=\operatorname{sign}v(s)$ and
-$A_+(s)=\sqrt{s}/(\sqrt{1+a_Q^2}|v(s)|)$.
-The certified zero-free domains, the contour bounds and the assembly of the
-quadrature remainder are supplied by the accepted ellipse certificates
-(\lean{TwistEllCheck.remainder\_of\_prodShards}).
-These estimates inherit the existing phase-cover facts and introduce no new
-numerical axiom.
-
-The full twisted radial component is identified with
-\[
- e^{-r^2}\,\sigma\,
- h_{q-d,q+1-c}(r,r)\,
- J_{c,d}\!\left(r,\frac{r}{\kappa v_C(r^2)}\right),
- \qquad c\le q+1,\quad d\le q.
-\]
-Here the formal Hermite factor is normalized. This is the integrand in
-$ds$ with $s=r^2$, so no extra radial Jacobian is inserted. Its simultaneous
-phase and Hermite parity makes it globally even in $r$. Local square
-descent proves analyticity as a function of $s$ at every point with
-$v_C(s)\ne0$, for $j>0$, including the origin when its profile is nonzero.
-The result crosses the principal square-root cut; the real-slice equality
-retains the explicit fixed panel sign. The profile exclusion, the contour
-estimates and the aggregation over panels are supplied by the same accepted
-ellipse certificates.
-
-The repository-wide audit covers the native facts listed in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check, for the upper bound, the head, selected-band masses, the phase cover, the second, fourth and sixth phase moments and the squared radial phase tail, the Hardy region and circle, the stored expansions, the energy-table blocks, the port facts, the ellipse certificates and
-\lean{improved\_high\_mass\_native} for the longer-prefix high-band masses;
+The repository-wide audit covers the native facts listed in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check, for the upper bound, the cell witnesses and overlap tables, the weighted head with the
+lower bounds of the linear coefficients, the contour of the first channel and the mixed head with the selector allowance;
 for the lower bound, the row checks and the node caps (the range facts of the whole-fibre nodes, the coverage and piece facts of the localised nodes, and the chord facts).
 The report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
 No \lean{sorry}. CI builds the single target \lean{Grothe}, node caps included, and checks its one axiom report on every pushed branch; a change reaches \texttt{master} through a pull request, after the same check has passed on its merge with the current \texttt{master}.
-The node-cap facts take about 340 CPU-hours in all, and the energy-table facts about ten hours each, so CI replays them from a verified build cache.
+The node-cap facts take about 340 CPU-hours in all, so CI replays them from a verified build cache.
 A hash of their computation sources is recorded with the cache. The numerical cap checker has its own precompiled library,
 \lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
 The digest is part of the build-cache key: when no verified cache matches, CI runs the same check on
@@ -958,23 +309,6 @@ the cache. That persistent build supplies later CI replay; no separate manual ve
 A digest alone is not verification. The node-cap facts import only computable definitions, the checker and rational
 data; their results are assembled for each row in \path{Grothe/LowerAnalytic/CapRowKK/Assembly.lean} and for all rows in
 \path{CapNodes.lean} (\path{docs/CAPS.md}).
-The production circle certificate \lean{HardyGaussianCheck.charts\_checked} verifies the
-fixed-amplitude Gaussian majorant $Q(\cos\theta)$ on all four closed chart halves
-at radius $4149/4000$, with exact angular mean $117/100$.
-Its soundness proof supplies the positive-definiteness gates and the pointwise bound;
-integration and Parseval give \lean{HardyReal.hardy\_GT\_gaussian}. The final theorem deducts
-the linear coefficient's forced weighted square through \lean{HeadHardy} before applying
-the tail Cauchy--Schwarz estimate, giving tail $219549168/10^{16}$.
-Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
-The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
-(\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
-The decay region is certified by \lean{hardy\_region\_check}, and the circle mean by
-\lean{HardyGaussianCheck.charts\_checked}.
-The common holomorphy and Parseval transfer reduces these Hardy estimates to summability and the real
-Gaussian identification of the odd series, which \lean{HardyReal.hreal\_GT} proves for $G_T$:
-the smoothed Mehler pair has the law of $(U, RU+SW)$ (characteristic functions), whose density on $\mathbb R^8$ is the
-holomorphic kernel at the real cross covariance (Cholesky substitution). Together with the Gaussian-amplitude
-circle check, this proves \lean{hardy\_GT\_gaussian}, the Hardy input used by the single-channel bound.
 Thirteen algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms, and the generic response and quintic-transfer lemmas, which add no
 native facts, were proved in Lean. Their modules are archived: they are not built
@@ -1015,7 +349,7 @@ integrals still require certification before they can improve either endpoint.
 
 \textbf{[P,C; polynomial certificate in Lean, archived]} The entire Gaussian-phase cubic-preprocessor family
 $H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
-has full reciprocal score at most $0.71186$. Even the earlier single-channel bound
+has full reciprocal score at most $0.71186$. Even the single-channel bound $1.404599395362$
 has reciprocal $0.7119464829\ldots$, above this ceiling.
 The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certificates handle all complex phases.
 Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
@@ -1260,12 +594,8 @@ in the second.
 \section{Open problems}
 Work is tracked as GitHub issues of the repository: the open epics are \#22 (a better lower bound) and \#34 (research
 plans). Three epics are closed: \#12 (unconditional lower bound: the first part of \lean{main\_bounds}), \#17 (inputs of the upper bound:
-\lean{upper\_below\_tight} for the earlier threshold $1.404599395362$) and \#29 (build infrastructure).
+a bound below the earlier threshold $1.404599395362$, by the single-channel proof that has since been removed) and \#29 (build infrastructure).
 \begin{enumerate}
-\item For the earlier single-channel rounding, verify the originally planned budget below $1.404598149141$. What is missing are the
- fourteen finite-band Gaussian error estimates with their original caps, the hypotheses of the archived conditional theorem of
- Section~\ref{sec:trust}; its single-channel theorem uses proved estimates and exhibits a bound below $1.404599395362$.
- The energy-table accuracy, the Hermite expansion, the structural analytic bridge and the Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.402$,
  then $1.403$. A design (\path{research/higher-degree/}, [N]) finds that, for the game of degree $5$ that it studies, a lossy
@@ -1312,16 +642,5 @@ and external exact or interval certificates; they are not all formalized in Lean
 \item N.~Brunner et al., \emph{Bell nonlocality}, Rev.\ Mod.\ Phys.\ 86 (2014),
  \href{https://arxiv.org/abs/1303.2849}{arXiv:1303.2849}.
 \end{itemize}
-
-% Exact phase-source identity; Agent-ID: codex-8c4d.
-\paragraph{Phase source identity.}
-The identity expressing the squared production phase in Gram coordinates is
-available independently of the numerical phase cover. This lets local source
-certificates use the actual rounding polynomial before cover assembly.
-
-The final theorems use this identity (\lean{PhiProductionIdentity}) in the proof of the
-phase bound. The structural packed-source parser proofs, the production phase-model error
-bounds and the rational source-norm evaluation, with its charge decomposition and covariance
-contractions, are archived.
 
 \end{document}

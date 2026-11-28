@@ -85,7 +85,8 @@ jobs:
       KIND: ${{ inputs.kind }}
       TARGETS: ${{ inputs.targets }}
       # the droplet works in a throwaway directory beside (never inside the .lake of) the runner's workspace
-      WS: ${{ inputs.runner == 'droplet' && format('cloudjob-{0}-{1}', inputs.id, matrix.shard) || '.' }}
+      # GitHub-hosted: ws/, the archive path of the build cache (ws/.lake/build, as in lean.yml)
+      WS: ${{ inputs.runner == 'droplet' && format('cloudjob-{0}-{1}', inputs.id, matrix.shard) || 'ws' }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -96,9 +97,9 @@ jobs:
         if: inputs.kind != 'script'
         uses: actions/cache/restore@v4
         with:
-          path: .lake/build
-          key: lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
-          restore-keys: lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+          path: ws/.lake/build        # Lean jobs run GitHub-hosted only, so WS is ws here
+          key: lake-build-v3-${{ hashFiles('ws/lean-toolchain', 'ws/lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lake-build-v3-${{ hashFiles('ws/lean-toolchain', 'ws/lake-manifest.json') }}-
 
       - name: Lean toolchain and Mathlib (from the Mathlib cache)
         if: inputs.kind != 'script'
@@ -107,9 +108,11 @@ jobs:
           use-mathlib-cache: true
           use-github-cache: false
           build: false
+          lake-package-directory: ${{ env.WS }}
 
       - name: Python packages for scripts (tools/cloud-requirements.txt, GitHub-hosted only)
-        if: inputs.kind == 'script' && inputs.runner == 'hosted' && hashFiles('tools/cloud-requirements.txt') != ''
+        if: inputs.kind == 'script' && inputs.runner == 'hosted' && hashFiles('ws/tools/cloud-requirements.txt') != ''
+        working-directory: ${{ env.WS }}
         run: python3 -m pip install --quiet -r tools/cloud-requirements.txt
 
       - name: Run the job
@@ -137,7 +140,10 @@ jobs:
                 lake build Grothe --log-level=warning || status=$?
                 if [ $status = 0 ]; then python3 tools/gen_root_imports.py --check || status=$?; fi
                 if [ $status = 0 ]; then
-                  ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' Grothe GrotheKernel GrotheCapsKernel GrotheQuadKernel GrotheQuadExtKernel Grothe.lean GrotheKernel.lean GrotheCapsKernel.lean GrotheQuadKernel.lean GrotheQuadExtKernel.lean QuadRun.lean || status=1
+                  # the library folders and the root Lean files that exist (a missing path makes grep exit 2 even on a match)
+                  scan=0
+                  grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' $(ls -d Grothe Grothe*Kernel *.lean 2>/dev/null || true) || scan=$?
+                  [ "$scan" = 1 ] || status=1
                 fi
                 if [ $status = 0 ]; then
                   lake env lean scratch/Axioms.lean > "$OUT/axioms.txt" && python3 scripts/check_axioms.py < "$OUT/axioms.txt" || status=1

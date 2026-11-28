@@ -79,7 +79,10 @@ holds=$(gh pr view "$PR" --json labels --jq '[.labels[].name | select(startswith
 if [ -n "$holds" ]; then
   echo "::notice::PR #${PR} is checked green but not landed: a review is in progress (${holds}); /land again after its verdict"; exit 0
 fi
-if git push origin merge-candidate:master; then
+push_err=$(mktemp)
+push_rc=0; git push origin merge-candidate:master 2>"$push_err" || push_rc=$?
+cat "$push_err" >&2   # the push's own messages stay in the log
+if [ "$push_rc" = 0 ]; then
   merged=$(git rev-parse merge-candidate)
   bash scripts/hold_notice.sh "$PR" "$merged" || true   # a hold placed after the final read lost the race: say so
   delete_branch
@@ -111,11 +114,17 @@ else
     # it is bound to the source commit, which did not change)
     echo "::notice::master moved since the check: re-dispatched PR #${PR} against the new master"
     gh workflow run lean.yml --ref "${BRANCH}" -f land=true -f pr="${PR}" -f sha="${source}"; exit 0
-  elif git diff --name-only "$base" merge-candidate | grep -q '^\.github/workflows/'; then
-    echo "::error::The push was refused because this delivery changes .github/workflows and the token may not"
-    echo "::error::update workflows. Add the MERGE_TOKEN secret (AGENTS.md §9), or Alin merges the PR by hand."
-  else
-    echo "::error::The push to master was refused for another reason (see above). Not retrying."
   fi
+  case "$(bash scripts/land_push_refusal.sh "$base" merge-candidate "$push_err")" in
+    workflow-permission)
+      echo "::error::PERMISSION, NOT A FAILED CHECK: the merged tree $(git rev-parse 'merge-candidate^{tree}') is built,"
+      echo "::error::checked and approved, but this delivery changes .github/workflows and the token may not update"
+      echo "::error::workflows. Add the MERGE_TOKEN secret (AGENTS.md §9), or Alin merges the PR by hand at this tree." ;;
+    workflow-unexplained)
+      echo "::error::The push was refused; the delivery changes .github/workflows, but the refusal is not the"
+      echo "::error::workflow-permission message (see above). Do not merge by hand before the cause is known." ;;
+    *)
+      echo "::error::The push to master was refused for another reason (see above). Not retrying." ;;
+  esac
   exit 1
 fi

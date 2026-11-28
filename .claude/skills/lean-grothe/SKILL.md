@@ -17,11 +17,12 @@ version plus what the rulebook does not say.
 - Lower bound: `14020221627 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
   (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
   The bound is the exact endpoint `sparse_stein_endpoint` rounded strictly downward.
-- Upper bound: `1404556392 / 1000000000`, weak (≤). Seven Gaussian rounding channels. The selector is in `Grothe/UpperSelector/`, on the six certified channels in `Grothe/UpperSix/` and `Grothe/UpperSixExact/`. `Grothe/UpperResult.lean` has exactly three theorems:
-  `Grothe.UpperSeven.bound` (the exact value, for every finite matrix), `constant_le` (rounded up) and
-  `constant_lt_inv_gammaDagger`.
-- `1/γ†` is Haagerup's proposed value; K is strictly below it.
-- An older, independent single-channel upper proof (`Grothe/UpperTightFinal.lean`, K < 1.404599395362) is still built.
+- Upper bound: `1404556392 / 1000000000`, weak (≤). A mixture of Gaussian rounding channels, named by role, never by
+  count: the cell and phase channels in `Grothe/Upper/Rounding/` and `Grothe/Upper/Kernel/` with their certificate
+  `Grothe/Upper/Certificate/`, the angular selector in `Grothe/Upper/Selector/`. `Grothe/Upper/Result.lean` has
+  exactly two theorems: `Grothe.Upper.bound` (the exact value, for every finite matrix) and `constant_le` (rounded up).
+- `1/γ†` is Haagerup's proposed value; K is strictly below it. That comparison is proved in the article's own
+  package (`haagerup-article/anc`, `Haagerup.constant_lt_inv_gammaDagger`), not in the main target.
 
 **`docs/CONSTANTS.md` is the page that states every constant exactly.** Read the current values from the Lean
 statement or from `python3 scripts/check_constants.py --print`, never from memory or from an old note.
@@ -45,14 +46,13 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | path | what |
 |---|---|
 | `Grothe/Statement.lean` | definitions only (imports only Mathlib): `scalarOpt`, `vectorOpt`, `IsBound`, `complexGrothendieckConstant`, `UpperBelow` |
-| `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorems |
+| `Grothe/MainResult.lean`, `Grothe/Upper/Result.lean` | the theorems |
 | `Grothe/Lower/` | lower certificate: exact rational checker, rows, Stein cuts, mass row, envelope, transfer to matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis for the lower bound; the node caps (`Cap*.lean`, `CapRowKK`, `CapPieces/`, `CapNodes`) |
-| `Grothe/UpperSelector/` | the angular selector, seven-channel mixed head and transfer |
-| `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six-channel upper proof: the library, and the certificate of the bound |
-| `Grothe/Upper/`, `Grothe/UpperChaos/`, `Grothe/UpperQuad/`, `Grothe/UpperTight*.lean` | the older single-channel upper proof |
-| `GrotheKernel/`, `GrotheCapsKernel/`, `GrotheQuadKernel/`, `GrotheQuadExtKernel/` | Mathlib-free checker programs, precompiled libraries |
-| `Grothe.lean`, `Grothe*Kernel.lean` | generated roots (`python3 tools/gen_root_imports.py`); never edit by hand |
+| `Grothe/Upper/Selector/` | the angular selector, the mixed head and transfer of the mixture |
+| `Grothe/Upper/` | the upper proof: `Rounding/` and `Kernel/` (the channels' library), `Certificate/` (their certificate), `Selector/`, `Result.lean` |
+| `GrotheCapsKernel/` | the Mathlib-free checker program of the node caps, a precompiled library |
+| `Grothe.lean`, `GrotheCapsKernel.lean` | generated roots (`python3 tools/gen_root_imports.py`); never edit by hand |
 | `data/` | inputs of generated modules; `data/axioms/` the lists the axiom check reads |
 | `tools/` | generators and replay scripts; `scripts/` CI helpers and checks |
 | `docs/` | `CONSTANTS.md`, `LEAN_DETAILS.md` (module inventory), `overview.tex` (source of `OVERVIEW.pdf`), notes |
@@ -67,8 +67,8 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 - **Before every local build, check the import closure**: if the module imports `Grothe.LowerAnalytic.CapNodes`
   (directly or through `Grothe.MainResult`), do not build it locally. `Grothe/MainResult.lean` is edited without
   a local build.
-- The upper bound alone builds locally: `lake build Grothe.UpperResult`, then
-  `lake env lean scratch/UpperSixAxioms.lean | python3 scripts/check_axioms.py --upper-six`.
+- The upper bound alone builds locally: `lake build Grothe.Upper.Result`, then
+  `lake env lean scratch/UpperAxioms.lean | python3 scripts/check_axioms.py --upper`.
 - Where: `ssh yo` (8 vCPUs) if its load is at most 4, else `ssh big` or `ssh mega` if one exists and its CI runner is
   offline or the managing agent announced an interval (at most 8 cores, pinned inside the upper half of the cores; the other half stays free for heavy CI:
   AGENTS.md §12), else the laptop; in your own folder `~/<id>-<topic>` with
@@ -85,8 +85,8 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
   rebuild of all node caps. A new target goes in its own Lake package.
 - The caps closure (`python3 scripts/caps_stamp.py --list`) unless that is the task; after touching it,
   `python3 scripts/caps_stamp.py --digest` must print a `sha256` line.
-- `GrotheCapsKernel/` and `GrotheQuadKernel/`: frozen precompiled libraries; a change recompiles everything that
-  imports them (hours to days). New quadrature kernel code goes in `GrotheQuadExtKernel/`.
+- `GrotheCapsKernel/`: a frozen precompiled library; a change recompiles everything that imports it (the node
+  caps: hundreds of CPU-hours).
 - `master` (only CI moves it), other agents' branches, worktrees, droplet folders and CI runs.
 - `haagerup-article/` when a bound changes; `OVERVIEW.pdf` (CI builds it).
 
@@ -94,6 +94,7 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 
 ```sh
 scripts/sync_master.sh && git merge origin/master      # rebase only if the branch was never pushed
+scripts/package_store.sh --if-needed                   # before any lake command, if lake-manifest.json changed
 python3 tools/gen_root_imports.py                      # after every merge and every new module
 python3 scripts/check_constants.py                     # documents quote the bounds Lean states
 python3 scripts/check_md_links.py                      # relative links of the live documents
@@ -149,8 +150,16 @@ version.
 - The repository proves only the current best bounds, written as if designed from the start: no superseded
   certificates, no history names. Modules that the main proof does not use are not landed.
 
-## Mathlib and Lean pitfalls (toolchain `v4.34.1`)
+## Mathlib and Lean pitfalls (toolchain `v4.36.0`)
 
+- Since Mathlib `v4.36.0` the arithmetic of `ℝ` (`Real.add`, `Real.mul`, `Real.lt`, ...) is
+  `@[no_expose] private def`, no longer `irreducible_def`. Our files are not `module`s (`allowNonModules = true`), so
+  they would see those bodies, and a definitional check between two different real expressions would unfold Cauchy
+  sequences for minutes (`whnf`/`isDefEq` heartbeat timeouts, then `(kernel) unknown constant` of the failed
+  declaration; even the linter `constructorNameAsVariable`, which normalises the type of every named binder).
+  `Grothe/RealOpaque.lean` makes the ten operations irreducible again; every module that imports Mathlib imports it,
+  directly or through another module of the project (a new module that imports only Mathlib must import it too).
+  If such timeouts reappear, check that the module's import closure contains `Grothe.RealOpaque`.
 - `add_le_add_left h a` has the swapped convention; use `add_le_add le_rfl h`.
 - `RCLike.inner_apply' : ⟪x, y⟫ = conj x * y`; `PiLp.inner_apply`; `WithLp.toLp 2 f` builds Euclidean vectors
   (`PiLp.toLp_apply`, `PiLp.norm_single`, `EuclideanSpace.inner_single_left`).

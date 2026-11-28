@@ -1,4 +1,4 @@
-import Grothe.UpperSix.Haagerup.SchurHardy
+import Grothe.Upper.Rounding.SchurHardy
 import Mathlib.Tactic
 
 set_option warningAsError true
@@ -149,8 +149,8 @@ theorem tail_of_circle {f : ℂ → ℂ} {h : ℕ → ℝ}
   have hzcont : Continuous z := by dsimp [z]; fun_prop
   have hcont : Continuous (fun θ => ‖f (z θ)‖ ^ 2) :=
     (hf.continuousOn.comp_continuous hzcont hmem).norm.pow 2
-  have hsum := Haagerup.hasSum_odd_of_eqOn_real (by norm_num : (1 : ℝ) < 6 / 5) hf hs hreal
-  have habs := Haagerup.summable_abs_of_hasSum_ball (by norm_num [ρ] : 0 ≤ ρ)
+  have hsum := Grothe.Upper.hasSum_odd_of_eqOn_real (by norm_num : (1 : ℝ) < 6 / 5) hf hs hreal
+  have habs := Grothe.Upper.summable_abs_of_hasSum_ball (by norm_num [ρ] : 0 ≤ ρ)
     (by norm_num [ρ] : ρ < 6 / 5) hsum
   have hpi := Real.pi_pos
   have hle := intervalIntegral.integral_mono_on (μ := MeasureTheory.volume)
@@ -161,13 +161,13 @@ theorem tail_of_circle {f : ℂ → ℂ} {h : ℕ → ℝ}
   have hmean : (2 * Real.pi)⁻¹ * (∫ θ in (0 : ℝ)..2 * Real.pi, ‖f (z θ)‖ ^ 2) ≤ 144 := by
     rw [← div_eq_inv_mul, div_le_iff₀ (by positivity)]
     linarith only [hle]
-  have hb := Haagerup.sum_sq_le_of_mean_le (fun θ => hsum _ (hmem θ)) habs hmean
+  have hb := Grothe.Upper.sum_sq_le_of_mean_le (fun θ => hsum _ (hmem θ)) habs hmean
   have hcmp : (144 : ℝ) * (1000 / 1197) ^ 506 <
       (293 / 10 ^ 21) ^ 2 * (1 - (1000 / 1197) ^ 4) := by
     simpa only [Rat.cast_mul, Rat.cast_pow, Rat.cast_div, Rat.cast_ofNat, Rat.cast_sub,
       Rat.cast_one] using (Rat.cast_lt (K := ℝ)).2 tail_arithmetic
   have he : ρ⁻¹ = 1000 / 1197 := by norm_num [ρ]
-  have htail := Haagerup.hardy_tail h ρ (by norm_num [ρ]) 144 hb 126 (293 / 10 ^ 21)
+  have htail := Grothe.Upper.hardy_tail h ρ (by norm_num [ρ]) 144 hb 126 (293 / 10 ^ 21)
     (by positivity) (by rw [he]; exact hcmp.le)
   exact htail.trans_lt (by norm_num)
 

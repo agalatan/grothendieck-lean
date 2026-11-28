@@ -51,13 +51,11 @@ LEAVES = {  # path -> (declaration, cost in the fake generator's plan)
 PROOFS = [LA + "CapCommonFacts.lean", LA + "CapPieces/N00x3.lean", LA + "CapRow00/Assembly.lean",
           LA + "CapRow00/Bridge.lean", LA + "CapRow01/Assembly.lean", LA + "CapRow01/Bridge.lean"]
 EXTRA = [LA + "CapNodes.lean", "GrotheCapsKernel.lean", "lean-toolchain", "lake-manifest.json", "lakefile.toml"]
-# The computation closure (a): the leaves AnchorRange, C, R, the rows' Data and the quadrature facts.
-CLOSURE = ["GrotheCapsKernel.Basic", "Grothe.Shared", "Grothe.Quad", f"{NS}.CapDefs", f"{NS}.CapCommon",
+# The computation closure (a): the leaves AnchorRange, C, R and the rows' Data.
+CLOSURE = ["GrotheCapsKernel.Basic", "Grothe.Shared", f"{NS}.CapDefs", f"{NS}.CapCommon",
            f"{NS}.CapRow00.Data", f"{NS}.CapRow01.Data", f"{NS}.CapPieces.D00x3", f"{NS}.CapPieces.C00x3",
            f"{NS}.CapPieces.R00x3_0", f"{NS}.CapPieces.R00x3_1", f"{NS}.CapRow00.AnchorRange00",
-           f"{NS}.CapRow00.AnchorRange01", f"{NS}.CapRow01.AnchorRange00"] + \
-          [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + \
-          ["Grothe.UpperQuad.Facts.Even", "Grothe.UpperQuad.Facts.Omitted"]
+           f"{NS}.CapRow00.AnchorRange01", f"{NS}.CapRow01.AnchorRange00"]
 PURE = ["GrotheCapsKernel/Basic.lean", "GrotheCapsKernel.lean", "Grothe/Shared.lean", LA + "CapDefs.lean",
         LA + "CapPieces/D00x3.lean", LA + "CapCommon.lean", LA + "CapRow00/Data.lean", LA + "CapRow01/Data.lean"]
 
@@ -70,7 +68,6 @@ def layout_files():
         "GrotheCapsKernel.lean": "import GrotheCapsKernel.Basic\n",
         "GrotheCapsKernel/Basic.lean": "-- the checker library fixture\n",
         "Grothe/Shared.lean": "-- shared fixture dependency\nimport Mathlib.Data.Real.Basic\n",
-        "Grothe/Quad.lean": "-- the quadrature fixture dependency\n",
         LA + "CapDefs.lean": "import GrotheCapsKernel.Basic\nimport Grothe.Shared\n"
                              "-- the checks that native_decide evaluates, in a comment only\n",
         LA + "CapCommon.lean": "import Grothe.LowerAnalytic.CapDefs\n-- capNu, capGrids\n",
@@ -110,10 +107,6 @@ def layout_files():
             extra=f"theorem vertexCapsRow{k} : True := trivial\n\n")
         files[LA + f"CapRow{k}/Bridge.lean"] = proof([f"{NS}.CapRow{k}.Data", f"Grothe.Lower.RowData{int(k) + 1:02d}"],
                                                      f"capBridge{k}")
-    for b in range(12):
-        files[f"Grothe/UpperQuad/Facts/GradeBlock{b:02d}.lean"] = "import Grothe.Quad\n-- quad block fact\n"
-    files["Grothe/UpperQuad/Facts/Even.lean"] = "import Grothe.Quad\n-- quad even fact\n"
-    files["Grothe/UpperQuad/Facts/Omitted.lean"] = "import Grothe.Quad\n-- quad omitted fact\n"
     plan = {path[:-5].replace("/", "."): cost for path, (_, cost) in LEAVES.items()}
     plan.update({f"{NS}.CapPieces.N00x3": 2, f"{NS}.CapRow00.Bridge": 2, f"{NS}.CapRow01.Bridge": 2})
     files["tools/gen_tail_caps.py"] = generator(plan)
@@ -316,12 +309,6 @@ class CapsStampTests(unittest.TestCase):
                 self.registry.write_bytes(registry)
         self.assertEqual(self.run_cli("--digest").stdout.split()[1], self.digest)
 
-    def test_quadrature_closure_is_hashed_but_not_registered(self):
-        self.append("Grothe/Quad.lean")
-        result = self.run_cli("--digest")
-        self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertNotEqual(result.stdout.split()[1], self.digest)
-
     def test_missing_or_malformed_registry_fails(self):
         self.registry.write_text("{")
         self.assertFails(message="invalid JSON")
@@ -470,7 +457,7 @@ class CapsStampTests(unittest.TestCase):
         self.assertLayoutFails("project import cycle|proof module")
 
     def test_checker_library_imports_only_itself(self):
-        self.write("GrotheCapsKernel/Basic.lean", "import Grothe.Quad\n-- the checker library fixture\n")
+        self.write("GrotheCapsKernel/Basic.lean", "import Grothe.Shared\n-- the checker library fixture\n")
         self.assertLayoutFails("GrotheCapsKernel imports another project library")
 
     def test_symlinked_source_fails(self):
@@ -479,32 +466,34 @@ class CapsStampTests(unittest.TestCase):
         path.symlink_to(self.root / "C00x3.lean")
         self.assertLayoutFails("symlink")
 
-    # --- import header parsing (on the quadrature dependency, which is hashed but not registered)
+    # --- import header parsing (on a pure prerequisite of the leaves; a valid new header needs a new registry)
 
     def test_missing_project_import_is_an_error(self):
-        for namespace in ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel", "GrotheQuadExtKernel"):
+        for namespace in ("Grothe", "GrotheCapsKernel"):
             with self.subTest(namespace=namespace):
-                self.write("Grothe/Quad.lean", f"import {namespace}.DoesNotExist\n")
+                self.write("Grothe/Shared.lean", f"import {namespace}.DoesNotExist\n")
                 self.assertFails(message="does not exist")
 
     def test_missing_second_project_import_fails_closed(self):
-        self.write("Grothe/Quad.lean", "import Mathlib.Tactic Grothe.DoesNotExist\n")
+        self.write("Grothe/Shared.lean", "import Mathlib.Tactic Grothe.DoesNotExist\n")
         self.assertFails(message="does not exist")
 
     def test_unsupported_import_syntax_is_an_error(self):
-        for header in ("import Grothe.A, Grothe.B\n", "import\n", "import Grothe.Shared; import Grothe.Quad\n"):
+        for header in ("import Grothe.A, Grothe.B\n", "import\n", "import Grothe.First; import Grothe.Second\n"):
             with self.subTest(header=header):
-                self.write("Grothe/Quad.lean", header)
+                self.write("Grothe/Shared.lean", header)
                 self.assertFails(message="unsupported import syntax")
 
     def test_text_after_the_header_is_not_an_import(self):
-        self.write("Grothe/Quad.lean", "-- c\n/-! doc\nimport Grothe.Nope\n-/\n")
+        self.write("Grothe/Shared.lean", "-- c\n/-! doc\nimport Grothe.Nope\n-/\n")
+        self.assertEqual(self.run_cli("--write-registry").returncode, 0)
         self.assertEqual(self.run_cli("--digest").returncode, 0)
 
     def test_multiple_imports_and_inline_comments(self):
-        self.write("Grothe/Quad.lean", "import Grothe.First Grothe.Second -- import Grothe.NotReal\n")
+        self.write("Grothe/Shared.lean", "import Grothe.First Grothe.Second -- import Grothe.NotReal\n")
         for name in ["First", "Second"]:
             self.write(f"Grothe/{name}.lean", "-- synthetic dependency\n")
+        self.assertEqual(self.run_cli("--write-registry").returncode, 0)
         result = self.run_cli("--list")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("Grothe/First.lean\n", result.stdout)
@@ -512,10 +501,11 @@ class CapsStampTests(unittest.TestCase):
         self.assertNotIn("NotReal", result.stdout)
 
     def test_nested_block_comments_in_import_header(self):
-        self.write("Grothe/Quad.lean", "/- license\n /- nested import Grothe.NotReal -/\n-/\n"
+        self.write("Grothe/Shared.lean", "/- license\n /- nested import Grothe.NotReal -/\n-/\n"
                                        "import Grothe.First /- inline import Grothe.NotReal -/ Grothe.Second\n")
         for name in ["First", "Second"]:
             self.write(f"Grothe/{name}.lean", "-- synthetic dependency\n")
+        self.assertEqual(self.run_cli("--write-registry").returncode, 0)
         result = self.run_cli("--list")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("Grothe/First.lean\n", result.stdout)
@@ -523,14 +513,15 @@ class CapsStampTests(unittest.TestCase):
         self.assertNotIn("NotReal", result.stdout)
 
     def test_pinned_lean_module_and_public_meta_import_header(self):
-        self.write("Grothe/Quad.lean", "module\npublic meta import Grothe.Child\n")
+        self.write("Grothe/Shared.lean", "module\npublic meta import Grothe.Child\n")
         self.write("Grothe/Child.lean", "-- synthetic dependency\n")
+        self.assertEqual(self.run_cli("--write-registry").returncode, 0)
         result = self.run_cli("--list")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("Grothe/Child.lean\n", result.stdout)
 
     def test_unterminated_import_header_comment_fails_closed(self):
-        self.write("Grothe/Quad.lean", "/- unterminated\nimport Grothe.Nope\n")
+        self.write("Grothe/Shared.lean", "/- unterminated\nimport Grothe.Nope\n")
         self.assertFails(message="unterminated block comment")
 
     def test_unterminated_lean_comment_is_not_silently_pure(self):
@@ -588,7 +579,6 @@ class RepositoryBoundaryTests(unittest.TestCase):
                 + self.view["pure_roots"] if p.startswith("Grothe/")}
         self.assertEqual(sorted(caps - ordinary), [])
         self.assertIn("Grothe.LowerAnalytic.CapNodes", ordinary)
-        self.assertTrue(set(self.caps.QUAD_TOPS) <= ordinary)
 
     def test_cap_checker_library_is_independent_of_other_project_libraries(self):
         self.assertEqual(set(self.caps.closure(["GrotheCapsKernel"])),
@@ -616,6 +606,31 @@ class ChangeFilterTests(unittest.TestCase):
             "scripts/caps_stamp.py", "scripts/test_caps_stamp.py", "scripts/build_caps_batches.py",
             "scripts/test_build_caps_batches.py", "scripts/caps_coexist.py", "data/axioms/native.txt"}
         self.assertEqual(sorted(path for path in pinned if not re.search(pattern, path)), [])
+
+    def test_every_audit_driver_the_workflow_runs_matches_lean_paths(self):
+        """The axiom-report drivers that lean.yml elaborates exist and activate the proof check."""
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/lean.yml").read_text()
+        pattern = re.search(r"LEAN_PATHS='([^']+)'", workflow).group(1)
+        drivers = set(re.findall(r"lake env lean (scratch/[\w./-]+\.lean)", workflow))
+        self.assertTrue({"scratch/Axioms.lean", "scratch/UpperAxioms.lean"} <= drivers, drivers)
+        for path in sorted(drivers):
+            with self.subTest(path=path):
+                self.assertTrue((root / path).is_file(), path)
+                self.assertTrue(re.search(pattern, path), path)
+        self.assertFalse(re.search(pattern, "scratch/UpperSixAxioms.lean"))
+
+    def test_ci_helpers_and_their_tests_are_routed_and_run(self):
+        """A change of the package store or the landing-refusal helper runs the proof check, which runs their tests."""
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/lean.yml").read_text()
+        pattern = re.search(r"LEAN_PATHS='([^']+)'", workflow).group(1)
+        for name in ("package_store", "land_push_refusal"):
+            for path in (f"scripts/{name}.sh", f"scripts/test_{name}.py"):
+                with self.subTest(path=path):
+                    self.assertTrue((root / path).is_file(), path)
+                    self.assertTrue(re.search(pattern, path), path)
+            self.assertIn(f"python3 scripts/test_{name}.py", workflow)
 
 
 if __name__ == "__main__":

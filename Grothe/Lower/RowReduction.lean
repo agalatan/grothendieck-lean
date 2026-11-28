@@ -326,7 +326,10 @@ lemma integral_eq_gaussE (F : (Fin (n + n) → ℝ) → ℂ) (P Q : MvPolynomial
     ∫ x, F x ∂(stdGaussian (n + n)) = ⟨gaussE (n + n) P, gaussE (n + n) Q⟩ := by
   have e : F = fun x => ((eval x P : ℝ) : ℂ) + ((eval x Q : ℝ) : ℂ) * Complex.I := by
     funext x; rw [h x]; apply Complex.ext <;> simp
-  rw [e, integral_add (integrable_eval P).ofReal ((integrable_eval Q).ofReal.mul_const _),
+  have hP : Integrable (fun x => ((eval x P : ℝ) : ℂ)) (stdGaussian (n + n)) := (integrable_eval P).ofReal
+  have hQ : Integrable (fun x => ((eval x Q : ℝ) : ℂ) * Complex.I) (stdGaussian (n + n)) :=
+    (integrable_eval Q).ofReal.mul_const _
+  rw [e, integral_add hP hQ,
     integral_mul_const, integral_complex_ofReal, integral_complex_ofReal]
   apply Complex.ext <;> simp [gaussE_apply]
 

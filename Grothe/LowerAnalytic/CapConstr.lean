@@ -12,7 +12,7 @@ matrix `Cons.sMat` (`qf_sMat`).  Subtracting these forms from the matrix `N` of 
 (`Jpot_le_of_pieceOKc_of_le`).
 -/
 
-open MeasureTheory Finset GrotheKernel Grothe.Lower Grothe.Upper
+open MeasureTheory Finset GrotheKernel Grothe.Lower Grothe.Interval
 
 namespace Grothe.LowerAnalytic
 

@@ -15,7 +15,7 @@ integrated coefficient matrix `TintNu` of the grid weights.
   `1/(1 − ν)` and the constant `−ν`).
 -/
 
-open MeasureTheory Real Set Finset GrotheKernel Grothe.Upper
+open MeasureTheory Real Set Finset GrotheKernel Grothe.Interval
 open scoped ComplexConjugate
 
 namespace Grothe.LowerAnalytic

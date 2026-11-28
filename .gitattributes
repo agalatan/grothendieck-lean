@@ -16,7 +16,6 @@ handoff/research-third-decimal/needle-20261023/FULL_CI.log whitespace=-blank-at-
 # union-merged too, so they never conflict. After every merge run `python3 tools/gen_root_imports.py`: it
 # regenerates the roots and re-sorts the lists (CI does this after its own merge of a ready/ branch).
 Grothe.lean merge=union
-GrotheKernel.lean merge=union
 GrotheCapsKernel.lean merge=union
 scratch/Axioms.lean merge=union
 data/axioms/*.txt merge=union

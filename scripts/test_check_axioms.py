@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("upper-six",)
+MODES = ("upper",)
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -40,16 +40,15 @@ class CheckAxiomsTests(unittest.TestCase):
                        for name in sorted(required))
 
     def test_existing_policy_headlines_and_native_restrictions(self):
-        headlines = {"Grothe.Statement.main_bounds", "Grothe.Statement.upper_below_tight",
-                     "Grothe.Statement.sparse_stein_endpoint", "Grothe.UpperSix.bound",
-                     "Grothe.UpperSeven.bound", "Grothe.UpperSeven.constant_le",
-                     "Grothe.UpperSeven.constant_lt_inv_gammaDagger",
+        headlines = {"Grothe.Statement.main_bounds",
+                     "Grothe.Statement.sparse_stein_endpoint", "Grothe.Upper.bound",
+                     "Grothe.Upper.constant_le",
                      "Grothe.LowerAnalytic.tailNodeCaps_cert",
                      "Grothe.LowerAnalytic.SparseStein.actual_deductions"}
         self.assertTrue(headlines <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
-        self.assertNotIn("Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1", CHECKER.NATIVE)
-        self.assertIn("Grothe.UpperChaos.HardyGaussianCheck.charts_checked._native.native_decide.ax_1_1",
+        self.assertFalse([name for name in CHECKER.NATIVE if name.startswith("Grothe.UpperChaos.")])
+        self.assertIn("Grothe.Upper.Selector.NumericWitness.budgets_ok._native.native_decide.ax_1_1",
                       CHECKER.NATIVE)
 
     def test_data_registries_preserve_topic_modes_and_local_native_facts(self):
@@ -145,26 +144,26 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(code, 1)
                 self.assertIn(f"DISALLOWED AXIOM in {name}: {fact}", stdout)
 
-    def test_upper_six_rejects_native_fact_allowed_by_combined_report(self):
+    def test_upper_rejects_native_fact_allowed_by_combined_report(self):
         fact = "Grothe.Lower.certRow01._native.native_decide.ax_1_1"
-        record = f"'Grothe.UpperSix.bound' depends on axioms: [{fact}]\n"
+        record = f"'Grothe.Upper.bound' depends on axioms: [{fact}]\n"
         self.assertEqual(self.run_main([], self.report() + record)[0], 0)
-        code, stdout, _ = self.run_main(["--upper-six"], self.report("upper-six") + record)
+        code, stdout, _ = self.run_main(["--upper"], self.report("upper") + record)
         self.assertEqual(code, 1)
-        self.assertIn(f"DISALLOWED AXIOM in Grothe.UpperSix.bound: {fact}", stdout)
+        self.assertIn(f"DISALLOWED AXIOM in Grothe.Upper.bound: {fact}", stdout)
 
-    def test_upper_six_requires_its_native_policy_file(self):
-        theorem = "Grothe.UpperSix.bound"
+    def test_upper_requires_its_native_policy_file(self):
+        theorem = "Grothe.Upper.bound"
         report = f"'{theorem}' does not depend on any axioms\n"
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "modes").mkdir()
-            (root / "modes/upper-six.required.txt").write_text(theorem + "\n", encoding="utf-8")
+            (root / "modes/upper.required.txt").write_text(theorem + "\n", encoding="utf-8")
             (root / "native.txt").write_text("Test.globalNative\n", encoding="utf-8")
             with patch.object(CHECKER, "AXDIR", root):
-                code, _, stderr = self.run_main(["--upper-six"], report)
+                code, _, stderr = self.run_main(["--upper"], report)
         self.assertEqual(code, 1)
-        self.assertIn("upper-six.native.txt", stderr)
+        self.assertIn("upper.native.txt", stderr)
 
     def test_all_distinct_mode_pairs_are_rejected_in_both_orders(self):
         for first, second in itertools.permutations(MODES, 2):

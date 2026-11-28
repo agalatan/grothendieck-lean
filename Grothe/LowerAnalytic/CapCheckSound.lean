@@ -1,5 +1,5 @@
 import Grothe.LowerAnalytic.CapGridT
-import Grothe.Upper.IntervalSound
+import Grothe.LowerAnalytic.IntervalSound
 
 /-!
 # Interval lemmas of the cap checker (`GrotheCapsKernel`)
@@ -10,7 +10,7 @@ analytic input; closed by the table enclosures). The interval arithmetic of the 
 integrated matrix of the checker with a tail uses them (`CapCheckNuMat.lean`).
 -/
 
-open MeasureTheory Real Set Finset GrotheKernel Grothe.Upper
+open MeasureTheory Real Set Finset GrotheKernel Grothe.Interval
 open scoped ComplexConjugate
 
 namespace Grothe.LowerAnalytic

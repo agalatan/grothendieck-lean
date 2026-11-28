@@ -352,7 +352,7 @@ lemma finiteDimensional_Kspace (j : Fin 6) : FiniteDimensional ℂ (Kspace n j) 
 
 instance (j : Fin 6) : (Kspace n j).HasOrthogonalProjection := by
   have := finiteDimensional_Kspace (n := n) j
-  have := Submodule.complete_of_finiteDimensional (Kspace n j)
+  have := Submodule.isComplete_of_finiteDimensional (Kspace n j)
   infer_instance
 
 /-- **`H₂,₁(n+1)` lies in the sum of the six pieces.** -/

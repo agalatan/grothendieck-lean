@@ -1,4 +1,5 @@
 -- Grothe/LowerAnalytic/Rows.lean
+import Grothe.RealOpaque
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith

@@ -126,11 +126,15 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
 /Users/alingalatan/workspaces/grothe/scripts/sync_master.sh --build    # fetch; refresh the local master build
 git -C /Users/alingalatan/workspaces/grothe worktree add -b codex-7f3a/<topic> \
     /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic> origin/master
-# give the worktree master's compiled build (links the shared packages, clones the snapshot)
+# give the worktree master's compiled build (the packages of its manifest, then the snapshot)
 /Users/alingalatan/workspaces/grothe/scripts/clone_master_build.sh /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>
 ```
 
-Resuming an existing worktree: sync, then combine your branch with master (§6) before continuing.
+Resuming an existing worktree: sync, then combine your branch with master (§6) before continuing. **If the
+combination changed `lake-manifest.json` (a new Lean/Mathlib), run `scripts/package_store.sh --if-needed` in the
+worktree before the first `lake` command:** it relinks `.lake/packages` to the store of the new manifest when the
+packages in use are not at its revisions (otherwise it does nothing). Without it, Lake would check the new Mathlib
+out in a packages tree that other worktrees still share at the old one.
 
 **What to build on the laptop.** Only the modules you change and the modules that import them:
 `lake build Grothe.X.Y Grothe.X.Z`. **Never `lake build` or `lake build Grothe`:** the root includes the node-cap
@@ -144,19 +148,21 @@ check on a shared runner) or starting a cloud job. Push for a full check at a mi
 build: Lake then compiles only what your branch changes.
 - **Where:** `/Users/alingalatan/workspaces/grothe/.lake/master-cache`, a consistent snapshot of a *successful*
   master build of the modules that `scripts/local_build_targets.py` lists: every module except the node caps
-  (rows, localised pieces, `CapNodes`), the upper-bound trees `UpperChaos` and `UpperQuad`
+  (rows, localised pieces, `CapNodes`), the six-channel overlap table and contour checks
   (`data/local-build-exclude.txt`), and whatever imports them. Its `built-commit` file names the master
   commit. It is produced in the dedicated worktree `/Users/alingalatan/workspaces/grothe-master-build` (detached):
   never edit, build in or remove that worktree, and never clone its live `.lake/build`.
-- **Use it:** `scripts/clone_master_build.sh <worktree>` links the shared packages and clones the snapshot with
+- **Use it:** `scripts/clone_master_build.sh <worktree>` links the packages of the worktree's own manifest
+  (`scripts/package_store.sh`: a store per `lake-manifest.json` under `/Users/alingalatan/workspaces/grothe-packages`;
+  the main checkout's `.lake/packages` stays for the worktrees already linked to it) and clones the snapshot with
   `cp -c` (APFS copy-on-write: instant, no extra disk until files diverge). An older snapshot is fine.
 - **Refresh** a worktree whose build is far behind: `scripts/clone_master_build.sh --replace <worktree>`.
 - **Check it:** `scripts/sync_master.sh --status` (which master the snapshot holds; whether its build job runs).
 - **Keep it current:** `scripts/sync_master.sh --build` starts the one master build job (`scripts/master_build_job.sh`:
   background, niced, incremental) unless the snapshot is current or the job already runs. Each round builds one
   master commit, publishes the snapshot (swapped in by rename), and starts another round if master moved.
-- **Why not download CI's build?** CI builds on Linux. Every module that imports a precompiled library
-  (`GrotheKernel`, `GrotheCapsKernel`) records the hash of the compiled library file (`.so` on Linux, `.dylib` on
+- **Why not download CI's build?** CI builds on Linux. Every module that imports the precompiled library
+  `GrotheCapsKernel` records the hash of the compiled library file (`.so` on Linux, `.dylib` on
   macOS), so Lake would rebuild them on the Mac anyway. A downloaded Linux build saves nothing that matters.
 - **Never write into the main checkout's `.lake/`:** no `lake build` there, no copying files back, no plain
   `cp`/`rsync` of a build (about 2 GB per copy).
@@ -184,13 +190,14 @@ especially a re-push after a CI failure, a review or a conflict):
    work that duplicates yours, changed data, regenerated files. Adapt your work so it is the best version relative to
    master, not just mergeable.
 3. **Combine:** never pushed: `git rebase origin/master`; already pushed: `git merge origin/master` (no rebase, no
-   force-push).
+   force-push). If `lake-manifest.json` changed, run `scripts/package_store.sh --if-needed` before any `lake`
+   command (§5, "Resuming").
 4. **Resolve every conflict by understanding both sides**, never by taking "ours" or "theirs" blindly:
    - after **every** merge run `python3 tools/gen_root_imports.py` (not only `--check`): it regenerates the roots
      and re-sorts the union-merged lists, which a merge can leave unsorted (CI also does this after its own merge
      when it lands a PR);
-   - generated files are regenerated, never hand-merged: `python3 tools/gen_root_imports.py` rewrites `Grothe.lean`,
-     `GrotheKernel.lean` and `GrotheCapsKernel.lean` (every module under their folders, except those listed in
+   - generated files are regenerated, never hand-merged: `python3 tools/gen_root_imports.py` rewrites `Grothe.lean`
+     and `GrotheCapsKernel.lean` (every module under their folders, except those listed in
      `data/root-imports-exclude.txt`);
    - sorted one-entry-per-line lists (`scratch/Axioms.lean`, `data/axioms/*.txt`, `data/root-imports-exclude.txt`)
      are union-merged by git (`.gitattributes`); keep them sorted and duplicate-free (CI checks);
@@ -341,8 +348,8 @@ Also:
   either: hours of work.
 - **Where a check runs:** GitHub-hosted (4 vCPUs, 16 GB) unless it needs the heavy runners (`self-hosted, heavy`:
   the droplet and, when they exist, the big and mega droplets, §12): the node caps must be built (no verified cache), `-f mode=caps`, the
-  change **modifies or deletes** existing files under the kernel-heavy trees (`Grothe/UpperChaos/`, `Grothe/Upper/`,
-  `GrotheKernel/`, `GrotheCapsKernel/`, the lake files: rebuilding the big kernel-checked modules kills a 16 GB VM),
+  change **modifies or deletes** existing files of the cap checker `GrotheCapsKernel/` or the lake files (everything
+  that imports them is rebuilt, which a 16 GB VM cannot hold),
   or the repository variable `FORCE_HEAVY` is `true` (emergency switch: everything heavy). A change that only adds
   modules runs hosted: the restored cache replays everything else. Keep the heavy slots for what needs them.
 - **Merged branches are cleaned automatically** (`.github/workflows/cancel-merged.yml`): when a pull request is merged
@@ -353,7 +360,12 @@ Also:
 - **Force the droplet** for a pushed branch: `gh workflow run lean.yml --ref <branch> -f mode=caps` (it occupies the
   single runner for hours if the caps really changed; do it on purpose only).
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
-  stop/remove). It shares Mathlib with other droplet work through `~/grothe-caps/.lake/packages`; never delete that.
+  stop/remove). Its build and shard jobs check out into a workspace of their manifest's own, `ws-<first 16 hex of
+  sha256(lake-manifest.json)>`, whose `.lake/packages` links to the package store of the same key
+  (`scripts/package_store.sh`: `~/grothe-caps/packages-<key>`, created on first use with `lake exe cache get`). So
+  jobs of different Lean/Mathlib generations never share a workspace or a packages checkout that Lake would switch
+  under a running build. The older shared tree `~/grothe-caps/.lake/packages` stays for the root checkout of older
+  workflows and other work; never delete any of them (docs/FULL_BUILD_BATCH.md, "Package store").
   **A heavy runner needs a warm workspace:** a fresh droplet cannot restore the 14 GB build cache (measured on
   16 November 2026: 0.4 MB/s per connection from the droplet to the cache storage, and the download link expires
   after ten minutes), and its job would then compile everything from nothing. Start a new heavy runner from a
@@ -440,7 +452,7 @@ Use GitHub Actions as a compute cloud instead of the laptop (shared by every age
 a time). Every job runs a **pushed** commit, so it is reproducible, and its results come back as files.
 
 ```sh
-scripts/cloud.sh lean Grothe.UpperChaos.HardyGaussianFacts Grothe.UpperChaos.HardyArcRegionCheck   # build modules
+scripts/cloud.sh lean Grothe.Upper.Rounding.ContourChecks.Channel1 Grothe.Upper.Selector.NumericWitness   # build modules
 scripts/cloud.sh --shards 2 lean M0 M1 M2 M3                # modules dealt over 2 parallel jobs (e.g. native_decide facts)
 scripts/cloud.sh check                                      # the full proof check of the branch, without merging
 scripts/cloud.sh --shards 2 script tools/sweep.py --grid 64 # a committed .py/.sh/.cpp, 2 shards (SHARD, NSHARDS)
@@ -484,7 +496,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   "Room" means **at least 50 % of the machine's CPUs idle when you look**: `nproc` against the 1-minute load in
   `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24; mega: load ≤ 16), or `scripts/droplet_status.sh` for yo. Then use at most that
   room (`taskset -c` a range of cores; Lake has no `-j`, so pin the cores), in your own signed folder (§2) with the
-  shared Mathlib packages linked (`~/grothe-caps/.lake/packages` on every droplet, symlink), in a process group
+  Mathlib packages of your manifest linked (`~/grothe-caps/.lake/packages` for the manifest it holds, or run
+  `scripts/package_store.sh` in your folder for the store of your own manifest; symlink), in a process group
   (below), never in a runner workspace, and delete the folder when done (§14). Never run Lean on a droplet while a
   caps run's bounded builder is active there (its foreign-work guard aborts the run). A full proof check is what a
   push at a milestone is for (§8).
@@ -541,7 +554,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - **Droplet** (`ssh yo`, Linux, 31 GB RAM, small disk): for heavy computations (scripts, scans) in your own signed
   folder `~/<agent-id>-<topic>` (§2). Heavy **Lean** builds (the node caps, full builds) are not run in private
   folders: push the branch and CI runs them on the droplet's runner (§8). Light Lean builds (a few modules) may run in
-  your folder, linking only the shared Mathlib packages (`~/grothe-caps/.lake/packages`; symlink, never hardlink).
+  your folder, linking only the Mathlib packages of your manifest (`~/grothe-caps/.lake/packages`, or the store
+  `scripts/package_store.sh` links for another manifest; symlink, never hardlink).
 - **Before a heavy job on the droplet:** run `scripts/droplet_status.sh` (from the laptop, read-only: load, memory,
   disk, the CI runner, every running Lean build by folder = owner, orphaned processes, the biggest build folders).
   If another agent's heavy job or a CI check runs there, wait. Keep at least 3 GB of disk free (`df -h ~`).
@@ -569,9 +583,9 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose (a change to a precompiled library invalidates every
   module that imports it): never import other kernel modules into it.
-- The same holds for the quadrature checker `GrotheQuadKernel/`: the 13 energy-table facts import it, and any module
-  added to or changed in it recompiles all of them (about ten hours each). Keep it frozen; new kernel code for the
-  upper bound (the port's twisted kernel, the omitted pairs, ...) goes in `GrotheQuadExtKernel/`.
+- `GrotheCapsKernel` is the only precompiled library. A new checker program that `native_decide` must run at
+  native speed gets its own precompiled library, never a module added to `GrotheCapsKernel/` (and a new library is a
+  change of `lakefile.toml`: a planned operation, see below).
 - **The lake files are pinned.** The node-cap registry (`source_sha256` in
   `data/tail-caps/build.json`) records the hash of every file in the caps closure, and that
   closure contains `lakefile.toml`, `lake-manifest.json` and `lean-toolchain` besides the Lean sources. If one of them

@@ -1034,7 +1034,7 @@ private lemma evalInt_pieceFvW_zero (r : RadiusRow) (k1 : ℕ)
       induction p with
       | nil => exact continuous_const
       | cons a p ih => exact continuous_const.add (continuous_id.mul ih)
-    exact (this (FvW.drop 2)).comp (continuous_const_mul 100)
+    exact (this (FvW.drop 2)).comp' (continuous_const_mul 100)
   have hcontR : Continuous rhs := by
     simp only [rhs, lamPu, G1u, G2u, th1u, th3u, th5u, y1u, y2u, phi1u, phi2u, xi2u, xi1u, xiau,
       th2u, th4u, interp0]
