@@ -1,12 +1,12 @@
 import Grothe.LowerAnalytic.CoupledSteinWeights
 import Grothe.Lower.RowData08
 
-/-! # Whole-scale and small-scale discounts at the fifteen common row weights
+/-! # Global and restricted scale discounts at the seventeen common row weights
 
-The rows share the same complex cubic and scale. The whole table applies up
-to the terminal scale. The restricted table applies at scales at most 21/100.
-Together with the certified Schur curvature these prices yield the quadratic
-interpolation bonus.
+The rows share the same complex cubic and scale. All seventeen endpoint weights
+have prices at the terminal scale and at 21/100. Each intermediate cutoff lists
+the weights used on its amplitude intervals. The small-scale prices and the Schur
+curvature bound give the quadratic interpolation bonus.
 
 Agent-ID: codex-a7c4
 -/
