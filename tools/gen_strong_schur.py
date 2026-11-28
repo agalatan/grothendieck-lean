@@ -31,6 +31,18 @@ ROOT = Path(__file__).resolve().parents[1]
 EPS = Q(25, 31)
 CURVATURE_GRID = 10**10
 GENERATED_MARKER = "/- GENERATED: exact coefficients, all identities and signs checked below. -/"
+GENERATED_DECL_NAMES = ("NumP", "DenP", "curvature", "lowerDet", "negResidual")
+POST_BLOCK_ANCHOR = "private theorem den_pos (t : ℝ) (ht : t ∈ Icc (0:ℝ) 1) : 0 < DenP.eval t := by"
+Q_FIELD_RE = r"\((-?\d+) : ℚ\)(?: / ([1-9]\d*))?"
+ROW_HEADER_RE = re.compile(
+    r"\s*⟨\s*"
+    + r"\s*,\s*".join([Q_FIELD_RE] * 6)
+    + r"\s*,\s*⟨\s*"
+    + r"\s*,\s*".join([Q_FIELD_RE] * 6)
+    + r"\s*⟩\s*,\s*"
+    + r"\s*,\s*".join([Q_FIELD_RE] * 3)
+    + r"\s*,\s*\Z"
+)
 
 
 def require(condition: bool, message: str) -> None:
@@ -85,12 +97,15 @@ def parse_row_header(root: Path, index: int) -> list[Q]:
     require(len(parts) == 2, f"missing `def {name} : Row :=` in {path}")
     header_parts = parts[1].split('"', 2)
     require(len(header_parts) >= 2, f"malformed {name} literal in {path}")
-    fields = [
-        Q(int(num), int(den or 1))
-        for num, den in re.findall(r"\((-?\d+) : ℚ\)(?: / (\d+))?", header_parts[0])
+    match = ROW_HEADER_RE.fullmatch(header_parts[0])
+    require(match is not None,
+            f"unsupported syntax or field layout in {name} header in {path}")
+    groups = match.groups()
+    require(len(groups) == 30, f"expected 15 rational fields in {name}")
+    return [
+        Q(int(groups[2 * k]), int(groups[2 * k + 1] or 1))
+        for k in range(15)
     ]
-    require(len(fields) == 15, f"expected 15 rational header fields in {name}, got {len(fields)}")
-    return fields
 
 
 def row_gate_and_baseline(fields: list[Q]) -> tuple[tuple[Q, Q, Q, Q, Q, Q], Q]:
@@ -188,26 +203,32 @@ def compute_strong_schur(root: Path = ROOT) -> dict[str, object]:
     }
 
 
-def replace_generated_block(lean_text: str, block: str) -> str:
-    lines = lean_text.splitlines()
-    matches = [idx for idx, line in enumerate(lines) if line == GENERATED_MARKER]
-    require(len(matches) == 1,
-            f"expected exactly one `{GENERATED_MARKER}` marker in StrongSchur.lean, found {len(matches)}")
-    start = matches[0] + 1
-    end = start + 5
-    require(end <= len(lines), "StrongSchur.lean ends inside the generated block")
-    updated = lines[:start] + block.splitlines() + lines[end:]
-    return "\n".join(updated) + ("\n" if lean_text.endswith("\n") else "")
-
-
 def check_strong_schur(root: Path = ROOT) -> str:
     computed = compute_strong_schur(root)
+    expected_lines = list(computed["lines"])
     block = str(computed["block"])
     lean_path = root / "Grothe" / "LowerAnalytic" / "StrongSchur.lean"
     lean_text = lean_path.read_text(encoding="utf-8")
-    expected_text = replace_generated_block(lean_text, block)
-    require(lean_text == expected_text,
-            f"{lean_path} generated coefficient block (lines 59-63) does not match row headers")
+    lines = lean_text.splitlines()
+
+    matches = [idx for idx, line in enumerate(lines) if line == GENERATED_MARKER]
+    require(len(matches) == 1,
+            f"expected GENERATED marker once in {lean_path}, found {len(matches)}")
+    marker_idx = matches[0]
+    require(marker_idx == 57,
+            f"expected GENERATED marker at line 58 of {lean_path}, found line {marker_idx + 1}")
+    start = marker_idx + 1
+    end = start + len(expected_lines)
+    require(end + 2 <= len(lines), f"{lean_path} ends inside or right after generated block")
+    require(lines[start:end] == expected_lines,
+            f"{lean_path}:59-63 does not match generated coefficients byte for byte")
+    require(lines[end] == "" and lines[end + 1] == POST_BLOCK_ANCHOR,
+            f"unexpected boundary after generated block in {lean_path}")
+
+    for decl in GENERATED_DECL_NAMES:
+        decl_matches = re.findall(rf"\bdef\s+{re.escape(decl)}\b", lean_text)
+        require(len(decl_matches) == 1,
+                f"expected `def {decl}` exactly once in {lean_path}, found {len(decl_matches)}")
 
     for name, gate in (("gate8", computed["gate8"]), ("gate9", computed["gate9"])):
         row_tag = "row08" if name == "gate8" else "row09"
@@ -215,30 +236,26 @@ def check_strong_schur(root: Path = ROOT) -> str:
             f"private theorem {name} : ofRow {row_tag} = "
             f"⟨{', '.join(fmt_q(q) for q in gate)}⟩ := by"
         )
-        require(expected_gate in lean_text, f"{name} statement in {lean_path} does not match {row_tag}")
+        require(lean_text.count(expected_gate) == 1,
+                f"{name} statement in {lean_path} does not match {row_tag}")
 
     for name, base in (("base8", computed["base8"]), ("base9", computed["base9"])):
         row_tag = "row08" if name == "base8" else "row09"
         expected_base = (
             f"private theorem {name} : baseline {row_tag} = ({fmt_q(base)} : ℚ) := by decide +kernel"
         )
-        require(expected_base in lean_text, f"{name} statement in {lean_path} does not match {row_tag}")
+        require(lean_text.count(expected_base) == 1,
+                f"{name} statement in {lean_path} does not match {row_tag}")
 
     return block
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    mode = parser.add_mutually_exclusive_group()
-    mode.add_argument(
+    parser.add_argument(
         "--check",
         action="store_true",
-        help="verify StrongSchur.lean:59-63 and row-binding theorems against RowData08/09",
-    )
-    mode.add_argument(
-        "--write",
-        action="store_true",
-        help="rewrite StrongSchur.lean:59-63 in place from RowData08/09",
+        help="verify StrongSchur.lean:59-63, boundaries, and row-binding theorems against RowData08/09",
     )
     parser.add_argument(
         "--root",
@@ -255,14 +272,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     computed = compute_strong_schur(root)
-    block = str(computed["block"])
-    if args.write:
-        lean_path = root / "Grothe" / "LowerAnalytic" / "StrongSchur.lean"
-        lean_text = lean_path.read_text(encoding="utf-8")
-        lean_path.write_text(replace_generated_block(lean_text, block), encoding="utf-8")
-        return 0
-
-    sys.stdout.write(block + "\n")
+    sys.stdout.write(str(computed["block"]) + "\n")
     return 0
 
 

@@ -54,7 +54,7 @@ class TestGenStrongSchur(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, msg=proc.stderr)
         self.assertIn("matches RowData08/RowData09 byte for byte", proc.stdout)
 
-    def test_check_rejects_corrupted_coefficients_and_write_restores(self) -> None:
+    def test_check_rejects_corrupted_coefficients(self) -> None:
         with tempfile.TemporaryDirectory() as td:
             fx = make_fixture(Path(td))
             lean_path = fx / "Grothe/LowerAnalytic/StrongSchur.lean"
@@ -70,9 +70,64 @@ class TestGenStrongSchur(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     gen.check_strong_schur(fx)
 
-            self.assertEqual(gen.main(["--write", "--root", str(fx)]), 0)
-            self.assertEqual(lean_path.read_text(encoding="utf-8"), original)
+            lean_path.write_text(original, encoding="utf-8")
             gen.check_strong_schur(fx)
+
+    def test_rejects_surrounding_arithmetic_in_row_header(self) -> None:
+        """Regression test for PR #859 review item 1: surrounding arithmetic in RowData08."""
+        with tempfile.TemporaryDirectory() as td:
+            fx = make_fixture(Path(td))
+            row08_path = fx / "Grothe/Lower/RowData08.lean"
+            row08_orig = row08_path.read_text(encoding="utf-8")
+            target = "(455477592604575 : ℚ) / 562949953421312"
+            self.assertIn(target, row08_orig)
+            row08_path.write_text(
+                row08_orig.replace(target, f"({target} + 1)", 1),
+                encoding="utf-8",
+            )
+            with self.assertRaises(ValueError):
+                gen.check_strong_schur(fx)
+            proc = subprocess.run(
+                [sys.executable, "-IBO", str(ROOT / "tools/gen_strong_schur.py"),
+                 "--check", "--root", str(fx)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(proc.returncode, 0)
+
+    def test_rejects_blank_line_or_duplicate_generated_declarations(self) -> None:
+        """Regression test for PR #859 review item 2: boundary shift and duplicate declarations."""
+        with tempfile.TemporaryDirectory() as td:
+            fx = make_fixture(Path(td))
+            lean_path = fx / "Grothe/LowerAnalytic/StrongSchur.lean"
+            original = lean_path.read_text(encoding="utf-8")
+
+            # Blank line immediately after GENERATED marker:
+            lean_path.write_text(
+                original.replace(gen.GENERATED_MARKER + "\n", gen.GENERATED_MARKER + "\n\n", 1),
+                encoding="utf-8",
+            )
+            with self.assertRaises(ValueError):
+                gen.check_strong_schur(fx)
+
+            # Duplicate negResidual line immediately after the 5-line block:
+            lines = original.splitlines()
+            neg_line = lines[62]
+            self.assertIn("def negResidual", neg_line)
+            dup_lines = lines[:63] + [neg_line] + lines[63:]
+            lean_path.write_text("\n".join(dup_lines) + "\n", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                gen.check_strong_schur(fx)
+
+            # Option `--write` is removed so no in-place line-count overwrite can occur:
+            proc = subprocess.run(
+                [sys.executable, "-IBO", str(ROOT / "tools/gen_strong_schur.py"), "--write"],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(proc.returncode, 0)
 
     def test_check_rejects_corrupted_row_binding_theorem_and_input_header(self) -> None:
         with tempfile.TemporaryDirectory() as td:
