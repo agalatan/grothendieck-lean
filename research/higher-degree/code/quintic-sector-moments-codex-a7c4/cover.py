@@ -205,6 +205,22 @@ def main():
     )
     print("Both necessity controls and the outside-strip relaxation control passed.")
 
+    verifier = module(
+        args.repo.resolve()
+        / "research/higher-degree/code/spiked-cubic-radius-gemini-4c4c/verify.py"
+    )
+    proof.spiked += (spiked_p7.repriced_model(verifier),)
+    need(TARGET - proof.cell(t, t, y, y, TARGET) > Q(".00039"), "repricing clears the old failure")
+    for k, start, end, spare in (
+        (K, ".408", ".40869", 771440),
+        (Q("1.4025"), ".407", ".40825", 640650),
+        (Q("1.403"), ".405", ".40705", 1578800),
+    ):
+        need(proof.cover(Q(start), Q(end), k) > Q(spare, 10**12), "verified repriced strip")
+
+    t, y = Q(".408694"), Q("3.464102")
+    need(proof.cell(t, t, y, y, TARGET) > TARGET, "remaining failure of this price pair")
+
 
 if __name__ == "__main__":
     main()

@@ -10,9 +10,9 @@ Write $U=P_{2,1}k$, $R=\mathbb E_Z U$ and $H=U-R$. All energies here are squared
 
 | Hypothesis on the actual pair | All amplitudes through | Payoff |
 |---|---:|---:|
-| All six cubic sectors unrestricted | $.408$ | $V<1/1.4023-10^{-5}$ |
-| All six cubic sectors unrestricted | $.407$ | $V<1/1.4025-10^{-5}$ |
-| All six cubic sectors unrestricted | $.405$ | $V<1/1.403-10^{-5}$ |
+| All six cubic sectors unrestricted | $.40869$ | $V<1/1.4023-10^{-5}$ |
+| All six cubic sectors unrestricted | $.40825$ | $V<1/1.4025-10^{-5}$ |
+| All six cubic sectors unrestricted | $.40705$ | $V<1/1.403-10^{-5}$ |
 | Full normalized cubic fourth excess $\chi\le.00060$ | $.649$ | $V<1/1.4025-10^{-5}$ |
 | $\chi\le.000120$ | $.68$ | $V<1/1.4025-10^{-5}$ |
 | $\chi\le.0000015$ | $.694$ | $V<1/1.4025-10^{-5}$ |
@@ -29,7 +29,7 @@ At $x=0$ read the first term as zero. The proof uses the two real axes of the vi
 
 **Small nonremote energy.** The angular average of $|1+r e^{i\phi}|$ is at most $1+.299r^2$ for all $r$. A second comparison simultaneously charges the cubic overlap in $h$ and the quintic overlap in $k$. It accounts for the possible interior maximum over the remote energy. Each energy ceiling in the table allows any norm and direction for the remote component compatible with the actual pair. [Angular bound](ANGULAR.md) · [Deformed support test](DEFORMED.md)
 
-**What remains for NodeCaps.** At target 1.4023, a violating H2 pair must have $.408<t<.649$ and $\chi>.00060$, as well as positive lower bounds on both its remote and nonremote energies from the [earlier comparison](../quintic-mixed-sectors-codex-a7c4/GRAM.md). Removing the new Stein direction or the new mixed-moment bound causes explicit failures of the scalar comparison. Even with both present the frozen comparison still fails at $t=.4085$, $\sqrt\chi=2.305$. This locates a loss in the relaxation. It does not exhibit a physical counterexample. The other design hypotheses and the global scalar payoff remain open. [NodeCaps roadmap](../quintic-node-pilot-codex-a7c4/ROADMAP.md)
+**What remains for NodeCaps.** At target 1.4023, a violating H2 pair must have $.40869<t<.649$ and $\chi>.00060$, as well as positive lower bounds on both its remote and nonremote energies from the [earlier comparison](../quintic-mixed-sectors-codex-a7c4/GRAM.md). Removing the new Stein direction or the new mixed-moment bound causes explicit failures of the scalar comparison. With both present the original comparison still fails at $t=.4085$, $\sqrt\chi=2.305$. Repricing the existing support on one shape interval now covers that point and every amplitude through $.40869$. This locates a loss in the relaxation. It does not exhibit a physical counterexample. The other design hypotheses and the global scalar payoff remain open. [NodeCaps roadmap](../quintic-node-pilot-codex-a7c4/ROADMAP.md)
 
 Run the [full replay](../../code/quintic-sector-moments-codex-a7c4/replay.py) from the repository root. It checks the predecessor's prefix and Rice inequalities, all new comparisons, and the corruption and tensor controls. Only Python's standard library is needed.
 
