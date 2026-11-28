@@ -3406,6 +3406,7 @@ import Grothe.LowerAnalytic.QuinticAsymmetricEllipse
 import Grothe.LowerAnalytic.QuinticDiffuseCarrier
 import Grothe.LowerAnalytic.QuinticDiffuseRealization
 import Grothe.LowerAnalytic.QuinticEllipse
+import Grothe.LowerAnalytic.QuinticEndpoint
 import Grothe.LowerAnalytic.QuinticPhaseAlignment
 import Grothe.LowerAnalytic.QuinticPhaseStability
 import Grothe.LowerAnalytic.QuinticRemoteSupport
@@ -3413,6 +3414,9 @@ import Grothe.LowerAnalytic.QuinticSignedSupport
 import Grothe.LowerAnalytic.QuinticSmallAmplitude
 import Grothe.LowerAnalytic.QuinticSpectralCuts
 import Grothe.LowerAnalytic.QuinticTailTransfer
+import Grothe.LowerAnalytic.QuinticVisibleMoments
+import Grothe.LowerAnalytic.QuinticVisiblePhase
+import Grothe.LowerAnalytic.QuinticVisibleReduction
 import Grothe.LowerAnalytic.QuinticWitness
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.RadialParts
