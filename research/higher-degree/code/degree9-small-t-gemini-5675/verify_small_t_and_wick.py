@@ -25,7 +25,7 @@ Certifies (C) via pure Python stdlib (`python3 -I`, `fractions.Fraction` + `math
        by certifying:
          (i)  sup_{x > 0} sqrt(2*pi*x) e^{-x} I_0(x) < 6/5 = 1.20, sup_{x >= 3} < 27/25 = 1.08,
               and sup_{x >= 8} < 104/100 = 1.04 (800 rational panels on (0, 16] + analytic tail on [16, inf)),
-         (ii) sup_{v > 0} dPsi/dv < 1/a_2 = 1.38779 whenever sigma_3 >= (95/100) sigma_3^*,
+         (ii) sup_{v > 0} d(2 E|m+sqrt(v) Z|)/dv < 1/a_2 = 1.38779 whenever sigma_3 >= (95/100) sigma_3^*,
          (iii) beta = 0 Gaussian domination on sigma_3 <= (82/100) sigma_3^* (all v >= 0) and on
               sigma_3 in [0.82, 0.95]*sigma_3^* for v >= 9/100, plus a 65-slice rational cover on
               [0.82, 0.95]*sigma_3^* x [0, 9/100],
@@ -284,7 +284,26 @@ def certify_multichaos_gaussian_ideal(piv):
     # 2. Degree 9 global proof over (sigma_3, v) in [0, inf)^2:
     a1, a2, a3, a4 = Fraction(936, 1000), Fraction(72057, 100000), Fraction(59202, 100000), Fraction(23468, 100000)
     check(a2 > a3 > a4 > 0, "Degree-9 higher weights strictly decreasing")
-    b9_iv = (Fraction(181333, 800000) * piv[0], Fraction(181333, 800000) * piv[1])
+    # gamma = beta/(sqrt(2)*sigma_3), shared with every radial slope panel.
+    gamma = a4 / (4 * a1)
+    check(0 < gamma < Fraction(1, 2), "The radial factor stays positive")
+    ideal = a1 / 4 - a4 / 32
+    check(ideal == Fraction(181333, 800000), "Diffuse ideal from the game weights")
+
+    def zero_variance_coefficients(radial_gamma):
+        # Psi/pi = linear*lambda - quadratic*lambda^2, lambda = sigma_3/sigma_*.
+        linear = (a1 / 2) * (1 - radial_gamma / 2)
+        quadratic = a1 / 4 - a1**2 * radial_gamma**2 / (2 * a4)
+        return linear, quadratic
+
+    check(zero_variance_coefficients(gamma) == (2 * ideal, ideal),
+          "Multiplier must reproduce B*lambda*(2-lambda) at v=0")
+    half_linear, half_quadratic = zero_variance_coefficients(gamma / 2)
+    half_peak = half_linear - half_quadratic
+    check(half_peak - ideal == a4 / 128 and half_peak == Fraction(731199, 3200000)
+          and half_peak * piv[0] > target,
+          "Half of the multiplier misses 250/351 at the peak")
+    b9_iv = (ideal * piv[0], ideal * piv[1])
     sqrt_pi = iv_sqrt(piv, 25)
     sqrt_2pi = iv_sqrt((2 * piv[0], 2 * piv[1]), 25)
 
@@ -329,7 +348,6 @@ def certify_multichaos_gaussian_ideal(piv):
     slope_v_top = iv_mul(sqrt_pi, (Fraction(1), Fraction(1) / rat_sqrt_bounds(v_top, 18)[0]))[1] / 2
     check(slope_v_top < Fraction(1) / a2, "v >= 9/20 slope < 1/a_2")
 
-    gamma = a4 / (4 * a1)
     c0_m = 1 - 2 * gamma
     sig3_star_lo = a1 * sqrt_pi[0] / 2
     lam_hi_cut = Fraction(95, 100)
@@ -383,6 +401,7 @@ def certify_multichaos_gaussian_ideal(piv):
 
     slope_v_star_hi = (int_0_sp + int_sp_3 + tail_r3) / sig3_star_lo
     slope_at_95 = max(max_slope_mid_v, slope_v_top)
+    check(slope_at_95 < Fraction(13762, 10000), "Published heat-slope bound < 1.3762")
 
     # Step (iii): Cover 0 <= lambda <= 95/100.
     # Subcase A: 0 <= lambda <= 82/100 (all v >= 0) with beta = 0:
@@ -397,7 +416,7 @@ def certify_multichaos_gaussian_ideal(piv):
     # Subcase B: lambda in [82/100, 95/100] covered by 65 slices [la, lb] of width 0.002:
     #   - For v >= v_cut = 9/100: set beta = 0; since sigma_3 >= 0.82*sigma_3^* > (sqrt(pi)/2)*a2, the beta=0 objective
     #     is strictly decreasing in v >= v_cut, so its maximum on [la, lb] x [v_cut, inf) occurs at v = v_cut.
-    #   - For 0 <= v <= v_cut = 9/100: set beta = (a4 / (4*sqrt(2)*a1))*sigma_3; rescaling v' = (lam_hi_cut / la)^2 * v
+    #   - For 0 <= v <= v_cut = 9/100: set beta = (a4 / (2*sqrt(2)*a1))*sigma_3; rescaling v' = (lam_hi_cut / la)^2 * v
     #     maps (0, 9/100] into (0, 9/20] (since (0.95/0.82)^2 * 0.09 < 0.121 <= 0.45), so
     #     sup_{0 < v <= v_cut} d/dv[2 E|m + sqrt(v) Z|] <= (lam_hi_cut / la) * max_slope_mid_v.
     v_cut = Fraction(9, 100)
@@ -420,9 +439,10 @@ def certify_multichaos_gaussian_ideal(piv):
     check(t0_b0_lo > Fraction(9524, 1000000), "t_0 at B_0=0.71216 > 0.009524")
     print(
         f"[PASS] Degree-9 multi-chaos Gaussian ideal B_9^{{*,Gauss}} = (181333/800000)*pi = {float(b9_iv[1]):.10f}\n"
+        f"       v=0 profile B*lambda*(2-lambda); half-multiplier excess (a4/128)*pi at lambda=1.\n"
         f"       certified globally over ALL (sigma_3, v) in [0, inf)^2:\n"
         f"         sup_{{x>0}} sqrt(2*pi*x) e^{{-x}} I_0(x) <= {float(max_bess_all):.6f} < 1.20 (for x>=3: <= {float(max_bess_ge3):.6f} < 1.08),\n"
-        f"         E[1/(2|m^*|)] <= {float(slope_v_star_hi):.6f}, sup_{{v>0, lambda>=0.95}} dPsi/dv <= {float(slope_at_95):.6f} < 1/a_2 = {float(1/a2):.6f},\n"
+        f"         E[1/(2|m^*|)] bound approx. {float(slope_v_star_hi):.6f}; heat derivative < 1.3762 < 1/a_2 for lambda >= 0.95,\n"
         f"         conditional reach at B_9^{{*,Gauss}}: t_0 >= {float(t0_d9_lo):.6f} (and at B_0 = 0.71216: t_0 >= {float(t0_b0_lo):.6f})."
     )
 
