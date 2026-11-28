@@ -1986,3 +1986,25 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 | [extension_duals.json](code/uncapped-peak-consumer-codex-a7c4/extension_duals.json) | 6,491 | `47d9ef8b0bec58097a0ad159c12aff244d7c755e636343796bbbf86760281d25` |
 | [weighted_shoulder.py](code/uncapped-peak-consumer-codex-a7c4/weighted_shoulder.py) | 8,248 | `dd2ee76fe224e63cf58732ad57091eb6b3e28f7c1b066a170797c63a1c79dc3f` |
 | [WEIGHTED_SHOULDER.md](sources/uncapped-peak-consumer-codex-a7c4/WEIGHTED_SHOULDER.md) | 6,400 | `09278be0b2c757c478d0b43769d7a58d1a5a1a1aec41093eb3a23bed44116cb4` |
+
+## Real Level-2 Malliavin–Stein hierarchy closing #501 & #506 (`3999/5000 = 0.7998 < √(17/25)`), sharp high-kurtosis regime `κ₄ ≥ 14`, and complex cubic radius `2221/2500 = 0.8884` (gemini-8732, #501, #506, #458)
+
+- [Self-contained proof and replay instructions](sources/real-stein-501-gemini-8732/PROOF.md) and
+  [exact rational certificate, two independent zero-float stdlib verifiers, symbolic multivariate & `{F = 0}` nodal checks, 91 adversarial/AST/`-O` controls, generator, and replay log](code/real-stein-501-gemini-8732/) (tag `KRS501`; `STATUS.md` 3.6, 3.7, 3.21, 3.21 (e1), 3.21 (e4), 3.21 (e9); `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C, author only**). Every file is strictly below 300 KB (`cert_real_501.json` is 113,373 B) and committed in the repository with zero external dependencies left outside.
+- **Replay (pure Python 3 standard library only, zero floating-point operations or float clocks, zero `assert` statements, `-IB` and `-IB -O` identical):**
+  - Primary integer Sturm + $U(1)$ phase-averaging + downstream verifier (~2.3 s): `python3 -IB -O research/conjecture-K/code/real-stein-501-gemini-8732/verify.py`
+  - Second independent verifier — exact integer Bernstein subdivision (`7,186` leaves, `max_depth = 10`) + independent trapezoid knot primitives + generic recursive Laplace `det_mat()` + exact 8-variable symbolic polynomial expansion `RHS_raw - r == C_1 + C_2 + C_3 + C_4 + C_5` across all $22 \times 41 = 902$ intervals (~3.7 s): `python3 -IB -O research/conjecture-K/code/real-stein-501-gemini-8732/verify_bernstein.py`
+  - Exact multivariate polynomial verification over $\mathbb{Q}[X_1, \dots, X_n]$ of $LF = -3F$, $D^2 F$ linearity (traced and untraced), $L\tau = 4(\eta - \tau)$, $L\eta = -2(\eta - \|T\|_{\mathrm{HS}}^2)$, $(m, u)$ moment table, rank-6 `wick6` + $\operatorname{tr}(M^3)\operatorname{tr}(M) \ge m^2$, $\mathbb{E}[\mathrm{Br}_j] = 0$, 150 rational cone points, $\{F = 0\}$ nodal states across all 22 rows, and $U(1)$ phase invariance $\kappa_4(F_\theta) == (3/2)\chi(q)$ (~2.4 s): `python3 -IB -O research/conjecture-K/code/real-stein-501-gemini-8732/check_identities_exact.py`
+  - Static AST zero-float/zero-`assert` audit + 91 negative, corruption, overclaim, and isolated `-IB -O` subprocess parity controls (~14.6 s): `python3 -IB -O research/conjecture-K/code/real-stein-501-gemini-8732/test_controls.py`
+
+| file | size | SHA-256 |
+|---|---:|---|
+| `sources/real-stein-501-gemini-8732/PROOF.md` | 36,465 B | `3c332ef7b61355e90baad7bda9835e8a80c01fc5d205d884242c2b9c38babde7` |
+| `code/real-stein-501-gemini-8732/README.md` | 2,868 B | `53142c4b40dd435d38b29c3336d702c79340b27d547e69923debdd40e49b8a96` |
+| `code/real-stein-501-gemini-8732/cert_real_501.json` | 113,373 B | `9ed80bdd3bc3e1e645dedb921bd12bf545ce60250db286b90c2dc9ea846a815f` |
+| `code/real-stein-501-gemini-8732/verify.py` | 32,669 B | `6ab38bb93a45e9f0baf2c693b4c0cdd21931f449041820c22b82233e0876724c` |
+| `code/real-stein-501-gemini-8732/verify_bernstein.py` | 25,018 B | `e1f1267a21cc8f37006009f1c10ef29718e4a6e404942033d4d3b5af6e31a8ec` |
+| `code/real-stein-501-gemini-8732/check_identities_exact.py` | 34,584 B | `27bc2bd1a773bcecfe1583a9cc08dcb30d79a75fc3d350a202d35906c3ff78cb` |
+| `code/real-stein-501-gemini-8732/test_controls.py` | 10,075 B | `d28677b5fe6415d109a17e341a60baed97e9013d2306d4990debcb21a7493fdf` |
+| `code/real-stein-501-gemini-8732/make_cert.py` | 29,449 B | `b3ddf98284ecc54b3adc9049c0e9490124003906ff7056d3a4028a81415e90f8` |
+| `code/real-stein-501-gemini-8732/REPLAY.log` | 6,754 B | `7369420d4dcfd008f80e7d9e9002bad59e163a167f3c918dec459c9b099a339c` |
