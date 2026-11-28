@@ -72,30 +72,6 @@ theorem pairGain_rat (θ : ℚ) : pairGain (θ : ℝ) = (pairGainQ θ : ℝ) := 
   simp [pairGain, pairGainQ, blendQ, gain, price, det, mix, Fin.sum_univ_two,
     twoWeights, twoRows, ofRow]
 
-private theorem twoWeight_nonneg (w : ℝ) (hw₀ : 0 ≤ w) (hw₁ : w ≤ 1) (i : Fin 2) :
-    0 ≤ twoWeights w i := by
-  fin_cases i
-  · exact sub_nonneg.mpr hw₁
-  · exact hw₀
-
-private theorem twoWeight_sum (w : ℝ) : 0 < ∑ i, twoWeights w i := by
-  simp [twoWeights, Fin.sum_univ_two]
-
-/-- Concavity of the row 08/09 price as a function of its real weight. -/
-theorem pairGain_chord {w z : ℝ} (hw₀ : 0 ≤ w) (hw₁ : w ≤ 1)
-    (hz₀ : 0 ≤ z) (hz₁ : z ≤ 1) {θ : ℝ} (h₀ : 0 ≤ θ) (h₁ : θ ≤ 1) :
-    (1-θ)*pairGain w + θ*pairGain z ≤ pairGain ((1-θ)*w + θ*z) := by
-  have hr (i) : gateOK (twoRows i).N = true := by fin_cases i <;> decide +kernel
-  have hm : (fun i ↦ (1-θ)*twoWeights w i + θ*twoWeights z i) =
-      twoWeights ((1-θ)*w + θ*z) := by
-    funext i
-    fin_cases i <;> simp [twoWeights]
-    ring
-  have h := gain_chord _ _ _ (twoWeight_nonneg w hw₀ hw₁) (twoWeight_nonneg z hz₀ hz₁)
-    (twoWeight_sum w) (twoWeight_sum z) hr θ h₀ h₁
-  rw [hm] at h
-  exact h
-
 open LowerAnalytic
 
 /-- A real-valued law deduction and the actual gate surplus lower the same row intercept. -/

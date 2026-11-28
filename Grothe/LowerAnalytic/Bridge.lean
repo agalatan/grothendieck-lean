@@ -17,18 +17,15 @@ chaos (`Chaos3 a`, `E a² = 1/2`, `Circular J a b`; `Chaos3 b`, `E b² = 1/2` an
 follow by `Circular.chaos3_right`, `Circular.gaussian_sq_eq`, `Circular.gaussian_mul`), and
 assembles the shared reduction from the scale, gate variable and row inequalities.
 
-* `moments_of_three`: `E √U ≤ ρ` and the integrability of `√U` are consequences of the other
-  fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments; for a
-  circular cubic Gaussian chaos, `gaussian_moments` discharges `mh` directly from the sharper
-  certified bound `first_moment_lt_93` (`SharpRadius.lean`).
 * `gaussian_moments`: for the Gaussian law, `E U = 1`, `E U² ≥ 2` (from the fluctuation bound),
-  the sharp cap `E U² ≤ 44 ≤ 2 + xMax²` (`Circular.gaussian_fourth_moment_le_44`) and
-  integrability are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment
-  inequality `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}` (`m = E U²`) supplied by
-  `Circular.gaussian_sixth` from the tensor facts `TensorFacts` of `Circular.lean`, all proved
-  (`Circular.tensorFacts`, `CircularTensor.lean`; the Wick identity `wick6` is `Chaos3.wick6`,
-  `WickSix.lean`).  (The sixth-moment inequality is false for general real pairs `(a, b)` in the
-  third chaos; it needs the circularity `D_J q = i q`.)
+  the sharp cap `E U² ≤ 44 ≤ 2 + xMax²` (`Circular.gaussian_fourth_moment_le_44`), `E √U ≤ ρ`
+  (from the sharper certified bound `first_moment_lt_93`, `SharpRadius.lean`) and integrability
+  are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment inequality
+  `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}` (`m = E U²`) supplied by `Circular.gaussian_sixth` from the
+  tensor facts `TensorFacts` of `Circular.lean`, all proved (`Circular.tensorFacts`,
+  `CircularTensor.lean`; the Wick identity `wick6` is `Chaos3.wick6`, `WickSix.lean`).  (The
+  sixth-moment inequality is false for general real pairs `(a, b)` in the third chaos; it needs
+  the circularity `D_J q = i q`.)
 * `gaussian_steinInputs` (in `RadialCut.lean`) gives `SteinInputs` with no hypothesis;
   `gaussian_gramInputs` (in `GramBudget.lean`) gives `GramInputs` (the inputs of all Stein cuts,
   including the contraction-Gram budgets cited by the spectral nodes) for every circular cubic,
@@ -51,25 +48,6 @@ lemma integrable_sqrt {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsFin
   show ‖√(Z ω)‖ ≤ 1 + Z ω
   rw [Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), Real.sqrt_le_left (by linarith [hZ ω])]
   nlinarith [hZ ω]
-
-/-- **`Moments` from three moments**: the first-moment field `E √U ≤ ρ` follows from the others. -/
-theorem moments_of_three {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
-    (U : Ω → ℝ) (x : ℝ) (hU : ∀ ω, 0 ≤ U ω) (hx0 : 0 ≤ x) (hx1 : x ≤ xMax)
-    (i1 : Integrable U μ) (i2 : Integrable (fun ω => U ω ^ 2) μ)
-    (i3 : Integrable (fun ω => U ω ^ 3) μ) (m1 : ∫ ω, U ω ∂μ = 1)
-    (m2 : ∫ ω, U ω ^ 2 ∂μ = 2 + x ^ 2) (m3 : ∫ ω, U ω ^ 3 ∂μ ≤ nX x) :
-    Moments μ U x where
-  nonneg := hU
-  x0 := hx0
-  x1 := hx1
-  ih := integrable_sqrt hU i1
-  i1 := i1
-  i2 := i2
-  i3 := i3
-  mh := (first_moment_lt_rho μ U hU i1 i2 i3 x hx0 (by simpa [xMax] using hx1) m1 m2 m3).le
-  m1 := m1
-  m2 := m2
-  m3 := m3
 
 variable {d : ℕ}
 

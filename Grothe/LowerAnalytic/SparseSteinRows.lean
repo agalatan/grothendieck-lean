@@ -14,11 +14,11 @@ set_option warningAsError true
 
 open MeasureTheory MvPolynomial Grothe.Lower
 open Grothe.Lower.SharedGate (surplus)
-open Grothe.Lower.SharedGate.WeightedSchur (pairGain pairGainQ pairGain_rat pairGain_chord
+open Grothe.Lower.SharedGate.WeightedSchur (pairGain pairGainQ pairGain_rat
   pair_surplus real_reserve)
 
 namespace Grothe.LowerAnalytic.SparseStein
-open CoupledStein (stop discount_chord_le)
+open CoupledStein (stop)
 
 private theorem extras_of_plans {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
     [IsProbabilityMeasure μ] {U : Ω → ℝ} {x : ℝ} {P : ℝ → ℝ} {caps : List (ℚ × ℚ)} {smax : ℚ}

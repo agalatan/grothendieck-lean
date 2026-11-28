@@ -11,7 +11,6 @@ Grothe.Haag.measurable_phaseLaplaceKernel
 Grothe.Haag.norm_phaseLaplaceKernel_le
 Grothe.Haag.ph_eq_phaseLaplace
 Grothe.Haag.phaseMoment_weighted
-Grothe.Lower.SharedGate.WeightedSchur.gain_chord
 Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 Grothe.Lower.SparseEnvelope.endpoint_eq
 Grothe.Lower.SparseEnvelope.profile_bound
@@ -41,7 +40,6 @@ Grothe.LowerAnalytic.Circular.gaussian_x_le_sqrt42
 Grothe.LowerAnalytic.Circular.joint_sixth
 Grothe.LowerAnalytic.CircularCellNodeBounds.chord
 Grothe.LowerAnalytic.CoupledStein.Grid.worst_le
-Grothe.LowerAnalytic.CoupledStein.discount_chord_le
 Grothe.LowerAnalytic.SparseStein.actual_deductions
 Grothe.LowerAnalytic.antiStein_I
 Grothe.LowerAnalytic.antiStein_II

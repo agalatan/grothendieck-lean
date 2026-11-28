@@ -32,7 +32,7 @@ elab "#deadcode" : command => do
   let roots := [`Grothe.Statement.main_bounds, `Grothe.UpperSeven.constant_lt_inv_gammaDagger,
     `Grothe.LowerAnalytic.tailNodeCaps_cert,
     `Grothe.LowerAnalytic.gaussian_steinInputs,
-    `Grothe.LowerAnalytic.sixth_moment_complex, `Grothe.LowerAnalytic.first_moment_lt_rho,
+    `Grothe.LowerAnalytic.sixth_moment_complex,
     `Grothe.LowerAnalytic.fluctuation_bound]
   for n in roots do
     if (env.find? n).isNone then
