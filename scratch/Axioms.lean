@@ -113,6 +113,12 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
+#print axioms Grothe.LowerAnalytic.PhysicalRice.fibre_mean_energy_priced
+#print axioms Grothe.LowerAnalytic.PhysicalRice.joint_fibre_energy_priced
+#print axioms Grothe.LowerAnalytic.PhysicalRice.pres_sq_le
+#print axioms Grothe.LowerAnalytic.PhysicalRice.pres_sq_le_priced
+#print axioms Grothe.LowerAnalytic.PhysicalRice.rice_price
+#print axioms Grothe.LowerAnalytic.PhysicalRice.rice_tangent
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
 #print axioms Grothe.LowerAnalytic.SparseStein.actual_deductions
 #print axioms Grothe.LowerAnalytic.SparseStein.lower_of_nodeCaps
@@ -151,6 +157,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.circularCellNodes_row08
 #print axioms Grothe.LowerAnalytic.circularCellNodes_row09
 #print axioms Grothe.LowerAnalytic.circularReductionHyp_of_nodeCaps
+#print axioms Grothe.LowerAnalytic.circularReductionHyp_of_nodeCaps_rice
 #print axioms Grothe.LowerAnalytic.circularRowBound_row08
 #print axioms Grothe.LowerAnalytic.circularRowBound_row09
 #print axioms Grothe.LowerAnalytic.coupled_circular
