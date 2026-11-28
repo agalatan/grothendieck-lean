@@ -283,9 +283,16 @@ gets a verdict.
 - **What:** the statement matches the prose (quantifiers, domain, hypotheses), numerical premises and tolerances,
   coverage of the domain, provenance of generated data, dependencies and trust (`native_decide`, axioms), and the
   resource cost of the check.
+- **Do not build what CI builds** (user, 28 November 2026). Lean code reached by the `Grothe` root is built and
+  axiom-checked by the PR's proof check, and a PR whose check fails cannot land, whatever the review says. So a
+  reviewer does not build it locally or on a droplet, and does not keep a PR on hold to do so: read the statement,
+  what each new `native_decide` fact checks, whether hypotheses are proved in Lean rather than assumed, the
+  generators (`--check`, cheap) and the axiom lists, and let CI do the build. A build error missed by reading is
+  caught there. Replay the relevant research checkers (Python, C++). For Lean code outside the root, check which
+  CI jobs cover the PR head (the article's package has its own) and build only the changed targets they leave unchecked.
 - **Comments:** in the PR, each starting with your ID. Suggestions that do not block say so.
 - **A longer review holds the PR.** A reviewer whose review will take longer than a round (a replay, an independent
-  recomputation, a long certificate) puts the PR on hold first: `scripts/review.sh <branch> <sha> hold <reviewer-id>
+  recomputation, a long certificate, never a Lean build that CI does anyway) puts the PR on hold first: `scripts/review.sh <branch> <sha> hold <reviewer-id>
   "<what is checked>"` adds the label `HOLD:<reviewer-id>` and a signed comment. A PR with any `HOLD` label does
   not land, whatever approvals it has: `scripts/land_ready.sh` refuses it like `RFC`/`WIP`, and checks again just
   before it pushes master. Each reviewer's verdict lifts only its own hold. There is no lock: a landing that has
@@ -310,7 +317,11 @@ containing `[skip ci]` skips it) and as the **landing check** of a PR (`/land`, 
    - whether anything Lean-relevant changed (the `LEAN_PATHS` list in the workflow: Lean sources and roots, the
      lakefile and toolchain, `scratch/Axioms.lean`, `data/axioms/`, the root generator, the check scripts and their
      tests, the workflows). If not, the build is skipped and the run is green; documentation-only PRs still land
-     (with the status "no proof change"). A branch commit already contained in master is skipped too (master's own check covers it);
+     (with the status "no proof change"). During a freeze, a topic branch with no proof changes since its staging
+     merge base inherits the proof only if a successful staging push built that exact commit and ran its axiom
+     reports. The route links the verified run in its summary. Otherwise it requests a proof check. Staging’s own
+     check still compares with master, and landing uses the pinned master commit. A branch commit already contained
+     in master is skipped too (master's own check covers it);
    - where to build: it computes the node caps' source digest (`scripts/caps_stamp.py --digest`, part of the cache
      key) and looks for a verified build cache with that digest, of this branch or of master. **A branch check that
      would need the droplet (the node caps changed) does not take it**: it fails at once, saying so. The landing

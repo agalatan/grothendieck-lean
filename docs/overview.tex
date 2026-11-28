@@ -30,29 +30,30 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4020221627\;<\;\KG\;\le\;1.404556392$\\[6pt]
+\Large $1.4020221627\;<\;\KG\;\le\;1.404554025$\\[6pt]
 \normalsize The Lean~4/Mathlib theorem
 \lean{Grothe.Statement.main\_bounds} proves these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
 The exact transported Stein lower endpoint is rounded down to $14020221627/10000000000$.
-The seven Gaussian rounding channels give the upper bound rounded up to $1404556392/1000000000$.\vspace{4pt}
+The multi-channel bivariate Gaussian roundings give the upper bound rounded up to $1404554025/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
-The upper certificate adds a Gaussian angular selector to three smoothed cell channels, one phase channel and
-two reflected tiger channels. The six original channels retain their certified interval heads and Hardy tails.
-At angle $17/100$ with preprocessor $23/25-(2/25)X$, Lean computes the selector's signed head and a bound
-on its full absolute coefficient error. The weighted sum is formed before taking absolute values.
-The theorem \lean{Grothe.UpperSeven.bound} gives
-$V(A)\le[10^{27}/711968565817136711740669035]\,C(A)$ for every finite complex matrix $A$. Its factor is $1.4045563919697\ldots$, and \lean{Grothe.UpperSeven.constant\_le} states $K_G^{\mathbb C}\le1.404556392$.
+The upper certificate combines the established channels of \path{Grothe/UpperSixExact/} with twelve additional
+preprocessors on the already-certified smoothed cell, phase and reflected tiger maps (\path{Grothe/UpperBivar/}),
+including degree-$3$ bivariate second-coordinate polynomials $Q(X)$ with $Q(0)=0$. Every new disk positivity check,
+Hardy circle budget and rational tail comparison reduces in Lean's kernel; the weighted interval head is formed
+before taking absolute values.
+The theorem \lean{Grothe.UpperBivar.bound} gives
+$V(A)\le[10^{27}/711969765819834623238463058]\,C(A)$ for every finite complex matrix $A$. Its factor is $1.4045540246340\ldots$, and \lean{Grothe.UpperBivar.constant\_le} states $K_G^{\mathbb C}\le1.404554025$.
 
-The companion theorem \lean{Grothe.UpperSeven.constant\_lt\_inv\_gammaDagger}
+The companion theorem \lean{Grothe.UpperBivar.constant\_lt\_inv\_gammaDagger}
 compares the infimum with the reciprocal phase integral.
 
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
-first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0025346452$, and verify
+first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0025318623$, and verify
 the arguments in Lean. This note explains the problem, the two constructions, exactly what the computer checks, the new inequalities and
 obstructions found along the way, and why the remaining gap is hard: the two sides are dual optimisation problems, and the obstruction on both is the nonlinear (cubic and
 higher) structure of bounded functions of Gaussian vectors.
@@ -93,15 +94,15 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020221627}$ & $\mathbf{1.404556392}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020221627}$ & $\mathbf{1.404554025}$\\\bottomrule
 \end{tabular}
 \end{center}
-The upper bound is $1404556392/1000000000$ (the seven-channel transfer factor $1/(c-\delta)$ rounded up).
+The upper bound is $1404554025/1000000000$ (the multi-channel bivariate transfer factor $1/(c-\delta)$ rounded up).
 For Haagerup's phase integral
 $\gamma^\dagger=\int_0^{\pi/2}\cos^2 t\,(1+\sin^2 t)^{-1/2}\,dt$,
-a separate estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404556392<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
+a separate estimate of the integral gives $\gamma^\dagger<0.711958683$, hence $1.404554025<1/\gamma^\dagger=1.40457593\ldots$, so $\KG$ is strictly below
 $1/\gamma^\dagger$, the value that Haagerup proposed for $\KG$ in 1987
-(\lean{Grothe.UpperSeven.constant\_lt\_inv\_gammaDagger}).
+(\lean{Grothe.UpperBivar.constant\_lt\_inv\_gammaDagger}).
 For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 
@@ -1275,8 +1276,8 @@ plans). Three epics are closed: \#12 (unconditional lower bound: the first part 
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
  locate $\KG$ to about $10^{-4}$ using higher-degree games. A first search
  (\path{research/higher-degree/}, [N]) gives model values $1.403648$, $1.404113$ and $1.40430$ for the best games of
- degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.404556392$. No rounding built from the binding responses
- beats Haagerup's $\gamma_H$ within that family. The independent seven-channel comparison is stated above.
+ degree $5$, $7$ and $9$, so $1.4043\lesssim\KG\le1.404554025$. No rounding built from the binding responses
+ beats Haagerup's $\gamma_H$ within that family. The independent multi-channel comparison is stated above.
 \item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
  appears to be open, and it is the largest single lever on the law side. The best proved constant is $0.93$; a constant
  $0.916$ would already remove the cap that the first moment puts on the cubic weight of a degree-5 game (item~2).

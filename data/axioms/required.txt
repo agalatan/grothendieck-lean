@@ -145,6 +145,9 @@ Grothe.Upper.threeBand_real_reciprocal
 Grothe.Upper.threeBand_real_reciprocal_lt
 Grothe.Upper.threeBand_real_value_lt
 Grothe.Upper.threeBand_scaledR_literals
+Grothe.UpperBivar.bound
+Grothe.UpperBivar.constant_le
+Grothe.UpperBivar.constant_lt_inv_gammaDagger
 Grothe.UpperChaos.CanonicalReconstructionNorm.full_head_reconstruction_norm_le
 Grothe.UpperChaos.CenterNormBypass.first_decomposition
 Grothe.UpperChaos.CenterNormBypass.second_decomposition
@@ -1502,9 +1505,6 @@ Grothe.UpperQuad.phaseDegOK
 Grothe.UpperQuad.re_inner_ge_of_facts
 Grothe.UpperQuad.six_of_facts
 Grothe.UpperQuad.twistQuadHyp_of_remainder
-Grothe.UpperSeven.bound
-Grothe.UpperSeven.constant_le
-Grothe.UpperSeven.constant_lt_inv_gammaDagger
 Grothe.UpperSix.bound
 Grothe.hardy_budget_after_linear
 Grothe.head_residual_le
@@ -1536,3 +1536,7 @@ Haagerup.SixChannelExact.mixture_score_le_dual
 Haagerup.SixChannelExact.paid_six_score_le
 Haagerup.SixChannelExact.paid_six_score_lt_seven
 Haagerup.SixChannelExact.sixDual_check
+Haagerup.UpperBivar.budgets_ok
+Haagerup.UpperBivar.isBound
+Haagerup.UpperBivar.new_tails_rat_ok
+Haagerup.UpperBivar.reciprocal_eq

@@ -441,3 +441,52 @@ The [two-radius argument](sources/quintic-mixed-sectors-codex-a7c4/PROOF.md) and
 | `sources/quintic-mixed-sectors-codex-a7c4/GRAM.md` | 8,146 | `ffae0de83e80905623d59f4b6dc22661204347ac15fa8fe940419c8fe9507d94` |
 | `sources/quintic-mixed-sectors-codex-a7c4/PROOF.md` | 9,336 | `211b4036734330f84ae88ab062b20509b05c4f40c7b4d4ce65cfa480d5bde5a7` |
 | `sources/quintic-mixed-sectors-codex-a7c4/SHOULDER.md` | 3,910 | `bd888f2671961d52782cfc6508fc45e1a445637d16d94512a0c64d8955d3a319` |
+
+## Degree-five sector moments and sharp cubic restriction (codex-a7c4, #843)
+
+Rows 4.18n–p use the [payoff proof](sources/quintic-sector-moments-codex-a7c4/PROOF.md), the [cubic restriction theorem](sources/quintic-sector-moments-codex-a7c4/RESTRICTION.md) and the [exact replay](code/quintic-sector-moments-codex-a7c4/replay.py). The JSON file contains the six additional rational Stein profiles.
+
+The [repricing](sources/quintic-sector-moments-codex-a7c4/SPIKED.md) in #855 uses the same six potentials. Its [control](code/quintic-sector-moments-codex-a7c4/fixed_prices.py) tests the loss from fixing the Hölder coefficients.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `code/quintic-sector-moments-codex-a7c4/angular.py` | 6,146 | `e3bf988a1f0f959c91386fcc2cd02344cc45824f3972360fdde3b6e1962e2c26` |
+| `code/quintic-sector-moments-codex-a7c4/cover.py` | 8,927 | `9451d29b38dc2474996f1855e3dbdec5466273d5cd2bd358eff906c41b35b8ae` |
+| `code/quintic-sector-moments-codex-a7c4/deformed_ray.py` | 8,375 | `37310f049ffff8d81c7bf155ebf8462dd09e0392cb15fd585ed2c9516fa4472c` |
+| `code/quintic-sector-moments-codex-a7c4/fixed_prices.py` | 4,724 | `33195a492d2fb9acbd320b0e9974132a43ee547aa2075f24233b3e4c34389fe0` |
+| `code/quintic-sector-moments-codex-a7c4/mass_gram.py` | 4,166 | `1c47283d80c92baaa02952ba1f59803540b3569ed9d09aa581e6e4122524bc4c` |
+| `code/quintic-sector-moments-codex-a7c4/p7_stein_rows.json` | 32,525 | `dfa18dad3862681edb264977a4d4bedcaea79bbcb15509cb6677b7bbaa1e9338` |
+| `code/quintic-sector-moments-codex-a7c4/replay.py` | 923 | `4ea75c251b7cefe9812b4bd522d0ea33771a50e6e7e3a3e2f61db006a425a4a3` |
+| `code/quintic-sector-moments-codex-a7c4/restriction_controls.py` | 6,180 | `ea7ce48509d782aab28883318291371f966ea453d199c4bea2854ac52997e738` |
+| `code/quintic-sector-moments-codex-a7c4/shape.py` | 6,606 | `2f2dfac48aa7110cd3aa9740ccbce67fc618381a1759045499a5f07d76837f2d` |
+| `code/quintic-sector-moments-codex-a7c4/shape_deformed.py` | 4,048 | `8e67b5480f202779c61a65b37be6a4faa6cf5fdbd00c0966d21156f50030ff88` |
+| `code/quintic-sector-moments-codex-a7c4/spiked_p7.py` | 5,109 | `b12f68177098efc5bd1603c67b1b6b719b9d896d65451071453de2fb293c693c` |
+| `code/quintic-sector-moments-codex-a7c4/test_mass_gram.py` | 3,692 | `7a03e865c7117a07dc5154b8fcb54fba17fffd2b05926f8677dffbb6e3737bab` |
+| `code/quintic-sector-moments-codex-a7c4/test_spiked_p7.py` | 2,166 | `5f97cced0673370e9564a523e52dde361d0d7a15583ce9c56c450ebafa8ee15e` |
+| `sources/quintic-sector-moments-codex-a7c4/ANGULAR.md` | 5,474 | `d4830b49cea5e4add2e48fe83a6caad05cf04f3d7c6c349aafb40a2759712efb` |
+| `sources/quintic-sector-moments-codex-a7c4/DEFORMED.md` | 7,337 | `2b96029f12cd83691d23a3773072dd558520d4528e0a6e4241b73047857694c9` |
+| `sources/quintic-sector-moments-codex-a7c4/MASS_GRAM.md` | 3,581 | `5c84206fed3ff9b8a85eeaba49d5f68e304ae659f3c659c4b1b94a1ad2f93da5` |
+| `sources/quintic-sector-moments-codex-a7c4/MOMENTS.md` | 4,673 | `3a0faa44017d7698a4383c8acbc7e619a09a372428e93bc039844d9b0d73f1c0` |
+| `sources/quintic-sector-moments-codex-a7c4/PROOF.md` | 4,599 | `e0971e623cd05d9f2eba684052e9e427941497e4dadb6ee89aba1930cca4c20c` |
+| `sources/quintic-sector-moments-codex-a7c4/RESTRICTION.md` | 6,581 | `820d4c90f12c0e89abf7f5b363f561598f91adcaeed2e441345198fd6e37455a` |
+| `sources/quintic-sector-moments-codex-a7c4/SHAPE_DEFORMED.md` | 2,721 | `a0221f3935bad6e24f92010d8b7e6e8007ebfb96ff32fcfd8f843c495a1500a0` |
+| `sources/quintic-sector-moments-codex-a7c4/SPIKED.md` | 8,935 | `8b82902d1f0ace6065ef300a4e93d612481aa05827b5f28e56fb5773f9ba6f82` |
+
+## Unrestricted angular-product strips (codex-a7c4)
+
+Row 4.18q extends the [fourth-excess cover](sources/quintic-product-support-codex-a7c4/COVER.md). The verifier recomputes all potential, price and cell inequalities from the checked-in inputs.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `code/quintic-product-support-codex-a7c4/crossing_row.json` | 5,286 | `968196255ed511805bbc00aa03313602a77b90f154491e9bfc63f2f013dbff23` |
+| `code/quintic-product-support-codex-a7c4/p7_product.py` | 2,978 | `66b6584cc8dd2f0e55563725eae8dd87ac05fc245039bbee52568b8de874d5d2` |
+| `code/quintic-product-support-codex-a7c4/p7_product_rows.json` | 21,572 | `79ac8940d6cfe4a1b6fa6877751cf7966c84cda3b8a1502bf861c521a3886e32` |
+| `code/quintic-product-support-codex-a7c4/product_cover.py` | 9,546 | `3b7db24fd5517d0817b233dc3a7cef1f14e7b06b67902e06253ce3a0e437728b` |
+| `code/quintic-product-support-codex-a7c4/step_charges.py` | 11,145 | `5ae65e9ac8c243c1dcd78651ce549cc69230f3037ef2319c3a7d74c5461a0a7a` |
+| `code/quintic-product-support-codex-a7c4/symmetric_product.py` | 1,828 | `a98854ba27e99aead627c03677850c3361d210655865ae0e7de8a1ebcbc17ba9` |
+| `code/quintic-product-support-codex-a7c4/test_symmetric_product.py` | 1,256 | `82feb13b22b067ef418721c3c05ec19ec2e8ce9d92d18de7724d0b1e41048e63` |
+| `code/quintic-product-support-codex-a7c4/wide_row.json` | 5,288 | `ddf5d49ae0f3918aa662f635593adf5fbdc53b331f817ea76db8ebfd356970f5` |
+| `sources/quintic-product-support-codex-a7c4/COVER.md` | 4,109 | `64815128c4043f2961507b6f7e1b6e0593c8964d27348d7c41e5e1d994b4f4ab` |
+| `sources/quintic-product-support-codex-a7c4/PRODUCT.md` | 5,538 | `3277a58ecaaa65a3c2c6a09abbf7df9c2d0883a751eaaf9d709327e775b2b6d1` |
+| `sources/quintic-product-support-codex-a7c4/RADIAL_CHARGE.md` | 2,959 | `6c5fa9380e0e3b833dbc1688d1dc2558a569ba88e4c32eefd73d07ec3ae03573` |
+| `sources/quintic-product-support-codex-a7c4/SYMMETRIC.md` | 2,063 | `2e164ad1a50fd1c54a0f9a49e7c81df33268ac314e08527ebcb24e4470155500` |
