@@ -446,25 +446,28 @@ The [two-radius argument](sources/quintic-mixed-sectors-codex-a7c4/PROOF.md) and
 
 Rows 4.18n–p use the [payoff proof](sources/quintic-sector-moments-codex-a7c4/PROOF.md), the [cubic restriction theorem](sources/quintic-sector-moments-codex-a7c4/RESTRICTION.md) and the [exact replay](code/quintic-sector-moments-codex-a7c4/replay.py). The JSON file contains the six additional rational Stein profiles.
 
+The [repricing](sources/quintic-sector-moments-codex-a7c4/SPIKED.md) in #855 uses the same six potentials. Its [control](code/quintic-sector-moments-codex-a7c4/fixed_prices.py) tests the loss from fixing the Hölder coefficients.
+
 | File | Bytes | SHA-256 |
 |---|---:|---|
 | `code/quintic-sector-moments-codex-a7c4/angular.py` | 6,146 | `e3bf988a1f0f959c91386fcc2cd02344cc45824f3972360fdde3b6e1962e2c26` |
-| `code/quintic-sector-moments-codex-a7c4/cover.py` | 8,228 | `345c5b2253ab4083861b5c32577f4d159a27fb152a4ea89882cf8a2e99cd46f3` |
+| `code/quintic-sector-moments-codex-a7c4/cover.py` | 8,927 | `9451d29b38dc2474996f1855e3dbdec5466273d5cd2bd358eff906c41b35b8ae` |
 | `code/quintic-sector-moments-codex-a7c4/deformed_ray.py` | 8,375 | `37310f049ffff8d81c7bf155ebf8462dd09e0392cb15fd585ed2c9516fa4472c` |
+| `code/quintic-sector-moments-codex-a7c4/fixed_prices.py` | 4,724 | `33195a492d2fb9acbd320b0e9974132a43ee547aa2075f24233b3e4c34389fe0` |
 | `code/quintic-sector-moments-codex-a7c4/mass_gram.py` | 4,166 | `1c47283d80c92baaa02952ba1f59803540b3569ed9d09aa581e6e4122524bc4c` |
 | `code/quintic-sector-moments-codex-a7c4/p7_stein_rows.json` | 32,525 | `dfa18dad3862681edb264977a4d4bedcaea79bbcb15509cb6677b7bbaa1e9338` |
-| `code/quintic-sector-moments-codex-a7c4/replay.py` | 889 | `a98b7daa5528153683f6d702c57bcc873fd0ae1672dcc7965fa458d0ae757c71` |
+| `code/quintic-sector-moments-codex-a7c4/replay.py` | 923 | `4ea75c251b7cefe9812b4bd522d0ea33771a50e6e7e3a3e2f61db006a425a4a3` |
 | `code/quintic-sector-moments-codex-a7c4/restriction_controls.py` | 6,180 | `ea7ce48509d782aab28883318291371f966ea453d199c4bea2854ac52997e738` |
 | `code/quintic-sector-moments-codex-a7c4/shape.py` | 4,820 | `c6bda0942495dc8959259edd58a4a5302112cfa6280005c5ba402437e562be6c` |
 | `code/quintic-sector-moments-codex-a7c4/shape_deformed.py` | 4,048 | `8e67b5480f202779c61a65b37be6a4faa6cf5fdbd00c0966d21156f50030ff88` |
-| `code/quintic-sector-moments-codex-a7c4/spiked_p7.py` | 3,984 | `3ceefe3a767a8ba822a64a8fee65726dcc45273f828dc4d470795838aefa422d` |
+| `code/quintic-sector-moments-codex-a7c4/spiked_p7.py` | 5,109 | `b12f68177098efc5bd1603c67b1b6b719b9d896d65451071453de2fb293c693c` |
 | `code/quintic-sector-moments-codex-a7c4/test_mass_gram.py` | 3,692 | `7a03e865c7117a07dc5154b8fcb54fba17fffd2b05926f8677dffbb6e3737bab` |
 | `code/quintic-sector-moments-codex-a7c4/test_spiked_p7.py` | 2,166 | `5f97cced0673370e9564a523e52dde361d0d7a15583ce9c56c450ebafa8ee15e` |
 | `sources/quintic-sector-moments-codex-a7c4/ANGULAR.md` | 5,474 | `d4830b49cea5e4add2e48fe83a6caad05cf04f3d7c6c349aafb40a2759712efb` |
 | `sources/quintic-sector-moments-codex-a7c4/DEFORMED.md` | 7,337 | `2b96029f12cd83691d23a3773072dd558520d4528e0a6e4241b73047857694c9` |
 | `sources/quintic-sector-moments-codex-a7c4/MASS_GRAM.md` | 3,581 | `5c84206fed3ff9b8a85eeaba49d5f68e304ae659f3c659c4b1b94a1ad2f93da5` |
 | `sources/quintic-sector-moments-codex-a7c4/MOMENTS.md` | 4,673 | `3a0faa44017d7698a4383c8acbc7e619a09a372428e93bc039844d9b0d73f1c0` |
-| `sources/quintic-sector-moments-codex-a7c4/PROOF.md` | 4,481 | `c33fff88e5ebe07f9bbe267d24306673aa549514398438a0873a4bfdec44fd4a` |
+| `sources/quintic-sector-moments-codex-a7c4/PROOF.md` | 4,599 | `e0971e623cd05d9f2eba684052e9e427941497e4dadb6ee89aba1930cca4c20c` |
 | `sources/quintic-sector-moments-codex-a7c4/RESTRICTION.md` | 6,581 | `820d4c90f12c0e89abf7f5b363f561598f91adcaeed2e441345198fd6e37455a` |
 | `sources/quintic-sector-moments-codex-a7c4/SHAPE_DEFORMED.md` | 2,721 | `a0221f3935bad6e24f92010d8b7e6e8007ebfb96ff32fcfd8f843c495a1500a0` |
-| `sources/quintic-sector-moments-codex-a7c4/SPIKED.md` | 5,906 | `471999ac4175e74f882d5062ffa7d4165478cbe3abe873769cc254bd08d21045` |
+| `sources/quintic-sector-moments-codex-a7c4/SPIKED.md` | 8,935 | `8b82902d1f0ace6065ef300a4e93d612481aa05827b5f28e56fb5773f9ba6f82` |

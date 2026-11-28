@@ -17,6 +17,7 @@ def main():
         here / "test_mass_gram.py",
         here / "test_spiked_p7.py",
         here / "cover.py",
+        here / "fixed_prices.py",
         here / "deformed_ray.py",
         here / "shape.py",
         here / "shape_deformed.py",
