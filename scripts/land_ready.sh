@@ -22,13 +22,13 @@ fi
 [ "$source" = "$SHA" ] || { echo "::error::the check tested ${source:0:12} but the request named ${SHA:0:12}"; exit 1; }
 [ "$pr" = "$PR" ] || { echo "::error::the check recorded PR #${pr} but the request named #${PR}"; exit 1; }
 
-# 1. the PR is still the one requested: open, not draft/RFC/WIP, this branch at this commit, into master
+# 1. the PR is still the one requested: open, not draft/RFC/WIP/HOLD (a review in progress, scripts/review.sh hold), this branch at this commit, into master
 prj=$(gh pr view "$PR" --json state,isDraft,labels,headRefName,headRefOid,baseRefName,isCrossRepository)
 pstate=$(jq -r .state <<< "$prj"); phead=$(jq -r .headRefOid <<< "$prj"); pbranch=$(jq -r .headRefName <<< "$prj")
 labels=$(jq -r '[.labels[].name] | join(",")' <<< "$prj")
 if [ "$pstate" != OPEN ] || [ "$(jq -r .isDraft <<< "$prj")" != false ] || [ "$(jq -r .baseRefName <<< "$prj")" != master ] \
    || [ "$(jq -r .isCrossRepository <<< "$prj")" != false ] || [ "$pbranch" != "$BRANCH" ] \
-   || [[ ",${labels}," == *,RFC,* ]] || [[ ",${labels}," == *,WIP,* ]]; then
+   || [[ ",${labels}," == *,RFC,* ]] || [[ ",${labels}," == *,WIP,* ]] || [[ ",${labels}," == *,HOLD* ]]; then
   echo "::notice::PR #${PR} is checked green but not landed: it is no longer an open, landable PR of ${BRANCH} into master (state ${pstate}, labels '${labels}')"; exit 0
 fi
 if [ "$phead" != "$source" ]; then
@@ -72,9 +72,16 @@ if [ "$(git rev-parse merge-candidate)" = "$base" ]; then
   echo "${BRANCH} is already contained in master"; delete_branch; exit 0
 fi
 
-# 4. fast-forward master; fails if master moved since the check
+# 4. fast-forward master; fails if master moved since the check. A reviewer's hold (label HOLD:<id>, scripts/review.sh
+# hold) placed while the merge was being recreated is seen here, immediately before the push; one placed after this
+# read loses the race, and review.sh reports that to its reviewer (the PR is then no longer open).
+holds=$(gh pr view "$PR" --json labels --jq '[.labels[].name | select(startswith("HOLD"))] | join(",")' 2>/dev/null || echo "?")
+if [ -n "$holds" ]; then
+  echo "::notice::PR #${PR} is checked green but not landed: a review is in progress (${holds}); /land again after its verdict"; exit 0
+fi
 if git push origin merge-candidate:master; then
   merged=$(git rev-parse merge-candidate)
+  bash scripts/hold_notice.sh "$PR" "$merged" || true   # a hold placed after the final read lost the race: say so
   delete_branch
   if [ "$lean" = true ]; then
     ctx="Lean proof check (verified before merge)"; d="Built and checked as PR #${PR} merged into master"
