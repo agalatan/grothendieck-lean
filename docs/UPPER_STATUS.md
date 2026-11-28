@@ -7,10 +7,10 @@ This file documents the older single-channel upper proof (`K_G^ℂ < 1.404599395
 The single-channel upper bound is **K_G^ℂ < 1.404599395362**, without
 hypotheses: `Grothe.Statement.upper_below_tight` in
 [`UpperTightFinal.lean`](../Grothe/UpperTightFinal.lean). The combined statement `main_bounds` in
-[`MainResult.lean`](../Grothe/MainResult.lean) uses the seven-channel bound.
+[`MainResult.lean`](../Grothe/MainResult.lean) uses the bound of `Grothe/UpperBivar/`.
 
 The earlier target **K_G^ℂ < 1.404598149141** of the single-channel rounding (weaker than the proved
-seven-channel bound) had only a conditional route, removed from the repository
+bound of `main_bounds`) had only a conditional route, removed from the repository
 ([`abandonware/README.md`](../abandonware/README.md) gives the commit):
 `fresh_upper_rounder` gave `K_G^ℂ ≤ 500000000000000000/355973699960428191 < 1.404598148840`
 from fourteen original Gaussian finite-band error inequalities, which are not
@@ -20,7 +20,7 @@ all proved, and the energy-table discrepancy bound `6847009/(5·10^17)`, which
 The single-channel proof uses six certified low-band and whole-source estimates,
 tighter arithmetic budgets, and the Gaussian-amplitude Hardy bound (budget `117/100`) with a linear-energy
 deduction. Its entrypoint is `upper_below_tight`, and the energy-table accuracy
-`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). The generated root includes this proof alongside the seven-channel proof used by
+`Final.hclose_final` is in [`UpperClose.lean`](../Grothe/UpperClose.lean). The generated root includes this proof alongside the upper proof used by
 `MainResult.lean`. Alternative single-channel formulations are in git history only
 ([`abandonware/README.md`](../abandonware/README.md)).
 

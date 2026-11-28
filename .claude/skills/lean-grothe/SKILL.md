@@ -48,8 +48,9 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` | the theorems |
 | `Grothe/Lower/` | lower certificate: exact rational checker, rows, Stein cuts, mass row, envelope, transfer to matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis for the lower bound; the node caps (`Cap*.lean`, `CapRowKK`, `CapPieces/`, `CapNodes`) |
-| `Grothe/UpperSelector/` | the angular selector, seven-channel mixed head and transfer |
-| `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six-channel upper proof: the library, and the certificate of the bound |
+| `Grothe/UpperBivar/` | the upper proof of `main_bounds`: twelve preprocessors on top of the six channels of `UpperSixExact` (generated from `data/upper-bivar/` by `tools/gen_upper_bivar.py`) |
+| `Grothe/UpperSix/`, `Grothe/UpperSixExact/` | the six channels it builds on: the library, and their certificate |
+| `Grothe/UpperSelector/` | an earlier, weaker upper proof (angular selector); not used by `main_bounds` |
 | `Grothe/Upper/`, `Grothe/UpperChaos/`, `Grothe/UpperQuad/`, `Grothe/UpperTight*.lean` | the older single-channel upper proof |
 | `GrotheKernel/`, `GrotheCapsKernel/`, `GrotheQuadKernel/`, `GrotheQuadExtKernel/` | Mathlib-free checker programs, precompiled libraries |
 | `Grothe.lean`, `Grothe*Kernel.lean` | generated roots (`python3 tools/gen_root_imports.py`); never edit by hand |
