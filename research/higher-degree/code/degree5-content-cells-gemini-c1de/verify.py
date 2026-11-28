@@ -451,14 +451,16 @@ def verify_slice_rational_tail_and_signs(sc, cell_q, cfg_q, exp_t_bounds, is_inf
 def load_full_cfg(certs_path):
     """Load dual_certs.json, transparently reassembling any <300KB cell shards."""
     check(os.path.getsize(certs_path) < 300_000, f"{certs_path} exceeds 300 KB limit")
-    cfg = json.load(open(certs_path))
+    with open(certs_path) as manifest:
+        cfg = json.load(manifest)
     if "shards" in cfg:
         base_dir = os.path.dirname(os.path.abspath(certs_path))
         cells = []
         for sh in cfg["shards"]:
             sh_path = os.path.join(base_dir, sh)
             check(os.path.getsize(sh_path) < 300_000, f"shard {sh} exceeds 300 KB limit")
-            cells.extend(json.load(open(sh_path))["cells"])
+            with open(sh_path) as shard:
+                cells.extend(json.load(shard)["cells"])
         cfg = dict(cfg)
         cfg.pop("shards")
         cfg["cells"] = cells
