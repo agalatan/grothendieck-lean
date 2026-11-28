@@ -75,7 +75,7 @@ $T=(1-w)T_0+wP_{1,0}$. Its vector payoff tends to one, so its scalar cap $B$ giv
 
 For $h=(f+g)/2$, $k=(f-g)/2$ and $t=\|P_{1,0}h\|$, the first-chaos payoff is $t^2-\|P_{1,0}k\|^2$.
 The certificate bounds the sum of the original normalized row payoff and the $t^2$ term with their retuned coefficients.
-A lower bound at two fixed amplitudes gives the same outward cap on the $10^{-12}$ grid even when the mixture weight and central subdivisions vary along these row paths. [Exact arithmetic replay](../research/identity-tail/FIRST_CHAOS_RETUNING.md).
+At this weight the certified profile attains its maximum at $t=16767/20000$ in cell 25. Reverting to the quadratic Rice price exceeds the stated cap by more than $284/10^9$ in cell 26. Omitting the signed high-amplitude estimate exceeds the cap by more than $69/10^9$ in cell 34. [Exact arithmetic replay](../research/identity-tail/PRICED_RICE.md).
 
 In the central rows (0.835 and 0.845), a single circular cubic supplies the fourth excess and the residual scale.
 Dilating eleven plain Stein polynomials gives fourteen additional bounds for the row expectations. Lean checks
