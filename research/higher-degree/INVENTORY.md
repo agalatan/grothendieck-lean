@@ -492,3 +492,23 @@ Row 4.18q extends the [fourth-excess cover](sources/quintic-product-support-code
 | `sources/quintic-product-support-codex-a7c4/PRODUCT.md` | 5,538 | `3277a58ecaaa65a3c2c6a09abbf7df9c2d0883a751eaaf9d709327e775b2b6d1` |
 | `sources/quintic-product-support-codex-a7c4/RADIAL_CHARGE.md` | 2,959 | `6c5fa9380e0e3b833dbc1688d1dc2558a569ba88e4c32eefd73d07ec3ae03573` |
 | `sources/quintic-product-support-codex-a7c4/SYMMETRIC.md` | 2,063 | `2e164ad1a50fd1c54a0f9a49e7c81df33268ac314e08527ebcb24e4470155500` |
+
+## Matched sector prices and the rank-one quartic (codex-a7c4)
+
+Row 4.18r uses the [common sector constraints](sources/quintic-sector-frontier-codex-a7c4/SHOULDER.md), an explicit feasible tuple for the previous scalar relaxation and the rank-one sum-of-squares bound.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `code/quintic-sector-frontier-codex-a7c4/joint_sector.py` | 9,841 | `9b5969309bb5923c2294fa5563ad6353fcd0819f989aaed1d4e03a90de911121` |
+| `code/quintic-sector-frontier-codex-a7c4/matched_coefficients.py` | 1,217 | `86f9d15b5a47915ac5d457eaea9dce70dcbf039a4504e85a741edd5c357329b3` |
+| `code/quintic-sector-frontier-codex-a7c4/point.py` | 3,853 | `2e32084e1387218ab72f2a01dea12686c641e113c68901657b0e9d003b3f2848` |
+| `code/quintic-sector-frontier-codex-a7c4/prices.json` | 270 | `f3335f17d2e74fa0553e49dae6e3082022a81da328f186366c8bb749445a4483` |
+| `code/quintic-sector-frontier-codex-a7c4/rank_bound.py` | 2,259 | `258c721af50ed35cb945da2da97beeea58c3b7cb746b54bd921cafaf81be0116` |
+| `code/quintic-sector-frontier-codex-a7c4/rank_one.py` | 3,617 | `cc737b40c77b719cc1735310c07eb33d4a6df0c7c9820582f6ea253734c4326e` |
+| `code/quintic-sector-frontier-codex-a7c4/rank_sos.json` | 1,343 | `d4c76a7819d4490417dd36f4e36438251893ff4b2eff267b36950214c7fc8e0a` |
+| `code/quintic-sector-frontier-codex-a7c4/sector_prices.py` | 2,003 | `cbf1b185cdff4f9a04cf401d63589e97d2bbb6ef6d7d2507e349eaaf15685d24` |
+| `code/quintic-sector-frontier-codex-a7c4/shoulder.py` | 10,662 | `9689bb0492677aa53a4fc508e6090992073dc56cfff9cf1dbdc6cb0806df7943` |
+| `sources/quintic-sector-frontier-codex-a7c4/MATCHED.md` | 6,575 | `6a1029ee19f85b5c5fd6e1bb691acee32fbdbb27ccb8a048455b800c4849e9fb` |
+| `sources/quintic-sector-frontier-codex-a7c4/POINT.md` | 3,175 | `79c2b7acd3c5b87b8238e3a906a5a6508bdceb4792579d6371a315e9ef1590c4` |
+| `sources/quintic-sector-frontier-codex-a7c4/RANK_ONE.md` | 3,502 | `94d279e969526b7298050e49da04a428639acc7fbc177925e8df4dc2855883e5` |
+| `sources/quintic-sector-frontier-codex-a7c4/SHOULDER.md` | 5,594 | `af07439d24d49df02a3228a91b3687d1d32764073665834dfbabb62ec2813267` |
