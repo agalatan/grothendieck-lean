@@ -348,7 +348,9 @@ Also:
   check at a time, of its newest commit**: push once per milestone, not after every commit. Master's checks are never
   cancelled by a newer one starting (a long first build would be lost); instead, when a master check goes green it
   cancels the still-running checks of older master commits, whose trees it contains. What counts is the newest master
-  commit's own result. Runs that really build the node caps (no verified cache, or `-f mode=caps`) are never cancelled
+  commit's own result. During a freeze, `staging` follows the same rule (one check per commit, never cancelled by a
+  newer push), and a green staging commit is not cancelled either: every fork point keeps the proof that docs-only
+  PRs based on it inherit (#888). Runs that really build the node caps (no verified cache, or `-f mode=caps`) are never cancelled
   either: hours of work.
 - **Where a check runs:** GitHub-hosted (4 vCPUs, 16 GB) unless it needs the heavy runners (`self-hosted, heavy`:
   the droplet and, when they exist, the big and mega droplets, §12): the node caps must be built (no verified cache), `-f mode=caps`, the
