@@ -81,10 +81,42 @@ def sqrt_upper(x):
     return Q(n if n*n*x.denominator == x.numerator*scale**2 else n+1, scale)
 
 
+def uniform_price_cap(hull, energy, multiplier):
+    """Upper odd price using only the mean energy and one nonnegative dual multiplier."""
+    require(energy >= 0 and multiplier >= 0, 'invalid uniform-price arguments')
+    last_radius, top_price = hull[-1]
+    lower = multiplier * (last_radius - energy)
+    for (left, price), (right, next_price) in zip(hull, hull[1:]):
+        width = right - left
+        slope = (next_price - price) / width
+        if multiplier >= 3 * slope:
+            conjugate = multiplier - slope
+        else:
+            conjugate = 2 * multiplier * sqrt_upper(multiplier / (3 * slope)) / 3
+        lower -= width * conjugate
+    return top_price - Q(4, 51) * max(0, lower)
+
+
+def check_uniform_prices(hull):
+    witnesses = [
+        ('.043', '.521787', 1277940349, 1507401),
+        ('.06', '.355886', 1278521949, 925802),
+        ('.07', '.274510', 1278767934, 679816),
+    ]
+    last_radius, top_price = hull[-1]
+    for energy, multiplier, ceiling, discount in witnesses:
+        cap = uniform_price_cap(hull, Q(energy), Q(multiplier))
+        require(cap <= Q(ceiling, 10**9), 'uniform odd price at energy ' + energy)
+        require(top_price - cap > Q(discount, 10**9), 'uniform plateau discount')
+    require(uniform_price_cap(hull, last_radius, Q('.5')) == top_price, 'mean reaches the plateau')
+    require(uniform_price_cap(hull, Q('.06'), Q(0)) == top_price, 'zero dual multiplier')
+
+
 def checked_price(repo):
     rows = conditional_rows(repo)
     hull = price_hull(rows)
     upper = checked_envelope(rows, hull)
+    check_uniform_prices(hull)
     vertices = [i for i, row in enumerate(rows) if row in hull]
     require(vertices == [0, 11, 12, 13, 14, 15, 16, 17], 'reported hull vertices')
     # The last vertex attains the certified maximum. Removing it makes the
