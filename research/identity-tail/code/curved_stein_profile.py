@@ -55,7 +55,7 @@ def curvature(i, j):
     return lower
 
 
-def weighted_profile(src, prices, curve):
+def weighted_profile(src, prices, curve, *, bisect_binding=False):
     maxima = []
     outer_maxima = []
     for n,(lo,hi,i,j,old_weight) in enumerate(src.cells):
@@ -73,7 +73,13 @@ def weighted_profile(src, prices, curve):
         el,beta,C = rows[i]
         er,br,D = rows[j]
         penalty = 2*(br-beta)**2/EPS
-        for l,h,w,z in affine_pieces(rows,i,j,lo,hi,old_weight):
+        pieces = affine_pieces(rows, i, j, lo, hi, old_weight)
+        if bisect_binding and (lo, hi) == (Q(3429, 4096), Q(8577, 10240)):
+            (l, h, w, z), = pieces
+            checked((i, j, l, h) == (8, 9, lo, hi), "unexpected binding interval")
+            t_mid, w_mid = (l + h) / 2, (w + z) / 2
+            pieces = [(l, t_mid, w, w_mid), (t_mid, h, w_mid, z)]
+        for l,h,w,z in pieces:
             dw,dz = price(w),price(z)
             extra = curve(w,z) if (i,j)==(8,9) else Q(0)
             def f(x):
@@ -93,6 +99,19 @@ def weighted_profile(src, prices, curve):
     ceiling=1/(Q(47,2000)+Q(1953,2000)*Q(ceil(outside*10**11),10**11))
     checked(ceiling==Q(100000000000000,71325509501647), "rounded outer amplitude ceiling changed")
     return cap,cell,1/(Q(1953,2000)*cap+Q(47,2000))
+
+
+def check_lean_prices(declaration, expected):
+    source = Path("Grothe/LowerAnalytic/SparseSteinWeights.lean").read_text()
+    start = f"def {declaration} : List (ℚ × ℚ) := ["
+    body = source.split(start, 1)[1].split("]", 1)[0]
+    entries = []
+    for line in body.strip().splitlines():
+        pair = line.strip().removesuffix(",")
+        checked(pair.startswith("(") and pair.endswith(")"), "invalid Lean price entry")
+        weight, price = pair[1:-1].split(",")
+        entries.append((Q(weight.strip()), Q(price.strip())))
+    checked(entries == sorted(expected.items()), f"Lean {declaration} differs from the physical replay")
 
 
 def main():
@@ -134,7 +153,25 @@ def main():
             "curved interpolation result changed")
     checked(control==(Q(7063549609,10000000000),26,Q(20000000000000,14265112386377)),
             "affine interpolation control changed")
-    print("certified curvature",coeff,"shape pieces",len(law.pieces),"weights",len(weights))
+    midpoint = (w + z) / 2
+    checked(midpoint == Q(6955791291089081748998024723729, 13412622789067932927021702497500),
+            "binding midpoint weight changed")
+    prices[midpoint] = Q(floor(law.discount(midpoint) * 10**13), 10**13)
+    small_prices[midpoint] = Q(floor(small.discount(midpoint) * 10**13), 10**13)
+    checked((prices[midpoint], small_prices[midpoint]) ==
+            (Q(10853361, 10**12), Q(251609893, 10**13)), "midpoint prices changed")
+    margins[midpoint] = small_prices[midpoint] - prices[midpoint]
+    checked(len(prices) == len(small_prices) == 10 and margins[midpoint] >= 0,
+            "invalid refined schedule")
+    check_lean_prices("prices", prices)
+    check_lean_prices("smallPrices", small_prices)
+    refined = weighted_profile(src, prices, curved, bisect_binding=True)
+    checked(refined[0] == Q(70635481227, 10**11) and
+            refined[1:] == (23, Q(200000000000000, 142651094836331)), "refined endpoint changed")
+    checked(refined[2] > result[2], "removing the midpoint no longer weakens the bound")
+    print("midpoint", midpoint, "prices", prices[midpoint], small_prices[midpoint], "refined", refined)
+    print("certified curvature", coeff, "shape pieces", len(law.pieces),
+          "original weights", len(weights), "refined weights", len(prices))
     print("curved",result,"affine control",control)
     print("fixed central path ceiling at amplitude",t,"< 1.402022188814")
 

@@ -74,26 +74,36 @@ theorem segment_bound {cap : ℚ} (a b : EnvRow) (l h w z dl dh bonus : ℚ) (x 
   apply le_trans _ ((Rat.cast_le (K := ℝ)).mpr hcap)
   linarith only [mix, bound, hsave]
 
+/-- Split the binding central interval along its affine weight path.
+The mass tangent and both endpoint weights are inherited from its parent. -/
+private def refineCentral (s : Segment) : List Segment :=
+  if s.base.lo = 3429/4096 ∧ s.base.hi = 8577/10240 then
+    let t := (s.base.lo+s.base.hi)/2
+    let w := (s.leftWeight+s.rightWeight)/2
+    [{s with base := {s.base with hi := t}, rightWeight := w},
+     {s with base := {s.base with lo := t}, leftWeight := w}]
+  else [s]
+
 private def segments (c : EnvCell) : List Segment :=
   if (c.i = 6 ∨ c.i = 7) ∧ (c.j = 6 ∨ c.j = 7) then
     WeightedTight.affineSegments row06.env row07.env {c with i := 6, j := 7} true
   else if (c.i = 8 ∨ c.i = 9) ∧ (c.j = 8 ∨ c.j = 9) then
-    WeightedTight.affineSegments TightShared.row8 TightShared.row9 {c with i := 8, j := 9} true
+    (WeightedTight.affineSegments TightShared.row8 TightShared.row9 {c with i := 8, j := 9} true).flatMap refineCentral
   else if c.i = 13 ∧ c.j = 13 then WeightedTight.segments true {c with j := 14}
   else WeightedTight.segments true c
 
 private def cells := envCellsTight.flatMap segments
 
 private def valid (s : Segment) : Bool :=
-  if !s.active then WeightedTight.segmentOK cap SparseStein.price s
+  if !s.active then WeightedTight.segmentOK Midpoint.cap SparseStein.price s
   else if s.base.i = 6 then
     decide (s.base.lo < s.base.hi) &&
     SparseOuter.priceOK s.leftWeight && SparseOuter.priceOK s.rightWeight &&
     decide (WeightedTight.segmentCap row06.env row07.env s.base.lo s.base.hi
-      s.leftWeight s.rightWeight (SparseOuter.price s.leftWeight) (SparseOuter.price s.rightWeight) ≤ cap)
+      s.leftWeight s.rightWeight (SparseOuter.price s.leftWeight) (SparseOuter.price s.rightWeight) ≤ Midpoint.cap)
   else decide (segmentCap TightShared.row8 TightShared.row9 s.base.lo s.base.hi s.leftWeight s.rightWeight
     (SparseStein.price s.leftWeight) (SparseStein.price s.rightWeight)
-    (SparseStein.bonus s.leftWeight s.rightWeight) ≤ cap) &&
+    (SparseStein.bonus s.leftWeight s.rightWeight) ≤ Midpoint.cap) &&
     decide (s.leftWeight ∈ SparseStein.prices.map Prod.fst ∧
       s.rightWeight ∈ SparseStein.prices.map Prod.fst)
 
@@ -104,7 +114,7 @@ private theorem checks :
   decide +kernel
 
 /-- The physical 06/07 deductions and a certified central pair of deductions close the cover. -/
-theorem profile_bound {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+theorem midpoint_profile_bound {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
     (hred : CircularSharedReduction rowData V t Qh v)
     (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
@@ -116,7 +126,7 @@ theorem profile_bound {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ 
         (SparseStein.bonus w z : ℝ)*x*(1-x) ≤ (1-θ)*d8+θ*d9 ∧
       RowHolds ε TightShared.row8.ell TightShared.row8.beta ((TightShared.row8.C : ℝ)-d8) V t Qh v ∧
       RowHolds ε TightShared.row9.ell TightShared.row9.beta ((TightShared.row9.C : ℝ)-d9) V t Qh v) :
-    V ≤ (cap : ℝ) := by
+    V ≤ (Midpoint.cap : ℝ) := by
   obtain ⟨s, hs, hlo, hhi⟩ := chainTo_sound (fun c : Segment ↦ c.base.lo) (fun c ↦ c.base.hi)
     cells 0 (9/10) checks.1 t (by simpa using ht₀) (by push_cast; exact ht₁)
   have hc := List.all_eq_true.mp checks.2.1 s hs
@@ -166,5 +176,21 @@ theorem profile_bound {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ 
           (by simpa only [sub_zero,RowOf] using hrows _ _ _ ha)
           (by simpa only [sub_zero,RowOf] using hrows _ _ _ hb) hθ₀ hθ₁
         simp
+
+/-- The original nine-price bound follows by weakening the refined cap. -/
+theorem profile_bound {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {V t : ℝ} {Qh v : E} (hv : ‖v‖^2 = 2) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 9/10)
+    (hred : CircularSharedReduction rowData V t Qh v)
+    (hrows : ∀ k m a, envRowAtPure envRowsTight massS m k = some a → RowOf a V t Qh v)
+    (hcentral : ∀ w z : ℚ, w ∈ SparseStein.prices.map Prod.fst →
+      z ∈ SparseStein.prices.map Prod.fst → 0 ≤ w → w ≤ 1 → 0 ≤ z → z ≤ 1 →
+      ∀ {x : ℝ}, 0 ≤ x → x ≤ 1 →
+      let θ := (1-x)*(w : ℝ)+x*(z : ℝ)
+      ∃ d8 d9 : ℝ, (1-x)*(SparseStein.price w : ℝ)+x*(SparseStein.price z : ℝ)+
+        (SparseStein.bonus w z : ℝ)*x*(1-x) ≤ (1-θ)*d8+θ*d9 ∧
+      RowHolds ε TightShared.row8.ell TightShared.row8.beta ((TightShared.row8.C : ℝ)-d8) V t Qh v ∧
+      RowHolds ε TightShared.row9.ell TightShared.row9.beta ((TightShared.row9.C : ℝ)-d9) V t Qh v) :
+    V ≤ (cap : ℝ) :=
+  (midpoint_profile_bound hv ht₀ ht₁ hred hrows hcentral).trans (Rat.cast_le.mpr Midpoint.cap_le)
 
 end Grothe.Lower.SparseEnvelope

@@ -29,6 +29,11 @@ theorem sparse_stein_endpoint :
     (Grothe.Lower.SparseEnvelope.endpoint : ℝ) ≤ complexGrothendieckConstant :=
   sparseSteinEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
 
+/-- Refining the binding interval of the pure identity-tail witness improves its matrix endpoint. -/
+theorem sparse_midpoint_endpoint :
+    (Grothe.Lower.SparseEnvelope.Midpoint.endpoint : ℝ) ≤ complexGrothendieckConstant :=
+  sparseMidpointEndpoint_le_of_tailNodeCaps tailNodeCaps_cert ⟨_, Grothe.UpperSix.bound⟩
+
 /-- **The main result**: the exact lower endpoint rounded strictly downward, and the multi-channel upper bound
 rounded up. -/
 theorem main_bounds :

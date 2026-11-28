@@ -25,7 +25,10 @@ import Grothe
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.pairGain_strongChord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.twoScale_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
+#print axioms Grothe.Lower.SparseEnvelope.Midpoint.endpoint_eq
+#print axioms Grothe.Lower.SparseEnvelope.Midpoint.endpoint_lt
 #print axioms Grothe.Lower.SparseEnvelope.endpoint_eq
+#print axioms Grothe.Lower.SparseEnvelope.midpoint_profile_bound
 #print axioms Grothe.Lower.SparseEnvelope.profile_bound
 #print axioms Grothe.Lower.SparseEnvelope.rounded_lt
 #print axioms Grothe.Lower.SparseOuter.actual_deductions
@@ -110,6 +113,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.RowHolds.mix
 #print axioms Grothe.LowerAnalytic.SparseStein.actual_deductions
 #print axioms Grothe.LowerAnalytic.SparseStein.lower_of_nodeCaps
+#print axioms Grothe.LowerAnalytic.SparseStein.midpoint_lower_of_nodeCaps
+#print axioms Grothe.LowerAnalytic.SparseStein.price_le
 #print axioms Grothe.LowerAnalytic.TintNu_grid
 #print axioms Grothe.LowerAnalytic.VOf_eq
 #print axioms Grothe.LowerAnalytic.VOf_eq_hat
@@ -249,6 +254,7 @@ import Grothe
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
 #print axioms Grothe.Statement.main_bounds
+#print axioms Grothe.Statement.sparse_midpoint_endpoint
 #print axioms Grothe.Statement.sparse_stein_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upper_below_tight

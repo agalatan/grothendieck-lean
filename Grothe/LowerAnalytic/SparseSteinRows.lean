@@ -10,7 +10,7 @@ import Grothe.LowerAnalytic.AntiRows.Row09
 
 set_option warningAsError true
 
-/-! # Actual row deductions at the nine sparse common-law prices -/
+/-! # Actual row deductions at the ten sparse common-law prices -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
 open Grothe.Lower.SharedGate (surplus)
