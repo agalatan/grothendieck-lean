@@ -426,3 +426,18 @@ All files of `KBRS` are committed under [`../conjecture-K/`](../conjecture-K/INV
 ## Weighted sector energies and buffered cubic radii
 
 The [two-radius argument](sources/quintic-mixed-sectors-codex-a7c4/PROOF.md) and [Rice witnesses](code/quintic-mixed-sectors-codex-a7c4/rice_rows.json) give row 4.18k. The [weighted projection argument](sources/quintic-mixed-sectors-codex-a7c4/GRAM.md) and [all-amplitude splice](sources/quintic-mixed-sectors-codex-a7c4/SHOULDER.md) give row 4.18l. Row 4.18m uses these projections to [restrict the support test for a hypothetical violating pair](sources/quintic-mixed-sectors-codex-a7c4/ALL_SECTORS.md). The [combined replay](code/quintic-mixed-sectors-codex-a7c4/replay.py) runs the exact comparisons and controls with Python's standard library. All new certificate data are in the repository.
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `code/quintic-mixed-sectors-codex-a7c4/all_sector.py` | 9,550 | `8c5233f58e0e61c74cbf0481b84cab35d872bf6404d2d9963afe73f25d073f76` |
+| `code/quintic-mixed-sectors-codex-a7c4/rays.py` | 6,917 | `93807dd7ab73a07fa0f446d41e2d2ef99a3d1f3873304ab6d6cb97235715b0b8` |
+| `code/quintic-mixed-sectors-codex-a7c4/replay.py` | 826 | `ce28865b6109ccf8724954eb4b728c26d4b291a9bb914c311a3c906b7e6baaff` |
+| `code/quintic-mixed-sectors-codex-a7c4/rice_rows.json` | 2,816 | `300a456066b378d6b4be11cebb43537eca9e895d243e4fb5a265fd1e1a8033f2` |
+| `code/quintic-mixed-sectors-codex-a7c4/sector_chords.json` | 530 | `455540267e6c9edf0f5f7904f68cfbf55d95593dd85b5b4f9bed917ed3bef2b4` |
+| `code/quintic-mixed-sectors-codex-a7c4/sector_gram.py` | 5,437 | `8bcfcefaeabd48d0e5a2f2844bd9680319d62a2b3b47d1bb086d543e6fb2d94e` |
+| `code/quintic-mixed-sectors-codex-a7c4/step_shoulder.py` | 5,740 | `410c38a1bb5c4967bc26ce97cf0e2a3a907ce8a2e2feef8a777ad3c1300303c1` |
+| `code/quintic-mixed-sectors-codex-a7c4/transfer.py` | 4,829 | `ae6949855649dfcf2747fca03b052f98b5f090563cfc6ae9321dd22d0dff7ddb` |
+| `sources/quintic-mixed-sectors-codex-a7c4/ALL_SECTORS.md` | 6,268 | `4544d89812ebf2f95c47d7674ccbdeeb58163643f399b67483d80ee9ccd72dd4` |
+| `sources/quintic-mixed-sectors-codex-a7c4/GRAM.md` | 8,146 | `ffae0de83e80905623d59f4b6dc22661204347ac15fa8fe940419c8fe9507d94` |
+| `sources/quintic-mixed-sectors-codex-a7c4/PROOF.md` | 9,336 | `211b4036734330f84ae88ab062b20509b05c4f40c7b4d4ce65cfa480d5bde5a7` |
+| `sources/quintic-mixed-sectors-codex-a7c4/SHOULDER.md` | 3,910 | `bd888f2671961d52782cfc6508fc45e1a445637d16d94512a0c64d8955d3a319` |
