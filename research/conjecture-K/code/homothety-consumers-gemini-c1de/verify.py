@@ -244,7 +244,7 @@ def poly_divmod_exact(a, b):
     return q, rem
 
 
-def build_and_verify_b_hi_poly(u7_override=None):
+def build_and_verify_b_hi_poly(u7_override=None, b_hi_override=None, return_details=False):
     """Self-contained 220-bit rational construction + algebraic verification of B_hi(u) >= B_0(u)."""
     def atan_rec(n, terms=160):
         q = Q(1, n)
@@ -405,7 +405,18 @@ def build_and_verify_b_hi_poly(u7_override=None):
     sos[4] += q4_rem
     check(sos == q6, "Q_6 explicit SOS reconstruction mismatch")
 
-    b_hi = [(u7[k] * md[k]).hi if u7[k] >= 0 else (u7[k] * md[k]).lo for k in range(8)]
+    b_hi_prod = [u7[k] * md[k] for k in range(8)]
+    for k in (2, 4, 6):
+        check(u7[k] < Q(0) and md[k].lo < md[k].hi and b_hi_prod[k].lo < b_hi_prod[k].hi,
+              f"Expected negative u7[{k}] with positive-width interval product")
+    b_hi = [b_hi_prod[k].hi for k in range(8)] if b_hi_override is None else [Q(x) for x in b_hi_override]
+    check(len(b_hi) == 8, "b_hi must have length 8")
+    for k in range(8):
+        exact_iv_hi = u7[k] * (md[k].hi if u7[k] >= Q(0) else md[k].lo)
+        check(b_hi_prod[k].hi >= exact_iv_hi,
+              f"RatIval upper endpoint (u7[{k}]*md[{k}]).hi below exact rational product upper bound")
+        check(b_hi[k] >= b_hi_prod[k].hi,
+              f"b_hi[{k}] failed outward upper enclosure (u7[{k}]*md[{k}]).hi")
 
     # Verify B_hi(u_*) - p_0 u_* >= S0_LO (soundness against 3.14):
     u_star = Q(403448, 10**7)
@@ -413,6 +424,8 @@ def build_and_verify_b_hi_poly(u7_override=None):
     check(S0_LO < g_star < S0_HI + Q(2, 10**7),
           f"B_hi(u_*) - p_0 u_* = {fmt_dec(g_star, 10)} outside expected bracket above S_0")
 
+    if return_details:
+        return b_hi, pi_iv, sp_iv, u7, md, b_hi_prod
     return b_hi, pi_iv, sp_iv
 
 
@@ -824,14 +837,15 @@ def verify_85_full_range_consumer(c85_summary, inherited_rows_override=None):
     return overall_max, target - overall_max, hom_used_cells
 
 
-def verify_bundle(bundle, cert_path=None, u7_override=None, rice_slope_override=None, inherited_rows_override=None):
+def verify_bundle(bundle, cert_path=None, u7_override=None, b_hi_override=None,
+                  rice_slope_override=None, inherited_rows_override=None):
     if cert_path is not None:
         sz = os.path.getsize(cert_path)
         check(sz < 300000, f"Certificate {cert_path} ({sz} B) exceeds 300,000 B repository limit")
 
     check(isinstance(bundle, dict) and bundle.get("schema") == "khom-v1", "Invalid schema != 'khom-v1'")
 
-    b_hi_poly, _, sp_iv = build_and_verify_b_hi_poly(u7_override=u7_override)
+    b_hi_poly, _, sp_iv = build_and_verify_b_hi_poly(u7_override=u7_override, b_hi_override=b_hi_override)
     verify_rice_tangent(sp_iv, rice_slope_override=rice_slope_override)
     g_hi_poly = [b_hi_poly[0], b_hi_poly[1] - P0] + b_hi_poly[2:]
 

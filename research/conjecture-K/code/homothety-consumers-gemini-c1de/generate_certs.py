@@ -213,7 +213,7 @@ def build_b_hi_poly():
                 nb[k + 1] += bc
             basis = nb
 
-    b_hi = [(u7[k] * md[k]).hi if u7[k] >= 0 else (u7[k] * md[k]).lo for k in range(8)]
+    b_hi = [(u7[k] * md[k]).hi for k in range(8)]
     return b_hi
 
 

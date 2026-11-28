@@ -5,7 +5,7 @@ Refs: `#760`, `#436`, `#177`
 
 ## Overview
 
-This directory contains the self-contained zero-float, zero-`assert` Python 3 standard-library exact rational verifier (`verify.py`), 18-check AST and corruption control suite (`test_controls.py`), certificate generator (`generate_certs.py`), and compact rational certificate (`homothety_consumers_cert.json`, `< 300 KB`) for Issue `#760` (`STATUS.md` tag `KHOM`).
+This directory contains the self-contained zero-float, zero-`assert` Python 3 standard-library exact rational verifier (`verify.py`), 19-check AST and corruption control suite (`test_controls.py`), certificate generator (`generate_certs.py`), and compact rational certificate (`homothety_consumers_cert.json`, `< 300 KB`) for Issue `#760` (`STATUS.md` tag `KHOM`).
 
 ## Verification Commands
 

@@ -56,7 +56,7 @@ def audit_zero_float_zero_assert(py_path):
 
 
 def main():
-    print("Running KHOM zero-float AST & negative/corruption control suite (18 controls)...")
+    print("Running KHOM zero-float AST & negative/corruption control suite (19 controls)...")
 
     # Control 1: Static AST audit of BOTH verify.py and test_controls.py (zero float, zero assert)
     audit_zero_float_zero_assert(os.path.join(HERE, "verify.py"))
@@ -211,7 +211,23 @@ def main():
 
     expect_reject(mut_c18, "vs target=", "Control 18 (slab cap exceeding target 500/701)")
 
-    print("ALL 18 KHOM AST, MATHEMATICAL, AND CORRUPTION CONTROLS PASSED!")
+    # Control 19: Negative Hermite coefficient (k in {2, 4, 6}) using product .lo instead of .hi -> rejected
+    b_hi_clean, _, _, u7_clean, md_clean, prod_clean = verify.build_and_verify_b_hi_poly(return_details=True)
+    for k_neg in (2, 4, 6):
+        check(u7_clean[k_neg] < Q(0) and md_clean[k_neg].lo < md_clean[k_neg].hi,
+              f"Control 19 setup: expected u7[{k_neg}] < 0 and positive-width md[{k_neg}]")
+        check(prod_clean[k_neg].lo < u7_clean[k_neg] * md_clean[k_neg].lo <= prod_clean[k_neg].hi,
+              f"Control 19 setup: .lo vs .hi ordering failed at k={k_neg}")
+        bad_b_hi = list(b_hi_clean)
+        bad_b_hi[k_neg] = prod_clean[k_neg].lo
+        expect_reject(
+            lambda b: None,
+            f"b_hi[{k_neg}] failed outward upper enclosure",
+            f"Control 19.{k_neg // 2} (negative coefficient k={k_neg} using product .lo instead of .hi)",
+            b_hi_override=bad_b_hi,
+        )
+
+    print("ALL 19 KHOM AST, MATHEMATICAL, AND CORRUPTION CONTROLS PASSED!")
 
 
 if __name__ == "__main__":
