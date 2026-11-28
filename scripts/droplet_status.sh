@@ -189,7 +189,7 @@ PY
       upper_range="16-31"; per_cap="48G"; agg_cap=$((TOTAL_GB / 2))
       slots=(16-23 24-31)
     else
-      upper_range="24-47"; per_cap="16G"; agg_cap=$((TOTAL_GB / 2))
+      upper_range="24-47"; per_cap="16G on 24-31 and 32-39, 15G on 40-47"; agg_cap=$((TOTAL_GB / 2))
       slots=(24-31 32-39 40-47)
     fi
     echo "runner ONLINE (Lean FORBIDDEN): research half = cores $upper_range (8-core slots, MemoryMax=$per_cap, aggregate <= ${agg_cap} GB); active user mem ${total_research_gb} GB"
