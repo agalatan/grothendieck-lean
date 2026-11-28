@@ -79,7 +79,7 @@ class CheckConstants(unittest.TestCase):
 
     def test_retired_list_covers_the_earlier_bounds(self):
         for old in ("1.4018", "1.401700322371", "1.40191", "1.4019109461", "1.40191478", "1.4019156097",
-                    "1.40457588", "1.40455742", "1.40455741", "1.40455641"):
+                    "1.40457588", "1.40455742", "1.40455741", "1.40455641", "1.404556392", "1.404554025"):
             self.assertIn(old, cc.RETIRED)
         # a current bound is never reported as retired, and a longer decimal is not an older one
         _, problems = self.run_check(docs={"README.md": GOOD + "The exact endpoint is 1.4019101234.\n"})

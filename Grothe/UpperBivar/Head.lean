@@ -13,45 +13,38 @@ Agent-ID: gemini-40b2
 namespace Haagerup.UpperBivar
 open Finset HaagerupKernel Haagerup.Data
 
-theorem weight_nonneg (i : Fin 18) : 0 ≤ weight i := by
+theorem weight_nonneg (i : Fin 11) : 0 ≤ weight i := by
   fin_cases i <;> decide +kernel
 
 theorem weight_sum : ∑ i, weight i = 1 := by decide +kernel
 
-def newHeadIntervals : Fin 12 → List Ival
+def newHeadIntervals : Fin 5 → List Ival
   | ⟨0, _⟩ => bivarT 251 (onedRowsI 251 tigMuList) (newP0.map ofRatI) [] 503 0
-  | ⟨1, _⟩ => bivarT 251 (onedRowsI 251 tigMuList) (newP1.map ofRatI) [] 503 0
+  | ⟨1, _⟩ => bivarT 251 tcellRows (newP1.map ofRatI) (newQ1.map ofRatI) 501 167
   | ⟨2, _⟩ => bivarT 251 tcellRows (newP2.map ofRatI) (newQ2.map ofRatI) 501 167
-  | ⟨3, _⟩ => bivarT 251 tcellRows (newP3.map ofRatI) (newQ3.map ofRatI) 501 167
+  | ⟨3, _⟩ => bivarT 801 (onedRowsI 801 (haagMuList 801)) (newP3.map ofRatI) [] 1603 0
   | ⟨4, _⟩ => bivarT 251 tcellRows (newP4.map ofRatI) (newQ4.map ofRatI) 501 167
-  | ⟨5, _⟩ => bivarT 251 tcellRows (newP5.map ofRatI) (newQ5.map ofRatI) 501 167
-  | ⟨6, _⟩ => bivarT 321 (onedRowsI 321 (haagMuList 321)) (newP6.map ofRatI) [] 643 0
-  | ⟨7, _⟩ => bivarT 251 tcellRows (newP7.map ofRatI) (newQ7.map ofRatI) 501 167
-  | ⟨8, _⟩ => bivarT 251 tcellRows (newP8.map ofRatI) (newQ8.map ofRatI) 501 167
-  | ⟨9, _⟩ => bivarT 321 (onedRowsI 321 (haagMuList 321)) (newP9.map ofRatI) [] 643 0
-  | ⟨10, _⟩ => bivarT 251 tcellRows (newP10.map ofRatI) (newQ10.map ofRatI) 501 167
-  | ⟨11, _⟩ => bivarT 251 tcellRows (newP11.map ofRatI) (newQ11.map ofRatI) 501 167
-  | ⟨_ + 12, h⟩ => absurd h (by omega)
+  | ⟨_ + 5, h⟩ => absurd h (by omega)
 
-def combineAll {α : Type*} (six : Fin 6 → α) (ext : Fin 12 → α) (i : Fin 18) : α :=
+def combineAll {α : Type*} (six : Fin 6 → α) (ext : Fin 5 → α) (i : Fin 11) : α :=
   if h6 : i.val < 6 then six ⟨i.val, h6⟩
   else ext ⟨i.val - 6, by omega⟩
 
-def allHeads (six : Fin 6 → List Ival) : Fin 18 → List Ival :=
+def allHeads (six : Fin 6 → List Ival) : Fin 11 → List Ival :=
   combineAll six newHeadIntervals
 
-def allCaps (six : Fin 6 → ℚ) : Fin 18 → ℚ :=
+def allCaps (six : Fin 6 → ℚ) : Fin 11 → ℚ :=
   combineAll six newTailCap
 
 def newLinearFloorsOK : Bool :=
-  (List.finRange 12).all (fun m ↦
+  (List.finRange 5).all (fun m ↦
     decide (ofRatHi (newLinearFloor m) ≤ ((newHeadIntervals m).getD 0 zeroI).lo))
 
 def newHeadLengthsOK : Bool :=
-  (List.finRange 12).all (fun m ↦ decide ((newHeadIntervals m).length = newLastIndex m + 1))
+  (List.finRange 5).all (fun m ↦ decide ((newHeadIntervals m).length = newLastIndex m + 1))
 
 def withinBudgets (six : Fin 6 → List Ival) : Bool :=
-  decide (absSum (addL (sumL ((List.finRange 18).map fun i ↦
+  decide (absSum (addL (sumL ((List.finRange 11).map fun i ↦
     (allHeads six i).map (mulI (ofRatI (weight i)))))
     [negI (ofRatI center)]) ≤ ofRatLo headBudget ∧
     newLinearFloorsOK = true ∧ newHeadLengthsOK = true)
@@ -61,7 +54,7 @@ theorem budgets_ok : withinBudgets SixChannelExact.headIntervals = true := by
   native_decide
 
 theorem head_ok :
-    absSum (addL (sumL ((List.finRange 18).map fun i ↦
+    absSum (addL (sumL ((List.finRange 11).map fun i ↦
       (allHeads SixChannelExact.headIntervals i).map (mulI (ofRatI (weight i)))))
       [negI (ofRatI center)]) ≤ ofRatLo headBudget :=
   (of_decide_eq_true budgets_ok).1
@@ -69,19 +62,20 @@ theorem head_ok :
 theorem new_floors_ok : newLinearFloorsOK = true :=
   (of_decide_eq_true budgets_ok).2.1
 
-theorem new_head_length (m : Fin 12) :
+theorem new_head_length (m : Fin 5) :
     (newHeadIntervals m).length = newLastIndex m + 1 :=
   of_decide_eq_true (List.all_eq_true.1 (of_decide_eq_true budgets_ok).2.2 m
     (List.mem_finRange m))
 
 def residual : ℚ := headBudget + ∑ i, weight i * allCaps SixChannelExact.phaseTailCap i
 
-theorem residual_eq : residual = 288030234180165376761536942 / 10 ^ 27 := by decide +kernel
+theorem residual_eq :
+    residual = 288028458658188985613614235288 / 10 ^ 30 := by decide +kernel
 
 theorem residual_lt_center : residual < center := by rw [residual_eq]; decide +kernel
 
 theorem reciprocal_eq :
-    1 / (center - residual) = 10 ^ 27 / 711969765819834623238463058 := by
+    1 / (center - residual) = 10 ^ 30 / 711971541341811014386385764712 := by
   rw [residual_eq]
   decide +kernel
 
