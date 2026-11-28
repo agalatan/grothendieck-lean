@@ -1,0 +1,10 @@
+name = "quinticResearch"
+packagesDir = "../../../.lake/packages"
+defaultTargets = ["QuinticResearch"]
+
+[[require]]
+name = "grothe"
+path = "../../.."
+
+[[lean_lib]]
+name = "QuinticResearch"
