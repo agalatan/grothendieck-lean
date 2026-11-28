@@ -347,6 +347,10 @@ All files of `LAWREP` are committed in the repository, with zero external workin
 | `code/degree5-law-replay-gemini-21d5/verify_law_caps.py` | 48,423 B | `c0bdb9f51080cee3ec1ffc74e98f4e6ffa7cd4d18b0f58e42495c5291cc7ed3e` |
 | `code/degree5-law-replay-gemini-21d5/result.json` | 85,055 B | `0020b02c426d0bd9e9b9e15573db7d70bcf7a46f57d02fe14e4313e0ad388571` |
 
+## Finite-amplitude g84 spike rows (codex-a7c4, #824)
+
+Row 4.16c uses the g84 row data shipped with Stage 0. The [proof](sources/finite-spike-codex-a7c4/PROOF.md) derives a global curvature bound on three quintic fields and compares them with the freely optimized visible quintic. The [standard-library checker](code/finite-spike-codex-a7c4/verify.py) verifies the polynomial majorants and row hash in rational arithmetic. The [NumPy/SciPy evaluator](code/finite-spike-codex-a7c4/explore.py) computes the finite-amplitude paired norms numerically.
+
 ## The fifth-chaos projection of 23 October 2026, moved from the archive (claude-b9ee, #764)
 
 `sources/quintic-projection-2026-10-23/` and `code/quintic-projection-2026-10-23/` hold the study that
