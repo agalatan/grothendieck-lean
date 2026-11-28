@@ -8,11 +8,11 @@ exact value, and that this page and the other documents state them.
 
 ## The current bounds
 
-$$1.4020221627 < K \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots$$
+$$1.4020236979 < K \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 | | decimal | exact rational in Lean | theorem | file |
 |---|---|---|---|---|
-| lower bound (strict) | `1.4020221627` | `14020221627 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
+| lower bound (strict) | `1.4020236979` | `14020236979 / 10000000000` | `Grothe.Statement.main_bounds`, first part | `Grothe/MainResult.lean` |
 | upper bound (weak, $\le$) | `1.404554025` | `1404554025 / 1000000000` | `Grothe.Statement.main_bounds`, second part; `Grothe.UpperBivar.constant_le` | `Grothe/MainResult.lean`, `Grothe/UpperResult.lean` |
 | Haagerup's value (strict) | `1.40457593…` | `1 / gammaDagger` | `Grothe.UpperBivar.constant_lt_inv_gammaDagger` | `Grothe/UpperResult.lean` |
 
@@ -20,7 +20,7 @@ $$1.4020221627 < K \le 1.404554025 < 1/\gamma^\dagger = 1.40457593\ldots$$
 
 ```lean
 theorem main_bounds :
-    (14020221627 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
+    (14020236979 / 10000000000 : ℝ) < complexGrothendieckConstant ∧
       complexGrothendieckConstant ≤ 1404554025 / 1000000000
 ```
 
@@ -32,7 +32,7 @@ Each bound is the rounding of an exact value that Lean also states.
 
 | | exact value | decimal | theorem | rounding |
 |---|---|---|---|---|
-| lower endpoint ($\le K$) | the fraction `SparseEnvelope.endpoint` [below](#behind-the-lower-bound) | $1.402022162766089736\ldots$ | `Grothe.Statement.sparse_stein_endpoint` | strictly downward (`SparseEnvelope.rounded_lt`) |
+| lower endpoint ($\le K$) | `1000000000000 / 713254705661` | $1.402023697934473962\ldots$ | `Grothe.Statement.quintic_hybrid_endpoint` | strictly downward (`Grothe.Lower.QuinticHybrid.rounded_lt`) |
 | upper bound ($K \le$) | $10^{27}/711969765819834623238463058$ | $1.404554024634034818\ldots$ | `Grothe.UpperBivar.bound` | up to nine decimals (`Grothe.UpperBivar.constant_le`) |
 
 **What the bounds say for one matrix.** For a finite complex matrix $A$ let $C(A)$ be the supremum of
@@ -62,17 +62,26 @@ bound $K < 1.40490913\ldots$
 
 ## Behind the lower bound
 
-The witness is $T = P_{1,0} - \varepsilon P_{2,1} + \nu(1 - P_{1,0} - P_{2,1})$. Lean bounds
-$\lvert\langle f, Tg\rangle\rvert$ for unimodular $f$, $g$ by $B = (1-\nu)\hat B + \nu$, and the transfer to matrices
-gives $K \ge 1/B$ (`Grothe.Statement.sparse_stein_endpoint`).
+Let $T_0=P_{1,0}-(191/250)P_{2,1}+(47/2000)(I-P_{1,0}-P_{2,1})$ and
+$S=P_{1,0}-(1/100)P_{2,1}+(1/2000)P_{3,2}$. The witness is $T=(1-w)T_0+wS$.
+Both operators use the same vector test. Its real payoff tends to one, and the scalar cap $B$ below gives $K\ge 1/B$.
+[Mixed witness and transfer](../Grothe/LowerAnalytic/QuinticHybridTransfer.lean) · [Exact endpoint](../Grothe/Lower/Cert/QuinticHybrid.lean).
 
 | Quantity | Exact value | Role |
 |---|---|---|
-| $\varepsilon,\nu$ | $191/250,\ 47/2000$ | cubic coefficient and identity-tail weight |
-| $\hat\varepsilon,\hat\nu$ | $25/31,\ 47/1953$ | normalized coefficients of the rows |
-| $\hat B$ | $8829435313/12500000000$ | scalar cap from the transported Stein cuts, the two pairs of Gaussian gates and the curvature of the central Schur complement |
-| $B=(1-\nu)\hat B+\nu$ | $17831387166289/25000000000000$ | witness scalar cap |
-| $1/B$ | `25000000000000 / 17831387166289` | exact lower endpoint, $1.4020221627660897369\ldots$ |
+| $w$ | $3693/50000000$ | weight of $S$ |
+| $w/2000$ | $3693/100000000000$ | extra multiplier on the fifth chaos, in addition to the identity tail |
+| $\hat\varepsilon,\hat\nu$ | $25/31,\ 47/1953$ | normalized coefficients of the original identity-tail rows |
+| $B$ | `713254705661 / 1000000000000` | scalar cap for the mixed operator |
+| $1/B$ | `1000000000000 / 713254705661` | exact lower endpoint in `Grothe.Lower.QuinticHybrid.endpoint` |
+
+For $h=(f+g)/2$, $k=(f-g)/2$ and $t=\|P_{1,0}h\|$, the normalized payoff of $T_0$ is $\hat V$.
+Bessel's inequality gives $\|P_{3,2}h\|^2+\|k\|^2\le1-t^2$. With $a=31/2500$ and $d=2a\hat\nu=47/78750$,
+the scalar estimate holds for every fifth coefficient of $S$ in $[0,d]$, including both $0$ and $1/2000$.
+Thus removing the fifth coefficient at the same cubic weight and mixture weight gives the same certified envelope.
+An independent rational replay of the original schedule puts the best result from mixing $T_0$ with $P_{1,0}$ alone
+between $1.4020237103$ and $1.4020237105$. This comparison fixes the 38-cell schedule and optimizes its mixture weight.
+[Replay and comparison](../research/identity-tail/RETUNED_QUINTIC.md).
 
 In the central rows (0.835 and 0.845), a single circular cubic supplies the fourth excess and the residual scale.
 Dilating eleven plain Stein polynomials gives fourteen additional bounds for the row expectations. Lean checks
@@ -80,7 +89,7 @@ the two expectations on each common shape interval at nine mixture weights, both
 up to 0.21. The Schur curvature floor $2019911/10^{10}$ and the small-scale prices yield a quadratic
 discount between the weights. Rows 0.82 and 0.83 use quadratic bounds for their potentials and their
 joint gate. The existing scalar rows 13 and 14 interpolate on the amplitude interval containing their crossover.
-Taking the maximum on the 38-cell amplitude cover gives $\hat B$. [Exact endpoint](../Grothe/Lower/Cert/SparseEnvelope.lean) · [Proof and replay](../research/identity-tail/CURVED_SCHUR.md).
+On each closed segment the checker bounds the weighted sum of the row estimate and the $t^2$ term. Taking the maximum over all segments gives $B$. [Mixed amplitude profile](../Grothe/LowerAnalytic/QuinticMixedProfile.lean) · [Original row estimates](../research/identity-tail/CURVED_SCHUR.md).
 
 The mass row uses $\lambda=1/2$, $c=2\hat\nu+\lambda=2141/3906$ and $\delta=3/4$.
 At witness scale $\tau$, its potential $\varphi_c(\tau v/\delta)$ changes from quadratic to affine

@@ -12,11 +12,12 @@ version plus what the rulebook does not say.
 
 `Grothe.Statement.main_bounds` (`Grothe/MainResult.lean`), without hypotheses:
 
-    1.4020221627 < K_G^ℂ ≤ 1.404554025 < 1/γ† = 1.40457593…
+    1.4020236979 < K_G^ℂ ≤ 1.404554025 < 1/γ† = 1.40457593…
 
-- Lower bound: `14020221627 / 10000000000`, strict. Witness `P₁,₀ − εP₂,₁ + ν(1 − P₁,₀ − P₂,₁)` with
-  (ε, ν) = (191/250, 47/2000); certificate in `Grothe/Lower/`, analysis and node caps in `Grothe/LowerAnalytic/`.
-  The bound is the exact endpoint `sparse_stein_endpoint` rounded strictly downward.
+- The strict lower bound is `14020236979 / 10000000000`. Its exact endpoint is `Grothe.Statement.quintic_hybrid_endpoint`.
+  The witness mixes the identity-tail operator with `P₁,₀ − (1/100)P₂,₁ + (1/2000)P₃,₂` at weight `3693/50000000`.
+  `Grothe/LowerAnalytic/QuinticHybridTransfer.lean` proves the finite-matrix transfer. The 38-cell amplitude profile and
+  the existing certified node caps supply the scalar budget `713254705661/1000000000000`.
 - Upper bound: `1404554025 / 1000000000`, weak (≤). Multi-channel bivariate Gaussian roundings in `Grothe/UpperBivar/` on the certified maps of `Grothe/UpperSix/` and `Grothe/UpperSixExact/`. `Grothe/UpperResult.lean` has exactly three theorems:
   `Grothe.UpperBivar.bound` (the exact value, for every finite matrix), `constant_le` (rounded up) and
   `constant_lt_inv_gammaDagger`.
