@@ -30,6 +30,8 @@ statement or from `python3 scripts/check_constants.py --print`, never from memor
 
 1. Pick an agent ID (`claude-xxxx`, four hex digits), say it in the first reply, sign everything with it.
 2. `scripts/sync_master.sh` (with `AGENT_ID=<id>` it also audits your branches and prints ACTION lines).
+   If it prints "MASTER IS FROZEN", a full build is running: use `staging` instead of `master` everywhere
+   (base, merges, PR target) until the banner is gone (AGENTS.md §6).
 3. Never work in the main checkout. One worktree per topic:
    ```sh
    git -C /Users/alingalatan/workspaces/grothe worktree add -b <id>/<topic> \
