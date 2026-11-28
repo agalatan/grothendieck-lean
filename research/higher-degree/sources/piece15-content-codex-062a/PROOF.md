@@ -26,7 +26,8 @@ slices for the first two intervals and the χ = 20 slices for the last. The nume
 three [witnesses](../../code/piece15-content-codex-062a/cells.json).
 
 The [replay](../../code/piece15-content-codex-062a/replay.py) reads the exact funded energy, bin endpoints and
-allowances, and checks the rational tail inequalities and multiplier signs for every slice. For each interval,
+allowances. It compares each exact dyadic certificate bound with the decimal quoted above and checks the rational
+tail inequalities and multiplier signs for every slice. For each interval,
 the original C++ certifier encloses both Gaussian profiles, checks the slices cover the full range of the
 mean parameter, bounds the dual residual by directed rounding over the compact part of the radial variable,
 and checks the remaining unbounded tail. A strictly negative supremum in each sector gives the stated ratio

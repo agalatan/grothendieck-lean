@@ -14,7 +14,8 @@ TABLE = HERE.parent / "degree5-design/design-2026-11-25/tables/funded/fin_table_
 sys.path.insert(0, str(SOURCE))
 import verify as original
 
-INTERVALS = [(1, 2), (2, 3), (16, 20), (20, 42)]
+# Exact decimals in the proof note. The C++ verifier works with dyadic inputs.
+PUBLIC_BOUNDS = {(1, 2): Q("8.375"), (2, 3): Q("6.72"), (16, 20): Q("6.545"), (20, 42): Q(12)}
 NEW_BIN_ENDS = [2, 3, 20, 24, 30, 36, 42]
 
 
@@ -47,7 +48,7 @@ def bind_cells(cfg, weights):
     weights = sorted([*weights, {"chi_lo": 16, "chi_hi": 20, "F_claimed": 6.545,
                                  "slicesA": ref["slicesA"], "slicesB": ref["slicesB"]}],
                      key=lambda c: c["chi_lo"])
-    check([(c["chi_lo"], c["chi_hi"]) for c in weights] == INTERVALS, "wrong chi intervals")
+    check([(c["chi_lo"], c["chi_hi"]) for c in weights] == sorted(PUBLIC_BOUNDS), "wrong chi intervals")
     bins = sorted(int(k) for k in node["theta_chi"])
     closed = []
     cells = []
@@ -56,7 +57,9 @@ def bind_cells(cfg, weights):
         check(inside and inside[0][0] == c["chi_lo"] and inside[-1][1] == c["chi_hi"],
               "certificate endpoints do not enclose whole funded bins")
         allowance = min(Q(node["theta_chi"][str(b)]) for _, b in inside)
-        check(0 < Q(c["F_claimed"]) <= allowance, "certificate exceeds a funded allowance")
+        certified = Q(c["F_claimed"])
+        check(0 < certified <= allowance, "certificate exceeds a funded allowance")
+        check(certified <= PUBLIC_BOUNDS[c["chi_lo"], c["chi_hi"]], "certificate exceeds the published bound")
         # theta_allow labels the stream. Proof checks use F_claimed, audited above as an exact binary64.
         cells.append({**ref, **c, "theta_allow": c["F_claimed"]})
         closed.extend(b for _, b in inside)

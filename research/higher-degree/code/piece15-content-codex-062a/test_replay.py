@@ -33,6 +33,12 @@ class WitnessTest(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, msg):
                     replay.bind_cells(self.cfg, weights)
 
+    def test_under_allowance_but_above_published_bound(self):
+        weights = copy.deepcopy(self.weights)
+        weights[0]["F_claimed"] = 8.38
+        with self.assertRaisesRegex(ValueError, "published bound"):
+            replay.bind_cells(self.cfg, weights)
+
     def test_invalid_multiplier_on_either_sector(self):
         for sector in ("slicesA", "slicesB"):
             with self.subTest(sector=sector):
