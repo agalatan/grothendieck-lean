@@ -31,6 +31,11 @@ def replay(repo):
     excess = proof.box(later, later, y, y) - proof.target
     require(excess > Q(289, 10**12), "later-point two-amplitude obstruction")
     print("At t=.460505024, y=.7011355 the majorant misses by more than 289/10^12.")
+    proof.tilts = (*proof.tilts, Q(471, 500))
+    count, depth, margin = proof.cover(ends[-1], Q(".46051"))
+    require(margin > 0, "all shapes with the third amplitude")
+    print(f"Three amplitudes through .46051: {count} leaves, depth {depth}, "
+          f"extra clearance {margin}/10^12.")
 
 
 if __name__ == "__main__":
