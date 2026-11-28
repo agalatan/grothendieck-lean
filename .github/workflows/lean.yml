@@ -75,7 +75,8 @@ jobs:
       needs_droplet: ${{ steps.where.outputs.needs_droplet }}
       caps_build: ${{ steps.where.outputs.caps_build }}
       base: ${{ steps.merge.outputs.base }}
-      ws: ${{ steps.ws.outputs.ws }}
+      ws: ${{ steps.final.outputs.ws }}
+      wskey: ${{ steps.ws.outputs.wskey }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -86,7 +87,7 @@ jobs:
         # the build and shard jobs check out into ws-<key> and build there, with .lake/packages linked to the store of
         # the same key (scripts/package_store.sh): jobs of another Lean/Mathlib generation (another manifest) use
         # another directory and another store, so neither can move the other's packages or builds
-        run: echo "ws=ws-$(sha256sum lake-manifest.json | cut -c1-16)" >> "$GITHUB_OUTPUT"
+        run: echo "wskey=ws-$(sha256sum lake-manifest.json | cut -c1-16)" >> "$GITHUB_OUTPUT"
 
       - name: Merge the branch commit into the current master (landing run)
         id: merge
@@ -156,7 +157,7 @@ jobs:
             fi
           fi
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|GrotheQuadExtKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|GrotheQuadExtKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/(Axioms|UpperAxioms)\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_lake_failfast\.py$|scripts/test_caps_stamp\.py$|scripts/(package_store|land_push_refusal)\.sh$|scripts/test_(package_store|land_push_refusal)\.py$|data/tail-caps/|data/tail-rows/|scripts/(build_caps_batches|caps_coexist|test_build_caps_batches)\.py$|tools/gen_tail_caps\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|GrotheQuadExtKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|GrotheQuadExtKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/(Axioms|UpperAxioms)\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_lake_failfast\.py$|scripts/test_caps_stamp\.py$|scripts/(package_store|land_push_refusal)\.sh$|scripts/test_(package_store|land_push_refusal|cache_paths|laptop_packages)\.py$|data/tail-caps/|data/tail-rows/|scripts/(build_caps_batches|caps_coexist|test_build_caps_batches)\.py$|tools/gen_tail_caps\.py$|\.github/workflows/)'
           if [ "${{ inputs.land }}" = true ]; then base="${{ steps.merge.outputs.base }}"  # HEAD = base + this commit
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -243,6 +244,16 @@ jobs:
             echo "droplet=false" >> "$GITHUB_OUTPUT"; echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"
           fi
 
+      - name: The build job's workspace
+        id: final
+        # GitHub-hosted: a fresh VM, the checkout goes to ws/. Heavy runners: the persistent ws-<key> of this manifest,
+        # reached as ws through a symlink, so that every build cache has the same archive path ws/.lake/build in
+        # this workflow, in cloud.yml and in the keepalive (the path is part of a cache entry's version)
+        env:
+          DROPLET: ${{ steps.where.outputs.droplet }}
+          WSKEY: ${{ steps.ws.outputs.wskey }}
+        run: if [ "$DROPLET" = true ]; then echo "ws=$WSKEY" >> "$GITHUB_OUTPUT"; else echo "ws=ws" >> "$GITHUB_OUTPUT"; fi
+
   # Sharded node-cap build: when the repository variable CAPS_SHARDS lists runner labels (one per machine, e.g.
   # ["big","mega"]), a run that really builds the node caps first builds the computational leaves split evenly over
   # those machines (every n-th leaf of the builder's cost-sorted plan), packs each machine's CapPieces outputs as an
@@ -263,13 +274,13 @@ jobs:
       SHARD: ${{ matrix.shard }}
     defaults:
       run:
-        working-directory: ${{ needs.route.outputs.ws }}
+        working-directory: ${{ needs.route.outputs.wskey }}
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           clean: false   # the machine keeps its persistent .lake (one workspace per manifest)
-          path: ${{ needs.route.outputs.ws }}
+          path: ${{ needs.route.outputs.wskey }}
       - name: Merge the branch commit into the current master (landing run)
         if: inputs.land
         run: |
@@ -312,7 +323,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: caps-shard-${{ matrix.shard }}-${{ github.run_id }}
-          path: ${{ needs.route.outputs.ws }}/caps-shard.tar.zst
+          path: ${{ needs.route.outputs.wskey }}/caps-shard.tar.zst
           compression-level: 0
           retention-days: 1
 
@@ -352,6 +363,15 @@ jobs:
           fetch-depth: 0
           clean: ${{ needs.route.outputs.droplet != 'true' }}   # the droplet keeps its persistent .lake
           path: ${{ needs.route.outputs.ws }}                    # one persistent workspace per manifest
+
+      - name: The workspace as ws (heavy runners), the archive path of every build cache
+        if: needs.route.outputs.ws != 'ws'
+        working-directory: .
+        env:
+          WSDIR: ${{ needs.route.outputs.ws }}
+        run: |
+          if [ -e ws ] && [ ! -L ws ]; then echo "::error::ws exists and is not a symlink"; exit 1; fi
+          ln -sfn "$WSDIR" ws
 
       - name: Merge the branch commit into the current master (landing run)
         if: inputs.land
@@ -406,7 +426,7 @@ jobs:
         if: env.LEAN == 'true' && needs.route.outputs.handoff_run == '' && hashFiles(format('{0}/.lake/build/lib/lean/Grothe.olean', needs.route.outputs.ws)) == ''
         uses: actions/cache/restore@v4
         with:
-          path: ${{ needs.route.outputs.ws }}/.lake/build
+          path: ws/.lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}
           restore-keys: |
             ${{ needs.route.outputs.key }}
@@ -437,6 +457,7 @@ jobs:
           python3 scripts/test_lake_failfast.py
           python3 scripts/test_package_store.py
           python3 scripts/test_land_push_refusal.py
+          python3 scripts/test_cache_paths.py
 
       - name: The restored node caps are verified for these sources (GitHub-hosted)
         if: env.LEAN == 'true' && env.DROPLET != 'true'
@@ -601,7 +622,7 @@ jobs:
         if: env.LEAN == 'true' && github.ref_name == 'master'
         uses: actions/cache/save@v4
         with:
-          path: ${{ needs.route.outputs.ws }}/.lake/build
+          path: ws/.lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}
 
       - name: Save the verified cache for this branch (droplet runs only)
@@ -614,7 +635,7 @@ jobs:
         if: env.LEAN == 'true' && github.ref_name != 'master' && env.DROPLET == 'true'
         uses: actions/cache/save@v4
         with:
-          path: ${{ needs.route.outputs.ws }}/.lake/build
+          path: ws/.lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}-run${{ github.run_id }}
 
       - name: Pack the build for master's check if master can become exactly this tree (tree handoff)
@@ -743,9 +764,11 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
+        with:
+          path: ws
       - name: Restore the master cache
         uses: actions/cache/restore@v4
         with:
-          path: .lake/build
-          key: lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
-          restore-keys: lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+          path: ws/.lake/build        # the archive path of every build cache (lean.yml build job, cloud.yml)
+          key: lake-build-v3-${{ hashFiles('ws/lean-toolchain', 'ws/lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lake-build-v3-${{ hashFiles('ws/lean-toolchain', 'ws/lake-manifest.json') }}-
