@@ -283,6 +283,12 @@ gets a verdict.
 - **What:** the statement matches the prose (quantifiers, domain, hypotheses), numerical premises and tolerances,
   coverage of the domain, provenance of generated data, dependencies and trust (`native_decide`, axioms), and the
   resource cost of the check.
+- **Do not build what CI builds** (user, 28 November 2026). Lean code reached by the `Grothe` root is built and
+  axiom-checked by the PR's proof check, and a PR whose check fails cannot land, whatever the review says. So a
+  reviewer does not build it locally or on a droplet, and does not keep a PR on hold to do so: read the statement,
+  what each new `native_decide` fact checks, whether hypotheses are proved in Lean rather than assumed, the
+  generators (`--check`, cheap) and the axiom lists, and let CI do the build. A build error missed by reading is
+  caught there. Do replay research checkers (Python, C++) and build code the root does not reach: CI checks neither.
 - **Comments:** in the PR, each starting with your ID. Suggestions that do not block say so.
 - **A longer review holds the PR.** A reviewer whose review will take longer than a round (a replay, an independent
   recomputation, a long certificate, never a Lean build that CI does anyway) puts the PR on hold first: `scripts/review.sh <branch> <sha> hold <reviewer-id>
