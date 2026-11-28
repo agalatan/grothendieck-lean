@@ -9,9 +9,14 @@ Default mode (`python3 -IB verify.py` and `python3 -IB -O verify.py`, zero bare 
      signs, Coupled-Gram hypotheses (`s_j >= 2`), Kantorovich threshold monotonicity, asymptotic
      U >= U0 cubic dominance across all 1,485 slices, and contiguous slice coverage of the exported
      `g1_range_A` / `g1_range_B` enclosures;
-  3) Exact rational binding of `t_lo <= piece[0]` and `[u_lo, u_hi]` to the 5 discrete grid energies of
-     `fin_table_fundFull.json`, continuous `[0, 42]` chi-coverage of Pieces 16 & 17 at those 5 energies,
-     and outward-rounded junta / own-row 0.70 negative-control enclosures.
+  3) Strict validation of all 15 distinct `row_summaries` in `result.json` (ordered `PA_inf`/`PB_inf`
+     in `[-2, 2]` and `hpA0`/`hpB0` strictly excluding `0`, covering every row consumed by `cells`),
+     exact rational binding of `t_lo <= piece[0]` and `[u_lo, u_hi]` to the 5 discrete grid energies of
+     `fin_table_fundFull.json`, closure of all `35/35` (Piece 16) and `11/11` (Piece 17) finite active
+     cells (`theta < 50`) plus `theta = 50` table bins, explicit subinterval intersection accounting on
+     the missing table bins `(24, 42]` at `0.92 u_cap` (`(24, 39)` `JM1_BOUND`-bounded without an `(R1)`
+     infeasibility certificate or table allowance; `[39, 42]` `INFEAS_R1`-certified), and outward-rounded
+     junta / own-row 0.70 negative-control enclosures.
 Pass `--replay-cpp` to recompile `certify_content_cells.cpp` and replay the full 2D Gaussian row
 enclosures, `P_max`, `g_1` range enclosures, and compact-interval `sup_{U in [0, U0]} M(U) < 0`
 checks from scratch (add `--update-result` to overwrite `result.json`).
@@ -547,17 +552,47 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
                 sh_sha = hashlib.sha256(open(os.path.join(certs_dir, sh), "rb").read()).hexdigest()
                 check(rec_shards[sh] == sh_sha,
                       f"result.json shard_sha256s[{sh!r}] mismatch against shard file on disk")
+    EXPECTED_15_ROW_TAGS = (
+        "0.700_own", "0.740", "0.760", "0.780", "0.790", "0.800", "0.810",
+        "0.820", "0.830", "0.840", "0.845", "0.850", "0.855", "0.860", "0.865",
+    )
     check(res.get("rows_enclosed") == 15, f"expected 15 enclosed rows, got {res.get('rows_enclosed')}")
     check(len(res["cells"]) == len(cfg["cells"]), "cell count mismatch between dual_certs.json and result.json")
-    for rs_entry in res["row_summaries"]:
+    rs_list = res.get("row_summaries")
+    check(isinstance(rs_list, list) and len(rs_list) == 15,
+          f"expected 15 row_summaries entries in result.json, got {None if not isinstance(rs_list, list) else len(rs_list)}")
+    seen_row_tags = []
+    for rs_entry in rs_list:
+        check(isinstance(rs_entry, dict) and isinstance(rs_entry.get("tag"), str),
+              "invalid row_summaries entry in result.json")
+        rtag_s = rs_entry["tag"]
+        seen_row_tags.append(rtag_s)
         for k_inf in ("PA_inf", "PB_inf"):
-            lo_p, hi_p = Fraction(rs_entry[k_inf][0]), Fraction(rs_entry[k_inf][1])
-            check(abs(lo_p) <= 2 and abs(hi_p) <= 2, f"{rs_entry['tag']} {k_inf} exceeds P_max=2")
+            p_iv = rs_entry.get(k_inf)
+            check(
+                isinstance(p_iv, list) and len(p_iv) == 2
+                and all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in p_iv),
+                f"{rtag_s} missing/invalid {k_inf} enclosure",
+            )
+            lo_p, hi_p = Fraction(p_iv[0]), Fraction(p_iv[1])
+            check(lo_p <= hi_p, f"{rtag_s} {k_inf}=[{lo_p}, {hi_p}] is inverted (lo > hi)")
+            check(Fraction(-2) <= lo_p and hi_p <= Fraction(2),
+                  f"{rtag_s} {k_inf}=[{lo_p}, {hi_p}] outside [-2, 2] (exceeds P_max=2)")
         for k_hp0 in ("hpA0", "hpB0"):
-            check(k_hp0 in rs_entry, f"{rs_entry['tag']} missing {k_hp0} derivative enclosure")
-            hp_lo, hp_hi = Fraction(rs_entry[k_hp0][0]), Fraction(rs_entry[k_hp0][1])
+            hp_iv = rs_entry.get(k_hp0)
+            check(
+                isinstance(hp_iv, list) and len(hp_iv) == 2
+                and all(isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) for v in hp_iv),
+                f"{rtag_s} missing/invalid {k_hp0} derivative enclosure",
+            )
+            hp_lo, hp_hi = Fraction(hp_iv[0]), Fraction(hp_iv[1])
             check(hp_lo <= hp_hi and (hp_lo > 0 or hp_hi < 0),
-                  f"{rs_entry['tag']} {k_hp0}=[{hp_lo}, {hp_hi}] does not strictly exclude 0")
+                  f"{rtag_s} {k_hp0}=[{hp_lo}, {hp_hi}] does not strictly exclude 0")
+    check(len(set(seen_row_tags)) == 15,
+          f"duplicate row tags in result.json row_summaries: {seen_row_tags}")
+    check(set(seen_row_tags) == set(EXPECTED_15_ROW_TAGS),
+          f"row_summaries tag set mismatch against expected 15 rows: {sorted(seen_row_tags)}")
+    row_summary_tags = set(seen_row_tags)
 
     # 4. Global config & exact rational audit of all slices
     t_knots_q = [Fraction(v) for v in cfg["t_knots"]]
@@ -587,6 +622,8 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
         check(c_cfg["piece_idx"] == c_res["piece"], f"cell {idx} piece mismatch")
         check(c_cfg["u_idx"] == c_res["u_idx"], f"cell {idx} u_idx mismatch")
         check(c_cfg["row_tag"] == c_res["row"], f"cell {idx} row mismatch")
+        check(c_cfg["row_tag"] in row_summary_tags,
+              f"cell {idx} row_tag={c_cfg['row_tag']!r} missing from validated row_summaries")
         check(c_cfg["kind"] == c_res["kind"], f"cell {idx} kind mismatch")
         check(Fraction(c_cfg["u_lo"]) == Fraction(c_res["u_lo"]), f"cell {idx} u_lo mismatch")
         check(Fraction(c_cfg["u_hi"]) == Fraction(c_res["u_hi"]), f"cell {idx} u_hi mismatch")
@@ -695,60 +732,109 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
             if Fraction(c["F_claimed"]) <= th_allow_q:
                 check(Fraction(c["F_claimed"]) <= th_exact, f"cell {idx} F_claimed exceeds exact allowance")
 
+    def merge_intervals(ivs):
+        out = []
+        for a, b in sorted(ivs):
+            if a >= b:
+                continue
+            if out and out[-1][1] == a:
+                out[-1] = (out[-1][0], b)
+            else:
+                out.append((a, b))
+        return out
+
+    active_bin_counts = {}
+    missing_bin_reports = {}
     for pc_idx in (16, 17):
         p = pieces[pc_idx - 1]
         rtag = f"{float(p['tprime']):.3f}"
+        pc_active_bins = 0
+        pc_missing_summary = []
         for u_idx, te in enumerate(p["theta"]):
             u_exact = Fraction(te["u"])
-            prev_c = Fraction(0)
-            has_miss = False
+            u_cells = [c for c in cfg["cells"] if c["piece_idx"] == pc_idx and c["u_idx"] == u_idx]
+            for uc in u_cells:
+                check(uc["row_tag"] == rtag, f"Piece {pc_idx} row_tag mismatch")
+                check(Fraction(uc["u_lo"]) <= u_exact <= Fraction(uc["u_hi"]),
+                      f"Piece {pc_idx} energy node enclosure mismatch")
+            bin_lo = Fraction(0)
+            u_miss_jm1 = []
+            u_miss_inf = []
+            u_miss_max_F = Fraction(0)
             for ck in chi_list:
+                ck_q = Fraction(ck)
                 th_v = te["theta_chi"].get(str(ck), "MISSING")
-                if th_v == "MISSING":
-                    has_miss = True
-                elif th_v is not None and Fraction(th_v) < Fraction(49999, 1000):
+                # Intersect every covering cell at (pc_idx, u_idx) with the table bin [bin_lo, ck_q]:
+                pieces_in_bin = []
+                for uc in u_cells:
+                    a = max(bin_lo, Fraction(uc["chi_lo"]))
+                    b = min(ck_q, Fraction(uc["chi_hi"]))
+                    if a < b:
+                        pieces_in_bin.append((a, b, uc))
+                pieces_in_bin.sort(key=lambda t: (t[0], t[1]))
+                check(len(pieces_in_bin) >= 1,
+                      f"Piece {pc_idx} u={te['u']} uncovered table bin [{bin_lo}, {ck_q}]")
+                check(pieces_in_bin[0][0] == bin_lo,
+                      f"Piece {pc_idx} u={te['u']} gap at left of bin [{bin_lo}, {ck_q}]")
+                cur_end = pieces_in_bin[0][0]
+                for a, b, uc in pieces_in_bin:
+                    check(a <= cur_end,
+                          f"Piece {pc_idx} u={te['u']} internal chi gap at {cur_end} in bin [{bin_lo}, {ck_q}]")
+                    if b > cur_end:
+                        cur_end = b
+                check(cur_end == ck_q,
+                      f"Piece {pc_idx} u={te['u']} gap at right of bin [{bin_lo}, {ck_q}]")
+
+                if th_v != "MISSING" and th_v is not None:
                     th_exact = Fraction(th_v)
-                    subs = sorted(
-                        [c for c in cfg["cells"]
-                         if c["piece_idx"] == pc_idx and c["u_idx"] == u_idx and c["kind"] == "JM1_BOUND"
-                         and Fraction(c["chi_lo"]) >= prev_c and Fraction(c["chi_hi"]) <= Fraction(ck)],
-                        key=lambda c: Fraction(c["chi_lo"])
-                    )
-                    check(len(subs) >= 1, f"Piece {pc_idx} u={te['u']} missing JM1 cover on [{prev_c}, {ck}]")
-                    check(Fraction(subs[0]["chi_lo"]) == prev_c, f"Piece {pc_idx} gap at {prev_c}")
-                    check(Fraction(subs[-1]["chi_hi"]) == Fraction(ck), f"Piece {pc_idx} gap at {ck}")
-                    for si in range(len(subs) - 1):
-                        check(Fraction(subs[si]["chi_hi"]) == Fraction(subs[si + 1]["chi_lo"]),
-                              f"Piece {pc_idx} internal chi gap")
-                    for sub_c in subs:
-                        check(sub_c["row_tag"] == rtag, f"Piece {pc_idx} row_tag mismatch")
-                        check(Fraction(sub_c["u_lo"]) <= u_exact <= Fraction(sub_c["u_hi"]),
-                              f"Piece {pc_idx} energy node enclosure mismatch")
-                        check(Fraction(sub_c["F_claimed"]) <= th_exact,
-                              f"Piece {pc_idx} u={te['u']} chi=[{sub_c['chi_lo']},{sub_c['chi_hi']}]: "
-                              f"F_claimed={sub_c['F_claimed']} > theta={th_v}")
-                    prev_c = Fraction(ck)
-            # Also verify seamless tail coverage of [prev_c, 42] via JM1_BOUND (<= 50) + optional INFEAS_R1!
-            if prev_c < Fraction(42):
-                tail_cells = sorted(
-                    [c for c in cfg["cells"]
-                     if c["piece_idx"] == pc_idx and c["u_idx"] == u_idx
-                     and Fraction(c["chi_lo"]) >= prev_c and Fraction(c["chi_hi"]) <= Fraction(42)],
-                    key=lambda c: Fraction(c["chi_lo"])
-                )
-                check(len(tail_cells) >= 1, f"Piece {pc_idx} u={te['u']} missing [prev_c, 42] tail cover")
-                check(Fraction(tail_cells[0]["chi_lo"]) == prev_c, f"Piece {pc_idx} u={te['u']} tail gap at {prev_c}")
-                check(Fraction(tail_cells[-1]["chi_hi"]) == Fraction(42), f"Piece {pc_idx} u={te['u']} tail stops < 42")
-                for si in range(len(tail_cells) - 1):
-                    check(Fraction(tail_cells[si]["chi_hi"]) == Fraction(tail_cells[si + 1]["chi_lo"]),
-                          f"Piece {pc_idx} u={te['u']} internal tail gap")
-                for tc in tail_cells:
-                    if tc["kind"] == "JM1_BOUND":
-                        check(tc["row_tag"] == rtag and Fraction(tc["F_claimed"]) <= Fraction(50),
-                              f"Piece {pc_idx} u={te['u']} tail JM1_BOUND exceeds 50")
-                if has_miss:
-                    check(any(tc["kind"] == "INFEAS_R1" for tc in tail_cells),
-                          f"Piece {pc_idx} u={te['u']} missing INFEAS_R1 tail certificate")
+                    if th_exact < Fraction(49999, 1000):
+                        pc_active_bins += 1
+                    for a, b, uc in pieces_in_bin:
+                        check(uc["kind"] == "JM1_BOUND",
+                              f"Piece {pc_idx} u={te['u']} finite table bin [{bin_lo}, {ck_q}] covered by non-JM1 cell")
+                        check(Fraction(uc["F_claimed"]) <= th_exact,
+                              f"Piece {pc_idx} u={te['u']} bin [{bin_lo}, {ck_q}] subcell [{a},{b}]: "
+                              f"F_claimed={uc['F_claimed']} > theta={th_v}")
+                else:
+                    # Missing table bin (presumed Rice infeasibility in fin_table_fundFull.json):
+                    # keep INFEAS_R1-certified subintervals strictly distinct from JM1_BOUND-only subintervals!
+                    inf_ivs = merge_intervals([(a, b) for a, b, uc in pieces_in_bin if uc["kind"] == "INFEAS_R1"])
+                    jm1_ivs = merge_intervals([(a, b) for a, b, uc in pieces_in_bin if uc["kind"] == "JM1_BOUND"])
+                    for a, b, uc in pieces_in_bin:
+                        if uc["kind"] == "JM1_BOUND":
+                            fc_q = Fraction(uc["F_claimed"])
+                            check(fc_q <= Fraction(50),
+                                  f"Piece {pc_idx} u={te['u']} missing-bin JM1_BOUND exceeds 50")
+                            if fc_q > u_miss_max_F:
+                                u_miss_max_F = fc_q
+                    # Disjointness / exact partition of [bin_lo, ck_q] between JM1_BOUND and INFEAS_R1:
+                    combined = merge_intervals(inf_ivs + jm1_ivs)
+                    check(combined == [(bin_lo, ck_q)],
+                          f"Piece {pc_idx} u={te['u']} missing bin [{bin_lo}, {ck_q}] not partitioned")
+                    sum_len = sum(b - a for a, b in inf_ivs) + sum(b - a for a, b in jm1_ivs)
+                    check(sum_len == ck_q - bin_lo,
+                          f"Piece {pc_idx} u={te['u']} overlapping JM1_BOUND and INFEAS_R1 on missing bin [{bin_lo}, {ck_q}]")
+                    u_miss_inf.extend(inf_ivs)
+                    u_miss_jm1.extend(jm1_ivs)
+                bin_lo = ck_q
+
+            if u_miss_inf or u_miss_jm1:
+                u_miss_inf = merge_intervals(u_miss_inf)
+                u_miss_jm1 = merge_intervals(u_miss_jm1)
+                pc_missing_summary.append((u_idx, str(te["ucapfrac"]), u_miss_jm1, u_miss_inf, u_miss_max_F))
+
+        active_bin_counts[pc_idx] = pc_active_bins
+        missing_bin_reports[pc_idx] = pc_missing_summary
+
+    check(active_bin_counts == {16: 35, 17: 11},
+          f"unexpected active (<50) table bin counts on Pieces 16 & 17: {active_bin_counts}")
+    for pc_idx, exp_f in ((16, Fraction(7.59654)), (17, Fraction(7.86159))):
+        rep = missing_bin_reports[pc_idx]
+        check(
+            len(rep) == 1 and rep[0][:4] == (4, "0.92", [(Fraction(24), Fraction(39))], [(Fraction(39), Fraction(42))])
+            and rep[0][4] == exp_f,
+            f"Piece {pc_idx} missing-bin partition mismatch: {rep}",
+        )
 
     # 6. Verify negative controls in result.json & dual_certs.json (all 3 reported rows, ordered finite intervals,
     #    containment in published outward 6-decimal enclosures, and Rice lower bounds >= 0.883545):
@@ -820,7 +906,10 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
     print(
         f"ALL CHECKS PASSED: {mode_desc}"
         f"{len(cfg['cells'])} cells ({n_jm1} JM1 bounds, {n_inf} (R1) infeasibility certificates; "
-        f"Pieces 16 & 17 100% continuously closed in chi at all 5 grid energies; {n_closed_active} closed subcells total; "
+        f"Piece 16 35/35 and Piece 17 11/11 finite active cells (theta < 50) closed at the 5 grid energies; "
+        f"missing table bins (24, 42] at 0.92 u_cap partitioned into (24, 39) JM1-bounded "
+        f"(<= 7.59654 on Pc 16, <= 7.86159 on Pc 17; no (R1) infeasibility cert or table allowance) "
+        f"and [39, 42] (R1)-infeasible; {n_closed_active} closed subcells total; "
         f"junta 256/63 & own-row 0.70 negative controls verified)."
     )
 

@@ -390,7 +390,47 @@ def main():
             run_default_corruption(mfn8, "sha256", f"Control 22 ({lbl8})")
         print("  [PASS] Control 22 (8/8 reviewer certificate/receipt corruptions): all rejected by default verify.py")
 
-    print("ALL 24 NEGATIVE, POSITIVE-FIXTURE, SEAM, SHA-256, AND CORRUPTION CONTROLS PASSED!")
+        # Control 23: Default-mode (check_hashes=True, all 10 digests intact) row_summaries receipt corruptions:
+        #   (a) row_summaries = [] with rows_enclosed = 15 preserved
+        #   (b) 15 duplicate copies of row_summaries[0]
+        #   (c) inverted PA_inf = [1, -1] on row_summaries[0]
+        def mutate_result_only(fn_res):
+            def _m(ctmp):
+                rp2 = os.path.join(ctmp, "result.json")
+                rd = json.load(open(rp2))
+                fn_res(rd)
+                json.dump(rd, open(rp2, "w"))
+            return _m
+
+        run_default_corruption(
+            mutate_result_only(lambda rd: rd.__setitem__("row_summaries", [])),
+            "expected 15 row_summaries entries",
+            "Control 23a (empty row_summaries=[])",
+        )
+        run_default_corruption(
+            mutate_result_only(lambda rd: rd.__setitem__("row_summaries", [copy.deepcopy(rd["row_summaries"][0]) for _ in range(15)])),
+            "duplicate row tags in result.json row_summaries",
+            "Control 23b (15 duplicate row_summaries copies)",
+        )
+        run_default_corruption(
+            mutate_result_only(lambda rd: rd["row_summaries"][0].__setitem__("PA_inf", [1, -1])),
+            "is inverted (lo > hi)",
+            "Control 23c (inverted PA_inf=[1, -1])",
+        )
+        print("  [PASS] Control 23 (empty, duplicated, and inverted row_summaries with all 10 SHA-256 digests intact): all 3 rejected")
+
+        # Control 24: Missing-bin (24, 42] subinterval partition check on Piece 16 u_idx=4:
+        # Shrink INFEAS_R1 [39, 42] -> [40, 42] so (36, 42] has an uncovered [39, 40] hole -> rejected!
+        c24, r24 = copy.deepcopy(cfg0), copy.deepcopy(res0)
+        p16_inf_idx = next(
+            i for i, x in enumerate(c24["cells"])
+            if x["piece_idx"] == 16 and x["u_idx"] == 4 and x["kind"] == "INFEAS_R1"
+        )
+        c24["cells"][p16_inf_idx]["chi_lo"] = 40.0
+        r24["cells"][p16_inf_idx]["chi_lo"] = 40.0
+        expect_verify_reject(c24, r24, "internal chi gap at 39 in bin [36, 42]", "Control 24 (missing-bin [36, 42] partition hole)")
+
+    print("ALL 28 NEGATIVE, POSITIVE-FIXTURE, SEAM, SHA-256, ROW-SUMMARY, AND CORRUPTION CONTROLS PASSED!")
 
 
 if __name__ == "__main__":
