@@ -41,8 +41,8 @@ matching to five decimals the cutting-plane model norm $N_9 \in [0.71209, 0.7121
    - **Radius necessity (**P + C**):** A dual bound at $t=0$ with $B<250/351$ that discards both negative $k$-penalties in Proposition 3.2(1) forces $\|P_{2,1}f\|_2^2 - c_9\|P_{5,4}f\|_2^2 \le \frac{31250}{41067} = 0.7609516\dots$ on $|f|=1$, hence $\rho_*<0.899374$. For an unrestricted primal bound, Proposition 3.2(2) gives $\rho_*<0.94044$.
    - **Exact multi-chaos gate-free reduction (**P + C**):** Keeping $\langle h, P_{1,0}h\rangle = t^2$ directly and dualizing $P_{3,2}h, P_{5,4}h$ on $h$ together with $P_{2,1}k, P_{4,3}k$ and the $H_{5,4}$ multiplier $C_9 = \beta R_9(q)$ ($R_9(q) = \frac{1}{\sqrt{2}}P_{5,4}(q^2\bar q)$, $q = G_3/\|G_3\|_2$) on $k$ yields $\operatorname{Re}\langle f, T_9 g\rangle \le t^2 + B_9^*$ for **all** $t \ge 0$ ($A = 1$). Globally over all $(\sigma_3, \sigma_5, \sigma_7, \sigma_9) \in [0, \infty)^4$ in the diffuse Gaussian ideal, **we prove and interval-certify $B_9^{*,\mathrm{Gauss}} = V_9^{\mathrm{rem}} = 0.7120930258\dots$** (zero inflation from $H_{3,2}, H_{4,3}, H_{5,4}$), giving conditional reach $t_0 = \sqrt{250/351 - B_0} \ge 0.01255$ at the Gaussian ideal and $t_0 \ge 0.00952$ at $B_0 = 0.71216$.
    - **Bargmann Sum-of-Squares & Wick classification of $R_9(q)$ (**P + C**):** The $5!\cdot 4! = 2880$ Wick contractions of $\|R_9(q)\|_2^2$ partition into 19 real isomorphism classes ($16$ of type `[2,2,2]`, $336$ of type `[2,4]`, $2528$ connected `[6]`). Via Bargmann–Fock representation on $\mathbb{C}^n_w \times \mathbb{C}^n_\zeta$, we prove unconditionally for every unit-norm $q \in H_{2,1}(\mathbb{C}^n)$ that
-     $$\|R_9(q)\|_2^2 \ge 1 + \operatorname{tr}(N^2) + 4\operatorname{tr}(M^2) + 4\operatorname{tr}(N^\top M) \ge 1 + \frac{5}{n} > 1,$$
-     with sharp limit $1$ as $n \to \infty$, equality $4$ at $z_0 z_1 \bar z_2$, $6$ at $z_0^2\bar z_1/\sqrt{2}$, $36$ at $z_0(|z_1|^2 - 1)$, and $180$ at $H_{2,1}(z_0)$.
+     $$\|R_9(q)\|_2^2 \ge 1 + \operatorname{tr}(N^2) + 4\operatorname{tr}(M^2) + 4\operatorname{tr}(N^\top M) \ge 1 + \frac{9}{n} > 1,$$
+     with equality in $1+9/n$ attainable exactly when $3\mid n$. The squared norms are $4$ at $z_0 z_1 \bar z_2$, $6$ at $z_0^2\bar z_1/\sqrt{2}$, $36$ at $z_0(|z_1|^2 - 1)$, and $180$ at $H_{2,1}(z_0)$.
 5. **Task 3 — Degree-7 Contrast (`HD 1.4`, **P + C**, author only):**
    Unlike $T_9$ (where $a_1 = 0.936 < 3 a_3 = 1.77606$), $T_7$ satisfies **$a_{1,7} = 0.906596 > 3 a_{3,7} = 0.727593$**, so its universal $\tau^4$ variation along $\operatorname{ph}(W_3 + \tau B(z))$ is **strictly negative for every nonzero $B \in H_{2,1}(\mathbb{C}^d)$**:
    $$\frac{V_7(\tau) - V_7(0)}{\pi\tau^4} = -\left(\frac{a_{1,7}}{48} + \frac{a_{2,7}}{64}\right)A_0 - \left(\frac{a_{1,7}}{96} - \frac{a_{3,7}}{64}\right)A_1 - \left(\frac{a_{1,7}}{24} + \frac{a_{2,7}}{16}\right)C_1 - \left(\frac{a_{1,7}}{48} - \frac{a_{3,7}}{16}\right)C_2 < 0.$$
@@ -288,25 +288,48 @@ Since $e^{-x} I_0(x) = \frac{1}{\pi}\int_0^\pi e^{-x(1-\cos\theta)}d\theta \le 1
 ### 3.3 The Cubic-Tied $H_{5,4}$ Multiplier $R_9(q)$ and Bargmann Sum-of-Squares Floor (**P + C**, author only)
 
 For a general unit-norm cubic $q(z) = \frac{1}{\sqrt{2}}\sum_{i,j,k=1}^n T_{ij,k} :z_i z_j \bar z_k: \in H_{2,1}(\mathbb{C}^n)$ ($T_{ij,k} = T_{ji,k}$, $\sum_{i,j,k}|T_{ij,k}|^2 = \|q\|_2^2 = 1$), the natural cubic-tied $H_{5,4}$ multiplier is
-$$R_9(q) := P_{5,4}\!\left[\frac{1}{\sqrt{2}}\,q\big(|q|^2 - 2\big)\right] = \frac{1}{\sqrt{2}}\,P_{5,4}(q^2\bar q) = \frac{1}{2\sqrt{2}}\sum T_{i_1 i_2, k_1} T_{i_3 i_4, k_2} \overline{T_{j_1 j_2, l_1}} :z_{i_1}z_{i_2}z_{i_3}z_{i_4}z_{l_1}\bar z_{j_1}\bar z_{j_2}\bar z_{k_1}\bar z_{k_2}:,$$
+$$R_9(q) := P_{5,4}\!\left[\frac{1}{\sqrt{2}}\,q\big(|q|^2 - 2\big)\right] = \frac{1}{\sqrt{2}}\,P_{5,4}(q^2\bar q) = \frac{1}{4}\sum T_{i_1 i_2, k_1} T_{i_3 i_4, k_2} \overline{T_{j_1 j_2, l_1}} :z_{i_1}z_{i_2}z_{i_3}z_{i_4}z_{l_1}\bar z_{j_1}\bar z_{j_2}\bar z_{k_1}\bar z_{k_2}:,$$
 since every internal Wick contraction between the three factors drops total bidegree below $(5,4)$ and is annihilated by $P_{5,4}$. Define the two Hermitian PSD Gram matrices $N_{ab} := \sum_{i,j} T_{ij,a}\overline{T_{ij,b}}$ and $M_{ab} := \sum_{j,k} T_{aj,k}\overline{T_{bj,k}}$ ($\operatorname{tr} N = \operatorname{tr} M = 1$).
 
 **Theorem 3.4 (Bargmann SOS Identity & Universal Norm Floor for $R_9(q)$).** *For every $n \ge 1$ and every unit-norm $q \in H_{2,1}(\mathbb{C}^n)$:*
 1. **Wick classification (**C**, `verify_small_t_and_wick.py`):** *The $5!\cdot 4! = 2880$ bipartite Wick contractions of $\|R_9(q)\|_2^2$ decompose into $19$ real isomorphism classes: $1$ disconnected `[2,2,2]` class ($16$ matchings, value $1$), $4$ `[2,4]` classes ($336$ matchings), and $14$ connected `[6]` classes ($2528$ matchings).*
 2. **Bargmann representation & universal floor (**P**):** *Putting $F_T(w, \bar\zeta) := \frac{1}{\sqrt{2}}\sum_{i,j,k} T_{ij,k} w_i w_j \bar\zeta_k$ on independent $w, \zeta \sim \mathcal{CN}(0, I_n)$,*
-   $$\|R_9(q)\|_2^2 = \frac{1}{2}\,\mathbb{E}_{w,\zeta}\!\Big[|F_T(w, \bar\zeta)|^4\,|F_T(\zeta, \bar w)|^2\Big] \ge 1 + \operatorname{tr}(N^2) + 4\operatorname{tr}(M^2) + 4\operatorname{tr}(N^\top M) \ge 1 + \frac{5}{n} > 1.$$
+   $$\|R_9(q)\|_2^2 = \frac{1}{2}\,\mathbb{E}_{w,\zeta}\!\Big[|F_T(w, \bar\zeta)|^4\,|F_T(\zeta, \bar w)|^2\Big] \ge 1 + \operatorname{tr}(N^2) + 4\operatorname{tr}(M^2) + 4\operatorname{tr}(N^\top M) \ge 1 + \frac{9}{n} > 1.$$
+   *There exists a unit cubic attaining the floor $1+9/n$ if and only if $3\mid n$.*
 
 *Proof of (2).* In $\mathcal{F}_{\mathrm{hol}}(\mathbb{C}^n_w) \otimes \mathcal{F}_{\mathrm{anti}}(\mathbb{C}^n_\zeta)$, the monomials $:z_A \bar z_B:$ of $H_{5,4}(\mathbb{C}^n)$ have identical inner products to $w_A \bar\zeta_B$ because $w$ and $\zeta$ are independent standard complex Gaussians, giving $\|R_9(q)\|_2^2 = \frac{1}{2}\mathbb{E}_{w,\zeta}|F_T(w, \bar\zeta)^2 \overline{F_T(\zeta, \bar w)}|^2$.
 For any holomorphic $P(w)$ and linear form $L(w) = v\cdot w$ on $\mathbb{C}^n$, Bargmann integration by parts ($\bar w_j e^{-|w|^2} = -\partial_{w_j} e^{-|w|^2}$, or monomial expansion in an eigenbasis of $v v^*$) gives the exact identity
 $$\mathbb{E}_w\!\big[|P(w)|^2\,|v\cdot w|^2\big] = \|v\|^2\,\mathbb{E}_w|P(w)|^2 + \mathbb{E}_w\!\big[|(v^*\cdot\nabla_w)P(w)|^2\big]. \tag{3.3}$$
 1. Fix $\zeta$ and apply (3.3) in $w$ with $P(w) = F_T(w, \bar\zeta)^2$ and $L(w) = \overline{F_T(\zeta, \bar w)} = \overline{u(\zeta)}\cdot w$, where $u_k(\zeta) = \frac{1}{\sqrt{2}}\sum_{i,j} T_{ij,k}\zeta_i\zeta_j$:
-   $$\|R_9(q)\|_2^2 = \frac{1}{2}\,\mathbb{E}_{w,\zeta}\!\Big[|F_T(w, \bar\zeta)|^4\,\|u(\zeta)\|^2\Big] + 2\,\mathbb{E}_{w,\zeta}\!\Big[|F_T(w, \bar\zeta)|^2\,\big|(\overline{u(\zeta)}\cdot\nabla_w)F_T(w,\bar\zeta)\big|^2\Big].$$
+   $$\|R_9(q)\|_2^2 = \frac{1}{2}\,\mathbb{E}_{w,\zeta}\!\Big[|F_T(w, \bar\zeta)|^4\,\|u(\zeta)\|^2\Big] + 2\,\mathbb{E}_{w,\zeta}\!\Big[|F_T(w, \bar\zeta)|^2\,\big|(u(\zeta)\cdot\nabla_w)F_T(w,\bar\zeta)\big|^2\Big].$$
 2. Drop the second (nonnegative) integral, swap $\mathbb{E}_w$ and $\mathbb{E}_\zeta$ by Tonelli, and for fixed $w$ write $\overline{F_T(w, \bar\zeta)} = m(w)\cdot\zeta$ (**linear** holomorphic in $\zeta$!), where $m_a(w) = \frac{1}{\sqrt{2}}\sum_{i,j}\overline{T_{ij,a}}\bar w_i\bar w_j$. Applying (3.3) twice in $\zeta$ to $|u_k(\zeta)|^2\,|m(w)\cdot\zeta|^4$ and summing over $k = 1, \dots, n$ ($\sum_k \|u_k\|_2^2 = 1$) gives
    $$\frac{1}{2}\sum_{k=1}^n \mathbb{E}_\zeta\!\big[|u_k(\zeta)|^2\,|m(w)\cdot\zeta|^4\big] = \|m(w)\|^4 + 2\|m(w)\|^2\sum_{k=1}^n \|(m(w)^*\cdot\nabla_\zeta)u_k\|_2^2 + \frac{1}{2}\sum_{k=1}^n \|(m(w)^*\cdot\nabla_\zeta)^2 u_k\|_2^2.$$
-3. Notice $\sum_k \|(m^*\cdot\nabla_\zeta)u_k\|_2^2 = 2\sum_{j,k}|\sum_a T_{aj,k}\bar m_a|^2 = 2\, m(w)^* M^\top m(w)$. Taking $\mathbb{E}_w$ and dropping the nonnegative third term:
-   - By Wick's theorem on $\bar w \sim \mathcal{CN}(0, I_n)$ ($24$ contractions of degree-$(2,2)$), $\mathbb{E}_w\|m(w)\|^4 = 1 + \operatorname{tr}(N^2) + 4\operatorname{tr}(M^2)$.
-   - Writing $M^\top = \sum_r \mu_r v_r v_r^*$ ($\mu_r \ge 0$), for any two homogeneous quadratic polynomials $P_1(\bar w) = \frac{1}{\sqrt{2}}\bar w^\top A \bar w$ and $P_2(\bar w) = \frac{1}{\sqrt{2}}\bar w^\top B \bar w$, Wick's $24$ contractions give $\mathbb{E}_w|P_1 P_2|^2 = \|A\|_F^2\|B\|_F^2 + |\langle A, B\rangle|_F^2 + 4\operatorname{tr}(A B^* B A^*) \ge \|P_1\|_2^2\|P_2\|_2^2$. Summing over $a$ and $r$ gives $4\,\mathbb{E}_w[\|m(w)\|^2\, m(w)^* M^\top m(w)] \ge 4\big(\sum_a \|m_a\|_2^2\big)\big(\sum_r \mu_r v_r^* N^\top v_r\big) = 4\operatorname{tr}(N^\top M)$.
-4. Since $N, M$ are $n \times n$ PSD matrices of trace $1$, Cauchy–Schwarz gives $\operatorname{tr}(N^2) \ge \frac{1}{n}$, $\operatorname{tr}(M^2) \ge \frac{1}{n}$, and $\operatorname{tr}(N^\top M) = \operatorname{tr}(N M^\top) \ge 0$, hence $\|R_9(q)\|_2^2 \ge 1 + \frac{5}{n} > 1$. $\square$
+3. Write $D=N^\top$. Then $\mathbb E_w[mm^*]=D$, while the derivative in step 2 gives
+   \[
+   \sum_k\|(m^*\cdot\nabla_\zeta)u_k\|_2^2
+   =2\sum_{j,k}\left|\sum_a\bar m_a T_{aj,k}\right|^2=2m^*Mm.
+   \]
+   For symmetric complex matrices $A,B$ and $P_A(\bar w)=\bar w^\top A\bar w/\sqrt2$, the 24 Wick pairings give
+   \[
+     \mathbb E|P_A P_B|^2=\|A\|_F^2\|B\|_F^2+|\langle A,B\rangle_F|^2+
+           4\,\operatorname{tr}(A B^* B A^*).
+   \]
+   Summing over the component quadratics of $m$ gives $\mathbb E\|m\|^4=1+\operatorname{tr}(D^2)+4\operatorname{tr}(M^2)$.
+   Apply the same identity to $m_a$ and $v^*m$ and sum over $a$. Keeping the first two terms gives
+   $\mathbb E[\|m\|^2|v^*m|^2]\ge v^*Dv+v^*D^2v$, since $\mathbb E[m\,\overline{v^*m}]=Dv$.
+   Sum over an orthonormal eigenbasis of $M$, with each term weighted by its eigenvalue. Step 2 now yields
+   \[
+   \|R_9(q)\|_2^2\ge 1+\operatorname{tr}\big((D+2M)^2\big)+4\operatorname{tr}(M D^2).
+   \]
+4. Both $D$ and $M$ are positive semidefinite of trace one. The last summand is nonnegative since $\operatorname{tr}(MD^2)=\|D M^{1/2}\|_F^2$. The eigenvalues of $D+2M$ sum to three, so their squares sum to at least $9/n$. Equality in the dimension bound requires $D+2M=(3/n)I$ and $D M^{1/2}=0$. Consequently $D^2=(3/n)D$ and $\operatorname{rank}D=n/3$ by its trace. Thus equality requires $3\mid n$.
+
+   Conversely, take $n=3b$ and $q=b^{-1/2}\sum_{j=1}^b x_j y_j\bar z_j$ on disjoint triples of Gaussian coordinates. In the Bargmann representation $F_T(w,\bar\zeta)$ uses the $x,y$ coordinates of $w$ and the $z$ coordinates of $\zeta$. The swapped factor uses the complementary coordinates, hence is independent with second moment one. Each product in the normalized sum $F_T$ is centered and circular, with second moment one and fourth moment $2^3=8$. In the fourth-moment expansion the equal-index terms give $8b$, and the two distinct-index pairings give $2b(b-1)$, before division by $b^2$. Therefore
+   \[
+     \|R_9(q)\|_2^2=\tfrac12\mathbb E|F_T|^4=1+3/b=1+9/n.
+   \]
+   This proves attainment in every dimension divisible by three and strict inequality for each unit cubic in every other dimension. $\square$
+
+**Complex control and replay.** For $T=v\otimes v\otimes v$ with $v=(1,i)/\sqrt2$, $M=N=vv^*$ and $v^\top v=0$. Then $1+\operatorname{tr}((D+2M)^2)=6$, whereas substituting $N$ for $D$ gives $10$. In independent coordinates $X=v^\top z$ and $Y=v^*z$ the cubic is $X^2\bar Y/\sqrt2$, whose squared top norm is $6$. The [exact monomial replay](../../code/degree9-small-t-gemini-5675/verify_ninth_floor.py) verifies this witness, disjoint triples, and dense complex tensors by counting holomorphic and antiholomorphic multiplicities. Run `python3 -IB -O research/higher-degree/code/degree9-small-t-gemini-5675/verify_ninth_floor.py` from the repository root. The sharp dimension estimate and equality argument are due to codex-062a (#941, **P + C, author only**).
 
 *(Remark on non-Gaussian $q$ in (3.2): when $q \in H_{2,1}(\mathbb{C}^n)$ has excess $s = \mathbb{E}|q|^4 - 2 > 0$, choosing $C_9 = \beta R_9(q)$ introduces a non-constant multiplier cost $+\beta^2\|R_9(q)\|_2^2 / a_4 > \beta^2 / a_4$, while simultaneously $q(|q|^2 - 2)/\sqrt{2}$ has lower-chaos projections onto $H_{2,1}$ and $H_{1,0}$ (`SixthMoment.lean`) and orthogonal $H_{5,4}$ variance; closing $B_9^* < 250/351$ unconditionally over general non-Gaussian $(G_3, G_5, G_7, G_9^+)$ therefore requires both a two-chaos radius bound below $0.8994$ and a fifth/seventh/ninth-chaos content–deficit inequality analogous to `K_5`, which remains **open**.)*
 
