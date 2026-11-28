@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""Replay the four piece-15 JM1 certificates using the original content-cell verifier. Agent-ID: codex-062a."""
+from decimal import Decimal
+from fractions import Fraction as Q
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+
+HERE = Path(__file__).resolve().parent
+SOURCE = HERE.parent / "degree5-content-cells-gemini-c1de"
+TABLE = HERE.parent / "degree5-design/design-2026-11-25/tables/funded/fin_table_fundFull.json"
+sys.path.insert(0, str(SOURCE))
+import verify as original
+
+INTERVALS = [(1, 2), (2, 3), (16, 20), (20, 42)]
+NEW_BIN_ENDS = [2, 3, 20, 24, 30, 36, 42]
+
+
+def check(ok, message):
+    if not ok:
+        raise ValueError(message)
+
+
+def funded_row():
+    table = json.loads(TABLE.read_text(), parse_float=Decimal)
+    chosen = sorted(table["chosen"], key=lambda c: Q(c["piece"][0]))[14]
+    piece, = [p for p in table["cases"]
+              if p["piece"] == chosen["piece"] and p["row_tag"] == chosen["row_tag"]]
+    node = piece["theta"][2]
+    check(piece["row_tag"] == "0.855" and Q(node["ucapfrac"]) == Q(78, 100),
+          "expected piece 15, row 0.855 and the third funded energy")
+    return Q(piece["piece"][0]), node
+
+
+def bind_cells(cfg, weights):
+    # The parent verifier binds the reference energy and Rice threshold to the exact funded table.
+    ref, = [c for c in cfg["cells"] if c["piece_idx"] == 15 and c["u_idx"] == 2
+            and c["chi_lo"] == c["chi_hi"] == 20]
+    t_exact, node = funded_row()
+    check(Q(ref["t_lo"]) <= t_exact and Q(ref["u_lo"]) <= Q(node["u"]) <= Q(ref["u_hi"]),
+          "certificate energy or Rice threshold misses the funded row")
+    # The original singleton has enough margin over the full (16, 20] table bin at F = 6.545.
+    cols = {"chi_lo", "chi_hi", "F_claimed", "slicesA", "slicesB"}
+    check(all(set(c) == cols for c in weights), "wrong witness fields")
+    weights = sorted([*weights, {"chi_lo": 16, "chi_hi": 20, "F_claimed": 6.545,
+                                 "slicesA": ref["slicesA"], "slicesB": ref["slicesB"]}],
+                     key=lambda c: c["chi_lo"])
+    check([(c["chi_lo"], c["chi_hi"]) for c in weights] == INTERVALS, "wrong chi intervals")
+    bins = sorted(int(k) for k in node["theta_chi"])
+    closed = []
+    cells = []
+    for c in weights:
+        inside = [(a, b) for a, b in zip([0] + bins, bins) if c["chi_lo"] <= a and b <= c["chi_hi"]]
+        check(inside and inside[0][0] == c["chi_lo"] and inside[-1][1] == c["chi_hi"],
+              "certificate endpoints do not enclose whole funded bins")
+        allowance = min(Q(node["theta_chi"][str(b)]) for _, b in inside)
+        check(0 < Q(c["F_claimed"]) <= allowance, "certificate exceeds a funded allowance")
+        # theta_allow labels the stream. Proof checks use F_claimed, audited above as an exact binary64.
+        cells.append({**ref, **c, "theta_allow": c["F_claimed"]})
+        closed.extend(b for _, b in inside)
+    check(closed == NEW_BIN_ENDS, "unexpected set of covered bins")
+    return cells
+
+
+def audit_tails(cfg, cells):
+    params = {k: list(map(Q, cfg[k])) for k in
+              ("t_knots", "c_rat", "s_gram", "rho_a", "rho_b", "lams_rice")}
+    params["eps_K"] = Q(cfg["eps_K"])
+    exp_bounds = [original.exp_neg_rational_bounds(x) for x in params["t_knots"]]
+    for c in cells:
+        cell = {k + "_q": Q(c[k]) for k in ("u_lo", "u_hi", "t_lo", "chi_lo", "chi_hi")}
+        cell.update(F_q=Q(c["F_claimed"]), P_max_q=Q(2))
+        for key in ("slicesA", "slicesB"):
+            check(c[key] and all(s["a_r"] <= s["b_r"] for s in c[key]), "empty or reversed slice")
+            for s in c[key]:
+                original.verify_slice_rational_tail_and_signs(s, cell, params, exp_bounds, False)
+
+
+def main():
+    original.verify_all()  # global Rice tangent inequalities, parent inputs and exact energy-node bindings
+    cfg = original.load_full_cfg(str(SOURCE / "dual_certs.json"))
+    cells = bind_cells(cfg, json.loads((HERE / "cells.json").read_text()))
+    audit_tails(cfg, cells)
+    with tempfile.TemporaryDirectory() as tmp:
+        work = Path(tmp)
+        binary, data, receipt = (work / name for name in ("certifier", "cells.dat", "result.json"))
+        original.emit_dat_from_json({**cfg, "cells": cells}, data)
+        subprocess.run(["c++", "-O3", "-ffp-contract=off", "-std=c++17", "-pthread",
+                        str(SOURCE / "certify_content_cells.cpp"), "-o", str(binary)], check=True)
+        subprocess.run([str(binary), "--verify-all", str(data), str(receipt), "--threads", "3"], check=True)
+        result = json.loads(receipt.read_text())
+    check(result["status"] == "CERTIFIED" and len(result["cells"]) == len(cells), "incomplete C++ replay")
+    for c, rec in zip(cells, result["cells"]):
+        check((rec["chi_lo"], rec["chi_hi"], rec["F_certified"]) ==
+              (c["chi_lo"], c["chi_hi"], c["F_claimed"]), "cell mismatch")
+        check(rec["worst_M_A"] < 0 and rec["worst_M_B"] < 0, "continuous residual is nonnegative")
+        print(f"chi in [{rec['chi_lo']}, {rec['chi_hi']}], F = {Q(rec['F_certified'])}, "
+              f"sup bounds A, B = {rec['worst_M_A']:.6g}, {rec['worst_M_B']:.6g}")
+    print(f"Verified {len(NEW_BIN_ENDS)} whole funded bins at piece 15, u/u_cap = 0.78.")
+
+
+if __name__ == "__main__":
+    main()

@@ -730,6 +730,11 @@ constant 5/3, and for sums of shared matrix blocks [P + C · 6.3.36, 6.3.37, 6.3
 cubic covers only χ ≤ 9·10⁻⁸ to 3·10⁻⁵ on the band rows [P, N · 6.3.38]. None of these results closes a row, and on
 the rows t = 0.80 and 0.82 the inequality is open in both directions [`../higher-degree/STATUS.md` 4.20, 4.27].
 
+Under the Rice hypothesis (R1), both funded Case I profiles on piece 15, row 0.855 at the discrete energy 0.78 u_cap, satisfy
+their content allowances on seven further fourth-excess bins. The bound on [16, 20] is 6.545, below the funded
+allowance 6.545210245012058. The intervals [1, 3] and [20, 42] cover the other six bins.
+[C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
+
 **Influences.** With J₁[a, b] = E[∂_aq·conj(∂_bq)] and I₂[j, k] = ⟨∂̄_jq, ∂̄_kq⟩ (traces 2u and u), the field c₂ − u
 has ‖c₂ − u‖² = ‖J₁‖²_HS + ‖I₂‖²_HS, and the largest eigenvalues satisfy λ₁² + λ₂² ≤ δ/2, with equality only at X²Ȳ
 [P + C · 6.3.32]. The content is a pairing of two shadows of the profile with these matrices,
