@@ -1,29 +1,29 @@
-# A retuned witness on the sparse amplitude schedule
+# First-chaos retuning and a fifth-chaos companion
 
-Agent-ID: codex-a7c4
+The retuned identity-tail witness gives
+$K_G^{\mathbb C}\ge 10^{12}/713254699303=1.402023710432206792\ldots$.
+The first-chaos projector alone suffices for this lower bound. A positive interval of additional fifth-chaos coefficients gives the same scalar cap when rounded upward to the certificate grid of $10^{-12}$. The two unrounded envelopes differ.
 
-The physical scalar cap is $713254705661/10^{12}$ for a convex combination of the production identity-tail witness and a degree-five witness. Its reciprocal is $1.40202369793447\ldots$, an increase of $0.00000153516838\ldots$ over the previous rounded production reciprocal $25000000000000/17831387166289$. The fifth-chaos coefficient is positive. Setting it to zero at the same cubic and mixture weights gives exactly the same certified cap.
+## Operators and scalar estimate
 
-## The physical witness
+Let $P,Q,F$ be the charge-one Wick projections of bidegrees $(1,0),(2,1),(3,2)$ respectively. Write
+$T_0=P-(191/250)Q+\nu(I-P-Q)$, where $\nu=47/2000$, and set
+\[
+w=3645203/50000000000,\qquad T=(1-w)T_0+wP,\qquad T_\eta=T+w\eta F,\quad 0\le\eta\le1/50000000.
+\]
+The largest extra fifth multiplier is $3645203/2500000000000000000$. For $\eta=0$, the operator is exactly the existing identity-tail witness with both its cubic and its tail coefficient multiplied by $1-w$. Its vector payoff tends to one by the original vector test. Each $T_\eta$ has a positive semidefinite perturbation, so the same vector field still gives a value tending to at least one.
 
-Let $P,Q,F$ be the orthogonal projections onto the $(1,0),(2,1),(3,2)$ chaoses. The first operator $T_0$ acts by $1$ on $P$, by $-191/250$ on $Q$, and by $\nu=47/2000$ on the orthogonal complement. Take
+For a pair of unimodular scalar responses put $h=(f+g)/2$, $k=(f-g)/2$ and $t=\|Ph\|$. The real payoff of $T_0$ is $(1-\nu)\widehat V+\nu$, and the real payoff of $P$ is $t^2-\|Pk\|^2$. Orthogonality gives
+\[
+ \|Fh\|^2-\|Fk\|^2\le \|h\|^2-t^2\le 1-t^2 .
+\]
+Consequently the payoff of every $T_\eta$ is at most $A\widehat V+B t^2+C$, with $L=w/50000000$ and
+\[
+ A=(1-w)(1-\nu),\qquad B=w-L,\qquad C=(1-w)\nu+L.
+\]
+The first-chaos proof applies the certified phase budget directly to the original retuned operator, rotates the phase to control the complex absolute value, then uses finite-matrix transfer. The companion proof bounds the additional fifth projection on the same pair. [First-chaos proof](../../Grothe/LowerAnalytic/FirstChaosProfile.lean) · [Companion family](../../Grothe/LowerAnalytic/QuinticHybridTransfer.lean)
 
-$$T=(1-w)T_0+w(P-eQ+\eta F),\qquad
- w=3693/50000000,\quad e=1/100,\quad \eta=1/2000.$$
-
-The fifth sector receives an additional $w\eta=3693/10^{11}$ above the scaled identity tail. For unimodular responses $f,g$, set $h=(f+g)/2$, $k=(f-g)/2$, $t=\|Ph\|$, $K=\|k\|^2$ and $\Delta_F=\|Fh\|^2-\|Fk\|^2$. The physical payoff of $T_0$ is $\nu+(1-\nu)\widehat V$. In hat units its cubic weight is $\epsilon=(191/250+\nu)/(1-\nu)=25/31$. Write $a=e/\epsilon=31/2500$ and $d=2a\nu/(1-\nu)=47/78750$. Cancelling the two cubic energies gives the exact signed payoff of the partner
-
-$$V_5=a\widehat V+(1-a)(t^2-\|Pk\|^2)+dK+\eta\Delta_F.$$
-
-Orthogonality and $\|h\|^2+K=1$ give $K+\|Fh\|^2\le 1-t^2$. Because $0\le\eta\le d$ and $a\le1$, the last two terms cost at most $d(1-t^2)$, while $-(1-a)\|Pk\|^2\le0$. Consequently the mixture is bounded by $A\widehat V+Bt^2+C$ with
-
-$$A=(1-w)(1-\nu)+wa=488214395787/500000000000,$$
-$$B=w(1-a-d)=191362643/2625000000000,\qquad
-C=(1-w)\nu+wd=246732237901/10500000000000.$$
-
-Here $A>0$ allows substitution of a cell upper bound on $\widehat V$. The coefficients sum to one. Every value of $\eta$ in $[0,d]$ produces this same polynomial on every segment. For $\eta>d$ the same estimate on $K+\|Fh\|^2$ requires the larger price $\eta$.
-
-## Exact finite replay
+## Exact replay and controls
 
 From the repository root run
 
@@ -31,14 +31,17 @@ From the repository root run
 python3 -IBO research/identity-tail/code/retuned_quintic_profile.py
 ```
 
-The replay reconstructs the row ordinates, prices and curvature terms used by the sparse Schur interpolation. On each closed segment $[l,h]$, use $t=l+(h-l)x$ with $0\le x\le1$. The hat bound is $a_2x^2+a_1x+a_0$. The transformed coefficients, in descending order, are
+The replay reconstructs all 49 closed segments of the 38 amplitude cells from the original row data. On a segment $t=l+(h-l)x$, it substitutes the certified quadratic for $\widehat V$ and takes the maximum over both endpoints and every interior vertex. The row majorants, the weights, and every comparison are rational. [Rational replay](code/retuned_quintic_profile.py) · [Original Schur certificate](CURVED_SCHUR.md)
 
-$$(Aa_2+B(h-l)^2,\quad Aa_1+2Bl(h-l),\quad Aa_0+Bl^2+C).$$
+| Partner of $T_0$ | Unrounded maximum of the scalar envelope | Where the maximum occurs |
+|---|---|---|
+| $P$ | $0.713254699302604661\ldots$ | cell 34 at $t\approx0.886176825774$ |
+| $P+F/50000000$ | $0.713254699302985366\ldots$ | interior vertex of cell 26 at $t\approx0.838992436299$ |
 
-The checker verifies adjacency and both prescribed endpoints of each of the 38 cells, covering $[0,9/10]$ with 49 segments. The physical range $t\le\sqrt\pi/2$ lies inside this cover. Each maximum uses both endpoints and the vertex whenever the quadratic is concave with its vertex inside the segment. The largest transformed value occurs in zero-based cell 26 at $t=0.83899243367\ldots$. Checking only segment endpoints would understate the maximum by more than $3/10^{10}$. Rounding the actual maximum upwards to a multiple of $10^{-12}$ gives the stated cap. The lower-bound transfer uses the witness's vector value and the certified production node caps. The accompanying Python replay gives a separate check of the scalar calculation. [Original Schur certificate](CURVED_SCHUR.md) · [Rational replay](code/retuned_quintic_profile.py)
+Cell indices start at zero. The first-chaos partner has the smaller unrounded maximum. Both values round upward to $713254699303/10^{12}$. The same bound holds for every intermediate coefficient because the allowance $w\eta(1-t^2)$ is monotone in $\eta$.
 
-## What the comparisons measure
+To check optimality **on this grid for this first-chaos schedule**, the replay fixes two rational test amplitudes, $0.838992436300$ and $0.886176825774$. At each one the original cell majorant is affine in the mixture weight. The two slopes have opposite signs and the lines cross in $[0,1]$. Their crossing gives a lower bound $0.713254699302559498\ldots$ on the maximum of the schedule for *every* mixture weight. Rounding that lower bound upward gives the same grid point. This optimality statement concerns the specified fixed majorants and precision.
 
-With $w=0$ the replay recovers the original rounded hat cap $8829435313/12500000000$ and its physical reciprocal. With the stated $e,w$ it checks coefficient-by-coefficient that $\eta=0$ and $\eta=1/2000$ yield the same envelope. Doubling $\eta$ exceeds the allowable fifth-sector price and changes the envelope.
+The original identity-tail endpoint was $25000000000000/17831387166289$. The earlier partner $P-Q/100+F/2000$ at weight $3693/50000000$ gave the weaker scalar cap $713254705661/10^{12}$. Removing its fifth coefficient at those same weights leaves its previous majorant exactly unchanged. The replay keeps both as controls.
 
-For a separate benchmark, keep the original $T_0$ and replace the partner by $P$ alone ($e=\eta=0$). At $w=729/10^7$ the certified reciprocal exceeds $1.4020237103$. To bound what changing this one weight can achieve, evaluate the schedule at the two fixed rational amplitudes $0.83899243$ and $0.886176826$. At each amplitude the physical upper envelope used for that segment is affine in $w$. One slope is negative and the other is positive. Their intersection lies in $[0,1]$, so its height is the minimum over $w$ of the maximum of the two lines. The maximum over all amplitudes is at least this height, which bounds the reciprocal obtainable by this schedule from above. The best schedule reciprocal therefore lies between $1.4020237103$ and $1.4020237105$ for the first-chaos partner, and between $1.4020236979$ and $1.4020236981$ for the fixed positive cubic and fifth weights. These upper endpoints concern one mixture parameter and one fixed family of row majorants. Determining the actual optimum over phase responses, witnesses or other row schedules requires additional information.
+Agent-ID: codex-a7c4

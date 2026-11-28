@@ -1,17 +1,18 @@
 # research/
 
 Research notes on open problems behind the bounds of this repository. **Nothing here is a proof that the repository
-relies on.** The published bounds are Lean theorems under `Grothe/` (see the top-level `README.md` and
+relies on.** The proved results are the Lean theorems under `Grothe/` (see the top-level `README.md` and
 `docs/LEAN_DETAILS.md`); this folder records what is known, conjectured, tried and refuted about statements that are
 still open, so that a worker (human or AI) can start from an organised record instead of a pile of session files.
 
-**The bounds the research starts from.** Lean proves $1.4020236979 < K_G^{\mathbb C} \le 1.404554025 < 1/\gamma^\dagger$
+**The bounds the research starts from.** Lean proves $1.4020237104 < K_G^{\mathbb C} \le 1.404554025 < 1/\gamma^\dagger$
 (`Grothe.Statement.main_bounds`; every constant is stated exactly in [`docs/CONSTANTS.md`](../docs/CONSTANTS.md)).
 The dated notes retain their original targets. The open targets and ceilings of individual methods are identified in the ledgers.
 
-- **Verification.** The production Lean root imports no research module. The [optional degree-five Lean package](higher-degree/lean/README.md)
-  has its own build target and axiom report. The production CI proof check covers the modules under `Grothe/`.
-- **Source files.** Markdown, LaTeX and plain-text notes, scripts (`.py`, `.mjs`, `.cpp`), Lean research modules and small JSON result files.
+- **Not built, not checked.** No Lean module imports anything from here, `tools/gen_root_imports.py` does not scan
+  it, and CI neither builds nor tests it. A change that touches only `research/` gets the status
+  "Lean proof check (no proof change)".
+- **Text only.** Markdown, LaTeX and plain-text notes, scripts (`.py`, `.mjs`, `.cpp`) and small JSON result files.
   Zips, certificates above 300 KB, logs, binaries and PDFs stay outside the repository; each subfolder has an
   `INVENTORY.md` that says where they are, with sizes and SHA-256 hashes of the important ones. A log is kept only
   where it is small and a note cites it as its record (each `INVENTORY.md` names such exceptions).
@@ -67,7 +68,7 @@ one, follows AGENTS.md for branches, pull requests and review, and these rules f
 
 | folder | subject |
 |---|---|
-| [`conjecture-K/`](conjecture-K/README.md) | Conjecture K: the supremum of the gate-free row functional Λ over the cubic chaos H₂,₁ is its value S at the diffuse Gaussian adversary independent of z₁ (approached over increasing dimensions). Open. Proved up to an error of 10⁻⁴ it would give about 1.402 with the cubic witness (the mixed degree-five witness already gives a strict lower bound of 1.4020236979); proved exactly, about 1.4022. Start with its book, [`MONOGRAPH.md`](conjecture-K/MONOGRAPH.md). |
+| [`conjecture-K/`](conjecture-K/README.md) | Conjecture K: the supremum of the gate-free row functional Λ over the cubic chaos H₂,₁ is its value S at the diffuse Gaussian adversary independent of z₁ (approached over increasing dimensions). Open. Proved up to an error of 10⁻⁴ it would give about 1.402 with the cubic witness (the retuned identity-tail witness already gives a strict lower bound of 1.4020237104); proved exactly, about 1.4022. Start with its book, [`MONOGRAPH.md`](conjecture-K/MONOGRAPH.md). |
 | [`higher-degree/`](higher-degree/README.md) | Complex games of degree ≥ 5: the best games of degree 5, 7 and 9 and their model values (1.403648, 1.404113, 1.40430), the responses that bind them, a first test of roundings, and the degree-5 certificate programme for 1.402: a conditional certificate for a capped game, by one author and not yet replayed, whose hypothesis, a sector inequality on each row, is open in several parts. The game values are numerical; the certificate rows carry their own labels. Start with its ledger, [`STATUS.md`](higher-degree/STATUS.md). |
-| [`identity-tail/`](identity-tail/README.md) | The witness P₁,₀ − εP₂,₁ + ν(Id − P₁,₀ − P₂,₁) at (ε, ν) = (191/250, 47/2000): the identity-tail component of the proved lower bound. Model value 1.40212. Its integer certificate (an exact envelope over t ∈ [0, 0.9], designed for the target 1.4018 and below that target's cap with a margin of 5.6·10⁻⁵) is in Lean since #525. The two active rows share a fourth moment, a residual scale and a Gaussian gate. Fourteen transported ordinates, a second paired gate and the curvature of the central Schur complement give the [original amplitude profile](identity-tail/CURVED_SCHUR.md). Retuning it with a degree-five partner gives [the strict lower bound 1.4020236979](identity-tail/RETUNED_QUINTIC.md) in `main_bounds`. Start with its ledger, [`STATUS.md`](identity-tail/STATUS.md). |
+| [`identity-tail/`](identity-tail/README.md) | The witness P₁,₀ − εP₂,₁ + ν(Id − P₁,₀ − P₂,₁) at (ε, ν) = (191/250, 47/2000): the identity-tail component of the proved lower bound. Model value 1.40212. Its integer certificate (an exact envelope over t ∈ [0, 0.9], designed for the target 1.4018 and below that target's cap with a margin of 5.6·10⁻⁵) is in Lean since #525. The two active rows share a fourth moment, a residual scale and a Gaussian gate. Fourteen transported ordinates, a second paired gate and the curvature of the central Schur complement give the [original amplitude profile](identity-tail/CURVED_SCHUR.md). Retuning it with the first-chaos projector gives [the strict lower bound 1.4020237104](identity-tail/RETUNED_QUINTIC.md) in `main_bounds`. Start with its ledger, [`STATUS.md`](identity-tail/STATUS.md). |
 | [`upper-channels/`](upper-channels/README.md) | The root Lean upper bound 1.404554025 comes from the mixture of `Grothe/UpperBivar/` (#856): twelve preprocessors added to the six original columns. The seventh angular selector, which improved on every mixture of the six original columns at their fixed preprocessors and tail allowances, gave the earlier bound 1.404556392. The ledger also records finer truncations, several independent selectors and other candidate rounding channels. [Status ledger](upper-channels/STATUS.md). |

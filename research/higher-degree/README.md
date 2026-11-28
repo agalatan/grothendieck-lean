@@ -1,8 +1,6 @@
 # Higher-degree games: start here
 
-The proved lower bound K_G^ℂ > 1.4020236979 uses a mixture of the original identity-tail witness and
-P₁,₀ − (1/100)P₂,₁ + (1/2000)P₃,₂ at weight 3693/50000000. The original 38 amplitude cells certify the mixed scalar budget.
-Setting the fifth coefficient to zero at these weights gives the same envelope. [Certificate and controls](../identity-tail/RETUNED_QUINTIC.md).
+The proved lower bound K_G^ℂ > 1.4020237104 comes from retuning the identity-tail witness with the first-chaos projector. A companion family adds a positive fifth-chaos coefficient up to 3645203/2500000000000000000 and reaches the same rounded scalar cap. The original 38-cell schedule gives the smaller unrounded maximum at zero. [Certificate and controls](../identity-tail/RETUNED_QUINTIC.md).
 
 Even a perfect evaluation of a cubic witness cannot certify more than 1.4022581233 ([`../conjecture-K/`](../conjecture-K/README.md),
 ledger 12.2). Larger lower bounds need games of higher degree. In particular, the third decimal of K_G^ℂ needs a
@@ -14,9 +12,8 @@ This folder records what is known about higher-degree games:
 - the degree-5 certificate programme: its design, a conditional certificate for a capped game, and what is known
   about the sector inequality that the certificate assumes.
 
-The [optional Lean package](lean/README.md) formalizes the pure degree-five witness and parts of its scalar cap.
-The ledger identifies the **P** and **C** parts of rows 1.6, 1.9, 2.6 and §4 and names their author and checker.
-The game values and margins outside those proved or certified results are numerical (**N**).
+It is research material: nothing here is imported by Lean or checked by CI. **The game values and margins are
+numerical (N)**, apart from the **P** or **C** parts of `STATUS.md` rows 1.6, 1.9, 2.6 and §4, which name their author and checker.
 
 | file | what it is |
 |---|---|
@@ -25,7 +22,6 @@ The game values and margins outside those proved or certified results are numeri
 | [`INVENTORY.md`](INVENTORY.md) | what is kept outside the repository (logs, numerical archives, downloaded sources), with paths, sizes and SHA-256 |
 | `sources/` | verbatim copies of the working reports (primal/dual search, literature notes, the degree-5 design, its progress and the capped game, the content problem as posed to outside sessions, the review of the content band, the game with the radius 0.93 and the scope of the content lemma, the attack plan of 25 November with its six problem statements, the design computation of 25 November with the assembly theorem, the note of 25 November on the middle range of t, the note of 25 November on targets above 1.402, the gate note of 26 November on two other degree-5 games, and the clean-room Level C law-cap replay of 26 November) |
 | `code/` | the scripts behind them and the small result files the ledger cites |
-| [`lean/`](lean/README.md) | optional Lake package for the pure witness, Gaussian couplings and partial scalar bounds |
 
 **Living documents.** `STATUS.md` is edited in place by every PR that changes the state of knowledge; copies under
 `sources/` stay verbatim ([`../README.md`](../README.md)). There is no book yet: `STATUS.md` with this file is the

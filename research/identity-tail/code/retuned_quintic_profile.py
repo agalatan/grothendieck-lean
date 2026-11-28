@@ -20,10 +20,9 @@ from coupled_stein_profile import EPS, affine_pieces, checked, quadratic_maximum
 
 
 NU = Q(47, 2000)
-WEIGHT = Q(3693, 50000000)
-CUBIC = Q(1, 100)
-QUINTIC = Q(1, 2000)
-CAP = Q(713254705661, 10**12)
+WEIGHT = Q(3645203, 50000000000)
+QUINTIC = Q(1, 50000000)
+CAP = Q(713254699303, 10**12)
 OLD_HAT_CAP = Q(8829435313, 12500000000)
 
 
@@ -107,7 +106,7 @@ def peak(segments, scales):
 def schedule_ceiling(segments, cubic, quintic):
     """Two fixed amplitudes bound the reciprocal obtainable by varying weight alone."""
     lines = []
-    for t in (Q("0.83899243"), Q("0.886176826")):
+    for t in (Q("0.838992436300"), Q("0.886176825774")):
         s, = [s for s in segments if s.low <= t <= s.high]
         intercept = s.at(t, physical_scales(Q(0), cubic, quintic))
         slope = s.at(t, physical_scales(Q(1), cubic, quintic)) - intercept
@@ -124,40 +123,44 @@ def check():
     segments = production_segments()
     old, _, _ = peak(segments, physical_scales(Q(0), Q(0), Q(0)))
     rounded_hat = Q(ceil((old-NU)/(1-NU)*10**11), 10**11)
-    checked(rounded_hat == OLD_HAT_CAP, "production cap control changed")
+    checked(rounded_hat == OLD_HAT_CAP, "original hat cap changed")
     old_reciprocal = 1/(NU+(1-NU)*rounded_hat)
-    checked(old_reciprocal == Q(25000000000000, 17831387166289),
-            "production reciprocal control changed")
+    checked(old_reciprocal == Q(25000000000000, 17831387166289), "original reciprocal changed")
 
-    checked(EPS == Q(25, 31) and CUBIC/EPS == Q(31, 2500)
-            and 2*(CUBIC/EPS)*NU/(1-NU) == Q(47, 78750) > QUINTIC,
-            "fifth-chaos price exceeds the signed half-difference allowance")
-    scales = physical_scales(WEIGHT, CUBIC, QUINTIC)
-    checked(scales == (Q(488214395787, 500000000000), Q(191362643, 2625000000000),
-                       Q(246732237901, 10500000000000)), "production scale factors changed")
-    checked(physical_scales(WEIGHT, CUBIC, 0) == scales,
-            "the same-parameter zero-fifth control should agree on every segment")
-    checked(physical_scales(WEIGHT, CUBIC, 2*QUINTIC) != scales,
-            "an over-budget fifth coefficient was incorrectly absorbed")
-    mixed, cell, t = peak(segments, scales)
-    checked(Q(ceil(mixed*10**12), 10**12) == CAP and cell == 26,
-            "outward physical cap or maximizing cell changed")
-    endpoints_only = max(s.at(endpoint, scales) for s in segments for endpoint in (s.low, s.high))
-    checked(mixed-endpoints_only > Q(3, 10**10),
-            "checking only segment endpoints must miss the maximizing vertex")
-    checked(Q("1.4020236979") < 1/CAP <= 1/mixed <= schedule_ceiling(segments, CUBIC, QUINTIC)
-            < Q("1.4020236981"), "retuned fixed-schedule bounds changed")
-    p1, _, _ = peak(segments, physical_scales(Q(729, 10**7), Q(0), Q(0)))
-    checked(Q("1.4020237103") < 1/p1 <= schedule_ceiling(segments, Q(0), Q(0))
-            < Q("1.4020237105"), "reoptimized first-chaos control changed")
+    pure_scales = physical_scales(WEIGHT, Q(0), Q(0))
+    companion_scales = physical_scales(WEIGHT, Q(0), QUINTIC)
+    checked(companion_scales == (Q(97642880918541, 10**14),
+            Q(182260146354797, 2500000000000000000),
+            Q(58745716890120203, 2500000000000000000)), "Lean mixedCheck coefficients changed")
+    pure, pure_cell, pure_t = peak(segments, pure_scales)
+    perturbed, companion_cell, companion_t = peak(segments, companion_scales)
+    checked((pure_cell, companion_cell) == (34, 26) and pure < perturbed,
+            "maximizing cells or the unrounded ablation comparison changed")
+    checked(pure_scales[0] == companion_scales[0] and
+            pure_scales[1] - companion_scales[1] == companion_scales[2] - pure_scales[2] == WEIGHT*QUINTIC,
+            "the allowance must equal the extra fifth multiplier times 1-t²")
+    for value in (pure, perturbed):
+        checked(Q(ceil(value*10**12), 10**12) == CAP, "outward-rounded scalar cap changed")
+    checked(perturbed > max(s.at(t, companion_scales) for s in segments for t in (s.low, s.high)),
+            "the interior maximum must exceed every segment endpoint")
+    ceiling = schedule_ceiling(segments, Q(0), Q(0))
+    checked(Q(ceil(10**12/ceiling), 10**12) == CAP, "a better grid cap might be possible")
+    checked(Q("1.4020237104") < 1/CAP <= 1/pure <= ceiling, "strict rounding or weight ceiling changed")
+
+    old_w, old_e, old_eta = Q(3693, 50000000), Q(1, 100), Q(1, 2000)
+    old_scales = physical_scales(old_w, old_e, old_eta)
+    checked(old_scales == physical_scales(old_w, old_e, Q(0)), "previous same-weight ablation changed")
+    previous = peak(segments, old_scales)[0]
+    checked(ceil(previous*10**12) == 713254705661 and CAP < previous,
+            "the preceding mixed-witness comparison changed")
 
     print(f"{len(segments)} closed segments in 38 cells cover [0, 9/10]")
-    print(f"Previous rounded production reciprocal: {old_reciprocal}")
-    print(f"Retuned physical cap: {CAP}, reciprocal {float(1/CAP):.13f}")
-    print(f"Maximum in zero-based cell {cell} at t approximately {float(t):.11f}")
-    print("At fixed cubic and mixture weights, setting the fifth weight to zero gives the same cap.")
-    print("Varying only the mixture weight with the first-chaos partner: "
-          "1.4020237103 < best schedule reciprocal < 1.4020237105")
+    print(f"Both witnesses: cap {CAP}, reciprocal {float(1/CAP):.14f}")
+    print(f"First-chaos control: cell {pure_cell}, t={float(pure_t):.12f}, cap {float(pure):.15f}")
+    print(f"Positive fifth coefficient: cell {companion_cell}, t={float(companion_t):.12f}, "
+          f"cap {float(perturbed):.15f}")
+    print(f"Smallest 10^-12-grid cap for the fixed first-chaos schedule: {CAP}")
+    print(f"Original identity-tail endpoint: {old_reciprocal}; previous mixed cap: 713254705661/10^12")
 
 
 if __name__ == "__main__":

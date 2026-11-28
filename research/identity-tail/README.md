@@ -1,6 +1,6 @@
 # The identity-tail witness: start here
 
-The Lean lower bound K_G^ℂ > 1.4020236979 (`main_bounds`) uses this identity-tail witness as one component of a [mixed degree-five witness](RETUNED_QUINTIC.md). Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Fourteen transported ordinates, a joint gate for rows 0.82 and 0.83 and the curvature of the central Schur complement give the [scalar cap](CURVED_SCHUR.md). It replaced the cubic witness
+The Lean lower bound K_G^ℂ > 1.4020237104 (`main_bounds`) uses [a first-chaos retuning of this identity-tail witness](RETUNED_QUINTIC.md). Its two active Stein rows share both the fourth excess and the residual scale of one circular cubic. Fourteen transported ordinates, a joint gate for rows 0.82 and 0.83 and the curvature of the central Schur complement give the [scalar cap](CURVED_SCHUR.md). It replaced the cubic witness
 P₁,₀ − (149/200)P₂,₁, which gave 1.401700322371 with the same machinery (rows, node caps, law nodes). This folder
 records how the new witness was found and certified:
 
@@ -9,7 +9,7 @@ records how the new witness was found and certified:
 The third term is an "identity tail": it acts pointwise, so it needs no truncation. In the model this witness gives
 K ≈ 1.40212 (ledger 3.1). **The integer certificate is complete** (ledger 5.1): an exact envelope over t ∈ [0, 0.9]
 stays below the design target 5000/7009 (K > 1.4018) with a margin of 5.6·10⁻⁵; its exact maximum gives
-1/B = 1.4019105…. The current proof uses the same node caps. The central rows share nineteen fourth-excess intervals and gain a quadratic discount from the Schur curvature. The ordinary rows 13 and 14 share the amplitude interval containing their crossover. The final amplitude cover has 38 cells. The original identity-tail endpoint is 25000000000000/17831387166289 (`sparse_stein_endpoint` in `Grothe/MainResult.lean`). Ledger §6 records the node-cap port.
+1/B = 1.4019105…. The current proof uses the same node caps. The central rows share nineteen fourth-excess intervals and gain a quadratic discount from the Schur curvature. The ordinary rows 13 and 14 share the amplitude interval containing their crossover. The final amplitude cover has 38 cells. The original identity-tail endpoint is 25000000000000/17831387166289 (`SparseEnvelope.endpoint_eq` in `Grothe/Lower/Cert/SparseEnvelope.lean`). Ledger §6 records the node-cap port.
 
 It is research material: nothing here is imported by Lean or checked by CI. The Lean proof itself lives in `Grothe/`
 (the witness, the rows, the envelope and the tail node caps; `docs/LEAN_DETAILS.md`), ported as ledger §6 describes.

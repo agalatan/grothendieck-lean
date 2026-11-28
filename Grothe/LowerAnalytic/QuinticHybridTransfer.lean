@@ -1,6 +1,5 @@
 import Grothe.LowerAnalytic.QuinticWitness
-import Grothe.StatementBridges
-import Grothe.LowerAnalytic.LowerBoundTight
+import Grothe.LowerAnalytic.FirstChaosProfile
 
 /-!
 # A mixed degree-five and identity-tail witness
@@ -84,63 +83,48 @@ theorem transferInputs_of_quinticHybrid {w e η B : ℝ} (he₀ : 0 ≤ e) (he�
   have h := hc n hn'.le f (θ • g) hf (smul_mem_unimod n hθ hg)
   rwa [← re_inner_quinticHybridWitness, map_smul, inner_smul_right, hθw, Complex.ofReal_re] at h
 
-
-/-- Bessel's inequality absorbs every fifth coefficient through the stated budget.
-The same right hand side holds for every coefficient in this interval. -/
-theorem quinticPayoff_le_retuned_hat (n : ℕ) {a η : ℝ} (ha : a ≤ 1) (hη : 0 ≤ η)
-    (hbudget : η ≤ 2*a*(47/1953)) {f g : L2G n}
-    (hf : f ∈ Unimod (stdGaussian (n+n))) (hg : g ∈ Unimod (stdGaussian (n+n))) :
-    quinticPayoff n ((25/31)*a) η f g ≤ a*VhatOf n (191/250) (47/2000) f g +
-      (1-a-2*a*(47/1953))*tOf n f g^2 + 2*a*(47/1953) := by
-  have eqn : quinticPayoff n ((25/31)*a) η f g = a*VhatOf n (191/250) (47/2000) f g +
-      (1-a)*(tOf n f g^2 - ‖PkOf n f g‖^2) + 2*a*(47/1953)*‖kOf n f g‖^2 +
-      η*(‖(H32 n).starProjection (hOf n f g)‖^2-‖(H32 n).starProjection (kOf n f g)‖^2) := by
-    rw [quinticPayoff,VOf_zero,VhatOf]; norm_num [epsHat,nuHat]; ring
+/-- In the tuned first-chaos mixture, an additional fifth-sector multiplier consumes
+at most its coefficient times the energy outside the first chaos. -/
+theorem quinticPerturbation_payoff (hcaps : TailNodeCaps (nuHat (47/2000))) {n : ℕ} (hn : 2 ≤ n)
+    {η : ℝ} (hη : 0 ≤ η) (hmax : η ≤ 1/50000000)
+    {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n+n))) (hg : g ∈ Unimod (stdGaussian (n+n))) :
+    let w : ℝ := FirstChaos.weight
+    (1-w)*VOf n (191/250) (47/2000) f g + w*quinticPayoff n 0 η f g ≤ (FirstChaos.cap : ℝ) := by
+  have h := FirstChaosProfile.phase_budget hcaps hn hf hg
+  dsimp only at h ⊢
+  rw [FirstChaosProfile.payoff_split] at h
   have hP := quintic_projection_energy_le n (hOf n f g)
   change tOf n f g^2+‖QhOf n f g‖^2+‖(H32 n).starProjection (hOf n f g)‖^2 ≤ _ at hP
-  have hbudget' : ‖kOf n f g‖^2+‖(H32 n).starProjection (hOf n f g)‖^2 ≤ 1-tOf n f g^2 := by
-    linarith only [hP, normSq_hOf_add_normSq_kOf n hf hg, sq_nonneg ‖QhOf n f g‖]
-  rw [eqn]
-  linarith only [mul_le_mul_of_nonneg_left hbudget' (hη.trans hbudget),
-    mul_le_mul_of_nonneg_right hbudget (sq_nonneg ‖(H32 n).starProjection (hOf n f g)‖),
-    mul_nonneg hη (sq_nonneg ‖(H32 n).starProjection (kOf n f g)‖),
-    mul_nonneg (sub_nonneg.mpr ha) (sq_nonneg ‖PkOf n f g‖)]
+  have hF : ‖(H32 n).starProjection (hOf n f g)‖^2 ≤ 1-tOf n f g^2 := by
+    linarith only [hP,normSq_hOf_add_normSq_kOf n hf hg,sq_nonneg ‖QhOf n f g‖,sq_nonneg ‖kOf n f g‖]
+  have hB : η*(‖(H32 n).starProjection (hOf n f g)‖^2-‖(H32 n).starProjection (kOf n f g)‖^2) ≤
+      (1/50000000)*(1-tOf n f g^2) := by
+    calc _ ≤ η*‖(H32 n).starProjection (hOf n f g)‖^2 := by
+              exact mul_le_mul_of_nonneg_left (sub_le_self _ (sq_nonneg _)) hη
+         _ ≤ (1/50000000)*(1-tOf n f g^2) :=
+              mul_le_mul hmax hF (sq_nonneg _) (by norm_num)
+  have hw : (0:ℝ) ≤ FirstChaos.weight := by norm_num [FirstChaos.weight]
+  rw [quinticPayoff,VOf_zero]
+  linarith only [h,mul_le_mul_of_nonneg_left hB hw]
 
-/-- The exact physical schedule for the original rows, before bounding any cell. -/
-theorem quinticHybrid_le_retuned_profile {n : ℕ} {w a η : ℝ} (hw : 0 ≤ w) (ha : a ≤ 1)
-    (hη : 0 ≤ η) (hbudget : η ≤ 2*a*(47/1953)) {f g : L2G n}
-    (hf : f ∈ Unimod (stdGaussian (n+n))) (hg : g ∈ Unimod (stdGaussian (n+n))) :
-    (1-w)*VOf n (191/250) (47/2000) f g + w*quinticPayoff n ((25/31)*a) η f g ≤
-      ((1-w)*(1953/2000)+w*a)*VhatOf n (191/250) (47/2000) f g +
-      (w*(1-a-2*a*(47/1953)))*tOf n f g^2 + ((1-w)*(47/2000)+w*2*a*(47/1953)) := by
-  have h := mul_le_mul_of_nonneg_left (quinticPayoff_le_retuned_hat n ha hη hbudget hf hg) hw
-  rw [VOf_eq_hat n _ (by norm_num) hf hg]
-  linarith only [h]
+/-- The whole interval of explicit fifth-chaos perturbations has the same certified
+finite-matrix scalar cap as the first-chaos-only partner. -/
+theorem quinticPerturbation_scalarCap (hcaps : TailNodeCaps (nuHat (47/2000))) {n : ℕ} (hn : 2 ≤ n)
+    {η : ℝ} (hη : 0 ≤ η) (hmax : η ≤ 1/50000000) :
+    ScalarCap (stdGaussian (n+n)) (quinticHybridWitness n FirstChaos.weight 0 η) FirstChaos.cap := by
+  intro f hf g hg
+  obtain ⟨θ,hθ,hθw⟩ := exists_phase (inner ℂ f (quinticHybridWitness n FirstChaos.weight 0 η g))
+  have h := quinticPerturbation_payoff hcaps hn hη hmax hf (smul_mem_unimod n hθ hg)
+  dsimp only at h
+  rwa [← re_inner_quinticHybridWitness,map_smul,inner_smul_right,hθw,Complex.ofReal_re] at h
 
-/-- A bound for the weighted amplitude profile of the existing 38-cell schedule
-transfers the retuned mixed witness, with fifth coefficient `3693/100000000000`. -/
-theorem retunedHybrid_transferInputs_of_profile
-    (hcaps : TailNodeCaps (nuHat (47/2000)))
-    (hp : ∀ {F : Type} [NormedAddCommGroup F] [InnerProductSpace ℝ F] (V t : ℝ) (Qh v : F),
-      ‖v‖^2 = 2 → 0 ≤ t → t ≤ 9/10 →
-      V ≤ (1-1/2)*t^2+1/2+(massS : ℝ)-(ε : ℝ)*‖Qh‖^2 →
-      CircularSharedReduction rowData V t Qh v →
-      (488214395787/500000000000)*V + (191362643/2625000000000)*t^2 +
-        246732237901/10500000000000 ≤ 713254705661/1000000000000) :
-    TransferInputsL2 (713254705661/1000000000000) := by
-  apply transferInputs_of_quinticHybrid (e := 1/100) (η := 1/2000) (w := 3693/50000000)
-    (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num) 2
-  intro n hn f g hf hg
-  obtain ⟨m, rfl⟩ : ∃ m, n = m+1 := ⟨n-1,by omega⟩
-  have he : epsHat (191/250) (47/2000) = ε := by norm_num [epsHat,ε]
-  have hν : 2*nuHat (47/2000)+1/2 = (massC:ℝ) := by norm_num [nuHat,massC]
-  obtain ⟨v,hv,hred⟩ := circularReductionHyp_of_nodeCaps he hcaps (n := m) (by omega) f g hf hg
-  have hcap := hp _ _ _ v hv (norm_nonneg _) (tOf_le (m+1) hf hg)
-    (massRow_frame (m+1) (by omega) he hν hf hg) hred
-  have hb := quinticHybrid_le_retuned_profile (w := 3693/50000000) (a := 31/2500) (η := 1/2000)
-    (by norm_num) (by norm_num) (by norm_num) (by norm_num) hf hg
-  norm_num at hb hcap ⊢
-  exact hb.trans hcap
+/-- Finite matrices obtained from any of these actual Gaussian operators reach the
+same lower endpoint. The shared vector test has limit one. -/
+theorem quinticPerturbation_transfer (hcaps : TailNodeCaps (nuHat (47/2000)))
+    {η : ℝ} (hη : 0 ≤ η) (hmax : η ≤ 1/50000000) : TransferInputsL2 (FirstChaos.cap : ℝ) :=
+  transferInputs_of_quinticHybrid (w := FirstChaos.weight) (e := 0) (η := η)
+    (by norm_num) (by norm_num) hη (by norm_num [FirstChaos.weight]) (by norm_num [FirstChaos.weight]) 2
+    (fun _ hn _ _ hf hg ↦ quinticPerturbation_payoff hcaps hn hη hmax hf hg)
 
 end
 end Grothe.LowerAnalytic

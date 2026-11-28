@@ -10,9 +10,9 @@ import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.HeadHardy
 import Grothe.ListPoly
 import Grothe.Lower.Basic
+import Grothe.Lower.Cert.FirstChaos
 import Grothe.Lower.Cert.MassRow
 import Grothe.Lower.Cert.MassWitnesses
-import Grothe.Lower.Cert.QuinticHybrid
 import Grothe.Lower.Cert.Row01
 import Grothe.Lower.Cert.Row02
 import Grothe.Lower.Cert.Row03
@@ -3383,6 +3383,7 @@ import Grothe.LowerAnalytic.FibreIntegral
 import Grothe.LowerAnalytic.FibrePotential
 import Grothe.LowerAnalytic.FibreRot
 import Grothe.LowerAnalytic.FibreSup
+import Grothe.LowerAnalytic.FirstChaosProfile
 import Grothe.LowerAnalytic.Fluctuation
 import Grothe.LowerAnalytic.Frame
 import Grothe.LowerAnalytic.Gaussian
@@ -3403,7 +3404,6 @@ import Grothe.LowerAnalytic.Pieces
 import Grothe.LowerAnalytic.Potential
 import Grothe.LowerAnalytic.PotentialReg
 import Grothe.LowerAnalytic.QuinticHybridTransfer
-import Grothe.LowerAnalytic.QuinticMixedProfile
 import Grothe.LowerAnalytic.QuinticWitness
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.RadialParts
