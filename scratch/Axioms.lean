@@ -269,8 +269,8 @@ import Grothe
 #print axioms Grothe.Statement.firstChaosEndpoint_le_of_tailNodeCaps
 #print axioms Grothe.Statement.first_chaos_endpoint
 #print axioms Grothe.Statement.main_bounds
-#print axioms Grothe.Statement.sparse_stein_endpoint
 #print axioms Grothe.Statement.quintic_perturbation_scalar_cap
+#print axioms Grothe.Statement.sparse_stein_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upper_below_tight
 #print axioms Grothe.Statement.upper_bound_tight
