@@ -9,8 +9,10 @@
 # hold: a review that takes longer (a replay, an independent recomputation) puts the PR on hold: the label
 # HOLD:<reviewer-id> (one per reviewer) and a signed comment. No PR with a HOLD label lands (scripts/land_ready.sh
 # refuses it, like RFC/WIP, and checks again just before it pushes master), whatever other approvals it has. Each
-# reviewer's verdict (approve or block) removes only that reviewer's label. If the PR is no longer open when the
-# hold is placed, the command says so (exit 4): the landing won. A hold is for a review actually running.
+# reviewer's verdict (approve or block) removes only that reviewer's label. The command reads the PR's state when the
+# label is placed and again after a settling interval (HOLD_SETTLE_SECONDS, default 45): exit 0 means the hold is in
+# force; exit 4 means a landing that had already passed its final check won (the landing also says so on the PR);
+# exit 5 means the state could not be read. A hold is for a review actually running.
 #
 # <branch> is the PR's branch, <agent-id>/<topic>; <sha> is the full 40-hex commit you reviewed (the PR's head when
 # you read it). If the branch has moved past that commit the script refuses: review the new commit instead. The
@@ -45,13 +47,25 @@ if [ "$verdict" = hold ]; then
   gh label create "$hold_label" --color B60205 \
     --description "${reviewer} is reviewing: do not land until its verdict (scripts/review.sh hold)" >/dev/null 2>&1 || true
   gh pr edit "$pr" --add-label "$hold_label" >/dev/null   # the label is the hold; the comment only explains it
-  if [ "$(gh pr view "$pr" --json state --jq .state 2>/dev/null || echo UNKNOWN)" != OPEN ]; then
-    echo "too late: PR #$pr is no longer open (it landed or was closed before the hold); review it after the fact" >&2
-    exit 4
+  pr_state() { gh pr view "$pr" --json state --jq .state 2>/dev/null || echo UNREADABLE; }
+  state=$(pr_state)
+  if [ "$state" = UNREADABLE ]; then
+    echo "the label ${hold_label} is placed, but the state of PR #$pr could not be read: check the PR yourself" >&2; exit 5
+  elif [ "$state" != OPEN ]; then
+    echo "too late: PR #$pr is $state (it landed or was closed before the hold); review it after the fact" >&2; exit 4
   fi
   gh pr comment "$pr" --body "[${reviewer}] HOLD: a longer review is in progress at \`${sha:0:12}\` (${summary}). **This PR must not land until my verdict**: the label \`${hold_label}\` makes the landing refuse it. My verdict removes it." >/dev/null \
     || echo "warning: the hold is placed (label ${hold_label}) but its comment failed; run the command again to add it" >&2
-  echo "hold placed on PR #$pr (${branch} at ${sha:0:12}): label ${hold_label}"
+  # A landing that read the labels just before ours was added may still push master (scripts/land_ready.sh reads
+  # them last, seconds before its push). Wait past that window, then report the outcome.
+  sleep "${HOLD_SETTLE_SECONDS:-45}"
+  state=$(pr_state)
+  if [ "$state" = UNREADABLE ]; then
+    echo "the label ${hold_label} is placed, but the state of PR #$pr could not be read afterwards: check the PR yourself" >&2; exit 5
+  elif [ "$state" != OPEN ]; then
+    echo "too late: PR #$pr is $state; a landing that had already passed its final check won the race. Review it after the fact" >&2; exit 4
+  fi
+  echo "hold placed and in force on PR #$pr (${branch} at ${sha:0:12}): label ${hold_label}"
   exit 0
 fi
 desc="[${reviewer}] ${verdict}: ${summary}"

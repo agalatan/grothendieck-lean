@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 import subprocess
+import tempfile
 import unittest
 
 
@@ -39,7 +40,11 @@ def review_call(branch, reviewer, tip=REVIEWED, verdict="approve", env=None):
                 'pr comment') printf 'Mock %s\n' "$*" >&2; [[ "${MOCK_COMMENT_FAIL:-0}" != 1 ]] ;;
                 'pr view') if [[ "$*" == *labels* ]]; then
                                if [[ "$*" == *"${MOCK_HELD_BY:-none}"* ]]; then echo true; else echo false; fi
-                           else echo "${MOCK_STATE:-OPEN}"; fi ;;
+                           else
+                               n=$(( $(cat "$MOCK_COUNTER" 2>/dev/null || echo 0) + 1 )); echo $n > "$MOCK_COUNTER"
+                               s=$(echo "${MOCK_STATES:-OPEN OPEN}" | cut -d' ' -f$n)
+                               [[ "$s" == FAIL ]] && return 1; echo "${s:-OPEN}"
+                           fi ;;
                 *) return 98 ;;
             esac
         }
@@ -48,7 +53,8 @@ def review_call(branch, reviewer, tip=REVIEWED, verdict="approve", env=None):
     return subprocess.run(
         ["bash", "-c", mocks, "bash", str(SCRIPTS / "review.sh"), branch, REVIEWED, verdict,
          reviewer, "checked"],
-        env={**os.environ, "MOCK_REVIEW_TIP": tip, **(env or {})},
+        env={**os.environ, "MOCK_REVIEW_TIP": tip, "HOLD_SETTLE_SECONDS": "0",
+             "MOCK_COUNTER": os.path.join(tempfile.mkdtemp(), "n"), **(env or {})},
         capture_output=True,
         text=True,
         timeout=5,
@@ -122,9 +128,26 @@ class HoldTests(unittest.TestCase):
         self.assertEqual(self.call(MOCK_PR="").returncode, 2)
 
     def test_a_hold_placed_after_the_landing_reports_it(self):
-        result = self.call(MOCK_STATE="MERGED")
+        result = self.call(MOCK_STATES="MERGED")
         self.assertEqual(result.returncode, 4, result.stderr)
         self.assertIn("too late", result.stderr)
+
+    def test_a_landing_already_past_its_check_wins_and_the_holder_is_told(self):
+        # the state still reads OPEN when the label is added; the cleared landing then pushes
+        result = self.call(MOCK_STATES="OPEN MERGED")
+        self.assertEqual(result.returncode, 4, result.stderr)
+        self.assertIn("won the race", result.stderr)
+
+    def test_a_hold_in_force_says_so(self):
+        result = self.call(MOCK_STATES="OPEN OPEN")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("in force", result.stdout)
+
+    def test_an_unreadable_state_is_reported_separately(self):
+        result = self.call(MOCK_STATES="FAIL")
+        self.assertEqual(result.returncode, 5, result.stderr)
+        self.assertIn("could not be read", result.stderr)
+        self.assertNotIn("too late", result.stderr)
 
     def test_a_failed_comment_keeps_the_hold_and_a_retry_is_harmless(self):
         first = self.call(MOCK_COMMENT_FAIL="1")
@@ -148,6 +171,41 @@ class HoldTests(unittest.TestCase):
         result = self.call(verdict="approve", MOCK_HELD_BY="HOLD:gemini-1111")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertNotIn("--remove-label", result.stderr)
+
+
+def notice_call(labels, comment_fails=False):
+    mocks = r"""
+        gh() {
+            case "$1 $2" in
+                'pr view') [[ "$MOCK_LABELS" == FAIL ]] && return 1; echo "$MOCK_LABELS" ;;
+                'pr comment') printf 'Mock %s\n' "$*" >&2; [[ "$MOCK_COMMENT_FAIL" != 1 ]] ;;
+                *) return 98 ;;
+            esac
+        }
+        source "$@"
+    """
+    return subprocess.run(
+        ["bash", "-c", mocks, "bash", str(SCRIPTS / "hold_notice.sh"), "42", "c" * 40],
+        env={**os.environ, "MOCK_LABELS": labels, "MOCK_COMMENT_FAIL": "1" if comment_fails else "0"},
+        capture_output=True, text=True, timeout=5,
+    )
+
+
+class LostHoldNoticeTests(unittest.TestCase):
+    def test_each_hold_present_after_the_push_is_reported_to_its_holder(self):
+        result = notice_call("HOLD:claude-3e2a HOLD:gemini-1111")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("claude-3e2a: please review after the fact", result.stderr)
+        self.assertIn("gemini-1111: please review after the fact", result.stderr)
+
+    def test_no_hold_no_notice(self):
+        result = notice_call("")
+        self.assertEqual(result.returncode, 0)
+        self.assertNotIn("Mock", result.stderr)
+
+    def test_failures_never_fail_the_landing(self):
+        self.assertEqual(notice_call("FAIL").returncode, 0)
+        self.assertEqual(notice_call("HOLD:claude-3e2a", comment_fails=True).returncode, 0)
 
 
 if __name__ == "__main__":

@@ -81,6 +81,7 @@ if [ -n "$holds" ]; then
 fi
 if git push origin merge-candidate:master; then
   merged=$(git rev-parse merge-candidate)
+  bash scripts/hold_notice.sh "$PR" "$merged" || true   # a hold placed after the final read lost the race: say so
   delete_branch
   if [ "$lean" = true ]; then
     ctx="Lean proof check (verified before merge)"; d="Built and checked as PR #${PR} merged into master"
