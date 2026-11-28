@@ -100,8 +100,11 @@ def main():
 
     n_tests = 0
 
-    # 1. Structural constant soundness controls (8 controls):
+    # 1. Structural constant soundness controls (10 controls):
+    pi_lo, pi_hi = V1.verify_pi_bounds()
     structural_cases = [
+        (lambda: V1.verify_near_gaussian_cutoffs(pi_lo, pi_hi, chi_cut_cplx=Fr(3, 8)), "unsound uniform chi_cut_cplx = 3/8 > 1/8"),
+        (lambda: V1.verify_near_gaussian_cutoffs(pi_lo, pi_hi, s_cut_real=Fr(1)), "unsound uniform s_cut_real = 1 > 3/4"),
         (lambda: V1.verify_shifted_structural_constants(rb_outer=Fr(1414213, 1000000)), "RB_OUTER < sqrt(2)"),
         (lambda: V1.verify_hole_lower_bound(Fr(3, 2), Fr(105, 100)), "unsound hole u_min too large"),
         (lambda: V1.verify_hole_lower_bound(Fr(1), Fr(1, 100)), "positive u_min on v_lo = 1"),

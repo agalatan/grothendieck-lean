@@ -350,17 +350,30 @@ def complex_laguerre_even_moment_norm(p, q, two_m):
     return total / Fr((factorial(p) * factorial(q)) ** m)
 
 
+def verify_near_gaussian_cutoffs(pi_lo, pi_hi, s_cut_real=Fr(3, 4), chi_cut_cplx=Fr(1, 8)):
+    """Verify in exact rational arithmetic the dimension-uniform Nourdin-Peccati near-Gaussian cutoffs (Theorem 2(d)):
+      - Real V_d(R^n) (all d >= 2): sup_{d>=2} ((d - 1)/(3 d)) s = s / 3, so
+        E|F|/||F||_2 <= sqrt(2/pi) * (1 + (1/2) sqrt(s / 3)) <= (5/4) sqrt(2/pi) < 499/500
+        holds uniformly across ALL d >= 2 iff (1/2) sqrt(s_cut_real / 3) <= 1/4 <=> s_cut_real <= 3/4.
+      - Circular complex H_{p,q}(C^n) (p != q, all d = p + q >= 2): sup_{d>=2} ((d - 1)/(2 d)) chi = chi / 2, so
+        E|Q|/||Q||_2 <= (sqrt(pi)/2) * (1 + (1/2) sqrt(chi / 2)) <= 9 sqrt(pi) / 16 < 9971/10000
+        holds uniformly across ALL d >= 2 iff (1/2) sqrt(chi_cut_cplx / 2) <= 1/8 <=> chi_cut_cplx <= 1/8.
+    """
+    s_cut_real = Fr(s_cut_real)
+    chi_cut_cplx = Fr(chi_cut_cplx)
+    require(s_cut_real >= 0 and Fr(1, 12) * s_cut_real <= Fr(1, 4) ** 2,
+            f"Unsound real uniform near-Gaussian cutoff s_cut_real={s_cut_real} > 3/4")
+    require(Fr(25) < Fr(8) * pi_lo * (Fr(499, 500) ** 2), "Real near-Gaussian (5/4)*sqrt(2/pi) < 499/500 failed")
+
+    require(chi_cut_cplx >= 0 and Fr(1, 8) * chi_cut_cplx <= Fr(1, 8) ** 2,
+            f"Unsound complex uniform near-Gaussian cutoff chi_cut_cplx={chi_cut_cplx} > 1/8")
+    require(Fr(81, 256) * pi_hi < Fr(9971, 10000) ** 2, "Complex near-Gaussian 9*sqrt(pi)/16 < 9971/10000 failed")
+
+
 def verify_all_degree_theorem(pi_lo, pi_hi):
     """Verify symbolically and numerically all claims of Theorem 2 (All-Degree `< 1` & Near-Gaussian)."""
     # 1) Near-Gaussian centered Nourdin-Peccati bounds across ALL d >= 2:
-    # Real V_d(R^n): at s <= 3/4, E|F|/||F||_2 <= sqrt(2/pi) * (1 + (1/2) sqrt(((d-1)/(3d)) * (3/4)))
-    # <= (5/4) sqrt(2/pi) = sqrt(25 / (8 pi)) < 998/1000!
-    require(Fr(25) < Fr(8) * pi_lo * (Fr(998, 1000) ** 2), "Real near-Gaussian s <= 3/4 bound < 998/1000 failed")
-    # Circular complex H_{p,q}(C^n) (p != q, d = p + q >= 2): at chi <= 3/8,
-    # E|Q|/||Q||_2 <= (sqrt(pi)/2) * (1 + (1/2) sqrt(((d-1)/(2d)) * (3/8)))
-    # <= (sqrt(pi)/2) * (1 + (1/2) * sqrt(3/16)) < (sqrt(pi)/2) * (9/8) = 9 sqrt(pi) / 16 < 9971/10000!
-    # Check 3/16 < 1/4 => (1/2)*sqrt(3/16) < 1/4, and (9/16)^2 * pi_hi < (9971/10000)^2:
-    require(Fr(81, 256) * pi_hi < Fr(9971, 10000) ** 2, "Complex near-Gaussian chi <= 3/8 bound < 9971/10000 failed")
+    verify_near_gaussian_cutoffs(pi_lo, pi_hi)
 
     # 2) Exact symbolic verification in Q[b, delta] of the all-B factorization of P_B(x) - x on x >= B >= 2!
     # Let B = 2 + b (b >= 0) and u = B^2 + delta (delta >= 0).
@@ -392,12 +405,14 @@ def verify_all_degree_theorem(pi_lo, pi_hi):
     rhs_test = Fr(7) * peval(d1, Fr(3)) + Fr(49) * peval(d2, Fr(3)) + Fr(343) * peval(d3, Fr(3))
     require(lhs_test == rhs_test, "Symbolic tail identity evaluation mismatch")
 
-    # 3) Verify exact moment constants M_{4,d}, M_{6,d} for d = 2 .. 9 and explicit strict `< 1` bounds:
-    expected_real = {
-        2: (Fr(15), Fr(755)),
-        3: (Fr(93), Fr(53745)),
-        5: (Fr(4653), Fr(404895765)),
-        7: (M4_REAL_V7, M6_REAL_V7),
+    # 3) Verify exact moment constants M_{4,d}, M_{6,d}, B_d, and 2(B_d+1)^2 across ALL table rows d = 2 .. 7 (and d = 8, 9):
+    expected_real_table = {
+        2: (Fr(15), Fr(755), 28, 1682),
+        3: (Fr(93), Fr(53745), 232, 108578),
+        4: (Fr(639), Fr(4464675), 2113, 8937992),
+        5: (Fr(4653), Fr(404895765), 20123, 809950752),
+        6: (Fr(35169), Fr(38859899525), 197130, 77721262322),
+        7: (M4_REAL_V7, M6_REAL_V7, 1969859, 7760696839200),
     }
     real_table = {}
     for d in range(2, 10):
@@ -405,11 +420,12 @@ def verify_all_degree_theorem(pi_lo, pi_hi):
         m4 = hermite_even_moment_norm(d, 4)
         m6 = hermite_even_moment_norm(d, 6)
         require(m2 == 1 and m4.denominator == 1 and m6.denominator == 1, f"Non-integer Hermite moment at d={d}")
-        if d in expected_real:
-            require((m4, m6) == expected_real[d], f"Hermite moment mismatch at d={d}: {(m4, m6)}")
         # Closed-form B_d = isqrt(m6) + 1 (so B_d >= 2 and B_d^2 > m6):
         Bd = Fr(isqrt(int(m6)) + 1)
         require(Bd >= 2 and Bd * Bd > m6, "B_d choice failed")
+        if d in expected_real_table:
+            require((m4, m6, int(Bd), 2 * ((int(Bd) + 1) ** 2)) == expected_real_table[d],
+                    f"Real table mismatch at d={d}: {(m4, m6, int(Bd), 2 * ((int(Bd) + 1) ** 2))}")
         eps = Fr(1, 2) / ((Bd + 1) ** 2)
         eta = eps * ((Bd * Bd - 1) ** 2) / (Bd ** 6)
         # Direct Sturm check on P_{B_d}(x) - x > 0 on [0, +inf):
@@ -443,6 +459,8 @@ def verify_all_degree_theorem(pi_lo, pi_hi):
         if p != q:
             # Circular: E|Q|^4 = 2 + chi >= 2 => E[(|Q|^2 - 1)^2] >= 1:
             Bpq = Fr(isqrt(2 * int(m6c)) + 1)
+            if (p, q) == (4, 3):
+                require((int(Bpq), 4 * ((int(Bpq) + 1) ** 2)) == (938736, 3524908620676), "H_{4,3} table B/denom mismatch")
             eps_c = Fr(1, 2) / ((Bpq + 1) ** 2)
             eta_c = eps_c * ((Bpq * Bpq - 1) ** 2) / (Bpq ** 6)
             ub_c = Fr(1) - eps_c + m6c * eta_c
@@ -481,7 +499,50 @@ def verify_shifted_structural_constants(rb_outer=None):
     #    which is STRICTLY DECREASING in t > 0, so checking at t = T_TAIL_CUT = 16/5 certifies ALL |t| >= 16/5!
     t_cut = T_TAIL_CUT
     tail_excess = Fr(405, 64) / (t_cut * t_cut) + (Fr(405, 128) ** 2) / (t_cut ** 6)
+    require(tail_excess == Fr(172432202625, 274877906944), "Exact tail fraction mismatch at t = 16/5")
     require(tail_excess < C_CLAIM_SHARP < C_CLAIM_TARGET, "Large-|t| tail bound at t = 16/5 failed")
+
+    # 3b) Exact rational alternating-series enclosure of the rank-1 upper bound at Q = (G_1^2 - 1)/sqrt(2), t_0 = -8461/10000:
+    #     With u = (1 - sqrt(2) t_0)/2 > 1 and x = sqrt(u), I(x) = (2 x^2 - 1) int_0^x e^{-s^2} ds + x e^{-x^2}
+    #     satisfies I(0) = 0 and I'(x) = 4 x int_0^x e^{-s^2} ds > 0, so I(sqrt(u)) = u^{3/2} sum_{k>=0} 4 (-1)^k u^k / (k! (2k+1)(2k+3))
+    #     is strictly increasing in u > 0 and alternating with strictly decreasing term magnitudes for k >= 2 (since u < 6/5):
+    pi_lo_s, pi_hi_s = verify_pi_bounds()
+    t0_r1 = -Fr(8461, 10000)
+    scale_s2 = 10 ** 30
+    s2_lo = Fr(isqrt(2 * (scale_s2 ** 2)), scale_s2)
+    s2_hi = s2_lo + Fr(1, scale_s2)
+    require(s2_lo * s2_lo <= 2 < s2_hi * s2_hi, "sqrt(2) enclosure failed")
+    u_lo = (Fr(1) - s2_lo * t0_r1) / 2
+    u_hi = (Fr(1) - s2_hi * t0_r1) / 2
+    require(Fr(1) < u_lo < u_hi < Fr(6, 5), "u range check failed")
+
+    def alt_sum_trunc(u_val, k_max):
+        acc = Fr(0)
+        u_pow = Fr(1)
+        fact_k = 1
+        for k in range(k_max + 1):
+            if k > 0:
+                u_pow *= u_val
+                fact_k *= k
+            term = Fr(4, fact_k * (2 * k + 1) * (2 * k + 3)) * u_pow
+            acc = acc + term if k % 2 == 0 else acc - term
+        return acc
+
+    # Odd truncation k_max = 25 underestimates; even truncation k_max = 24 overestimates:
+    ser_lo = alt_sum_trunc(u_lo, 25)
+    ser_hi = alt_sum_trunc(u_hi, 24)
+    rad_lo_arg = Fr(8) * (u_lo ** 3) / pi_hi_s
+    rad_hi_arg = Fr(8) * (u_hi ** 3) / pi_lo_s
+    rad_lo = Fr(isqrt((rad_lo_arg.numerator * (scale_s2 ** 2)) // rad_lo_arg.denominator), scale_s2)
+    rad_hi = Fr(isqrt((rad_hi_arg.numerator * (scale_s2 ** 2)) // rad_hi_arg.denominator) + 1, scale_s2)
+    require(rad_lo * rad_lo <= rad_lo_arg and rad_hi * rad_hi >= rad_hi_arg, "rad enclosure failed")
+    ev_r1_lo = t0_r1 + rad_lo * ser_lo
+    ev_r1_hi = t0_r1 + rad_hi * ser_hi
+    require(Fr(0) < ev_r1_lo < ev_r1_hi, "ev_r1 sign failed")
+    var_r1_lo = Fr(1) + t0_r1 * t0_r1 - ev_r1_hi * ev_r1_hi
+    var_r1_hi = Fr(1) + t0_r1 * t0_r1 - ev_r1_lo * ev_r1_lo
+    require(Fr(34775514, 100000000) < var_r1_lo < var_r1_hi < Fr(34775515, 100000000),
+            f"Rank-1 t_0=-8461/10000 variance enclosure failed: [{var_r1_lo}, {var_r1_hi}]")
 
     # 4) Verify the sharpened mixed-factor cubic payoff from Var|t + Q| >= (17/50) S^2 (alpha = 33/50):
     #    Conditioning on X ~ N(0, 1) and applying AM-GM / Cauchy-Schwarz with exp(+-lam X^2 / 2) at lam = 1/6 (t = 6/7):
