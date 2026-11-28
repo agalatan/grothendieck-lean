@@ -26,7 +26,7 @@ python3 -IB test_controls.py
 python3 -IB -O test_controls.py
 ```
 
-Full C++17 recompilation and replay from the 2D Gaussian integral definitions:
+The C++17 replay integrates each cell profile and the three low-energy control profiles once from the 2D Gaussian definitions. The canonical 109 cells use all 15 rows. To recompile and run them:
 
 ```bash
 python3 -IB verify.py --replay-cpp
