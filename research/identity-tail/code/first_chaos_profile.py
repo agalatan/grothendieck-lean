@@ -70,8 +70,8 @@ def load_schedule():
     weights = curved.central_weights(source, cuts)
     checked(len(weights) == 15, "expected nine original and six new weights")
     prices, small = curved.price_tables(law, weights)
-    curved.check_lean_prices("prices", prices)
-    curved.check_lean_prices("smallPrices", small)
+    curved.check_lean_prices("prices", prices, allow_additional=True)
+    curved.check_lean_prices("smallPrices", small, allow_additional=True)
     curve = curved.curvature_deduction(law, curved.curvature(8,9), prices, small)
     return source, law, cuts, prices, curve
 

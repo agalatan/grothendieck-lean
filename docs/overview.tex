@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4020238808\;<\;\KG\;\le\;1.404554025$\\[6pt]
+\Large $1.4020253021\;<\;\KG\;\le\;1.404554025$\\[6pt]
 \normalsize The Lean~4/Mathlib theorem
 \lean{Grothe.Statement.main\_bounds} proves these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The exact first-chaos-retuned lower endpoint is rounded down to $14020238808/10000000000$.
+The exact first-chaos-retuned lower endpoint is rounded down to $14020253021/10000000000$.
 The multi-channel bivariate Gaussian roundings give the upper bound rounded up to $1404554025/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -94,7 +94,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020238808}$ & $\mathbf{1.404554025}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020253021}$ & $\mathbf{1.404554025}$\\\bottomrule
 \end{tabular}
 \end{center}
 The upper bound is $1404554025/1000000000$ (the multi-channel bivariate transfer factor $1/(c-\delta)$ rounded up).
@@ -710,19 +710,20 @@ Let $P_1$ and $P_3$ denote the charge-one projections $P_{1,0}$ and $P_{2,1}$ re
 \[
  T=(1-w)T_0+wP_1,\quad T_0=P_1-eP_3+\nu(I-P_1-P_3),
 \]
-where $(e,\nu)=(191/250,47/2000)$ and $w=358503031/5000000000000$.
+where $(e,\nu)=(191/250,47/2000)$ and $w=391473741/6250000000000$.
 For $u_\ell=z_\ell/\|z\|$, the real vector payoff of $T$ is at least $1-2/(n+1)$ and tends to one.
-On unimodular scalar functions the absolute payoff is at most $B=713254612582/10^{12}$.
-The finite-partition transfer gives $\KG\ge1/B=1000000000000/713254612582$.
+On unimodular scalar functions the absolute payoff is at most $B=713253889546/10^{12}$.
+The finite-partition transfer gives $\KG\ge1/B=500000000000/356626944773$.
 The lower half of \lean{main\_bounds} rounds this exact value strictly down.
 The two central rows use the same circular cubic, fourth excess and residual scale.
 Dilating eleven plain Stein polynomials to four target scales gives fourteen new
 bounds on their expectations. Within each of nineteen common shape intervals, Lean
-checks nine mixture prices on the closed intersections of the two scale chords, globally and up to scale $21/100$.
+checks the seventeen mixture weights on the closed intersections of the scale chords, globally and up to scale $21/100$.
+The Gaussian shift bound on the remote fibre energy supplies 27 additional prices on thirteen restricted scales.
 The Schur complement has curvature $-g''/2\ge2019911/10^{10}$, giving a quadratic saving at
 intermediate weights. A second pair combines two quadratic majorants with its shared Gaussian gate.
 The ordinary rows 13 and 14 interpolate across their crossover on amplitude cell 34.
-The 38 amplitude intervals then cover the full range of the witness.
+A signed visible-cubic bound covers the upper end of the amplitude range. The combined estimates cover all 38 original amplitude intervals.
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
@@ -781,7 +782,7 @@ On each closed segment, it maximizes the weighted sum of the row quadratic and t
 The cubic first-moment inequality bounds the residual scale $\tau$ by $93/100$.
 Rows $0.835$ and $0.845$ share that scale, their fourth excess and the Gaussian gate.
 The certified node caps \lean{tailNodeCaps\_cert} and the mixed transfer give
-$1000000000000/713254612582\le\KG$ independently of Conjecture~K.
+$500000000000/356626944773\le\KG$ independently of Conjecture~K.
 
 \subsection{The primal/dual viewpoint}
 For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
