@@ -55,9 +55,8 @@ def curvature(i, j):
     return lower
 
 
-def weighted_profile(src, prices, curve):
-    maxima = []
-    outer_maxima = []
+def weighted_segments(src, prices, curve):
+    """Yield the normalized quadratic on each closed amplitude segment."""
     for n,(lo,hi,i,j,old_weight) in enumerate(src.cells):
         rows = dict(src.rows)
         mid = (lo+hi)/2
@@ -82,10 +81,17 @@ def weighted_profile(src, prices, curve):
                         -penalty*theta*(1-theta)-(1-x)*dw-x*dz-extra*x*(1-x))
             y0,ym,y1 = f(Q(0)),f(Q(1,2)),f(Q(1))
             a = 2*(y0+y1-2*ym)
-            val,at = quadratic_maximum((a,y1-y0-a,y0),Q(0),Q(1),True)
-            maxima.append((val,n))
-            if (i,j)!=(8,9):
-                outer_maxima.append((val,n,i,j,l+at*(h-l)))
+            yield n, i, j, l, h, (a, y1-y0-a, y0)
+
+
+def weighted_profile(src, prices, curve):
+    maxima = []
+    outer_maxima = []
+    for n, i, j, l, h, coeffs in weighted_segments(src, prices, curve):
+        val, at = quadratic_maximum(coeffs, Q(0), Q(1), True)
+        maxima.append((val, n))
+        if (i, j) != (8, 9):
+            outer_maxima.append((val, n, i, j, l+at*(h-l)))
     val,cell=max(maxima)
     cap=Q(ceil(val*10**11),10**11)
     outside,outer_cell,i,j,t=max(outer_maxima)
@@ -93,6 +99,20 @@ def weighted_profile(src, prices, curve):
     ceiling=1/(Q(47,2000)+Q(1953,2000)*Q(ceil(outside*10**11),10**11))
     checked(ceiling==Q(100000000000000,71325509501647), "rounded outer amplitude ceiling changed")
     return cap,cell,1/(Q(1953,2000)*cap+Q(47,2000))
+
+
+def production_deductions(law, weights, coeff):
+    """Replay the two central price tables and their curvature deduction."""
+    cut=Q(21,100)
+    small=copy(law)
+    small.pieces=[(l,min(h,cut),a,b,c,d) for l,h,a,b,c,d in law.pieces if l<=cut]
+    prices={w:Q(floor(law.discount(w)*10**13),10**13) for w in weights}
+    small_prices={w:Q(floor(small.discount(w)*10**13),10**13) for w in weights}
+    margins={w:small_prices[w]-d for w,d in prices.items()}
+    checked(min(margins.values())>=0,"invalid small-scale margins")
+    def curved(w,z):
+        return min(4*margins[w],4*margins[z],coeff*(w-z)**2*(cut/law.delta)**2)
+    return prices, curved
 
 
 def main():
@@ -119,15 +139,7 @@ def main():
     ceiling=1/(Q(47,2000)+Q(1953,2000)*required_cap)
     checked(t==Q(17149473,20480000) and Q("1.402022188813") < ceiling < Q("1.402022188814"),
             "fixed central weight-path ceiling changed")
-    cut=Q(21,100)
-    small=copy(law)
-    small.pieces=[(l,min(h,cut),a,b,c,d) for l,h,a,b,c,d in law.pieces if l<=cut]
-    prices={w:Q(floor(law.discount(w)*10**13),10**13) for w in weights}
-    small_prices={w:Q(floor(small.discount(w)*10**13),10**13) for w in weights}
-    margins={w:small_prices[w]-d for w,d in prices.items()}
-    checked(min(margins.values())>=0,"invalid small-scale margins")
-    def curved(w,z):
-        return min(4*margins[w],4*margins[z],coeff*(w-z)**2*(cut/law.delta)**2)
+    prices, curved = production_deductions(law, weights, coeff)
     result=weighted_profile(src,prices,curved)
     control=weighted_profile(src,prices,lambda w,z:Q(0))
     checked(result==(Q(8829435313,12500000000),23,Q(25000000000000,17831387166289)),
