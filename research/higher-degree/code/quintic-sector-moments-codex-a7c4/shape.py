@@ -64,12 +64,40 @@ def need(condition, message):
         raise ValueError(message)
 
 
+def restriction_coefficient():
+    """Debit from the two visible real slices in RESTRICTION.md."""
+    real_to_complex = Q(2, 3)
+    occupation = real_to_complex * 1296 / (2 * 18**2)
+    first_degree = real_to_complex * 1944 / (6 * 18**2)
+    debit = occupation + first_degree
+    # Write h = h1 + u. Then J >= h1 + 2u. After subtracting debit*h²,
+    # the h1² term vanishes and the remaining two coefficients are nonnegative.
+    need(
+        4 * occupation - 2 * debit >= 0 and 4 * occupation - debit >= 0,
+        "nonnegative h1*u and u² coefficients",
+    )
+    return debit
+
+
+def check_shape_budget(chi, visible, remote):
+    debit = restriction_coefficient()
+    need(0 <= chi < debit and 0 <= visible < 1, "shape domain")
+    need(debit * visible**2 >= chi, "visible radius rounded outward")
+    v = chi / debit
+    # The maximum remote excess is attained at v. Indeed, the difference
+    # after clearing denominators is (debit*v_other - chi)^2 / (debit-chi).
+    need(
+        remote * (1 - v) ** 2 >= chi - debit * v**2,
+        "remote excess covers its maximizer",
+    )
+
+
 def shape_budget(rays, chi):
     """Use the visible occupation bound and the diffuse lift at the same excess."""
-    b = rays.sqrt_sides(chi / 2)[1]
-    need(0 <= b < 1, "positive remote energy fraction for A>0")
-    # The maximum of (chi - 2*v**2)/(1-v)**2 occurs at v=chi/2.
-    chi_remote = chi / (1 - chi / 2)
+    debit = restriction_coefficient()
+    b = rays.sqrt_sides(chi / debit)[1]
+    chi_remote = chi / (1 - chi / debit)
+    check_shape_budget(chi, b, chi_remote)
     return b, chi_remote
 
 
@@ -124,6 +152,26 @@ def load_rice(repo):
 
 def verify(repo):
     rays = load_rice(repo)
+    # At x=0 the normalized independent N-bath has excess 2+4/N.
+    # Its exact fourth moment rules out the inflated coefficient 11/5 for N=21.
+    n, chi, bad = 21, Q(".0006"), Q(11, 5)
+    fourth_y = 2 * Q(2 * n + n * (n - 1), n**2)
+    need(
+        restriction_coefficient() <= 2 * fourth_y - 2 < bad,
+        "finite-bath sharpness control",
+    )
+    good = shape_budget(rays, chi)
+    for candidate in (
+        (rays.sqrt_sides(chi / bad)[1], good[1]),
+        (good[0], chi / (1 - chi / bad)),
+    ):
+        try:
+            check_shape_budget(chi, *candidate)
+        except ValueError:
+            continue
+        raise ValueError(
+            "inflated restriction coefficient accepted by the shape consumer"
+        )
     left = START
     previous_chi = Q(42)
     for end_text, chi_text in CLAIMS:
