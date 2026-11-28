@@ -90,8 +90,10 @@ def pieces(n, s, u, d, mul):
     return answer
 
 
-def price(n, s, u, d, gamma):
+def price(n, s, u, d, gamma, *, odd_cubic=BETA, even_cubic=BETA, linear_cubic=None):
     require(n > 0 and 0 <= d <= NU and gamma >= 0, "trace domain")
+    if linear_cubic is None:
+        linear_cubic = odd_cubic
     cells = {m: pieces(n, s, u, d, m) for m in [1, 2]}
 
     def integrate(p, m):
@@ -115,10 +117,10 @@ def price(n, s, u, d, gamma):
 
     shift = -Q(3, 8)
     rows = [
-        add(term(BETA / 2, 1, [-2, 1]), term(d / 12, 1, [6, -6, 1])),
-        add(term(BETA / 2, 2, [1]), term(d / 6, 2, [-3, 1])),
-        add(term(BETA, 0, [-1 - shift, 1]), term(d / 4, 0, [2, -4, 1])),
-        add(term(BETA, 1, [1]), term(d / 2, 1, [-2, 1])),
+        add(term(odd_cubic / 2, 1, [-2, 1]), term(d / 12, 1, [6, -6, 1])),
+        add(term(even_cubic / 2, 2, [1]), term(d / 6, 2, [-3, 1])),
+        add(term(even_cubic, 0, [-1 - shift, 1]), term(d / 4, 0, [2, -4, 1])),
+        add(term(linear_cubic, 1, [1]), term(d / 2, 1, [-2, 1])),
     ]
     # At t ≥ 36, t−2, t−3, t−1−shift and the quadratic Hermites
     # have magnitude at most their corresponding leading monomial.
@@ -132,7 +134,7 @@ def price(n, s, u, d, gamma):
         "numerator outside the fifth-moment tail",
     )
     r = [integrate(p, 1) for p in rows]
-    r[2] += BETA * shift**2 / ALPHA
+    r[2] += even_cubic * shift**2 / ALPHA
     p = add([gamma], add(term(d, 0, [-1, 1]), term(d / 2, 2, [1])))
     r.append((integrate(p, 1) + integrate(p, 2)) / 2)
     t = tail(5, 36) / (2 * NU)

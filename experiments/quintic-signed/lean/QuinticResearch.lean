@@ -20,8 +20,10 @@ import QuinticResearch.QuinticVisiblePhase
 import QuinticResearch.QuinticVisibleReduction
 import QuinticResearch.QuinticWitness
 import QuinticResearch.RadialClip
+import QuinticResearch.RadialExpBounds
 import QuinticResearch.RadialTail
 import QuinticResearch.RemoteAngularPrice
+import QuinticResearch.RemoteChordSound
 import QuinticResearch.RemoteRadialCertificate
 import QuinticResearch.ResidualPair
 import QuinticResearch.Signed57Floor

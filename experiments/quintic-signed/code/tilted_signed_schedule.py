@@ -70,15 +70,15 @@ def high(w,d,t,*,residual=R):
                    2*residual*MU*(MU-t)+Q(1,10**52))+w*t*t-3*PI_LO*d/256)
 
 
-def envelope(pieces,w,d,switch,*,residual=R):
+def envelope(pieces,w,d,switch,*,residual=R,radial_start=CUT,radial_floor=Q(13,500)):
     a,b,c = first.physical_scales(w)
     checked(0<w<1 and 0<=d/(1-w)<=Q(1,10000),"effective debit outside multiplier range")
     candidates = [high(w,d,switch,residual=residual),high(w,d,MU,residual=residual)]
     for s in pieces:
         if s.low>=switch:
             continue
-        for lo,hi,sc in [(s.low,min(CUT,s.high,switch),(a,b-Q(41,20)*d,c+Q(3371,2000)*d)),
-                         (max(s.low,CUT),min(s.high,switch),(a,b,c-Q(13,500)*d))]:
+        for lo,hi,sc in [(s.low,min(radial_start,s.high,switch),(a,b-Q(41,20)*d,c+Q(3371,2000)*d)),
+                         (max(s.low,radial_start),min(s.high,switch),(a,b,c-radial_floor*d))]:
             if lo<=hi:
                 width = s.high-s.low
                 price,_ = quadratic_maximum(s.transformed(sc),(lo-s.low)/width,(hi-s.low)/width,True)

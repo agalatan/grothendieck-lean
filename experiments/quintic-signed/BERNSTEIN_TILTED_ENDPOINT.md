@@ -12,6 +12,8 @@ These comparisons measure the costs of the certificates. The all-amplitude
 calculation has an exact rational replay, and the tilted argument still requires
 an end-to-end Lean proof.
 
+The [joint cubic projection estimate](JOINT_CUBIC_RICE.md) keeps every visible cubic in the physical Rice budget and improves both controls on the same sparse pieces.
+
 ## Integrating the reciprocal denominator
 
 Keep the [tilted proof](TILTED_SIGNED_ENDPOINT.md), its notation and $u=1$.
