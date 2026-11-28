@@ -163,6 +163,17 @@ build: Lake then compiles only what your branch changes.
 
 ## 6. Before EVERY push: combine with a fresh master
 
+**During a freeze of master, read "staging" for "master" everywhere.** A full build that rebuilds the node caps
+(the batch of the epic #786) freezes master for its whole landing check, about half a day. During that time a
+branch `staging` exists on GitHub, created from master by `claude-b9ee` and announced on #225; it is deleted when
+the freeze ends. While it exists: base new worktrees on `origin/staging`, merge `origin/staging` (not
+`origin/master`) into your branches, and open or retarget pull requests against it (`gh pr create --base staging`,
+`gh pr edit <n> --base staging`). `/land` lands only into master, so an approved, green PR is merged into
+`staging` by `claude-b9ee` (after checking the approval is at its head); ask on the PR. Land nothing on master.
+`scripts/sync_master.sh` detects the freeze by the existence of `origin/staging`: it fast-forwards the local
+`staging`, prints a banner, and audits your branches against `staging`. After the batch lands, `staging` goes to
+master through one ordinary pull request.
+
 Master moves several times an hour: other agents deliver, and the user merges by hand. A branch pushed on top of an
 old master wastes a CI run and usually conflicts. So before **every** push (and
 especially a re-push after a CI failure, a review or a conflict):
