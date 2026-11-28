@@ -9,7 +9,9 @@ Lean       : these numbers explain the construction and are NOT used in the proo
              package does not state them.  What they rest on is in the package: the certified intervals
              (`Haagerup.Data.tig_mu_ok`, `Haagerup.Data.tcell_rows_ok`) and the tail allowances tau_p (the tail
              bounds inside `Haagerup.isBound_cert`).
-Runtime    : about 30 seconds.
+Runtime    : about 10 to 30 seconds.
+Prints     : enclosures of S_250, of W for each channel and of W(H), each next to the bound that the paper
+             quotes, and one line per check.
 
 For each channel p the head sum  sum_{k=0}^{250} (-1)^k h_k^(p)  is enclosed with `common.channel_head` (exact
 interval arithmetic on the certified tables), and |sum_{k>250} (-1)^k h_k^(p)| <= sum_{k>250} |h_k^(p)| <= tau_p.
@@ -33,6 +35,9 @@ QUOTED = {
     "W smoothed upper": Fraction(7119200, 10 ** 7),                    # W < 0.7119200 for channels 0, 1, 5
     "W reflected lower": Fraction(712901282238, 10 ** 12),             # 0.712901282238 < W
     "W reflected upper": Fraction(712901282245, 10 ** 12),             #                  W < 0.712901282245
+    "W reflected upper, channel 3": Fraction(7129013931, 10 ** 10),    # from tau_3 alone: W < 0.7129013931
+    "W reflected excess": (Fraction(942622, 10 ** 9), Fraction(942623, 10 ** 9)),   # W - gamma-dagger = 9.42622...e-4
+    "ceiling gap": Fraction(75, 10 ** 7),                              # W(H) - (c - delta) < 7.5e-6
     "W(H) upper": Fraction(711975481, 10 ** 9),                        # W(H) < 0.711975481
     "slope lower": Fraction(711968053, 10 ** 9),                       # 0.711968053 < c - delta
 }
@@ -94,6 +99,12 @@ def main() -> int:
                           "for channel 4 (paper)",
               QUOTED["W reflected lower"] < W[4][0] and W[4][1] < QUOTED["W reflected upper"])
     rep.info(f"  W(reflected) - gamma-dagger in [{sci_dn(W[4][0] - g_hi, 8)}, {sci_up(W[4][1] - g_lo, 8)}]")
+    ex_lo, ex_hi = QUOTED["W reflected excess"]
+    rep.check("interval", "W - gamma-dagger = 9.42622...e-4 for channels 3, 4 (paper)",
+              ex_lo < W[4][0] - g_hi and W[4][1] - g_lo < ex_hi)
+    rep.check("interval", f"the tail bound of channel 3 alone gives W < {dec(QUOTED['W reflected upper, channel 3'], 10)} "
+                          f"(paper), and not W < {dec(QUOTED['W reflected upper'], 12)}",
+              QUOTED["W reflected upper"] < W[3][1] < QUOTED["W reflected upper, channel 3"])
     sigma = common.poly_eval(par["p2Q"], Fraction(-1))
     rep.info(f"  channel 2: sigma = P_2(-1) = {dec(sigma, 12)}; W = sum_m (-1)^m r_m sigma^(2m+1)")
     rep.check("interval", "|W| <= gamma-dagger for channel 2", -g_lo <= W[2][0] and W[2][1] <= g_lo)
@@ -109,13 +120,17 @@ def main() -> int:
     enc14 = common.gamma_dagger_enclosure()
     paper = ((w[0] + w[1] + w[5]) * QUOTED["W smoothed upper"] + w[2] * enc14["upper"]
              + (w[3] + w[4]) * QUOTED["W reflected upper"])
-    rep.info(f"  from the paper's three rounded bounds (0.7119200; gamma-dagger < 0.711958683; 0.712901282245):")
+    rep.info("  from the paper's three rounded bounds (0.7119200; gamma-dagger < 0.711958683; 0.712901282245):")
     rep.info(f"      W(H) < {dec_up(paper, 15)}")
     rep.check("interval", f"W(H) < {dec(QUOTED['W(H) upper'], 9)} (paper)", paper < QUOTED["W(H) upper"]
               and direct_hi < QUOTED["W(H) upper"])
     slope = par["cCertQ"] - par["deltaCertQ"]
     rep.info(f"  c - delta = {dec(slope, 15)}")
     rep.check("exact", f"{dec(QUOTED['slope lower'], 9)} < c - delta", QUOTED["slope lower"] < slope)
+    rep.check("exact", f"{dec(QUOTED['W(H) upper'], 9)} - {dec(QUOTED['slope lower'], 9)} = "
+                       f"{sci(QUOTED['W(H) upper'] - QUOTED['slope lower'], 3)} < 7.5e-6 (paper: the certified slope "
+                       "is within 7.5e-6 of the alternating sum)",
+              QUOTED["W(H) upper"] - QUOTED["slope lower"] < QUOTED["ceiling gap"])
     rep.check("interval", "c - delta <= W(H) (consistent with D(H) <= W(H)); "
                           f"W(H) - (c - delta) in [{sci_dn(direct_lo - slope, 6)}, {sci_up(direct_hi - slope, 6)}]",
               slope <= direct_lo)

@@ -1,3 +1,7 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import Haagerup.CellOverlap
 import Haagerup.HeadCheck
 import Haagerup.FastHeadSound
@@ -9,39 +13,47 @@ import Haagerup.ContourChecks.Channel3
 import Haagerup.ContourChecks.Channel4
 import Haagerup.ContourChecks.Channel5
 
-set_option warningAsError true
-
 /-!
 # The six-channel certificate: `K_G^ℂ ≤ 1 / (c − δ)`
 
-Combines:
-* Channels 0, 1, 5: rotated Ornstein–Uhlenbeck smoothed `64 × 64 × 36` cell map `T_cell`
-  (`tcell_sos_ok`, `tcell_rows_ok`);
-* Channel 2: Haagerup's 1D phase rounding map `phase2` (`haagCoeff`);
-* Channels 3, 4: antisymmetric `(-R, R)` channels on the `64 × 64 × 36` cell map `f_tig`
-  (`tig_sos_ok`, `tig_mu_ok`);
+The assembly of the proof of Theorem 5.1 of the article (six-channel certificate). The main result is
 
-with kernel-verified `K = 251` Kronecker-packed head convolution (`head_sum_ok`, `FastHeadSound`)
-and kernel-verified Taylor-model Hardy circle-mean tail bounds (`reg0_ok`–`reg5_ok`,
-`mean0_ok`–`mean5_ok`, `TaylorHardySound`) via `convex_transfer_head`, establishing
-`isBound_cert : Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)))`, with the centre `cCertQ` and the error
-budget `deltaCertQ` of `Parameters.lean` (`1 / (c − δ) = 1.4045574031…`).
+  `isBound_cert : Statement.IsBound (1 / ((cCertQ : ℝ) - (deltaCertQ : ℝ)))`,
 
+with the centre `c = cCertQ` and the error budget `δ = deltaCertQ` of `Haagerup/Parameters.lean`
+(`1 / (c − δ) = 1.4045574031…`). The six channels of Table 1 are:
+
+* channels 0, 1, 5: the smoothed map of the cell map `T_cell` (Section 4.3), which is bounded by one by
+  `tcell_sos_ok` (Computation 1) and whose energies are enclosed by `tcell_rows_ok` (Computation 3);
+* channel 2: Haagerup's phase channel (Section 3.4; `phase2`, `haagCoeff`);
+* channels 3, 4: the reflected pair of the cell map `f_tig` with the polynomials `(−R, R)` (Section 4.2), bounded by
+  one by `tig_sos_ok` (Computation 1), with overlaps enclosed by `tig_mu_ok` (Computation 2).
+
+The proof combines, by `convex_transfer_head` (the transfer lemma, Lemma 3.2, for a mixture with a head and tails):
+
+* the head bound (Proposition 6.2): the first 251 coefficients of the mixture, from `head_sum_ok` (Computation 4)
+  and its soundness theorem in `Haagerup/FastHeadSound.lean`;
+* the tail bounds (Proposition 7.11): for each channel, from the checks on circles `reg0_ok`–`reg5_ok`,
+  `mean0_ok`–`mean5_ok` (Computations 5 and 6) and their soundness theorems in `Haagerup/TaylorHardySound.lean`;
+* the rational arithmetic of Computation 7, parts (1)–(3) and the comparison `η_cert + ∑ w_p τ_p ≤ δ < c` of
+  part (4), proved here by `norm_num` and `decide +kernel` (as inequalities where no equality is needed).
 -/
+
+set_option warningAsError true
 
 namespace Haagerup
 
 open Finset Polynomial MeasureTheory
 open HaagerupKernel HaagerupKernel.Cell Haagerup.Data
 
-/-! ### 1. Rational certificate parameters -/
+/-! ### 1. The rational comparison of the tails (Computation 7, part 3) -/
 
 private theorem tails_rat_ok :
     (List.finRange 6).all (fun p =>
       decide (budgetQ p * (rhoQ p)⁻¹ ^ 1006 ≤ tailQ p ^ 2 * (1 - (rhoQ p)⁻¹ ^ 4))) = true := by
   decide +kernel
 
-/-! ### 2. Analytic channel assembly and `isBound_cert` -/
+/-! ### 2. The six channels and `isBound_cert` -/
 
 noncomputable section
 
@@ -70,8 +82,10 @@ private lemma toLp_congr_fn {F₁ F₂ : ℂ × ℂ → ℂ} (h₁ : MemLp F₁ 
     (heq : F₁ = F₂) : h₁.toLp F₁ = h₂.toLp F₂ := by
   subst heq; rfl
 
+/-- The cell map `T_cell` of the cell table of `Haagerup/Data/TCellData.lean`. -/
 private def fTCell : ℂ × ℂ → ℂ := cellFn tcellCreArr tcellCimArr
 
+/-- The smoothed map `f_sm` of (4.9): `T_cell` smoothed with the parameters of (4.8). The map of channels 0, 1, 5. -/
 private def fSmoothed : ℂ × ℂ → ℂ :=
   smoothMap (ctQ : ℝ) (stQ : ℝ) (seQ : ℝ) (ceQ : ℝ) fTCell
 
@@ -79,14 +93,19 @@ private lemma memLp_fSmoothed : MemLp fSmoothed 2 mu2 :=
   memLp_smoothMap (ctQ : ℝ) (stQ : ℝ) (seQ : ℝ) (ceQ : ℝ)
     (measurable_cellFn tcellCreArr tcellCimArr) (norm_cellFn_le tcell_sos_ok)
 
+/-- `f_sm` as an element of `L²` of the Gaussian measure on `ℂ × ℂ`. -/
 private def gSmoothedLp : Lp ℂ 2 mu2 := memLp_fSmoothed.toLp fSmoothed
 
+/-- The cell map `f_tig` of the cell table of `Haagerup/Data/TigerData.lean`. The map of channels 3 and 4. -/
 private def fTig : ℂ × ℂ → ℂ := cellFn tigCreArr tigCimArr
 
 private lemma memLp_fTig : MemLp fTig 2 mu2 := memLp_cellFn tig_sos_ok
 
+/-- `f_tig` as an element of `L²` of the Gaussian measure on `ℂ × ℂ`. -/
 private def gTigLp : Lp ℂ 2 mu2 := memLp_fTig.toLp fTig
 
+/-- The channel series `h⁽ᵖ⁾` of the six channels of Table 1, by the formula (3.3) of Proposition 3.7 (channel
+series) with the polynomials of the table and the energies of the three maps. -/
 private def hChan : Fin 6 → ℕ → ℝ
   | 0 => bivarKernel (ofListQ p0Q) (ofListQ q0Q) (energy gSmoothedLp)
   | 1 => bivarKernel (ofListQ p1Q) (ofListQ q1Q) (energy gSmoothedLp)

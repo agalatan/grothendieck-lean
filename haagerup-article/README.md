@@ -28,7 +28,8 @@ theorem Haagerup.constant_lt_inv_gammaDagger :
 
 [`anc/README.md`](anc/README.md) states the six public theorems and explains the layout, the build and the axiom
 report. `anc/scripts/` contains Python scripts that reproduce figures and numbers of the article; they are not part
-of the proof.
+of the proof. The Lean code and the scripts are released under the Apache License 2.0 (`anc/LICENSE`); the text of
+the article is licensed separately, through arXiv.
 
 ## The CI job
 

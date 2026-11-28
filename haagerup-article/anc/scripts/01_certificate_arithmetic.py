@@ -4,13 +4,18 @@
 Arithmetic : exact (`fractions.Fraction`); standard library only.
 Paper      : the computation "Rational arithmetic of the certificate" in the list of finite computations (the
              table of the six channels; the Hardy tail lemma for the six tail inequalities; the proof of the
-             six-channel certificate for the assembly).
+             six-channel certificate for the assembly); the bound 1/(c - delta) = 1.4045574031... of the
+             certificate theorem and the bound 1.40456 of the main theorem.
 Lean       : the same facts are checked by the kernel inside `Haagerup.isBound_cert` (CertCheck.lean: weights,
              l1 norms, `tails_rat_ok`, head cap + weighted tails <= delta), `Haagerup.certificate_value` and
              `Haagerup.isBound` (Haagerup.lean).
 Runtime    : under 1 second.
 
-Everything is read from Haagerup/Parameters.lean (see common.py); nothing here is used by the Lean proof.
+Prints     : the parameters as read (to compare with the paper's table), one line per check, and
+             c - delta and 1/(c - delta) as exact rationals and to 30 decimals.
+
+Everything is read from Haagerup/Parameters.lean (see common.py), except the bound 1.40456 of the main theorem
+(`common.HEADLINE`); nothing here is used by the Lean proof.
 """
 import sys
 
@@ -28,6 +33,18 @@ def main() -> int:
     rep = Report("01  Certificate arithmetic (exact rational arithmetic)")
     w, tau, rho, B = par["wQ"], par["tailQ"], par["rhoQ"], par["budgetQ"]
     c, cap, delta = par["cCertQ"], par["headCapCertQ"], par["deltaCertQ"]
+
+    rep.section("The parameters read from Haagerup/Parameters.lean (the paper's table of the six channels)")
+    rep.info(f"  rotations of the smoothing: (c_theta, s_theta) = ({par['ctQ']}, {par['stQ']}), "
+             f"(s_eta, c_eta) = ({par['seQ']}, {par['ceQ']})")
+    for p in range(6):
+        rep.info(f"  channel {p}: w = {w[p] * 10 ** 12} / 10^12, rho = {rho[p]}, r_reg = {par['regRQ'][p]}, "
+                 f"beta = {par['jCertQ'][p]}, B = {B[p] * 10 ** 6} / 10^6, tau = {tau[p] * 10 ** 12} / 10^12")
+    for name, label in (("p0Q", "P_0"), ("q0Q", "Q_0"), ("p1Q", "P_1"), ("q1Q", "Q_1"), ("p2Q", "P_2"),
+                        ("r3Q", "R_3"), ("r4Q", "R_4"), ("p5Q", "P_5"), ("q5Q", "Q_5")):
+        den = 10 ** 12 if name in ("p2Q", "r3Q", "r4Q", "p5Q") else 0
+        rep.info(f"  {label} = {common.poly_str(par[name], den)}".replace(f"/ {10 ** 12}", "/ 10^12"))
+    rep.info(f"  c = {c * 10 ** 12} / 10^12, head cap = {cap * 10 ** 12} / 10^12, delta = {delta * 10 ** 24} / 10^24")
 
     rep.section("Weights")
     for p in range(6):
@@ -76,10 +93,11 @@ def main() -> int:
     rep.info(f"  1 / (c - delta)     = {1 / slope}")
     rep.info(f"                      = {dec(1 / slope, 30)}")
     rep.check("exact", "0 < delta < c", 0 < delta < c)
-    up5 = Fraction(-((-(1 / slope) * 10 ** 5).__floor__()), 10 ** 5)
+    up5 = Fraction(math.ceil(1 / slope * 10 ** 5), 10 ** 5)
     rep.info(f"  1 / (c - delta) rounded up to 5 decimals = {dec(up5, 5)}")
     rep.check("exact", f"1 / (c - delta) <= {dec(common.HEADLINE, 5)} (the bound of the main theorem)",
               1 / slope <= common.HEADLINE and up5 == common.HEADLINE)
+    rep.check("exact", f"c - delta > 1 / {dec(common.HEADLINE, 5)}, strictly", slope * common.HEADLINE > 1)
     return rep.finish()
 
 

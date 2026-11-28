@@ -9,7 +9,7 @@ $$
 $K_G^{\mathbb C}$ is the complex Grothendieck constant ([definition below](#the-constant)), and $1/\gamma^\dagger$
 is the value that Haagerup proposed for it in 1987, with
 $\gamma^\dagger=\int_0^{\pi/2}\frac{\cos^2 t}{\sqrt{1+\sin^2 t}}dt$. So the constant is strictly below Haagerup's
-value, which resolves this conjecture of Haagerup.
+value.
 
 ## The constants
 
@@ -42,7 +42,7 @@ $K_G^{\mathbb{C}}$ is strictly below Haagerup's value:
 
 $$K_G^{\mathbb{C}} \le 1.40456 < 1/\gamma^\dagger = 1.40457593\ldots,$$
 
-thus resolving this conjecture of Haagerup (1987).
+where $1/\gamma^\dagger$ is the value that Haagerup proposed in 1987.
 
 - **The bound.** It comes from an explicit rounding scheme: a mixture of six Gaussian rounding channels. One of them
   rounds two complex coordinates and is the one that crosses $\gamma^\dagger$.
@@ -193,7 +193,7 @@ Lean computes the selector’s 251-entry signed head and a bound on the total ab
 | `scripts/`, `.github/workflows/`, `AGENTS.md` | CI, its helper scripts, and the working rules of the agents that maintain the repository |
 | `docs/` | `LEAN_DETAILS.md` (inventory), `overview.tex` (source of `OVERVIEW.pdf`), and design and status notes, each describing the state at its date |
 | `research/` | organised records of the open problems behind the bounds (Conjecture K, higher-degree games), with their status ledgers; not built or checked |
-| `miscellaneous/`, `abandonware/` | archives: research modules and notes, removed code. Outside the Lake libraries: never built or imported. `handoff/` is a git-ignored local folder for research files |
+| `abandonware/` | archive: a few removed Lean modules that later work would reuse. Outside the Lake libraries: never built or imported. `handoff/` is a git-ignored local folder for research files |
 
 Most modules are generated: certificate data, and small modules that each check one part of it, in the kernel or
 as a `native_decide` fact, so that Lake runs the checks in separate processes. The generators are in `tools/`;
@@ -246,5 +246,5 @@ al., *New lower and upper bounds for the Grothendieck constant*, [arXiv:2608.111
 
 The numerical constructions and certificates were produced in a collaboration between several AI research
 systems; this Lean development checks them. The six-channel cell arrays and overlap tables are Lean literals in `Grothe/UpperSix/Haagerup/Data/`.
-Other certificates have inputs in `data/` and generators and replay scripts in `tools/`; both folders hold only what an existing Lean module was generated from. Search records are archived in `miscellaneous/` and in git history. No step of
+Other certificates have inputs in `data/` and generators and replay scripts in `tools/`; both folders hold only what an existing Lean module was generated from. Search records are in `research/` and in git history. No step of
 the two proofs rests on a certificate that is checked outside Lean.

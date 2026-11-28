@@ -1,29 +1,46 @@
+/-
+Copyright (c) 2026 Alin Galatan. Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Alin Galatan
+-/
 import HaagerupKernel.FastHead
 import Haagerup.CellOverlap
 
+/-!
+# Soundness of the head computation
+
+This file proves Proposition A.3 of Appendix A.5 (the head) of the article for the checker
+`HaagerupKernel.FastHead.fastHeadOK` of Computation 4 (head): if the checker returns `true` and the tables of
+intervals enclose the overlaps of the reflected pair and the energies of the smoothed map, then
+`∑ n ∈ Finset.range 251, |(∑ p : Fin 6, w p * h p n) - (if n = 0 then c else 0)| ≤ headCap`
+for the six channel series `h p` (`head_residual_of_fastHeadOK`). This is the implication from the integer
+inequality (5.5) to the bound (5.6), and with it Proposition 6.2 (head bound), which `CertCheck.lean` derives from
+the evaluation `head_sum_ok` of the checker. The file also contains `convex_transfer_head`, the combination of the
+head bound with the tail bounds: Lemma 3.2 (transfer) in the form used for Theorem 5.1 (six-channel certificate).
+
+## Contents
+
+1. The integer operations of the checker (`iAdd`, `iSub`, `iMul`, `tdivNat`, …) agree with the operations of `ℤ`;
+   division with rounding toward zero does not increase absolute values and changes a number by less than one
+   (equation (A.6)).
+2. The Kronecker substitution `X = 2^224` with balanced digits is exact for integer polynomials whose coefficients
+   are at most `2^222` in absolute value: `balDivMod`, `trunc251`, `sd8`, `l1_8` act coefficientwise.
+3. The invariant `kronRep S M err F z` (an integer `z` packs an integer polynomial of `ℓ¹` norm at most `M` which
+   represents the real polynomial `F` at scale `1 / S` with error at most `err`), and its behaviour under sums,
+   products (`mul_prod_kron_bounds`: Lemma A.1) and the powers `buildPows16L` of `Q = X P²`.
+4. The block Horner scheme (A.8) (`kronRep_hornerD128`, `kronRep_hornerD80`: Lemma A.2).
+5. The data: `encPolyAux` (the channel polynomials), `haagMu80` (the coefficients of the phase channel),
+   `tigMu128Acc` (the overlaps) and `packRowsNat` (the energies, as the polynomials `EPoly`, `OPoly`).
+6. The identity of Appendix A.5 which writes the head of a channel series of the smoothed map through the
+   polynomials `EPoly`, `OPoly` (`smoothed_bivarKernel_eq_EO`).
+7. The three kinds of channels (`kronRep_evalSmoothed`, `kronRep_eval1D_haag`, `kronRep_eval1D_tig`).
+8. The mixture and the theorems `head_residual_of_fastHeadOK` and `convex_transfer_head`.
+
+The error constants are `1100000` for each channel and `1100251` for the mixture, larger than the constants
+`293775` and `294026` of Proposition A.3 and below the allowance `2 × 10⁶` (`errBudget80`) of (5.5).
+-/
+
 set_option warningAsError true
 set_option maxRecDepth 4096
-
-/-!
-# Soundness of the Kronecker-packed 80-bit head convolution checker (`FastHead`)
-
-Proves that `HaagerupKernel.FastHead.fastHeadOK ... = true` rigorously implies the 251-term
-weighted 6-channel head residual inequality:
-`∑ n ∈ Finset.range 251, |(∑ p : Fin 6, w p * h p n) - (if n = 0 then c else 0)| ≤ headCap`,
-and packages `convex_transfer_head` for `CertCheck.lean`.
-
-Architecture:
-1. Equivalence of fast `Nat`-dispatched `Int` arithmetic (`iAdd`, `iSub`, `iMul`, `tdivNat`, etc.)
-   with standard `ℤ` arithmetic, plus `tdivNat` magnitude-shrinking and `≤ 1` ULP error bounds.
-2. Exactness of balanced base-`B1 = 2^224` splitting (`balDivMod`, `trunc251`, `sd8`, `l1_8`)
-   for polynomials with coefficients bounded by `B1 / 4 = 2^222`.
-3. `kronRep S M err F z` invariant and closure under `kronMul`, `buildPows16L`, `hornerD128`,
-   `hornerD80`, `evalSmoothed`, `eval1D_D80`, `eval1D_D128`.
-4. Exact table soundness for `encPolyAux`, `haagMu80`, `tigMu128Acc`, and `packRowsNat`, plus
-   the algebraic identity equating `bivarKernel P (-X) μ` on `n < 251` to the `E`/`O` split.
-5. Master theorems `head_residual_of_fastHeadOK` and `convex_transfer_head`.
-
--/
 
 namespace Haagerup
 
@@ -323,6 +340,7 @@ private lemma balDivMod_unique {bN : ℕ} {hI : ℤ} (hb : 0 < bN) (hh : 2 * hI 
   have hr : r' = r := by subst hq; linarith
   exact Prod.ext hq hr
 
+/-- The truncation of `Q` modulo `X^N`: the coefficients of index less than `N`. -/
 private def polyTrunc (N : ℕ) (Q : ℤ[X]) : ℤ[X] :=
   ∑ j ∈ range N, Polynomial.monomial j (Q.coeff j)
 
@@ -349,6 +367,7 @@ private lemma eval_polyTrunc (N : ℕ) (Q : ℤ[X]) (x : ℤ) :
   refine sum_congr rfl fun j _ => ?_
   rw [eval_monomial]
 
+/-- The quotient of `Q` by `X^k`: the polynomial with coefficients `[X^j] = Q.coeff (j + k)`. -/
 private def polyShiftDown (k : ℕ) (Q : ℤ[X]) : ℤ[X] :=
   ∑ j ∈ range (Q.natDegree + 1), Polynomial.monomial j (Q.coeff (j + k))
 
@@ -431,6 +450,7 @@ private lemma trunc251_eval {Q : ℤ[X]} (hQ : ∀ j < 251, |Q.coeff j| ≤ B1I 
   unfold trunc251
   rw [balDivMod_eval_poly (k := 251) (by omega) B251N_eq two_mul_H251I hQ]
 
+/-- The polynomial `Q ÷ d` of Appendix A.5: every coefficient is divided by `d` and rounded toward zero. -/
 private def polyTdiv (d : ℕ) (Q : ℤ[X]) : ℤ[X] :=
   ∑ j ∈ range (Q.natDegree + 1), Polynomial.monomial j (tdivNat (Q.coeff j) d)
 
@@ -1088,6 +1108,8 @@ private lemma dot16_kronRep {S_blk : ℕ} {Q : ℝ[X]} (hQ1 : l1 Q ≤ 1)
               simp only [List.getD_cons_zero, List.getD_cons_succ]
               linarith
 
+/-- `split16G k xs acc = (acc.reverse ++ xs.take k, xs.drop k)` (`split16G_spec`): the function `split16Acc` of the
+checker for lists of an arbitrary type. -/
 private def split16G {α : Type*} : ℕ → List α → List α → List α × List α
   | 0, xs, acc => (acc.reverse, xs)
   | _, [], acc => (acc.reverse, [])
@@ -1115,8 +1137,9 @@ private lemma split16G_spec {α : Type*} (k : ℕ) (xs acc : List α) :
       obtain ⟨h1, h2⟩ := ih xs (x :: acc)
       exact ⟨by simpa [List.append_assoc] using h1, h2⟩
 
-/-- Splitting a list `xs` of length `≤ 16 * n` via `chunk16Rev n xs []` yields chunks whose
-concatenation (in reverse order) equals `xs`, with every non-last chunk of length 16. -/
+/-- The function `chunk16Rev` of the checker for lists of an arbitrary type: `chunk16RevG n xs acc` cuts `xs` into at
+most `n` consecutive blocks of sixteen elements (the last one may be shorter) and pushes them onto `acc`, so that
+the blocks appear in reverse order. -/
 private def chunk16RevG {α : Type*} : ℕ → List α → List (List α) → List (List α)
   | 0, _, acc => acc
   | _ + 1, [], acc => acc
@@ -1283,7 +1306,7 @@ private lemma list_sum_eq_range (xs : List ℝ) :
     rw [List.sum_cons, List.length_cons, Finset.sum_range_succ']
     simp only [List.getD_cons_zero, List.getD_cons_succ, ih, add_comm]
 
-/-- Master soundness lemma for `hornerD128` on a packed list `xs` of length `≤ 256`. -/
+/-- Soundness of `hornerD128` on a packed list `xs` of length `≤ 256` (Lemma A.2). -/
 private lemma kronRep_hornerD128 {Q : ℝ[X]} {qows16 : List ℤ} {q16 : ℤ}
     (hQ1 : l1 Q ≤ 1)
     (hq_len : qows16.length = 16)
@@ -1564,7 +1587,7 @@ private lemma kronRep_hornerD128 {Q : ℝ[X]} {qows16 : List ℤ} {q16 : ℤ}
       (div_le_one hD128R).2 hMsum_ch
     linarith
 
-/-- Master soundness lemma for `hornerD80` on a scale-`D80` list `xs` of length `≤ 256` (`haagMu80`). -/
+/-- Soundness of `hornerD80` on a scale-`D80` list `xs` of length `≤ 256` (`haagMu80`). -/
 private lemma kronRep_hornerD80 {Q : ℝ[X]} {qows16 : List ℤ} {q16 : ℤ}
     (hQ1 : l1 Q ≤ 1)
     (hq_len : qows16.length = 16)
@@ -1821,7 +1844,8 @@ private lemma kronRep_encPolyAux {l : List (Nat × Int)} {den : ℕ}
     unfold checkSparseGo at hok'
     have hle : tot ≤ den := nat_ble_iff.1 hok'
     refine ⟨by simp [sparsePoly]; positivity, ?_⟩
-    simpa [sparsePoly, encPolyAux] using hacc.mono (by linarith [show 0 ≤ ((den - tot : ℕ) : ℝ) / (den : ℝ) * (D80N : ℝ) by positivity])
+    simpa [sparsePoly, encPolyAux] using hacc.mono
+        (by linarith [show 0 ≤ ((den - tot : ℕ) : ℝ) / (den : ℝ) * (D80N : ℝ) by positivity])
       (by linarith [show (0 : ℝ) ≤ (maxLen : ℝ) by positivity])
   | cons p rest ih =>
     intro tot accZ accF Macc Eacc hok' hacc
@@ -1854,7 +1878,8 @@ private lemma kronRep_encPolyAux {l : List (Nat × Int)} {den : ℕ}
         · rw [sum_eq_single d (fun b _ hbd => by rw [coeff_monomial, ite_eq_right hbd.symm]; simp)
             (fun h => absurd (mem_range.2 hd251) h)]
           rw [coeff_monomial, ite_eq_left rfl]; exact hcd_m
-        · rw [sum_eq_single d (fun b _ hbd => by rw [coeff_monomial, coeff_monomial, ite_eq_right hbd.symm, ite_eq_right hbd.symm]; simp)
+        · rw [sum_eq_single d
+            (fun b _ hbd => by rw [coeff_monomial, coeff_monomial, ite_eq_right hbd.symm, ite_eq_right hbd.symm]; simp)
             (fun h => absurd (mem_range.2 hd251) h)]
           rw [coeff_monomial, coeff_monomial, ite_eq_left rfl, ite_eq_left rfl]; exact hcd_e
       have hacc' := kronRep_add hacc hmono
@@ -2208,6 +2233,7 @@ private def EPoly (μ : ℕ × ℕ → ℝ) (j : ℕ) : ℝ[X] :=
 private def OPoly (μ : ℕ × ℕ → ℝ) (j : ℕ) : ℝ[X] :=
   ∑ a ∈ range ((249 - j) / 3 + 1), Polynomial.C (μ (2 * j, 2 * a + 1)) * Polynomial.X ^ (3 * a)
 
+/-- As `kronRep`, with the stronger condition that the packed integer polynomial has degree less than `deg`. -/
 private def kronRepDeg (deg S : ℕ) (M err : ℝ) (F : ℝ[X]) (z : ℤ) : Prop :=
   ∃ Q : ℤ[X], (∀ j ≥ deg, Q.coeff j = 0) ∧
     Q.eval B1I = z ∧
@@ -2314,15 +2340,21 @@ private lemma kronRepDeg_B3_add {d : ℕ} (hd : d + 3 ≤ 251)
         (fun _ _ _ => abs_nonneg _)).trans he
     linarith
 
+/-- The polynomial `∑_t μ(2j+1, 2(a0+t)) X^{3t}`: the terms of index `a ≥ a0` of `EPoly μ j`, divided by `X^{3 a0}`. -/
 private def EPolyFrom (μ : ℕ × ℕ → ℝ) (a0 j : ℕ) : ℝ[X] :=
   ∑ t ∈ range ((250 - j) / 3 + 1 - a0),
     Polynomial.C (μ (2 * j + 1, 2 * (a0 + t))) * Polynomial.X ^ (3 * t)
 
+/-- The polynomial `∑_t μ(2j, 2(a0+t)+1) X^{3t}`: the terms of index `a ≥ a0` of `OPoly μ j`, divided by `X^{3 a0}`. -/
 private def OPolyFrom (μ : ℕ × ℕ → ℝ) (a0 j : ℕ) : ℝ[X] :=
   ∑ t ∈ range ((249 - j) / 3 + 1 - a0),
     Polynomial.C (μ (2 * j, 2 * (a0 + t) + 1)) * Polynomial.X ^ (3 * t)
 
+/-- The number `251 - 3 a0` of indices `j` for which `EPoly μ j` has a term of index `a0`, that is,
+`2j + 1 + 6 a0 ≤ 501`; it is `0` for `a0 > 83`. -/
 private def lenE (a0 : ℕ) : ℕ := if a0 ≤ 83 then 251 - 3 * a0 else 0
+/-- The number `250 - 3 a0` of indices `j` for which `OPoly μ j` has a term of index `a0`, that is,
+`2j + 6 a0 + 3 ≤ 501`; it is `0` for `a0 > 83`. -/
 private def lenO (a0 : ℕ) : ℕ := if a0 ≤ 83 then 250 - 3 * a0 else 0
 
 private lemma EPolyFrom_step (μ : ℕ × ℕ → ℝ) (a j : ℕ)
@@ -2807,8 +2839,8 @@ private lemma kronRep_qEnc {P : ℝ[X]} {pEnc : ℤ}
     (hP1 : l1 P ≤ 1) (hp : kronRep D80N (D80N : ℝ) 16 P pEnc) :
     l1 (Polynomial.X * P ^ 2) ≤ 1 ∧
     kronRep D80N (D80N : ℝ) 300 (Polynomial.X * P ^ 2) (kronMul (trunc251 (iMul B1I pEnc)) pEnc) := by
-  have hXP1 : l1 (Polynomial.X * P) ≤ 1 := by
-    exact (l1_mul_le _ _).trans (by rw [l1_X, one_mul]; exact hP1)
+  have hXP1 : l1 (Polynomial.X * P) ≤ 1 :=
+    (l1_mul_le _ _).trans (by rw [l1_X, one_mul]; exact hP1)
   have hQ1 : l1 (Polynomial.X * P ^ 2) ≤ 1 := by
     rw [sq, ← mul_assoc]
     exact (l1_mul_le _ _).trans (by nlinarith [l1_nonneg (Polynomial.X * P), l1_nonneg P])
@@ -3027,7 +3059,7 @@ private lemma kronRep_eval1D_tig {tigMu : List Ival} {ν : ℕ → ℝ} {P : ℝ
   rw [hpoly_eq] at hmul
   exact hmul.mono (by linarith [show (0 : ℝ) ≤ (D80N : ℝ) by positivity]) (by norm_num)
 
-/-! ### 8. Master soundness theorems: `head_residual_of_fastHeadOK` and `convex_transfer_head` -/
+/-! ### 8. The mixture: `head_residual_of_fastHeadOK` and `convex_transfer_head` -/
 
 private lemma abs_add6_le (a0 a1 a2 a3 a4 a5 : ℝ) :
     |a0 + a1 + a2 + a3 + a4 + a5| ≤ |a0| + |a1| + |a2| + |a3| + |a4| + |a5| := by
@@ -3146,28 +3178,46 @@ private lemma kronRep_comb6 {w0 w1 w2 w3 w4 w5 wDen : ℕ}
   have hQw_e : ∑ j ∈ range 251, |Fcomb.coeff j * ((D80N : ℝ) * (wDen : ℝ)) - (Qw.coeff j : ℝ)| ≤
       (wDen : ℝ) * 1100000 := by
     have htri : ∀ j, |Fcomb.coeff j * ((D80N : ℝ) * (wDen : ℝ)) - (Qw.coeff j : ℝ)| ≤
-        |(Polynomial.C ((w0 : ℝ) / wDen) * F0).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w0) * Q0).coeff j : ℝ)| +
-        |(Polynomial.C ((w1 : ℝ) / wDen) * F1).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w1) * Q1).coeff j : ℝ)| +
-        |(Polynomial.C ((w2 : ℝ) / wDen) * F2).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w2) * Q2).coeff j : ℝ)| +
-        |(Polynomial.C ((w3 : ℝ) / wDen) * F3).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w3) * Q3).coeff j : ℝ)| +
-        |(Polynomial.C ((w4 : ℝ) / wDen) * F4).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w4) * Q4).coeff j : ℝ)| +
-        |(Polynomial.C ((w5 : ℝ) / wDen) * F5).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w5) * Q5).coeff j : ℝ)| := fun j => by
+        |(Polynomial.C ((w0 : ℝ) / wDen) * F0).coeff j *
+            ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w0) * Q0).coeff j : ℝ)| +
+        |(Polynomial.C ((w1 : ℝ) / wDen) * F1).coeff j *
+            ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w1) * Q1).coeff j : ℝ)| +
+        |(Polynomial.C ((w2 : ℝ) / wDen) * F2).coeff j *
+            ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w2) * Q2).coeff j : ℝ)| +
+        |(Polynomial.C ((w3 : ℝ) / wDen) * F3).coeff j *
+            ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w3) * Q3).coeff j : ℝ)| +
+        |(Polynomial.C ((w4 : ℝ) / wDen) * F4).coeff j *
+            ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w4) * Q4).coeff j : ℝ)| +
+        |(Polynomial.C ((w5 : ℝ) / wDen) * F5).coeff j *
+            ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w5) * Q5).coeff j : ℝ)| := fun j => by
       have heq : Fcomb.coeff j * ((D80N : ℝ) * (wDen : ℝ)) - (Qw.coeff j : ℝ) =
-          ((Polynomial.C ((w0 : ℝ) / wDen) * F0).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w0) * Q0).coeff j : ℝ)) +
-          ((Polynomial.C ((w1 : ℝ) / wDen) * F1).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w1) * Q1).coeff j : ℝ)) +
-          ((Polynomial.C ((w2 : ℝ) / wDen) * F2).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w2) * Q2).coeff j : ℝ)) +
-          ((Polynomial.C ((w3 : ℝ) / wDen) * F3).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w3) * Q3).coeff j : ℝ)) +
-          ((Polynomial.C ((w4 : ℝ) / wDen) * F4).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w4) * Q4).coeff j : ℝ)) +
-          ((Polynomial.C ((w5 : ℝ) / wDen) * F5).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w5) * Q5).coeff j : ℝ)) := by
+          ((Polynomial.C ((w0 : ℝ) / wDen) * F0).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w0) * Q0).coeff j : ℝ)) +
+          ((Polynomial.C ((w1 : ℝ) / wDen) * F1).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w1) * Q1).coeff j : ℝ)) +
+          ((Polynomial.C ((w2 : ℝ) / wDen) * F2).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w2) * Q2).coeff j : ℝ)) +
+          ((Polynomial.C ((w3 : ℝ) / wDen) * F3).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w3) * Q3).coeff j : ℝ)) +
+          ((Polynomial.C ((w4 : ℝ) / wDen) * F4).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w4) * Q4).coeff j : ℝ)) +
+          ((Polynomial.C ((w5 : ℝ) / wDen) * F5).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w5) * Q5).coeff j : ℝ)) := by
         simp only [Fcomb, Qw, coeff_add, Int.cast_add]; ring
       rw [heq]; exact abs_add6_le _ _ _ _ _ _
     calc ∑ j ∈ range 251, |Fcomb.coeff j * ((D80N : ℝ) * (wDen : ℝ)) - (Qw.coeff j : ℝ)|
-        ≤ (∑ j ∈ range 251, |(Polynomial.C ((w0 : ℝ) / wDen) * F0).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w0) * Q0).coeff j : ℝ)|) +
-          (∑ j ∈ range 251, |(Polynomial.C ((w1 : ℝ) / wDen) * F1).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w1) * Q1).coeff j : ℝ)|) +
-          (∑ j ∈ range 251, |(Polynomial.C ((w2 : ℝ) / wDen) * F2).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w2) * Q2).coeff j : ℝ)|) +
-          (∑ j ∈ range 251, |(Polynomial.C ((w3 : ℝ) / wDen) * F3).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w3) * Q3).coeff j : ℝ)|) +
-          (∑ j ∈ range 251, |(Polynomial.C ((w4 : ℝ) / wDen) * F4).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w4) * Q4).coeff j : ℝ)|) +
-          (∑ j ∈ range 251, |(Polynomial.C ((w5 : ℝ) / wDen) * F5).coeff j * ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w5) * Q5).coeff j : ℝ)|) := by
+        ≤ (∑ j ∈ range 251, |(Polynomial.C ((w0 : ℝ) / wDen) * F0).coeff j *
+            ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w0) * Q0).coeff j : ℝ)|) +
+          (∑ j ∈ range 251, |(Polynomial.C ((w1 : ℝ) / wDen) * F1).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w1) * Q1).coeff j : ℝ)|) +
+          (∑ j ∈ range 251, |(Polynomial.C ((w2 : ℝ) / wDen) * F2).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w2) * Q2).coeff j : ℝ)|) +
+          (∑ j ∈ range 251, |(Polynomial.C ((w3 : ℝ) / wDen) * F3).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w3) * Q3).coeff j : ℝ)|) +
+          (∑ j ∈ range 251, |(Polynomial.C ((w4 : ℝ) / wDen) * F4).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w4) * Q4).coeff j : ℝ)|) +
+          (∑ j ∈ range 251, |(Polynomial.C ((w5 : ℝ) / wDen) * F5).coeff j *
+              ((D80N : ℝ) * (wDen : ℝ)) - ((Polynomial.C (Int.ofNat w5) * Q5).coeff j : ℝ)|) := by
             simp only [← sum_add_distrib]; exact sum_le_sum fun j _ => htri j
       _ ≤ (w0 : ℝ) * 1100000 + (w1 : ℝ) * 1100000 + (w2 : ℝ) * 1100000 +
           (w3 : ℝ) * 1100000 + (w4 : ℝ) * 1100000 + (w5 : ℝ) * 1100000 :=
@@ -3189,9 +3239,13 @@ private lemma kronRep_comb6 {w0 w1 w2 w3 w4 w5 wDen : ℕ}
   · rw [mul_div_cancel_left₀ _ (ne_of_gt hwDen_R)]
   · rw [mul_div_cancel_left₀ _ (ne_of_gt hwDen_R)]; norm_num
 
-/-- **Main Kronecker soundness theorem**: if `fastHeadOK ... = true` and the tables enclose
-`μ_sm` (smoothed 2D channel) and `ν_tig` (1D antisymmetric channel), then the 251-term weighted
-6-channel head residual is bounded by `capNum / capDen`. -/
+/-- **Proposition A.3** (soundness of Computation 4 (head)). Suppose `fastHeadOK … = true`, the intervals of `rows`
+enclose the numbers `μ_sm (d₁, d₂)` (the energies of the smoothed map) and the intervals of `tigMu` the numbers
+`ν_tig k` (the overlaps of the reflected pair), and `μ_sm` vanishes for `d₁ + d₂` even. Let `h 0, …, h 5` agree up
+to index `250` with the channel series formed with these numbers, with Haagerup's coefficients `haagCoeff` for
+channel `2`, and with the polynomials given by the sparse lists. Then the mixture with the weights `wᵢ / wDen`
+satisfies `∑_{n ≤ 250} |∑ₚ wₚ hₚ(n) - δ_{n,0} cNum / cDen| ≤ capNum / capDen`: the integer inequality (5.5)
+implies the bound (5.6). -/
 theorem head_residual_of_fastHeadOK
     {rows : List RowI} {tigMu : List Ival}
     {p0 p1 p2 r3 r4 p5 : List (Nat × Int)}
@@ -3262,12 +3316,18 @@ theorem head_residual_of_fastHeadOK
   obtain ⟨evN, odN⟩ := evod
   dsimp only at hrep0 hrep1 hrep5 hok
   set wSum : ℤ :=
-    iAdd (iMul (Int.ofNat w0) (evalSmoothed (chunk16Rev 16 (natListToIntAcc odN []) []) (chunk16Rev 16 (natListToIntAcc evN []) []) (encPolyAux p0 d0 0)))
-    (iAdd (iMul (Int.ofNat w1) (evalSmoothed (chunk16Rev 16 (natListToIntAcc odN []) []) (chunk16Rev 16 (natListToIntAcc evN []) []) (encPolyAux p1 d1 0)))
+    iAdd (iMul (Int.ofNat w0)
+        (evalSmoothed (chunk16Rev 16 (natListToIntAcc odN []) []) (chunk16Rev 16 (natListToIntAcc evN []) [])
+            (encPolyAux p0 d0 0)))
+    (iAdd (iMul (Int.ofNat w1)
+        (evalSmoothed (chunk16Rev 16 (natListToIntAcc odN []) []) (chunk16Rev 16 (natListToIntAcc evN []) [])
+            (encPolyAux p1 d1 0)))
     (iAdd (iMul (Int.ofNat w2) (eval1D_D80 (chunk16Rev 16 haagMu80 []) (encPolyAux p2 d2 0)))
     (iAdd (iMul (Int.ofNat w3) (eval1D_D128 (chunk16Rev 16 (tigMu128Acc tigMu []) []) (encPolyAux r3 d3 0)))
     (iAdd (iMul (Int.ofNat w4) (eval1D_D128 (chunk16Rev 16 (tigMu128Acc tigMu []) []) (encPolyAux r4 d4 0)))
-          (iMul (Int.ofNat w5) (evalSmoothed (chunk16Rev 16 (natListToIntAcc odN []) []) (chunk16Rev 16 (natListToIntAcc evN []) []) (encPolyAux p5 d5 0)))))))
+          (iMul (Int.ofNat w5)
+              (evalSmoothed (chunk16Rev 16 (natListToIntAcc odN []) []) (chunk16Rev 16 (natListToIntAcc evN []) [])
+                  (encPolyAux p5 d5 0)))))))
   have hsd_wSum : kronRep D80N (2 * (D80N : ℝ)) 1100251 Fcomb (sd8 wSum wDen) :=
     kronRep_comb6 hwDen_pos hwDen_le_D80 hw_eq_nat hrep0 hrep1 hrep2 hrep3 hrep4 hrep5
   -- Subtract `c80`
@@ -3354,9 +3414,11 @@ theorem head_residual_of_fastHeadOK
           (|(Fcomb - Polynomial.C ((cNum : ℝ) / (cDen : ℝ))).coeff n * (D80N : ℝ) - (Qres.coeff n : ℝ)| +
            |(Qres.coeff n : ℝ)|) :=
         sum_le_sum fun n _ => by
-          have := abs_add_le ((Fcomb - Polynomial.C ((cNum : ℝ) / (cDen : ℝ))).coeff n * (D80N : ℝ) - (Qres.coeff n : ℝ)) (Qres.coeff n : ℝ)
+          have := abs_add_le ((Fcomb - Polynomial.C ((cNum : ℝ) / (cDen : ℝ))).coeff n *
+              (D80N : ℝ) - (Qres.coeff n : ℝ)) (Qres.coeff n : ℝ)
           simpa using this
-    _ = (∑ n ∈ range 251, |(Fcomb - Polynomial.C ((cNum : ℝ) / (cDen : ℝ))).coeff n * (D80N : ℝ) - (Qres.coeff n : ℝ)|) +
+    _ = (∑ n ∈ range 251,
+          |(Fcomb - Polynomial.C ((cNum : ℝ) / (cDen : ℝ))).coeff n * (D80N : ℝ) - (Qres.coeff n : ℝ)|) +
         (∑ n ∈ range 251, |(Qres.coeff n : ℝ)|) := sum_add_distrib
     _ ≤ (1100251 + 1) + (∑ n ∈ range 251, |(Qres.coeff n : ℝ)|) := add_le_add hQres_e le_rfl
     _ ≤ (∑ n ∈ range 251, |(Qres.coeff n : ℝ)|) + (errBudget80 : ℝ) := by
@@ -3364,7 +3426,12 @@ theorem head_residual_of_fastHeadOK
         linarith
     _ ≤ (capNum : ℝ) / (capDen : ℝ) * (D80N : ℝ) := hok_R
 
-/-- **Multi-channel convex transfer directly from a real head-residual bound + Hardy tail bounds.** -/
+/-- **Transfer for a mixture of channels, from a head bound and tail bounds.** Let `h p` be absolutely summable
+series with dominated kernels and `w` weights with `w p ≥ 0`, `∑ₚ w p = 1`. If
+`∑_{n ≤ K} |∑ₚ w p * h p n - δ_{n,0} c| ≤ headCap` (Proposition 6.2 (head bound)), `∑_{n > K} |h p n| ≤ tl p` for
+every `p` (Proposition 7.11 (tail bounds)) and `headCap + ∑ₚ w p * tl p ≤ δ < c`, then `1 / (c - δ)` is a bound in
+Grothendieck's inequality: Lemma 3.2 (transfer) with the splitting (8.1), as used for Theorem 5.1 (six-channel
+certificate). -/
 theorem convex_transfer_head {k : ℕ} {w : Fin k → ℝ} {h : Fin k → ℕ → ℝ}
     {tl : Fin k → ℝ} {K : ℕ} {c headCap δ : ℝ}
     (hw0 : ∀ p, 0 ≤ w p) (hw1 : ∑ p, w p = 1)

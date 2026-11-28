@@ -17,8 +17,9 @@ Where a paragraph says that a result takes an estimate as a hypothesis, or that
 it gives no numerical bound, this describes that result; it is not an open
 input of the main theorem, which has no hypotheses. Every module of the libraries is in the
 import closure of `Grothe/MainResult.lean`. A module called
-*archived* below is kept outside the libraries, under `miscellaneous/` or `abandonware/`
-(`abandonware/README.md`); it is not built or checked.
+*archived* below has left the libraries and is not built or checked: a few
+modules that later work would reuse are kept in `abandonware/`, and the others
+are in git history only (`abandonware/README.md` lists both, with the commits).
 
 **Different head lengths in a mixture.** A channel with a list of length $m$ encloses its true coefficients up to index $m-1$. The finite head sum pads that list with zeros. The error between the polynomial and the true kernel costs at most the channel’s absolute tail from $m$, multiplied by its mixture weight. The theorem also covers an empty list. [Lean transfer theorem](../Grothe/UpperSix/Certificate/VariableCutoff.lean).
 
@@ -54,14 +55,13 @@ The law cells of the rows of the lower bound cover the larger range `x ≤ 31/4`
 cubic-trace, completed-square and scalar Young estimates, followed by the
 circular J2/J3 inequalities. `JointContractions.lean` retains the general
 tensor-to-Gram identities and specializes this core for `Circular.joint_sixth`.
-`JointSixth.lean`, archived under `miscellaneous/research/Grothe/LowerAnalytic/`
+`JointSixth.lean`, archived under `abandonware/Grothe/LowerAnalytic/`
 and not built, uses the same identities and core for its invariant adapters
 and capped/η refinements. No positivity of the symmetrized contraction
 operator is assumed.
 
 Weaker upper-bound variants, their data and their historical verification records
-are preserved in [the committed archive](../miscellaneous/other-bounds/README.md).
-They are outside the active build and current axiom policy.
+are in git history only ([`abandonware/README.md`](../abandonware/README.md) gives the commit).
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
@@ -110,6 +110,6 @@ the row blocks `psdRowKK`) use proof-producing kernel reduction, including the c
 continuation-block checks.
 The report is `lake env lean scratch/Axioms.lean`, checked in CI;
 the node caps are in the same report. The generic response, cubic-ceiling
-and quintic-transfer lemmas are archived under `miscellaneous/research/Grothe/`
+and quintic-transfer lemmas are archived
 and are not part of the build. No `sorry`,
 no warnings.

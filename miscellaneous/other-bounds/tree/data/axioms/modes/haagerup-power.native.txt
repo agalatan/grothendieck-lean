@@ -1,1 +1,0 @@
-# --haagerup-power: no native axioms are allowed in the canonical upper bound.
