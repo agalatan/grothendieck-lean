@@ -24,14 +24,14 @@ def check(ok, message):
         raise ValueError(message)
 
 
-def funded_row():
+def funded_row(index=2):
     table = json.loads(TABLE.read_text(), parse_float=Decimal)
     chosen = sorted(table["chosen"], key=lambda c: Q(c["piece"][0]))[14]
     piece, = [p for p in table["cases"]
               if p["piece"] == chosen["piece"] and p["row_tag"] == chosen["row_tag"]]
-    node = piece["theta"][2]
-    check(piece["row_tag"] == "0.855" and Q(node["ucapfrac"]) == Q(78, 100),
-          "expected piece 15, row 0.855 and the third funded energy")
+    node = piece["theta"][index]
+    check(piece["row_tag"] == "0.855" and Q(node["ucapfrac"]) == (Q("0.60"), Q("0.70"), Q("0.78"))[index],
+          "wrong funded energy or profile for piece 15")
     return Q(piece["piece"][0]), node
 
 
@@ -43,12 +43,16 @@ def bind_cells(cfg, weights):
     check(Q(ref["t_lo"]) <= t_exact and Q(ref["u_lo"]) <= Q(node["u"]) <= Q(ref["u_hi"]),
           "certificate energy or Rice threshold misses the funded row")
     # The original singleton has enough margin over the full (16, 20] table bin at F = 6.545.
+    point = {"chi_lo": 16, "chi_hi": 20, "F_claimed": 6.545,
+             "slicesA": ref["slicesA"], "slicesB": ref["slicesB"]}
+    return bind_to_bins(ref, node, [*weights, point], PUBLIC_BOUNDS, COVERED_BIN_ENDS)
+
+
+def bind_to_bins(ref, node, weights, public_bounds, expected_ends):
     cols = {"chi_lo", "chi_hi", "F_claimed", "slicesA", "slicesB"}
     check(all(set(c) == cols for c in weights), "wrong witness fields")
-    weights = sorted([*weights, {"chi_lo": 16, "chi_hi": 20, "F_claimed": 6.545,
-                                 "slicesA": ref["slicesA"], "slicesB": ref["slicesB"]}],
-                     key=lambda c: c["chi_lo"])
-    check([(c["chi_lo"], c["chi_hi"]) for c in weights] == sorted(PUBLIC_BOUNDS), "wrong chi intervals")
+    weights = sorted(weights, key=lambda c: c["chi_lo"])
+    check([(c["chi_lo"], c["chi_hi"]) for c in weights] == sorted(public_bounds), "wrong chi intervals")
     bins = sorted(int(k) for k in node["theta_chi"])
     closed = []
     cells = []
@@ -59,11 +63,11 @@ def bind_cells(cfg, weights):
         allowance = min(Q(node["theta_chi"][str(b)]) for _, b in inside)
         certified = Q(c["F_claimed"])
         check(0 < certified <= allowance, "certificate exceeds a funded allowance")
-        check(certified <= PUBLIC_BOUNDS[c["chi_lo"], c["chi_hi"]], "certificate exceeds the published bound")
+        check(certified <= public_bounds[c["chi_lo"], c["chi_hi"]], "certificate exceeds the published bound")
         # theta_allow labels the stream. Proof checks use F_claimed, audited above as an exact binary64.
         cells.append({**ref, **c, "theta_allow": c["F_claimed"]})
         closed.extend(b for _, b in inside)
-    check(closed == COVERED_BIN_ENDS, "unexpected set of covered bins")
+    check(closed == expected_ends, "unexpected set of covered bins")
     return cells
 
 
@@ -81,10 +85,7 @@ def audit_tails(cfg, cells):
                 original.verify_slice_rational_tail_and_signs(s, cell, params, exp_bounds, False)
 
 
-def main():
-    original.verify_all()  # global Rice tangent inequalities, parent inputs and exact energy-node bindings
-    cfg = original.load_full_cfg(str(SOURCE / "dual_certs.json"))
-    cells = bind_cells(cfg, json.loads((HERE / "cells.json").read_text()))
+def run_replay(cfg, cells):
     audit_tails(cfg, cells)
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp)
@@ -96,12 +97,21 @@ def main():
         result = json.loads(receipt.read_text())
     check(result["status"] == "CERTIFIED" and len(result["cells"]) == len(cells), "incomplete C++ replay")
     for c, rec in zip(cells, result["cells"]):
-        check((rec["chi_lo"], rec["chi_hi"], rec["F_certified"]) ==
-              (c["chi_lo"], c["chi_hi"], c["F_claimed"]), "cell mismatch")
+        check((rec["piece"], rec["row"], rec["u_idx"], rec["u_lo"], rec["u_hi"], rec["t_lo"],
+               rec["chi_lo"], rec["chi_hi"], rec["F_certified"]) ==
+              (c["piece_idx"], c["row_tag"], c["u_idx"], c["u_lo"], c["u_hi"], c["t_lo"],
+               c["chi_lo"], c["chi_hi"], c["F_claimed"]), "cell mismatch")
         check(rec["worst_M_A"] < 0 and rec["worst_M_B"] < 0, "continuous residual is nonnegative")
         left = "(" if rec["chi_lo"] == 0 else "["
-        print(f"chi in {left}{rec['chi_lo']}, {rec['chi_hi']}], F = {Q(rec['F_certified'])}, "
+        print(f"energy node {rec['u_idx']}, chi in {left}{rec['chi_lo']}, {rec['chi_hi']}], F = {Q(rec['F_certified'])}, "
               f"sup bounds A, B = {rec['worst_M_A']:.6g}, {rec['worst_M_B']:.6g}")
+
+
+def main():
+    original.verify_all()  # global Rice tangent inequalities, parent inputs and exact energy-node bindings
+    cfg = original.load_full_cfg(str(SOURCE / "dual_certs.json"))
+    cells = bind_cells(cfg, json.loads((HERE / "cells.json").read_text()))
+    run_replay(cfg, cells)
     print(f"Verified {len(COVERED_BIN_ENDS)} whole funded bins at piece 15, u/u_cap = 0.78 (10 additional).")
 
 
