@@ -85,3 +85,35 @@ $(a-\gamma)(b-\gamma)\ge\nu^2$. The remaining application needs a
 quantitative estimate of the low-field set and the fifth projection of the
 actual template on a binding pair.
 [Kernel proof](lean/QuinticResearch/PhaseIteration.lean)
+
+
+## Physical phase families and their remaining obstruction
+
+For normalized, fixed-amplitude two-charge Gaussian phase drivers, reducing the
+fifth eigenvalue by $d=1/50$ gives an absolute payoff whose reciprocal exceeds
+1.40372082. The exact optimum on this family is between 1.40397477 and
+1.40397478, at $w=0$, $d=47/2000$. Allowing the visible amplitude to depend on
+the remote sample preserves that estimate for the specified sign-symmetric drivers.
+With $d=0$ every choice of the mixing weight fails the 1.4023 test on the same
+family. These comparisons concern a subset of the phase pairs required by the
+finite-matrix transfer.
+[Fixed amplitudes](GAUSSIAN_DRIVER_BOUND.md) · [Random amplitudes](RANDOM_AMPLITUDE.md)
+
+A finite triple-product example with shape $\chi=6/5$ has negative signed
+fifth energy. The original row's unused payoff can nevertheless absorb that
+cost for the two-charge drivers under an explicit weight condition.
+[Finite obstruction](FINITE_BLOCK_RESPONSE.md) · [Compensation](GAUSSIAN_DRIVER_COMPENSATION.md)
+
+For arbitrary physical phase pairs, the analytic joint cubic and fifth
+estimate retains the actual half-difference cubic energy. In particular,
+on $1071/1280\le t\le2151/2560$ and at $d=1/50$, the sufficient condition
+$\|Qk\|^2\le.06129$ gives real payoff below $10000/14023$. A phase rotation
+used to realize the absolute payoff changes the half-difference. The unrestricted
+lower-bound problem requires control of this energy on the remaining phase pairs.
+[Physical pair budget and proof](VISIBLE_PAIR_BUDGET.md)
+
+An actual pair close in support value to one of the decoupled cubic drivers
+also satisfies the 1.4023 absolute-payoff test. At $d=1/50$ the sufficient
+support deficit is $2.18\cdot 10^{-8}$; at $d=47/2000$ it is
+$3.03\cdot10^{-8}$. The comparison controls phase changes in both arguments.
+[Support deficit and exact Gram estimate](EXPOSED_DRIVER.md)
