@@ -217,6 +217,10 @@ All files of `KSPH` (STATUS 4.30) are committed in the repository, with no exter
 - [`sources/kappa-spheres-2026-11-24-gemini-21d5/PROOF.md`](sources/kappa-spheres-2026-11-24-gemini-21d5/PROOF.md): complete proofs and dependency inventory for Theorems 1–4.
 - [`code/kappa-spheres-gemini-21d5/verify_kappa_spheres.py`](code/kappa-spheres-gemini-21d5/verify_kappa_spheres.py) ([`REPLAY.log`](code/kappa-spheres-gemini-21d5/REPLAY.log), [`verify_kappa_spheres_result.json`](code/kappa-spheres-gemini-21d5/verify_kappa_spheres_result.json)): pure Python stdlib verifier (`python3 -I -O verify_kappa_spheres.py`, AST-audited zero floats, **C**), checking the four-square defect identity from first-principles monomial Gaussian moments, the quantitative odd-c Hurwitz lower bound, the closed-form algebraic c = 3 construction and rational witnesses, the disjoint circular block harmonic-mean constructions for c = 5, 6, 8, 9, 10 (including C_opt ≥ 1168/729 > 8/5 at c = 8) plus the coupled rational c = 7 witness, and 7 adversarial negative controls.
 
+The dense dimension-seven witness in row 4.30 uses the [search coefficients](code/degree5-attack/ref/bulk/bulk_c7.json).
+The [derivation](sources/kappa-seven-codex-062a/PROOF.md) identifies the rational polynomial and its exact spherical
+fourth moment. The [standard-library replay](code/kappa-seven-codex-062a/verify.py) reads the coefficient table directly.
+
 ## The attack plan and problem statements of 25 November 2026 (STATUS 4.39, tag ATK)
 
 - `sources/degree5-attack-2026-11-25/PLAN.md` and `problems/P1`–`P6`: written from the ledger and its sources by a
@@ -383,7 +387,7 @@ from `tools/` by commit `d84c3fdfc` (`git show 8115260f8:tools/<name>`); and the
 ## Certified continuous-law first-chaos content bounds per (u, χ) cell (gemini-c1de, 26 November 2026, #623; STATUS 4.56, tag CONTCELL)
 
 The [piece-15 extension](sources/piece15-content-codex-062a/PROOF.md) uses the same profiles and certifier. Its two new [dual witnesses and replay](code/piece15-content-codex-062a/) and the reused χ = 20 multipliers cover ten additional funded bins at 0.78 u_cap (4.56a). Four further witnesses cover [all fifteen bins at each of the first two energies](sources/piece15-content-codex-062a/FIRST_ENERGIES.md), including seventeen bins with an active allowance. On the [whole closed interval between those energies](sources/piece15-content-codex-062a/ENERGY_BAND.md), 34 pairs of witnesses certify the affine allowances on all fifteen bins for both profiles under (R1). The [replay](code/piece15-content-codex-062a/energy_band.py) verifies all 136 rectangles and can regenerate the multipliers. On the [next energy interval](sources/piece15-content-codex-062a/SECOND_BAND.md), the [second-band verifier](code/piece15-content-codex-062a/second_band.py) reads 46 pairs of multipliers and checks all 162 rectangles. The coverage in row 4.56b extends from 0.70 to 0.78 u_cap on eleven bins.
-The [middle-bin manifest](code/piece15-content-codex-062a/middle_prefix.json) names the published multipliers for the four bins in (8, 16] above the 0.70 energy node. The [replay note](sources/piece15-content-codex-062a/MIDDLE_PREFIX.md) gives its energy endpoints, input digest and verification command.
+The [middle-bin manifest](code/piece15-content-codex-062a/middle_prefix.json) names the published multipliers and [four refitted pairs](code/piece15-content-codex-062a/middle_fits.json) for the four bins in (8, 16] above the 0.70 energy node. The [replay note](sources/piece15-content-codex-062a/MIDDLE_PREFIX.md) gives its energy endpoints, input digest and verification command.
 
 
 The [continuous Rice exclusion proof](sources/rice-energy-exclusion-codex-062a/PROOF.md) and its [rational verifier](code/rice-energy-exclusion-codex-062a/verify.py) reuse all 19 infeasibility receipts.
