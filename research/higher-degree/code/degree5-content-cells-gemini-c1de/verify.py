@@ -19,8 +19,10 @@ Default mode (`python3 -IB verify.py` and `python3 -IB -O verify.py`, zero bare 
      junta / own-row 0.70 negative-control enclosures.
 Pass `--replay-cpp` to recompile `certify_content_cells.cpp` and replay the full 2D Gaussian row
 enclosures, `P_max`, `g_1` range enclosures, and compact-interval `sup_{U in [0, U0]} M(U) < 0`
-checks from scratch (add `--update-result` to overwrite `result.json`).
+checks from scratch. Add `--audit-local` to audit the native result on its own, or
+`--update-result` to publish the native receipt after a successful audit.
 """
+import argparse
 from decimal import Decimal
 from fractions import Fraction
 import hashlib
@@ -28,8 +30,8 @@ import io
 import json
 import math
 import os
+import shutil
 import subprocess
-import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -467,7 +469,10 @@ def load_full_cfg(certs_path):
     return cfg
 
 
-def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_result=False, check_hashes=True):
+def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_result=False, check_hashes=True,
+               *, audit_local=False):
+    check(not (audit_local and update_result), "choose either a read-only replay audit or an update")
+    check(replay_cpp or not (audit_local or update_result), "receipt replay modes require --replay-cpp")
     default_paths = (certs_path is None and result_path is None)
     if certs_path is None:
         certs_path = os.path.join(HERE, "dual_certs.json")
@@ -514,7 +519,7 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
         with tempfile.TemporaryDirectory() as tmpd:
             bin_path = os.path.join(tmpd, "certify_content_cells")
             dat_path = os.path.join(tmpd, "dual_certs.dat")
-            out_res = result_path if update_result else os.path.join(tmpd, "result_replay.json")
+            out_res = os.path.join(tmpd, "result_replay.json")
             emit_dat_from_json(cfg, dat_path)
             subprocess.run(
                 ["c++", "-O3", "-frounding-math", "-ffp-contract=off", "-std=c++17", "-Wall", "-Wextra", "-Werror",
@@ -529,12 +534,18 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
             for sh in manifest_shards:
                 cmd.extend(["--shard", sh, os.path.join(certs_dir, sh)])
             subprocess.run(cmd, check=True)
-            if not update_result:
-                r_disk = json.load(open(result_path))
-                r_rep = json.load(open(out_res))
-                check(r_disk == r_rep, "replayed C++ result.json differs from committed result.json")
-
-    res = json.load(open(result_path))
+            check(os.path.getsize(out_res) < 300_000, "replayed receipt exceeds 300 KB limit")
+            with open(out_res, "rb") as candidate:
+                candidate_bytes = candidate.read()
+            res = json.loads(candidate_bytes)
+            if not (audit_local or update_result):
+                with open(result_path) as recorded:
+                    recorded_result = json.load(recorded)
+                check(res == recorded_result, "replayed C++ result.json differs from committed result.json")
+                res = recorded_result
+    else:
+        with open(result_path) as recorded:
+            res = json.load(recorded)
     check(res.get("status") == "CERTIFIED", f"result.json status != CERTIFIED: {res.get('status')}")
     if check_hashes:
         exp_dat_sha = hashlib.sha256(emit_dat_bytes(cfg)).hexdigest()
@@ -900,11 +911,24 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
         if c["kind"] == "JM1_BOUND" and c["piece_idx"] >= 1 and 0 < c["theta_allow"] < 49.999
         and c["F_claimed"] <= c["theta_allow"]
     )
-    mode_desc = (
-        "recompiled C++17 2D row integrals + [0, U0] interval suprema replayed and matched receipt; "
-        if replay_cpp else
-        "SHA-256 receipt binding to dual_certs shards + C++ source, g1 slice covers, and rational U >= U0 tails audited (pass --replay-cpp to replay C++ [0, U0] & 2D integrals); "
-    )
+    if update_result:
+        # Stage on the destination filesystem so readers always see a complete, audited receipt.
+        destination = os.path.realpath(result_path)
+        with tempfile.TemporaryDirectory(dir=os.path.dirname(destination)) as tmpd:
+            staged = os.path.join(tmpd, "result.json")
+            with open(staged, "wb") as output:
+                output.write(candidate_bytes)
+            if os.path.exists(destination):
+                shutil.copymode(destination, staged)
+            os.replace(staged, destination)
+        mode_desc = "replayed, audited and updated the recorded receipt; "
+    elif audit_local:
+        mode_desc = "replayed and audited the locally generated C++ receipt; "
+    elif replay_cpp:
+        mode_desc = "replayed the C++ intervals and matched the recorded receipt; "
+    else:
+        mode_desc = ("SHA-256 receipt binding to dual_certs shards + C++ source, g1 slice covers, and rational "
+                     "U >= U0 tails audited (pass --replay-cpp to replay C++ [0, U0] & 2D integrals); ")
     print(
         f"ALL CHECKS PASSED: {mode_desc}"
         f"{len(cfg['cells'])} cells ({n_jm1} JM1 bounds, {n_inf} (R1) infeasibility certificates; "
@@ -917,9 +941,15 @@ def verify_all(certs_path=None, result_path=None, replay_cpp=False, update_resul
 
 
 def main():
-    replay_cpp = "--replay-cpp" in sys.argv[1:]
-    update_result = "--update-result" in sys.argv[1:]
-    verify_all(replay_cpp=replay_cpp, update_result=update_result)
+    parser = argparse.ArgumentParser(description="Audit the first-chaos content-cell receipt.")
+    parser.add_argument("--replay-cpp", action="store_true", help="rebuild the native certifier and replay all cells")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--audit-local", action="store_true", help="audit the native intervals without comparing or writing")
+    mode.add_argument("--update-result", action="store_true", help="replace result.json after a successful audit")
+    args = parser.parse_args()
+    if (args.audit_local or args.update_result) and not args.replay_cpp:
+        parser.error("--audit-local and --update-result require --replay-cpp")
+    verify_all(replay_cpp=args.replay_cpp, update_result=args.update_result, audit_local=args.audit_local)
 
 
 if __name__ == "__main__":
