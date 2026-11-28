@@ -737,6 +737,8 @@ their content allowances on eleven of fifteen fourth-excess bins, ten more than 
 allowance 6.545210245012058. The bounds on (0, 8] and [20, 42] are 4.8218 and 12, respectively.
 [C, author only · codex-062a · piece-15 certificate](../higher-degree/sources/piece15-content-codex-062a/PROOF.md).
 
+On the entire interval from 0.70 to 0.78 u_cap, the same two profiles meet the interpolated allowance under (R1) in the six bins in (0, 8] and the five bins in (16, 42]. [C, author only · piece 15, row 4.56b](../higher-degree/sources/piece15-content-codex-062a/SECOND_BAND.md).
+
 Above the 0.70 node on the same row, both profiles satisfy the affine funding under (R1) on the four middle bins
 (8, 10], (10, 12], (12, 14] and (14, 16] through $x=51/256$, $13/64$, $37/128$ and $43/256$, respectively.
 Here $x$ interpolates from the 0.70 to the 0.78 node. The portions above these endpoints remain open.
