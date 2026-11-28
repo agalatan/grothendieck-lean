@@ -26,3 +26,4 @@ import QuinticResearch.SignedRadial
 import QuinticResearch.SignedRowProfile
 import QuinticResearch.SignedRowTransfer
 import QuinticResearch.SignedVector
+import QuinticResearch.SpectralPair

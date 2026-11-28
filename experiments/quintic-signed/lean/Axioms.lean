@@ -37,6 +37,7 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.exists_nonremote_energy_of_cubic_radius
 #print axioms Grothe.LowerAnalytic.exists_remote_frame_phase_support
 #print axioms Grothe.LowerAnalytic.exists_shape_quintic_mass_cuts
+#print axioms Grothe.LowerAnalytic.fifth_h_tangent_eleven
 #print axioms Grothe.LowerAnalytic.finiteDiffuseCopy_ae
 #print axioms Grothe.LowerAnalytic.finiteDiffuseCubic_ae
 #print axioms Grothe.LowerAnalytic.finiteDiffuseCubic_mem
@@ -130,10 +131,12 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.signedFifth_vector
 #print axioms Grothe.LowerAnalytic.signed_fifth_at_least_154
 #print axioms Grothe.LowerAnalytic.signed_fifth_at_least_17
+#print axioms Grothe.LowerAnalytic.signed_fifth_h_tangent
 #print axioms Grothe.LowerAnalytic.signed_fifth_high
 #print axioms Grothe.LowerAnalytic.signed_fifth_radial
 #print axioms Grothe.LowerAnalytic.signed_fifth_radial_885868
 #print axioms Grothe.LowerAnalytic.signed_fifth_radial_886176
+#print axioms Grothe.LowerAnalytic.spectral_pair_gram
 #print axioms Grothe.LowerAnalytic.splitFinBlock_fst
 #print axioms Grothe.LowerAnalytic.splitFinBlock_snd
 #print axioms Grothe.LowerAnalytic.transferInputs_of_quinticPayoff

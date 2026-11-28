@@ -71,14 +71,13 @@ private theorem projected_tangent {n : ℕ} (h p : L2G n) :
   rw [hs,he]
   linarith only [sq_nonneg ‖F (p-h)‖]
 
-/-- A signed estimate on actual phase pairs with freely chosen radius and Laguerre cutoffs. -/
-theorem signed_fifth_radial {n : ℕ} {f g : L2G (n+1)}
+/-- Price the fifth energy of the half-sum, retaining the half-difference for the signed payoff. -/
+theorem signed_fifth_h_tangent {n : ℕ} {f g : L2G (n+1)}
     (hf : f ∈ Unimod (stdGaussian ((n+1)+(n+1)))) (hg : g ∈ Unimod (stdGaussian ((n+1)+(n+1))))
-    (ht : 0 < tOf (n+1) f g) {M a r : ℝ} (hM : 6 ≤ M) (ha : 0 < a) (hr : 0 < r) :
+    (ht : 0 < tOf (n+1) f g) {M a : ℝ} (hM : 6 ≤ M) (ha : 0 < a) :
     3*π/256-(√π/2/4)*(laguerre2 M*(√π/2-tOf (n+1) f g)+
-      2*(exp (-M)/(2*a)*((M+a^2)*(M-2)+2*M-3))) -
-      (2*(√π/2-tOf (n+1) f g)/r+r^2/6) ≤
-      ‖(H32 (n+1)).starProjection (hOf (n+1) f g)‖^2-‖(H32 (n+1)).starProjection (kOf (n+1) f g)‖^2 := by
+      2*(exp (-M)/(2*a)*((M+a^2)*(M-2)+2*M-3))) ≤
+      ‖(H32 (n+1)).starProjection (hOf (n+1) f g)‖^2 := by
   let z := visibleDirection (n+1) f g
   have hz : z ∈ H10 (n+1) := visibleDirection_mem (n+1) f g
   have hu : ‖z‖ = 1 := norm_visibleDirection_of_pos ht
@@ -90,13 +89,23 @@ theorem signed_fifth_radial {n : ℕ} {f g : L2G (n+1)}
   rw [hm,show (inner ℂ (hOf (n+1) f g) z).re = tOf (n+1) f g from re_inner_visibleDirection _ _ _] at hx
   have hp := projected_tangent (hOf (n+1) f g) (unitPhaseL z)
   rw [normSq_H32_unitPhaseL (Nat.succ_pos _) hz hu] at hp
+  linarith only [hx,hp]
+
+theorem signed_fifth_radial {n : ℕ} {f g : L2G (n+1)}
+    (hf : f ∈ Unimod (stdGaussian ((n+1)+(n+1)))) (hg : g ∈ Unimod (stdGaussian ((n+1)+(n+1))))
+    (ht : 0 < tOf (n+1) f g) {M a r : ℝ} (hM : 6 ≤ M) (ha : 0 < a) (hr : 0 < r) :
+    3*π/256-(√π/2/4)*(laguerre2 M*(√π/2-tOf (n+1) f g)+
+      2*(exp (-M)/(2*a)*((M+a^2)*(M-2)+2*M-3))) -
+      (2*(√π/2-tOf (n+1) f g)/r+r^2/6) ≤
+      ‖(H32 (n+1)).starProjection (hOf (n+1) f g)‖^2-‖(H32 (n+1)).starProjection (kOf (n+1) f g)‖^2 := by
+  have hh := signed_fifth_h_tangent hf hg ht hM ha
   have hk := visible_half_difference_clip hf hg ht hr
   have hk' : ‖kOf (n+1) f g‖^2 ≤ 2*(√π/2-tOf (n+1) f g)/r+r^2/6 := by
     apply (mul_le_mul_iff_left₀ (sq_pos_of_pos hr)).mp
     rw [add_mul,show (2*(√π/2-tOf (n+1) f g)/r)*(r^2) = 2*r*(√π/2-tOf (n+1) f g) by field_simp]
     nlinarith only [hk]
   have hkp := pow_le_pow_left₀ (norm_nonneg _) ((H32 (n+1)).norm_starProjection_apply_le (kOf (n+1) f g)) 2
-  linarith only [hx,hp,hk'.trans' hkp]
+  linarith only [hh,hk'.trans' hkp]
 
 private theorem mu_upper : √π/2 ≤ (886227:ℝ)/1000000 := by
   rw [div_le_iff₀ (by norm_num),Real.sqrt_le_left (by norm_num)]
@@ -110,6 +119,25 @@ private theorem exp_cutoff (n : ℕ) (d : ℝ) (hd : 0 < d) (h : d ≤ (2718281/
   rw [mul_one] at hn
   rw [hn]
   exact h.trans (pow_le_pow_left₀ (by norm_num) (by linarith only [Real.exp_one_gt_d9]) _)
+
+/-- A uniform affine fifth-energy estimate that also holds at zero visible amplitude. -/
+theorem fifth_h_tangent_eleven {n : ℕ} {f g : L2G (n+1)}
+    (hf : f ∈ Unimod (stdGaussian ((n+1)+(n+1)))) (hg : g ∈ Unimod (stdGaussian ((n+1)+(n+1)))) :
+    3*π/256-(√π/2/4)*((61/2)*(√π/2-tOf (n+1) f g)+199/177000) ≤
+      ‖(H32 (n+1)).starProjection (hOf (n+1) f g)‖^2 := by
+  have hμ : 0 ≤ √π/2 := by positivity
+  by_cases ht : 0 < tOf (n+1) f g
+  · have h := signed_fifth_h_tangent hf hg ht (M:=11) (a:=3) (by norm_num) (by norm_num)
+    have he : exp (-11) ≤ (1:ℝ)/59000 := by
+      simpa using exp_cutoff 11 59000 (by norm_num) (by norm_num)
+    norm_num [laguerre2] at h
+    nlinarith only [h,mul_nonneg hμ (sub_nonneg.mpr he)]
+  · have hz : tOf (n+1) f g = 0 :=
+      le_antisymm (le_of_not_gt ht) (norm_nonneg _)
+    rw [hz,sub_zero]
+    nlinarith only [Real.sq_sqrt Real.pi_nonneg, Real.pi_pos, hμ,
+      sq_nonneg ‖(H32 (n+1)).starProjection (hOf (n+1) f g)‖]
+
 
 private theorem radial_loss_numeric {M a r t t₀ mu U E : ℝ} (ha : 0 < a) (hr : 0 < r) (hm : 0 ≤ mu)
     (hG : 0 ≤ (M+a^2)*(M-2)+2*M-3) (hL : 0 ≤ laguerre2 M)

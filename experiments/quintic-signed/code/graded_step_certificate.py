@@ -103,12 +103,13 @@ def angular_grid(n):
     return np.array(co,dtype=np.int64),np.array(si,dtype=np.int64)
 
 
-def proposed_slice(z,w,steps):
+def proposed_slice(z,w,steps,seed):
     # Only the returned disk-valued integer array is input to the verification.
     def phase(a):
         return a/np.maximum(np.abs(a),1e-15)
-    v=z*(.81962+.20643*(z*z-2)/np.sqrt(2)-.00331*(z**4-6*z*z+6)/np.sqrt(12))
-    a=(.22271-.00344*(z*z-1))*w-.00177*z*z/np.sqrt(2)*np.conj(w)
+    a0,a1,a2,a3,a4,a5=np.array(seed)/100000
+    v=z*(a0+a2*(z*z-2)/np.sqrt(2)+a5*(z**4-6*z*z+6)/np.sqrt(12))
+    a=(a1+a3*(z*z-1))*w+a4*z*z/np.sqrt(2)*np.conj(w)
     plus,minus=v+a,v-a
     f,g=phase(plus),phase(minus)
     for _ in range(steps):
@@ -125,7 +126,7 @@ def weight_error(left,right,angular_error):
     return ea*(lb+eb)+la*eb+la*lb*angular_error
 
 
-def verify(n,nt,steps):
+def moment_bounds(n,nt,steps,seed):
     require(0<n<=1024 and 0<nt<=512, "supported grid")
     require(nt*2*DISK**2 < 2**63 and nt*2*DISK*(ANG+1) < 2**63,
             "signed 64-bit angular contractions are exact")
@@ -137,7 +138,7 @@ def verify(n,nt,steps):
     def dot_integer(weights,values):
         return sum(a*int(b) for a,b in zip(weights,values))
     for i,z in enumerate(radii):
-        re,im=proposed_slice(z,w,steps)
+        re,im=proposed_slice(z,w,steps,seed)
         require(re.shape==(n,nt) and im.shape==(n,nt),"complete proposal")
         require(int(re.min())>=-DISK and int(re.max())<=DISK and
                 int(im.min())>=-DISK and int(im.max())<=DISK,"coordinate range")
@@ -163,15 +164,25 @@ def verify(n,nt,steps):
     square=[]
     for lo,hi in bounds[:-1]:
         square.append((0 if lo<=0<=hi else min(lo*lo,hi*hi),max(lo*lo,hi*hi)))
+    return bounds,square
+
+
+def affine_terms(bounds,square):
+    first = square[0]
+    cubic = interval_sum([(1,square[2]),(-1,square[1])])
+    fifth = interval_sum([(1,square[5]),(-1,square[3]),(-1,square[4])])
+    base = interval_sum([(1-NU,first),(-E-NU,cubic),(NU,bounds[6])])
+    return first,cubic,fifth,base
+
+
+def verify(n,nt,steps):
+    bounds,square=moment_bounds(n,nt,steps,[81962,22271,20643,-344,-177,-331])
     payoff=interval_sum([(1-NU,square[0]),(E+NU,square[1]),(-E-NU,square[2]),
                          (NU,square[3]),(NU,square[4]),(-NU,square[5]),(NU,bounds[6])])
     guaranteed=Q((payoff[0]*10**10).__floor__(),10**10)
     print(f"cells={n} x {n} x {nt} on the half circle, payoff ≥ {float(guaranteed):.10f}",flush=True)
     require(guaranteed>Q(10000,14023), "graded pair must exceed the 1.4023 payoff cap")
-    first = square[0]
-    cubic = interval_sum([(1,square[2]),(-1,square[1])])
-    fifth = interval_sum([(1,square[5]),(-1,square[3]),(-1,square[4])])
-    base = interval_sum([(1-NU,first),(-E-NU,cubic),(NU,bounds[6])])
+    first,_,fifth,base=affine_terms(bounds,square)
     c,d = first[0]-base[1], -fifth[1]
     require(d>0,"stress pair gets worse with the debit")
     upper_debit=(Q(10000,14023)-base[0])/d
@@ -185,18 +196,44 @@ def verify(n,nt,steps):
     mincap=alpha*visible_base+(1-alpha)*base[0]
     max_reciprocal=Q(ceil_div(10**8*mincap.denominator,mincap.numerator),10**8)
     debit_ceil=Q(ceil_div(10**7*upper_debit.numerator,upper_debit.denominator),10**7)
+    require(base[1] < Q(".712955") and base[1]-Q(".02")*fifth[0] < Q(10000,14023),
+            "the same pair has enough original payoff slack at the smaller debit")
     require(upper_debit<debit_ceil, "strict exclusion at the decimal endpoint")
-    require(Q(".8392")<bounds[0][0]<=bounds[0][1]<Q(".8394") and fifth[1]<Q("-.0071"),
+    require(Q(".8392")<bounds[0][0]<=bounds[0][1]<Q(".8394") and fifth[1]<Q("-.00718"),
             "strict central amplitude and fifth-energy obstruction")
-    print("The pair has .8392<t<.8394 and signed fifth energy < -.0071.")
+    print("The pair has .8392<t<.8394 and signed fifth energy < -.00718.")
     print(f"At w=0 every d >= {float(debit_ceil):.7f} fails the 1.4023 test.")
     print(f"All nonnegative mixtures and debits have reciprocal at most {float(max_reciprocal):.8f}.")
     return guaranteed
+
+
+def verify_small_debit_seed(n,nt,steps):
+    bounds,square=moment_bounds(n,nt,steps,[82766,20271,21330,-81,-42,-90])
+    first,_,fifth,base=affine_terms(bounds,square)
+    c=first[0]-base[1]
+    d=-fifth[1]
+    require(c>0 and d>0, "physical pair payoff increases in BOTH free parameters")
+    visible_base=NU+(1-NU-(E+NU)/8)*PI_LO/4
+    visible_d=-3*PI_HI/256
+    weight=d/(d-visible_d)
+    # Both w slopes are positive: for the visible phase it is pi/4-B_0.
+    require(PI_LO/4>NU+(1-NU-(E+NU)/8)*PI_HI/4, "visible payoff grows with w")
+    mincap=weight*visible_base+(1-weight)*base[0]
+    reciprocal=Q(ceil_div(10**8*mincap.denominator,mincap.numerator),10**8)
+    require(reciprocal<Q("1.40245"), "smaller-debit test improves the family ceiling")
+    witness_line=[Q((v*10**9).__floor__(),10**9) for v in [base[0],c,d]]
+    print(f"Second pair and visible phase give 1/C(w,d) ≤ {float(reciprocal):.8f} for every w,d≥0.")
+    print("Certified affine lower coefficients:",*(str(v) for v in witness_line))
+    return reciprocal
 
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--radial",type=int,default=432)
     parser.add_argument("--angles",type=int,default=216)
+    parser.add_argument("--pair",choices=("central","small-debit","both"),default="both")
     args=parser.parse_args()
-    verify(args.radial,args.angles,6)
+    if args.pair in ("central","both"):
+        verify(args.radial,args.angles,6)
+    if args.pair in ("small-debit","both"):
+        verify_small_debit_seed(args.radial,args.angles,6)
