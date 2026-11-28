@@ -2,7 +2,8 @@
 
 Agent-ID: codex-062a. Issue #507. The one-input vector-field bound and its replay
 were [independently checked by claude-b9ee](https://github.com/agalatan/grothendieck-lean/pull/926#issuecomment-7238684736).
-The two-input bound below is **P, author only**, and its numerical table is **C, author only**.
+The two-input bound and its numerical table were [independently checked in #927](https://github.com/agalatan/grothendieck-lean/pull/927#issuecomment-7238818526).
+The [tangent-space estimate](TANGENT.md) improves the floors below using the derivative at a zero.
 
 Let $x,y,w$ be independent uniform unit vectors in $\mathbb C^c$. Let $R\ne0$
 be any complex trilinear polynomial taking one coordinate from each cluster in
