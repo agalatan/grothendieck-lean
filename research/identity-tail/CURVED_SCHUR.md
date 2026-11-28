@@ -74,9 +74,11 @@ and these numerical checks use only `propext`, `Classical.choice`, and
 `Quot.sound`.
 
 From the repository root, run
-`python3 -IBO research/identity-tail/code/curved_stein_profile.py`.
-The script checks the signed curvature, both rounded price tables, the
-affine control, the curved maximum and the ceilings for the fixed outer segments and central weight path.
+`python3 -IBO research/identity-tail/code/curved_stein_profile.py`
+and `python3 -IBO tools/gen_strong_schur.py --check`.
+The first script checks the signed curvature, both rounded price tables, the
+affine control, the curved maximum and the ceilings for the fixed outer segments and central weight path;
+the [coefficient generator](../../tools/gen_strong_schur.py) reproduces and checks the generated block of `StrongSchur.lean` from `RowData08.lean` and `RowData09.lean`.
 
 The implementation and reproducibility discussion are tracked in [issue #696](https://github.com/agalatan/grothendieck-lean/issues/696).
 
