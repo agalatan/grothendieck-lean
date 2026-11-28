@@ -400,11 +400,12 @@ scale, the family aH₃(g₁) + bH₂(g₁)g₂ and Gaussian scale mixtures [R �
 with every Gaussian buffer for 0 < χ ≤ 1/72000 (3.18), for all multi-driver complex Wick sums q₀(X) = Σ_{j=1}^m c_j H(X_j)
 (m ≥ 1) plus any independent circular Gaussian scale mixture Q_mix with quantitative margin ≥ (1/20)(Σ u_j²)/(u + v_mix + v)^{3/2}
 [P + C, author only · gemini-21d5 · 3.5, 3.6, 3.25], strictly without a buffer for 0 < χ ≤ 1/18000 and across the
-high-kurtosis regime χ ∈ [25, 42] ([26, 42] in `cert_915.json`, widened to [25, 42] in `cert_912.json`), where **E|q| ≤ (443/500)‖q‖₂ = 0.886‖q‖₂ < (√π/2)‖q‖₂** [P + C, author only ·
-gemini-4c4c, gemini-2762 · 3.6, 3.7], as well as on hyperplane-vanishing cubics and on P₃,₁(q²) = 0 [P, author only · 3.25, 3.24].
+high-kurtosis regime **χ ∈ [28/3, 42]**, where **E|q| ≤ (4431/5000)‖q‖₂ = 0.8862‖q‖₂ < (√π/2)‖q‖₂** (`cert_real_501.json`, widened from [25, 42] with 443/500 in `cert_912.json` and [26, 42] in `cert_915.json`) [P + C, author only ·
+gemini-8732, gemini-4c4c, gemini-2762 · 3.6, 3.7], as well as on hyperplane-vanishing cubics and on P₃,₁(q²) = 0 [P, author only · 3.25, 3.24].
 Without a buffer, (E|q|)² ≤ (1569/2000)E|q|² holds for every cubic in at most seven coordinates; with every buffer,
 radius domination holds for one two-variable family around the known counterexample to the stronger Laplace comparison
-[author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (114/125)‖q‖₂ =
+[author only, certificates replayed · 3.6]. Across all of H₂,₁ in every dimension, **E|q| ≤ (2221/2500)‖q‖₂ =
+0.8884‖q‖₂** (by U(1) phase averaging of the unconditional 22-slab real Level-2 Malliavin–Stein bound E|F| ≤ (3999/5000)‖F‖₂ on V₃(ℝⁿ) in `cert_real_501.json`) [P + C, author only · gemini-8732 · 3.7, 3.21], **E|q| ≤ (114/125)‖q‖₂ =
 0.912‖q‖₂** (combining the tied H₂,₁ U(1)-averaged OU resolvent bound E|q| ≤ (√π/2)‖q‖₂(1 + (3299/625000)χ) < 0.91196‖q‖₂
 on χ ∈ [0, 11/2] with 10 self-contained Compactly-Supported Damped Level-3 (`ε = 1/6` on `[11/2, 9]`, `ε = 1/25` on `[25, 26]`)
 and Level-2 Stein rows in `cert_912.json` on χ ∈ [11/2, 42], largest row bound ≤ 0.9118551) [P + C, author only ·
@@ -442,7 +443,7 @@ integration, the whole third chaos in at most eleven coordinates [P + C · 3.21 
 most twelve [P + C author only · 3.21 (e3)]; the diagonal sums Σλᵢ·He₃(Xᵢ) in every dimension, with strict
 inequality [P + C author only · 3.21 (e2)]; the normalised elementary symmetric cubic e₃ in any number of variables
 [P author only · 3.21 (e4)]; every h whose correlation with some He₃(⟨v, X⟩)/√6 is at least 0.698,
-for maximal tensor influence at least 0.692, and every h with κ₄ ≥ 49 [P + C · 3.21 (e4)] (and for maximal tensor influence at least 27/40 = 0.675 and κ₄ ≥ 48 via coupled signed 2-plane circle norms and the full Frobenius commutator block [P + C, author only · gemini-8732 · 3.21 (e4)]); four-partite cubics and, in the chaos of every order
+for maximal tensor influence at least 0.692, and every h with κ₄ ≥ 49 [P + C · 3.21 (e4)] (and for maximal tensor influence at least 27/40 = 0.675 and κ₄ ≥ 48 via coupled signed 2-plane circle norms and the full Frobenius commutator block, and across **all κ₄ ∈ [14, 90]** with **E|h| ≤ (3989/5000)‖h‖₂ = 0.7978‖h‖₂ < √(2/π)‖h‖₂** via the real Level-2 Malliavin–Stein hierarchy [P + C, author only · gemini-8732 · 3.21 (e1), (e4)]); four-partite cubics and, in the chaos of every order
 d ≥ 2, the (d + 1)-partite elements [P + C author only · 3.21 (e5)]; and the
 limit family a·He₃(X) + b·XY + c·Z of third-chaos variables with a Gaussian bath (X, Y, Z independent standard
 Gaussians; equality only when a = b = 0), also with any independent Gaussian scale mixture added
@@ -451,7 +452,7 @@ Gaussians; equality only when a = b = 0), also with any independent Gaussian sca
 the nodal set, which comes from a martingale–isoperimetric bound; it holds numerically on about 200 cubics, but no
 mechanism for it is known where the sharp bound is open [P; N · 3.21 (e10)]. Every nonzero h satisfies E|h| < 0.88714‖h‖₂
 in every dimension, by rotations on a Gaussian circle restricted to the at most three sign changes per half-turn of a
-cubic [P + C · 3.21 (e9)(i)]. The tested rotation certificates do not reach √0.68 [N · 3.21 (e9)]. Moments, hypercontractivity and the
+cubic [P + C · 3.21 (e9)(i)], and **E|h| ≤ (3999/5000)‖h‖₂ = 0.7998‖h‖₂ < (4/5)‖h‖₂ < √0.68‖h‖₂** unconditionally across all dimensions n ≥ 1 and all κ₄ ∈ [0, 90] via a 22-slab real Level-2 Malliavin–Stein carré-du-champ hierarchy (`cert_real_501.json`, max row bound ≤ 0.79977041, closing #501 and #506) [P + C, author only · gemini-8732 · 3.21 (e9)]. The tested rotation certificates do not reach √0.68 [N · 3.21 (e9)]. Moments, hypercontractivity and the
 cumulant bounds cannot give even the constant √0.68 there, the real form of 0.916, and the stronger Gaussian Laplace
 and small-ball comparisons are false even for He₃(G) [3.6, 3.21; chapter 4, item 95]. √0.68 is also proved in at most
 fifteen coordinates, for correlation at least 0.642, for κ₄ ≥ 46.6, for maximal tensor influence at least 0.66502 or at most 0.0064,
