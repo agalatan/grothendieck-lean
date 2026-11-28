@@ -2042,7 +2042,7 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 | `code/real-stein-501-gemini-8732/make_cert.py` | 29,449 B | `b3ddf98284ecc54b3adc9049c0e9490124003906ff7056d3a4028a81415e90f8` |
 | `code/real-stein-501-gemini-8732/REPLAY.log` | 6,776 B | `5836134e5eb2e19e0a11b9c8c068c7b0b93e222f46c09d1153b57038211c6e09` |
 
-## Oscillation-preserving OU cone, enhanced third-chaos Level-2+ hierarchy (`κ₄ ≥ 5`), and dimension-free fifth-chaos OU tower on `V₅(ℝⁿ)` & `H₃,₂(ℂⁿ)` (gemini-8732, #458)
+## Oscillation-preserving OU cone, enhanced third-chaos Level-2+ hierarchy (`s = κ₄(F/‖F‖₂) ≥ 5`), and dimension-free fifth-chaos OU tower on `V₅(ℝⁿ)` & `H₃,₂(ℂⁿ)` (gemini-8732, #458)
 
 - [Self-contained proof and replay instructions](sources/chaos-stein-458-gemini-8732/PROOF.md) and
   [oscillation-preserving IBP cone verifier, two exact rational certificates, two independent zero-float stdlib verifiers, symbolic multivariate & `{F = 0}` nodal checks, 157 adversarial/AST/`-O` controls, generator, and replay log](code/chaos-stein-458-gemini-8732/) (tag `KCS458`; `STATUS.md` 3.6, 3.7, 3.18, 3.21, 3.21 (e1), 3.21 (e9), 3.30; `../higher-degree/STATUS.md` 1.12, 4.8, 4.12, 4.18, 4.18e, 4.18f; **P + C, author only**). Every file is strictly below 300 KB (`cert_v3_458.json` is 169,848 B; `cert_v5_458.json` is 87,311 B) and committed in the repository with zero external dependencies left outside.
@@ -2056,8 +2056,8 @@ The three supplemental Stein models at normalized energy .06 extend the comparis
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/chaos-stein-458-gemini-8732/PROOF.md` | 58,667 B | `a2a7f7d34097aab9499cefd433cc3dd4e84d4ea27ecf9238b32da94d1dcc2c25` |
-| `code/chaos-stein-458-gemini-8732/README.md` | 4,456 B | `37b107823ff8eb63012442da567a4396b646bbf9f448887e2a879518d03480ae` |
+| `sources/chaos-stein-458-gemini-8732/PROOF.md` | 62,031 B | `7075ba4947872fcff74891761f490dfc0ffef8164f548e286dd4cebcd141db27` |
+| `code/chaos-stein-458-gemini-8732/README.md` | 5,367 B | `e226fa8009fd414bec086ef7bb8b5dcd47ea7322c827087bcd3a75efaf63a7f1` |
 | `code/chaos-stein-458-gemini-8732/cert_v3_458.json` | 169,848 B | `9bec677ebe3709087c298155c1fbc5333785835fff4a8b64bfe624b71887b76d` |
 | `code/chaos-stein-458-gemini-8732/cert_v5_458.json` | 87,311 B | `703bd0a8de0bf7b3ff3299fa2fe7a0e6726c516160ceabb61316b619361b9618` |
 | `code/chaos-stein-458-gemini-8732/verify_ibp_cone.py` | 27,758 B | `4516670b308ade9e5bc220a6c69f915a17da3e6b5955167fd98b7fd992c39fe7` |

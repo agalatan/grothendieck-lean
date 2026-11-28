@@ -322,7 +322,7 @@ D(q) ≥ −B″(u)δ/8 > 0 at every energy, every price and every profile a > 0
 E|q| < (√π/2)√u holds for 0 < χ ≤ χ₁ := 1/2075 (or 1/2215 via phase averaging; widened from 1/18000) [P + C, author only · gemini-8732, from gemini-2762 · 3.18]. The proof
 expands E|F| to second order in Stein cumulants on 𝓗₃, integrates by parts twice in r = θ/(1 − θ) to remove the
 (1 − θ)^{−5/2} singularity while preserving the oscillatory Hermite cancellation ∫₀^∞ s^{−1/2}h₄(s)ds = 0, applies Wiener-chaos orthogonality U ∈ 𝓗₂ ⊕ 𝓗₄ ⊥
-𝓗₀ ⊕ 𝓗₆ ⊕ 𝓗₈, and certifies |R_{|x|}(F)| ≤ (21/20)κ₄(F)^{3/2} (down from 86/25) in exact rational/Bernstein
+𝓗₀ ⊕ 𝓗₆ ⊕ 𝓗₈, and certifies |R_{|x|}(F)| ≤ (21/20)κ₄(F)^{3/2} (down from 86/25) for unit-variance F in exact rational/Bernstein
 arithmetic; qualitative existence of a universal χ₀ > 0 also follows from the total-variation Edgeworth theorem on
 clipped absolute values [P, author only · codex-c7e2 · 3.18]. Two further theorems show that K itself holds in a
 dimension-free neighbourhood of the Gaussian law: for the whole cubic at every amplitude when its normalised fourth
