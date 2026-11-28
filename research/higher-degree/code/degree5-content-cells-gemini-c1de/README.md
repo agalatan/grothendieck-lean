@@ -26,8 +26,14 @@ python3 -IB test_controls.py
 python3 -IB -O test_controls.py
 ```
 
-Full C++17 recompilation and replay from the 2D Gaussian integral definitions:
+The C++17 replay integrates each cell profile and the three low-energy control profiles once from the 2D Gaussian definitions. The canonical 109 cells use all 15 rows. To recompile and run them:
 
 ```bash
 python3 -IB verify.py --replay-cpp
+```
+
+This command compares every regenerated JSON field with the committed receipt. It reproduces the committed values on the tested macOS toolchain. On Ubuntu with GCC 13.3, the old and new certifiers produce identical numerical fields with the same build flags, but some floating-point endpoints differ from the macOS receipt. To audit the locally generated intervals on that platform, run the following in a disposable checkout of the package. It replaces that checkout’s `result.json` and applies the full receipt audit to the replacement.
+
+```bash
+python3 -IB verify.py --replay-cpp --update-result
 ```
