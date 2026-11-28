@@ -510,3 +510,26 @@ Row 4.18r uses the [common sector constraints](sources/quintic-sector-frontier-c
 | `sources/quintic-sector-frontier-codex-a7c4/POINT.md` | 3,175 | `79c2b7acd3c5b87b8238e3a906a5a6508bdceb4792579d6371a315e9ef1590c4` |
 | `sources/quintic-sector-frontier-codex-a7c4/RANK_ONE.md` | 3,502 | `94d279e969526b7298050e49da04a428639acc7fbc177925e8df4dc2855883e5` |
 | `sources/quintic-sector-frontier-codex-a7c4/SHOULDER.md` | 5,594 | `af07439d24d49df02a3228a91b3687d1d32764073665834dfbabb62ec2813267` |
+
+## Two carrier amplitudes and the real Stein profile (codex-a7c4, #870)
+
+Row 4.18s uses the [shape-conditioned proof](sources/quintic-double-ellipse-codex-a7c4/PROOF.md), [remote test](sources/quintic-double-ellipse-codex-a7c4/REMOTE.md) and [two-amplitude extension](sources/quintic-double-ellipse-codex-a7c4/TILTED.md). From the repository root run the three entry points with Python's standard library and optimization enabled.
+
+```sh
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/remote_debit.py
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/shape_radius.py
+python3 -IB -O research/higher-degree/code/quintic-double-ellipse-codex-a7c4/tilt_cover.py
+```
+
+| Path under this directory | Bytes | SHA-256 |
+|---|---:|---|
+| `code/quintic-double-ellipse-codex-a7c4/carrier_tilt.py` | 2,699 | `4773919d80880a4603dc8eb958a6da1baf0f69a90f8940987968996b854c558f` |
+| `code/quintic-double-ellipse-codex-a7c4/mixed.json` | 246 | `37381adcd42c8181181a44ef5b22214d7b922e72079d15c88792c626ae6a1672` |
+| `code/quintic-double-ellipse-codex-a7c4/remote_debit.py` | 2,908 | `921bd9863de43e8e8d6a90c1b3bdc75bb04dc2effe6f366550c248e02e16a221` |
+| `code/quintic-double-ellipse-codex-a7c4/retuned.json` | 294 | `d151a938d69538e39d3fb297cbaee0d0666103f0b8a6884f25385e2e6528e94a` |
+| `code/quintic-double-ellipse-codex-a7c4/shape_radius.py` | 10,249 | `e8d05b7fd2217e19cff0d4d578a6ff75d003b78886a2f77cac51fcd8902d119d` |
+| `code/quintic-double-ellipse-codex-a7c4/tilt_cover.py` | 1,673 | `6056a67af2acbf93925baadd964c7224cada37eae7c3beec040ad29f68b4669e` |
+| `code/quintic-double-ellipse-codex-a7c4/unmixed.json` | 247 | `95cdd89dd709cb14736bbf2727e5e0f23f9a8776824c73339882f513d3a2ce98` |
+| `sources/quintic-double-ellipse-codex-a7c4/PROOF.md` | 8,288 | `ad70b2739eb974b29570e3cd4dc561946dc42ee21ed944f6467d043f73b9be20` |
+| `sources/quintic-double-ellipse-codex-a7c4/REMOTE.md` | 2,803 | `1f6b4b790db2c8f50faf3c3e18010c4266daf76474587f4955bffe18f8ceeee1` |
+| `sources/quintic-double-ellipse-codex-a7c4/TILTED.md` | 3,207 | `8bf056f0c52b5be78169052058db5614e5968303b7a0772a75a84c4b8e2f2b94` |
