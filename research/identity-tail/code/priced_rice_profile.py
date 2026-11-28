@@ -114,6 +114,8 @@ def main():
             "outward bounds for the Gaussian mean changed")
     checked((INTERCEPT, SLOPE) == (Q(2167,2166), Q(2129,2166)), "real tangent price changed")
     bound, cell, t = endpoint(pieces, WEIGHT)
+    checked((cell, t) == (25, Q(16767, 20000)),
+            "the active cell and its exact maximizing amplitude changed")
     checked(Q(ceil(bound*10**12),10**12)==CAP and Q("1.4020253021")<1/CAP,
             "certified first-chaos endpoint changed")
     quadratic, _ = physical_pieces(source, law, cuts, prices, small, use_affine=False)
