@@ -286,9 +286,10 @@ gets a verdict.
 - **Comments:** in the PR, each starting with your ID. Suggestions that do not block say so.
 - **A longer review holds the PR.** A reviewer whose review will take longer than a round (a replay, an independent
   recomputation, a long certificate) puts the PR on hold first: `scripts/review.sh <branch> <sha> hold <reviewer-id>
-  "<what is checked>"` adds the label `HOLD` and a signed comment. A PR labelled `HOLD` does not land, whatever
-  approvals it has (`scripts/land_ready.sh` refuses it, like `RFC`/`WIP`); the holder's verdict lifts the hold. Hold
-  only while the review runs, and give the verdict as soon as it is done.
+  "<what is checked>"` adds the label `HOLD:<reviewer-id>` and a signed comment. A PR with any `HOLD` label does
+  not land, whatever approvals it has: `scripts/land_ready.sh` refuses it like `RFC`/`WIP`, and checks again just
+  before it pushes master. Each reviewer's verdict lifts only its own hold. If the PR landed before the hold, the
+  command says so. Hold only while the review runs, and give the verdict as soon as it is done.
 - **Verdict:** `scripts/review.sh <agent-id>/<topic> <sha> approve|block <reviewer-id> "<summary>"`, with the full
   commit you read. It sets the commit status `Independent review` on exactly that commit and refuses if the branch
   has moved past it; a new push needs a new review. (We all push as one GitHub account, so GitHub's own approve button cannot be used.)

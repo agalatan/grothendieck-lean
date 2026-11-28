@@ -35,8 +35,11 @@ def review_call(branch, reviewer, tip=REVIEWED, verdict="approve", env=None):
                 'repo view') echo 'owner/repo' ;;
                 'api -X') printf 'Mock API %s\n' "$*" >&2 ;;
                 'pr list') echo "${MOCK_PR:-}" ;;
-                'label create'|'pr edit'|'pr comment') printf 'Mock %s\n' "$*" >&2 ;;
-                'pr view') [[ "$*" == *labels* ]] && echo "${MOCK_HELD:-false}" || echo "${MOCK_HOLD_COMMENT:-}" ;;
+                'label create'|'pr edit') printf 'Mock %s\n' "$*" >&2 ;;
+                'pr comment') printf 'Mock %s\n' "$*" >&2; [[ "${MOCK_COMMENT_FAIL:-0}" != 1 ]] ;;
+                'pr view') if [[ "$*" == *labels* ]]; then
+                               if [[ "$*" == *"${MOCK_HELD_BY:-none}"* ]]; then echo true; else echo false; fi
+                           else echo "${MOCK_STATE:-OPEN}"; fi ;;
                 *) return 98 ;;
             esac
         }
@@ -106,26 +109,45 @@ class AgentIdentityTests(unittest.TestCase):
 
 
 class HoldTests(unittest.TestCase):
-    def test_hold_labels_and_comments_without_a_status(self):
-        result = review_call("codex-a12b/topic", "claude-3e2a", verdict="hold", env={"MOCK_PR": "42"})
+    def call(self, reviewer="claude-3e2a", verdict="hold", **env):
+        return review_call("codex-a12b/topic", reviewer, verdict=verdict, env={"MOCK_PR": "42", **env})
+
+    def test_hold_adds_a_per_reviewer_label_and_no_status(self):
+        result = self.call()
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("pr edit 42 --add-label HOLD", result.stderr)
-        self.assertIn("[claude-3e2a] HOLD", result.stderr)
+        self.assertIn("pr edit 42 --add-label HOLD:claude-3e2a", result.stderr)
         self.assertNotIn("statuses/", result.stderr)
 
     def test_hold_needs_an_open_pull_request(self):
-        result = review_call("codex-a12b/topic", "claude-3e2a", verdict="hold", env={"MOCK_PR": ""})
-        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertEqual(self.call(MOCK_PR="").returncode, 2)
 
-    def test_verdict_lifts_only_the_holders_own_hold(self):
-        own = review_call("codex-a12b/topic", "claude-3e2a", env={
-            "MOCK_PR": "42", "MOCK_HELD": "true", "MOCK_HOLD_COMMENT": "[claude-3e2a] HOLD: a longer review"})
+    def test_a_hold_placed_after_the_landing_reports_it(self):
+        result = self.call(MOCK_STATE="MERGED")
+        self.assertEqual(result.returncode, 4, result.stderr)
+        self.assertIn("too late", result.stderr)
+
+    def test_a_failed_comment_keeps_the_hold_and_a_retry_is_harmless(self):
+        first = self.call(MOCK_COMMENT_FAIL="1")
+        self.assertEqual(first.returncode, 0, first.stderr)
+        self.assertIn("--add-label HOLD:claude-3e2a", first.stderr)
+        self.assertIn("comment failed", first.stderr)
+        again = self.call()
+        self.assertEqual(again.returncode, 0, again.stderr)
+        self.assertIn("--add-label HOLD:claude-3e2a", again.stderr)
+
+    def test_two_reviewers_each_verdict_lifts_only_its_own_hold(self):
+        # gemini holds too; claude's verdict removes HOLD:claude-3e2a only
+        own = self.call(verdict="approve", MOCK_HELD_BY="HOLD:claude-3e2a")
         self.assertEqual(own.returncode, 0, own.stderr)
-        self.assertIn("--remove-label HOLD", own.stderr)
-        other = review_call("codex-a12b/topic", "claude-3e2a", env={
-            "MOCK_PR": "42", "MOCK_HELD": "true", "MOCK_HOLD_COMMENT": "[gemini-1111] HOLD: a longer review"})
-        self.assertEqual(other.returncode, 0, other.stderr)
-        self.assertNotIn("--remove-label HOLD", other.stderr)
+        self.assertIn("--remove-label HOLD:claude-3e2a", own.stderr)
+        self.assertNotIn("HOLD:gemini", own.stderr)
+        other = self.call(reviewer="gemini-1111", verdict="approve", MOCK_HELD_BY="HOLD:gemini-1111")
+        self.assertIn("--remove-label HOLD:gemini-1111", other.stderr)
+
+    def test_a_reviewer_without_a_current_hold_lifts_nothing(self):
+        result = self.call(verdict="approve", MOCK_HELD_BY="HOLD:gemini-1111")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("--remove-label", result.stderr)
 
 
 if __name__ == "__main__":
