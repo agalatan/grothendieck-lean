@@ -41,17 +41,21 @@ if ! command -v "$PY" > /dev/null 2>&1; then
 fi
 
 total_start=$(date +%s)
+CAPTURE_DIR="$(mktemp -d)"
+trap 'rm -rf "$CAPTURE_DIR"' EXIT
 
 run() {  # run <exact|float> <reference name> <script> [arguments...]; returns 0 if the script passed
   local kind="$1" ref="$2" script="$3"
   shift 3
-  local start out code=0 secs note
+  local start code=0 secs note
   local refpath="expected_output/$ref.txt"
+  # the script's stdout, byte for byte (a command substitution would drop trailing newlines)
+  local capture="$CAPTURE_DIR/$ref.out"
   start=$(date +%s)
-  out=$("$PY" "$script" "$@") || code=$?
+  "$PY" "$script" "$@" > "$capture" || code=$?
   secs=$(( $(date +%s) - start ))
   if [ "$SAVE" = 1 ] && [ "$code" = 0 ]; then
-    if ! mkdir -p expected_output || ! printf '%s\n' "$out" > "$refpath"; then
+    if ! mkdir -p expected_output || ! cat "$capture" > "$refpath"; then
       echo "could not write $refpath" >&2
       code=1
     fi
@@ -60,22 +64,22 @@ run() {  # run <exact|float> <reference name> <script> [arguments...]; returns 0
     if [ ! -f "$refpath" ]; then
       note="no reference output $refpath"
       code=1
-    elif printf '%s\n' "$out" | diff -q - "$refpath" > /dev/null; then
+    elif cmp -s "$capture" "$refpath"; then
       note="output identical to $refpath"
     elif [ "$kind" = exact ]; then
       note="output DIFFERS from $refpath (an exact script must reproduce it byte for byte)"
       code=1
-    elif diff -q <(printf '%s\n' "$out" | grep -F '[ok]') <(grep -F '[ok]' "$refpath") > /dev/null; then
-      note="output differs from $refpath in floating-point digits only; the [ok] lines are identical"
+    elif cmp -s <(grep -F '[ok]' "$capture") <(grep -F '[ok]' "$refpath"); then
+      note="output differs from $refpath; the [ok] lines are identical"
     else
       note="the [ok] lines DIFFER from $refpath"
       code=1
     fi
   fi
   if [ "$code" = 0 ]; then
-    printf 'PASS  %-28s %4ds  %s  [%s]\n' "$script $*" "$secs" "$(printf '%s\n' "$out" | tail -n 1)" "$note"
+    printf 'PASS  %-28s %4ds  %s  [%s]\n' "$script $*" "$secs" "$(tail -n 1 "$capture")" "$note"
   else
-    printf '%s\n' "$out"
+    cat "$capture"
     printf 'FAIL  %-28s %4ds  (exit status %s)%s\n' "$script $*" "$secs" "$code" "${note:+  [$note]}"
   fi
   return "$code"

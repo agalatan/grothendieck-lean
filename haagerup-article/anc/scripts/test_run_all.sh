@@ -56,5 +56,9 @@ L[i] = L[i] + " edited"'
 expect nonzero "an edited [ok] line of a floating-point script fails" --quick
 setup; rm "$tmp/s/expected_output/01_certificate_arithmetic.txt"; mkdir "$tmp/s/expected_output/01_certificate_arithmetic.txt"
 expect nonzero "--save fails when it cannot write a reference output" --quick --save
+setup; printf '\n' >> "$tmp/ref/01_certificate_arithmetic.txt"
+expect nonzero "an extra final newline in the output of an exact script fails" --quick
+setup; python3 -c "import sys; p=sys.argv[1]; s=open(p,'rb').read(); open(p,'wb').write(s.rstrip(b'\\n'))" "$tmp/ref/07_alternating_sums.txt"
+expect nonzero "a missing final newline in the output of an exact script fails" --quick
 if [ "$fail" = 0 ]; then echo "ALL CASES PASS"; fi
 exit "$fail"
