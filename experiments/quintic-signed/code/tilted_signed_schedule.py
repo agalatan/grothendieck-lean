@@ -65,15 +65,15 @@ def physical_segments():
     return pieces
 
 
-def high(w,d,t):
+def high(w,d,t,*,residual=R):
     return ((1-w)*(NU+PI_HI/4*(ALPHA-BETA/8)+ALPHA*(MU-t)**2+
-                   2*R*MU*(MU-t)+Q(1,10**52))+w*t*t-3*PI_LO*d/256)
+                   2*residual*MU*(MU-t)+Q(1,10**52))+w*t*t-3*PI_LO*d/256)
 
 
-def envelope(pieces,w,d,switch):
+def envelope(pieces,w,d,switch,*,residual=R):
     a,b,c = first.physical_scales(w)
     checked(0<w<1 and 0<=d/(1-w)<=Q(1,10000),"effective debit outside multiplier range")
-    candidates = [high(w,d,switch),high(w,d,MU)]
+    candidates = [high(w,d,switch,residual=residual),high(w,d,MU,residual=residual)]
     for s in pieces:
         if s.low>=switch:
             continue

@@ -4,6 +4,8 @@ The nonzero fifth debit $d=1/31250000$ and first-chaos weight $w=7/100000$ give 
 
 At the same $w$, setting $d=0$ makes both available scalar prices exceed the signed cap at $t=.885908228863324$. Thus changing the crossover alone cannot recover the signed result at that weight. Retuning to $w=.00006989$ with zero debit certifies the stronger **1.40202545078** on the same pieces. These comparisons concern certified prices. They do not determine the true norm of either witness.
 
+The [Bernstein integration](BERNSTEIN_TILTED_ENDPOINT.md) sharpens both estimates on exactly the same sparse pieces.
+
 For the unsigned sparse payoff in normalized units $V$, the first-chaos mixture is bounded by $aV+wt^2+c$, with $a=(1-w)(1-\nu)$ and $c=(1-w)\nu$. The signed witness subtracts $d\Delta_5$, the physical difference of fifth-projection energies. The following estimates cover the amplitudes.
 
 * For $t\le.578$, $\Delta_5\ge-1$. For $t\ge.578$, clipping at radius $2/3$ gives $\Delta_5\ge3(t-\mu)-2/27$. These bounds and $\mu<.886227$ imply $\Delta_5\ge41t^2/20-3371/2000$. For the second interval the difference of the quadratic and the linear function is convex, so checking $.578$ and $.887$ suffices.

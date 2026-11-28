@@ -6,6 +6,8 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.H32_starProjection_Cop
 #print axioms Grothe.LowerAnalytic.H32_unitPhaseL_ae
 #print axioms Grothe.LowerAnalytic.RealCubicCarrier.has_full_lift
+#print axioms Grothe.LowerAnalytic.RemoteRadial.allChords
+#print axioms Grothe.LowerAnalytic.RemoteRadial.allPrices
 #print axioms Grothe.LowerAnalytic.SignedRowTransfer.endpoint_of_profile
 #print axioms Grothe.LowerAnalytic.SignedRowTransfer.fifthFloor_le
 #print axioms Grothe.LowerAnalytic.SignedRowTransfer.signed_payoff_le_profile
@@ -132,6 +134,7 @@ import QuinticResearch
 #print axioms Grothe.LowerAnalytic.signedFifth_payoff
 #print axioms Grothe.LowerAnalytic.signedFifth_payoff_high
 #print axioms Grothe.LowerAnalytic.signedFifth_payoff_radial_high
+#print axioms Grothe.LowerAnalytic.signedFifth_quadratic_floor
 #print axioms Grothe.LowerAnalytic.signedFifth_transfer
 #print axioms Grothe.LowerAnalytic.signedFifth_vector
 #print axioms Grothe.LowerAnalytic.signedHalfDifferenceDebit_nonneg
