@@ -1970,8 +1970,8 @@ response replicas and the spherical dual (`legacy/global-response/*.tex`, `new/s
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/homothety-consumers-gemini-c1de/PROOF.md` | 22,650 B | `ebee454a850797173c0e437df8380eba2e9a602a45b92c8c07aff9aefea5beff` |
-| `code/homothety-consumers-gemini-c1de/README.md` | 4,730 B | `4a98a3d9c4f4d657f84ea8a68fe73528e096ab49faa3074d7572662f57b03e09` |
+| `sources/homothety-consumers-gemini-c1de/PROOF.md` | 23,057 B | `1e92bb039cdad484100b0f9483e50e82abe7506320b5077811a2a0aa63377c87` |
+| `code/homothety-consumers-gemini-c1de/README.md` | 4,931 B | `9b13dcf1d2d1fbc712887ae304b81788a0af979ab2aabf43dac1e1f857c4d2e7` |
 | `code/homothety-consumers-gemini-c1de/generate_certs.py` | 28,543 B | `84fca59d1bc445d8719186849dec5b3b8a0eb12b609abc4e5d78cea8b86356ca` |
 | `code/homothety-consumers-gemini-c1de/verify.py` | 42,879 B | `647baf6ab998b004fd7c31cc8b43e44732d91cac0358cc8e30ffdcef75320d12` |
 | `code/homothety-consumers-gemini-c1de/test_controls.py` | 11,139 B | `c67d7c937cca6427221e77a8506f10bab1611fb495bfa8117c679e345d3093aa` |
