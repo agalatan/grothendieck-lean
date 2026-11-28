@@ -25,7 +25,7 @@ maps and moment/overlap tables in `Grothe/UpperSix/Haagerup/Data/OverlapData.lea
    `rho = 10239/10000`), replacing the legacy tiger weights in the convex mixture.
 2. **Multi-term phase (`haagMuList 321`, 2 channels):** degree-29 and degree-31 odd
    polynomials `(p(t), 0)` evaluated through index `320` (`n <= 641`), with Hardy
-   tail caps `57009 / 10^15` and `77166 / 10^15`.
+   tail caps `57083 / 10^15` and `77261 / 10^15`.
 3. **Bivariate smoothed cell (`tcellRows`, 8 channels):** pairs `(p(t), q(t))` with
    `q(t) = t Q(t^2)`, `Q(0) = 0`, including five channels with degree-3 `Q(X)`
    (`q(t)` up to `t^7`). Because the smoothed second-coordinate covariance satisfies

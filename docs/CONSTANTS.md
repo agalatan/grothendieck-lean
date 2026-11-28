@@ -94,7 +94,7 @@ The certificate mixes the established Gaussian rounding channels of `Grothe/Uppe
 |---|---|---|
 | target slope | `1` | `UpperBivar.center` |
 | weighted head deviation | at most `288030166169678 / 10^15` | `UpperBivar.head_ok` |
-| weighted sum of the tail caps | `67979866321499931737 / 10^27` | weighted error in `UpperBivar.residual` |
+| weighted sum of the tail caps | `68010487376761536942 / 10^27` | weighted error in `UpperBivar.residual` |
 | total residual | `288030234180165376761536942 / 10^27` | `UpperBivar.residual_eq` |
 | transfer factor | `10^27 / 711969765819834623238463058` | `Haagerup.UpperBivar.isBound`, `Grothe.UpperBivar.bound` |
 | bound rounded upward | `1404554025 / 1000000000` | `Grothe.UpperBivar.constant_le`, `main_bounds` |
