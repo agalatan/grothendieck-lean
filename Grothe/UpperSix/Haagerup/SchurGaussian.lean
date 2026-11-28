@@ -259,7 +259,7 @@ theorem integral_M1 (B C : Sym2C) (hZ : (Z B).PD) (y y' : ℝ × ℝ) :
       rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]]]
   have hs : 0 < √(Z B).det := Real.sqrt_pos.2 (by simp only [Z, re, det]; linarith)
   rw [mul_assoc]
-  congr 1
+  refine congrArg₂ (· * ·) ?_ ?_
   · congr 1; field_simp
   · congr 2; simp only [Z, re, det]; push_cast; ring
 
@@ -723,7 +723,7 @@ theorem lintegral_P4_phih (B C : Sym2C) {j : ℝ} (hj : 0 < j)
     dsimp [k, SchurBound.P4]
     rw [← ENNReal.ofReal_mul (hf Y), ← ENNReal.ofReal_mul (mul_nonneg (hf Y) (hf Y')),
       ← ENNReal.ofReal_mul (weightedP1_nonneg B C j Y.1 Y'.1), ← ENNReal.ofReal_mul (sq_nonneg _)]
-    congr 1; rw [phih_factor, phih_factor]; unfold weightedP1; ring
+    refine congrArg ENNReal.ofReal ?_; rw [phih_factor, phih_factor]; unfold weightedP1; ring
   simp_rw [hp, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
   rw [lintegral_product_kernel k hkm]
   have hk := lintegral_weightedP1 B C hj hZ hT
@@ -769,7 +769,7 @@ lemma kHol_eq (R : Sym2C) (j : ℝ) (hj : 0 < j) (X Y : V) :
 lemma HholPair_eq (R : Sym2C) (j : ℝ) (hj : 0 < j) (F G : ℂ × ℂ → ℂ) :
     HholPair F G R =
       ∫ q : V × V, conj (gw j F q.1) * (L4 (Bj R j) R.Cmat (cst R j) q.1 q.2 * gw j G q.2) := by
-  unfold HholPair; congr 1; ext q
+  unfold HholPair; refine congrArg (integral _) ?_; ext q
   rw [kHol_eq R j hj q.1 q.2]; simp only [gw, map_mul, Complex.conj_ofReal]; ring
 
 lemma phih_sq (j : ℝ) (Y : V) : phih j Y ^ 2 = (j / π) ^ 2 *
@@ -821,6 +821,10 @@ namespace SchurMainGaussian
 
 open SchurKernel SchurBound SchurIntegrability Sym2R SchurMain GaussianAmplitude
 
+private lemma continuous_P1_pair (B C : Sym2C) :
+    Continuous fun q : V × V => P1 B C q.1.1 q.2.1 * P1 B C q.1.2 q.2.2 := by
+  simp only [P1, q, bil]; fun_prop
+
 lemma integral_norm_Lg_sq_le {R : Sym2C} {j : ℝ} (hj : 0 < j)
     (hZ : (Z (Bj R j)).PD) (hT : (T (Bj R j) R.Cmat).PD)
     {G : ℂ × ℂ → ℂ} (hGm : Measurable G) (hG : ∀ u, ‖G u‖ ≤ 1) :
@@ -835,8 +839,7 @@ lemma integral_norm_Lg_sq_le {R : Sym2C} {j : ℝ} (hj : 0 < j)
   have ham : Measurable a := hgm.norm.ennreal_ofReal
   have hΦm : Measurable fun q : V × V => ‖gw j G q.1‖ * ‖gw j G q.2‖ *
       (‖c‖ ^ 2 * (P1 B C q.1.1 q.2.1 * P1 B C q.1.2 q.2.2)) := by
-    have : Continuous fun q : V × V => P1 B C q.1.1 q.2.1 * P1 B C q.1.2 q.2.2 := by
-      simp only [P1, q, bil]; fun_prop
+    have := continuous_P1_pair B C
     exact ((hgm.comp measurable_fst).norm.mul (hgm.comp measurable_snd).norm).mul
       (measurable_const.mul this.measurable)
   have hΦ0 : ∀ q : V × V, 0 ≤ ‖gw j G q.1‖ * ‖gw j G q.2‖ *
@@ -853,7 +856,7 @@ lemma integral_norm_Lg_sq_le {R : Sym2C} {j : ℝ} (hj : 0 < j)
     simp only [a, SchurBound.P4]
     rw [← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_mul (by positivity),
       ← ENNReal.ofReal_mul (by positivity)]
-    congr 1; ring
+    refine congrArg ENNReal.ofReal ?_; ring
   have hlin : ∫⁻ q : V × V, ENNReal.ofReal (‖gw j G q.1‖ * ‖gw j G q.2‖ *
       (‖c‖ ^ 2 * (P1 B C q.1.1 q.2.1 * P1 B C q.1.2 q.2.2))) ∂(volume.prod volume)
       = ENNReal.ofReal (‖c‖ ^ 2) * ∫⁻ Y : V, ∫⁻ Y' : V, a Y * a Y' * SchurBound.P4 B C Y Y' := by
@@ -924,10 +927,10 @@ theorem norm_HholPair_sq_le (R : Sym2C) (j : ℝ) (hj : 0 < j)
   have hK : 0 ≤ ‖cst R j‖ ^ 2 * mass (Bj R j) R.Cmat j :=
     mul_nonneg (sq_nonneg _) (mass_nonneg _ _ hj hZ hT)
   have hzd := hZ.2
-  have hvd := (shifted_PD hT hj.le).2
+  obtain ⟨-, _⟩ := shifted_PD hT hj.le
   have hE : (smul 2 (E (Bj R j) R.Cmat)).PSD := fun y => by
     rw [q_smul]; exact mul_nonneg (by norm_num) (E_PSD _ _ hZ y)
-  have hud := (shifted_PD (add_PD_PSD hT hE) hj.le).2
+  obtain ⟨-, _⟩ := shifted_PD (add_PD_PSD hT hE) hj.le
   have hn : ‖cst R j‖ = ((2 * π) ^ 4)⁻¹ * ‖R.detIm‖⁻¹ * (π / j) ^ 2 := by
     simp only [cst, norm_mul, norm_inv,
       Complex.norm_of_nonneg (by positivity : (0 : ℝ) ≤ (2 * π) ^ 4),

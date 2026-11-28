@@ -630,10 +630,10 @@ theorem poly_complete {d : ℕ} {f : (Fin d → ℝ) → ℝ} (hf : MemLp f 2 (s
   have hfmm : AEMeasurable fm γ := hf1.neg.aemeasurable.ennreal_ofReal
   have hfpi : ∫⁻ x, fp x ∂γ ≠ ∞ := by
     refine ne_of_lt (lt_of_le_of_lt (lintegral_mono fun x => ?_) hf1.hasFiniteIntegral)
-    rw [Real.enorm_eq_ofReal_abs]; exact ENNReal.ofReal_le_ofReal (le_abs_self _)
+    rw [Real.eNorm_eq_ofReal_abs]; exact ENNReal.ofReal_le_ofReal (le_abs_self _)
   have hfmi : ∫⁻ x, fm x ∂γ ≠ ∞ := by
     refine ne_of_lt (lt_of_le_of_lt (lintegral_mono fun x => ?_) hf1.hasFiniteIntegral)
-    rw [Real.enorm_eq_ofReal_abs]; exact ENNReal.ofReal_le_ofReal (neg_le_abs _)
+    rw [Real.eNorm_eq_ofReal_abs]; exact ENNReal.ofReal_le_ofReal (neg_le_abs _)
   have : IsFiniteMeasure (γ.withDensity fp) := isFiniteMeasure_withDensity hfpi
   have : IsFiniteMeasure (γ.withDensity fm) := isFiniteMeasure_withDensity hfmi
   have hchar : charFunDual (γ.withDensity fp) = charFunDual (γ.withDensity fm) := by
@@ -865,7 +865,7 @@ lemma pderiv0_H_succ (p q : ℕ) : pderiv 0 (H (p + 1) q) = (p + 1) • H p q :=
 
 lemma pderiv1_H (p q : ℕ) : pderiv 1 (H p q) = A0^[p] (pderiv 1 (A1^[q] 1)) := by
   induction p with
-  | zero => rfl
+  | zero => simp only [H, Function.iterate_zero, id_eq]
   | succ _ ih => rw [H_succ_left, pderiv1_A0, ih, Function.iterate_succ_apply']
 
 lemma A0_iter_smul (p n : ℕ) (f : CPoly) : A0^[p] (n • f) = n • A0^[p] f := by

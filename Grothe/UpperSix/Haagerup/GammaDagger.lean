@@ -225,7 +225,8 @@ private lemma hasDerivAt_primF (t : ℝ) :
     (Real.hasDerivAt_cos (2 * t)).comp t h2t
   have hQ : HasDerivAt (fun s : ℝ => antiQ (Real.cos (2 * s)))
       (antiQDeriv (Real.cos (2 * t)) * (-Real.sin (2 * t) * 2)) t := by
-    simpa only [Function.comp_def] using (hasDerivAt_antiQ (Real.cos (2 * t))).comp t hcos
+    exact HasDerivAt.comp (h₂ := antiQ) (h := fun s : ℝ => Real.cos (2 * s)) t
+      (hasDerivAt_antiQ (Real.cos (2 * t))) hcos
   have hlin : HasDerivAt (fun s : ℝ => q0Val * s) q0Val t := by
     simpa using (hasDerivAt_id t).const_mul q0Val
   unfold primF
@@ -255,8 +256,9 @@ private lemma integral_binomPoly14 :
 
 private lemma integrable_haagerup :
     IntervalIntegrable (fun t : ℝ => Real.cos t ^ 2 / √(1 + Real.sin t ^ 2)) volume 0 (Real.pi / 2) := by
-  refine (Continuous.div (by fun_prop) (by fun_prop) fun _ => ?_).intervalIntegrable (μ := volume) _ _
-  exact (Real.sqrt_pos.2 (by positivity)).ne'
+  have hnum : Continuous fun t : ℝ => Real.cos t ^ 2 := by fun_prop
+  have hden : Continuous fun t : ℝ => √(1 + Real.sin t ^ 2) := by fun_prop
+  exact (hnum.div hden fun _ => (Real.sqrt_pos.2 (by positivity)).ne').intervalIntegrable (μ := volume) _ _
 
 theorem gammaDagger_bounds :
     (711958633 / 1000000000 : ℝ) < gammaDagger ∧ gammaDagger < (711958683 / 1000000000 : ℝ) := by

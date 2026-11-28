@@ -293,8 +293,7 @@ private lemma norm_sq_poly_pair_le_sos (cr ci qr qi : ℕ → ℤ) {w : ℂ} (hw
           (mul_le_mul_of_nonneg_left (sum_le_sum hoff) (by norm_num))
     _ = _ := by
         rw [Int.cast_add, sumInt_cast, sumInt_cast, mul_sum]
-        congr 1
-        exact sum_congr rfl fun m0 _ => by dsimp only; push_cast; ring
+        exact congrArg (_ + ·) (sum_congr rfl fun m0 _ => by dsimp only; push_cast; ring)
 
 /-- **Unit-disk bound**: any `(creArr, cimArr)` passing `sosAllOK` has `‖cellFn creArr cimArr u‖ ≤ 1`. -/
 theorem norm_cellFn_le {creArr cimArr qreArr qimArr : Array Int}

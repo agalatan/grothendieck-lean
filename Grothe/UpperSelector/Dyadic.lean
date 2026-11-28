@@ -129,6 +129,6 @@ theorem gridCoefficient_error (m j : ℕ) (v : ℕ → ℂ) (output : ℝ) {e₀
   calc
     _ ≤ |(geometricFirst t * geometricRatio t ^ j).re - (v j).re| + |(v j).re - output| :=
       abs_sub_le _ _ _
-    _ ≤ _ := add_le_add ((Complex.abs_re_le_norm _).trans h) hout
+    _ ≤ _ := add_le_add ((Complex.abs_re_le_norm (geometricFirst t * geometricRatio t ^ j - v j)).trans h) hout
 
 end Haagerup.AngularSelector

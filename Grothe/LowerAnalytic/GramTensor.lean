@@ -767,7 +767,7 @@ variable [DecidableEq ι] (J : ι → ι → ℝ)
 lemma cplxT_symm12 {f g : ι → ι → ι → ℝ} (hf : ∀ a b c, f a b c = f b a c)
     (hg : ∀ a b c, g a b c = g b a c) (a b c : ι) : cplxT J f g b a c = cplxT J f g a b c := by
   unfold cplxT
-  congr 1
+  refine congrArg (3 * ·) ?_
   calc ∑ a', ∑ b', ∑ c', cplxProj J 1 b a' * cplxProj J 1 a b' * cplxProj J (-1) c c'
           * (f a' b' c' + Complex.I * g a' b' c')
       = ∑ a', ∑ b', ∑ c', cplxProj J 1 b b' * cplxProj J 1 a a' * cplxProj J (-1) c c'

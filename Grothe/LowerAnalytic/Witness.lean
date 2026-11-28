@@ -124,7 +124,7 @@ def H10 : Submodule ℂ (L2G n) := Submodule.span ℂ (Set.range (zL n))
 instance : FiniteDimensional ℂ (H10 n) := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)
 
 instance : (H10 n).HasOrthogonalProjection := by
-  have := Submodule.complete_of_finiteDimensional (H10 n)
+  have := Submodule.isComplete_of_finiteDimensional (H10 n)
   infer_instance
 
 lemma inner_L2 (f g : L2G n) :
@@ -205,10 +205,10 @@ lemma rad_ge_poly (c : ℝ) (hc : 0 < c) (x : Fin (n + n) → ℝ) :
 lemma integral_rad_ge : 2 * n / √(2 * (n + 1)) ≤ ∫ x, rad n x ∂(stdGaussian (n + n)) := by
   have hc : 0 < √(2 * ((n : ℝ) + 1)) := Real.sqrt_pos.2 (by positivity)
   have hc2 : √(2 * ((n : ℝ) + 1)) ^ 2 = 2 * (n + 1) := Real.sq_sqrt (by positivity)
-  have h := integral_mono (μ := stdGaussian (n + n))
-    (f := fun x => (3 * √(2 * ((n : ℝ) + 1)) ^ 2 * rad n x ^ 2 - rad n x ^ 4) / (2 * √(2 * ((n : ℝ) + 1)) ^ 3))
-    (g := rad n) (((integrable_rad_sq n).const_mul _).sub (integrable_rad_pow_four n) |>.div_const _)
-    (integrable_rad n) (fun x => rad_ge_poly n _ hc x)
+  have hi : Integrable (fun x => (3 * √(2 * ((n : ℝ) + 1)) ^ 2 * rad n x ^ 2 - rad n x ^ 4) /
+      (2 * √(2 * ((n : ℝ) + 1)) ^ 3)) (stdGaussian (n + n)) :=
+    ((integrable_rad_sq n).const_mul _).sub (integrable_rad_pow_four n) |>.div_const _
+  have h := integral_mono hi (integrable_rad n) (fun x => rad_ge_poly n _ hc x)
   refine le_trans (le_of_eq ?_) h
   rw [integral_div, integral_sub ((integrable_rad_sq n).const_mul _) (integrable_rad_pow_four n),
     integral_const_mul, integral_rad_sq, integral_rad_pow_four]
@@ -452,7 +452,7 @@ def H21 : Submodule ℂ (L2G n) := chargeOne3 n ⊓ (H10 n)ᗮ
 instance : FiniteDimensional ℂ (H21 n) := Submodule.finiteDimensional_inf_left _ _
 
 instance : (H21 n).HasOrthogonalProjection := by
-  have := Submodule.complete_of_finiteDimensional (H21 n)
+  have := Submodule.isComplete_of_finiteDimensional (H21 n)
   infer_instance
 
 lemma H21_le_orthogonal : H21 n ≤ (H10 n)ᗮ := inf_le_right

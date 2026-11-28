@@ -28,7 +28,7 @@ private lemma inner_angled {ι : Type} [Fintype ι] (u v : EuclideanSpace ℂ ι
   simp only [angled, WithLp.ofLp_toLp, Sum.elim_inl, Sum.elim_inr, RCLike.inner_apply,
     map_mul, Complex.conj_ofReal, Complex.ofReal_add, Complex.ofReal_mul, PiLp.inner_apply]
   rw [add_mul, mul_sum, mul_sum]
-  congr 1 <;> exact sum_congr rfl fun _ _ => by ring
+  exact congrArg₂ (· + ·) (sum_congr rfl fun _ _ => by ring) (sum_congr rfl fun _ _ => by ring)
 
 private lemma norm_angled {ι : Type} [Fintype ι] (u : EuclideanSpace ℂ ι) (a : ℝ) :
     ‖angled u a‖ = ‖u‖ := by
