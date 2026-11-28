@@ -1,0 +1,25 @@
+atoms 253
+psi 0.605s  conic 1.804s
+         1757 function calls in 4.766 seconds
+
+   Ordered by: internal time
+   List reduced from 86 to 14 due to restriction <14>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        2    3.423    1.711    3.423    1.711 {method 'solve' of 'builtins.DefaultSolver' objects}
+        2    1.078    0.539    1.078    0.539 /home/agalatan/claude-b9ee-stage0/a/s0core.py:44(psi)
+        2    0.249    0.124    3.683    1.841 /home/agalatan/claude-b9ee-stage0/a/enriched.py:162(solve)
+        2    0.005    0.002    4.766    2.383 /home/agalatan/claude-b9ee-stage0/a/prof_cell.py:5(one)
+        2    0.005    0.002    0.005    0.002 {built-in method scipy.sparse._sparsetools.coo_tocsr}
+       16    0.001    0.000    0.001    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+       10    0.001    0.000    0.001    0.000 {built-in method numpy.array}
+        2    0.001    0.000    0.001    0.000 {built-in method scipy.sparse._sparsetools.csr_sum_duplicates}
+        4    0.000    0.000    0.000    0.000 {method 'copy' of 'numpy.ndarray' objects}
+        8    0.000    0.000    0.001    0.000 /home/agalatan/claude-b9ee-stage0/venv/lib/python3.12/site-packages/scipy/sparse/_sputils.py:263(get_index_dtype)
+        2    0.000    0.000    0.000    0.000 {built-in method scipy.sparse._sparsetools.csr_has_sorted_indices}
+        4    0.000    0.000    0.010    0.002 /home/agalatan/claude-b9ee-stage0/venv/lib/python3.12/site-packages/scipy/sparse/_compressed.py:30(__init__)
+     1012    0.000    0.000    0.000    0.000 /home/agalatan/claude-b9ee-stage0/a/enriched.py:67(ix)
+        6    0.000    0.000    0.000    0.000 /home/agalatan/claude-b9ee-stage0/venv/lib/python3.12/site-packages/scipy/sparse/_sputils.py:443(check_shape)
+
+
+
