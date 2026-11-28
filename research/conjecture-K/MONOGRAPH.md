@@ -389,7 +389,7 @@ iteration and the central limit theorem give the bound. In general it is open, s
 gain found +0.0065) [open; N · 3.20], while strict step-by-step CLT monotonicity E|q_{m+1}| > E|q_m| and equal-weight
 doubling E|q_{2m}| > E|q_m| are now proved for every m ≥ 1 on q_m = m^{−1/2}Σ_{j=1}^m H(X_j) (together with quantitative
 unequal-weight doubling ≥ (1/40)(Σ u_j²)/u^{3/2} for max_j u_j ≤ u/7) [P + C, author only · gemini-21d5 · 3.20]; its real
-analogue is false, for He₃(G)/√6 (gain < −1/80, certified by an exact rational certificate and closed-form 1088-bit
+analogue is false, for He₃(G)/√6 (an exact rational certificate, replayed; gain < −1/80 by closed-form 1088-bit
 enclosure), so a proof must use the complex structure [3.20]. The radius over H₂,₁(ℂᵐ) is within 3/√m of the radius over all dimensions, a rate and not a
 bound [P · 3.28].
 

@@ -14,7 +14,7 @@ Modes:
       m >= 13 asymptotic CLT monotonicity bound, real He_3/sqrt(6) doubling failure
       enclosure, live m = 1 Wick doubling recomputation, coarse outward consistency
       enclosures on every m = 2..12, spot verification of saved continuum slab bounds
-      in result.json, plus 19 built-in adversarial controls.
+      in result.json, plus 22 built-in adversarial controls.
   python3 -IB -O verify.py --recompute [--write-result]
       Full (~7 min) zero-float 1088-bit continuum recomputation from scratch of:
       (1) |psi_Wick(zeta)| <= (1 + (19/5)*zeta)^{-1/5} on [0, inf) (< 1 for zeta > 0),
@@ -243,11 +243,10 @@ LN2_IV = compute_ln2_iv()
 
 
 def exp_neg_iv_from_iv(y_iv, n_terms: int = 166):
-    """Outward interval for exp(-y) given y_iv = (y_lo, y_hi) with y_lo >= 0 (sound for any even/odd n_terms >= 20:
-    wait -- in an alternating series sum (-1)^k t_k, if we stop after k = n_terms - 1:
-    - if n_terms is EVEN, the last included term (k = n_terms - 1) is NEGATIVE, so the next omitted term (k = n_terms) is POSITIVE:
-      true value is in [acc, acc + t_{n_terms}]!
-    Require n_terms >= 20 and n_terms % 2 == 0 so the remainder is strictly non-negative [0, t_{n_terms}]!)."""
+    """Outward interval for exp(-y) given y_iv = (y_lo, y_hi) with y_lo >= 0.
+    For an alternating series sum_{k>=0} (-1)^k t_k stopped at k = n_terms - 1 with even n_terms >= 20,
+    the last included term (k = n_terms - 1) is negative and the first omitted term (k = n_terms) is positive,
+    so the truncation remainder lies in [0, t_{n_terms}]."""
     require(y_iv[0] >= 0 and n_terms >= 20 and (n_terms % 2 == 0), "exp_neg_iv_from_iv domain/parity")
 
     def eval_pt(y_int: int):
@@ -659,12 +658,8 @@ def taylor_curv_delta(z0: Q, za: Q, zb: Q, m2_override=None) -> Q:
 
 def enclose_jet1_on_interval(f_iv, df_iv, z0: Q, za: Q, zb: Q, m2: Q):
     """Encloses f([za, zb]) via 1st-order Taylor at z0 with |f''| <= m2 on hull({z0}, [za, zb]).
-    Since the quadratic Taylor bounds are convex/concave on [za, zb], Wait:
-    Upper bound f(z0) + f'(z0)*(z - z0) + 0.5*m2*(z - z0)^2 is CONVEX in z, so its maximum on [za, zb]
-    is attained at an endpoint z in {za, zb}!
-    Lower bound f(z0) + f'(z0)*(z - z0) - 0.5*m2*(z - z0)^2 is CONCAVE in z, so its minimum on [za, zb]
-    is ALSO attained at an endpoint z in {za, zb}!
-    """
+    The upper quadratic Taylor model is convex in z and the lower model is concave in z,
+    so their respective extrema over [za, zb] are attained at the endpoints {za, zb}."""
     ra = abs(za - z0)
     rb = abs(zb - z0)
     qa = q_to_iv(Q(1, 2) * m2 * ra * ra)[1]
@@ -1018,23 +1013,72 @@ def compute_m1_wick_doubling_enclosure(pi_iv, eh_iv):
 # 5. Full 1088-bit continuum recomputation (--recompute)
 # ---------------------------------------------------------------------------
 
+def verify_interval_cover(cells: list[tuple[Q, Q]], target_lo: Q, target_hi: Q, label: str) -> None:
+    """Checks that closed intervals `cells` cover [target_lo, target_hi] without gaps."""
+    require(bool(cells), f"{label}: empty cell list")
+    ordered = sorted(cells)
+    require(ordered[0][0] <= target_lo, f"{label}: left endpoint {ordered[0][0]} > {target_lo}")
+    reach = ordered[0][1]
+    require(ordered[0][0] <= reach, f"{label}: inverted initial cell {ordered[0]}")
+    for za, zb in ordered[1:]:
+        require(za <= zb, f"{label}: inverted cell [{za}, {zb}]")
+        require(za <= reach, f"{label}: gap ({reach}, {za}) in cover")
+        if zb > reach:
+            reach = zb
+    require(reach >= target_hi, f"{label}: right endpoint {reach} < {target_hi}")
+
+
+def build_compact_envelope_plan():
+    """Returns ((dz_fine, rng_fine), (dz_main, rng_main), cells) and verifies gapless cover of [1/50, 19/2]."""
+    dz_fine = Q(1, 1000)
+    dz_main = Q(1, 100)
+    rng_fine = range(20, 401)
+    rng_main = range(40, 951)
+    cells = [(i * dz_fine - dz_fine / 2, i * dz_fine + dz_fine / 2) for i in rng_fine]
+    cells += [(i * dz_main - dz_main / 2, i * dz_main + dz_main / 2) for i in rng_main]
+    verify_interval_cover(cells, Q(1, 50), ZETA_CROSS, "algebraic_envelope [1/50, 19/2]")
+    return dz_fine, rng_fine, dz_main, rng_main, cells
+
+
+def build_pvd_slab_edges():
+    """Returns (w_edges, m_edges) and verifies gapless monotone partitions of [1/50, 1] and [1/5, 1]."""
+    w_edges = [Q(k, 500) for k in range(10, 50)]
+    w_edges += [Q(k, 200) for k in range(20, 80)]
+    w_edges += [Q(k, 100) for k in range(40, 101)]
+    verify_interval_cover(list(zip(w_edges, w_edges[1:])), Q(1, 50), Q(1), "PVD w_edges [1/50, 1]")
+    m_edges = [Q(k, 400) for k in range(80, 401)]
+    verify_interval_cover(list(zip(m_edges, m_edges[1:])), Q(1, 5), Q(1), "PVD m_edges [1/5, 1]")
+    return w_edges, m_edges
+
+
+def build_diffuse_doubling_slab_edges():
+    """Returns wd_edges and verifies gapless monotone partition of [1/100, 1/7]."""
+    wd_edges = [Q(k, 1400) for k in range(14, 70)] + [Q(k, 700) for k in range(35, 101)]
+    verify_interval_cover(
+        list(zip(wd_edges, wd_edges[1:])),
+        Q(1, 100),
+        Q(1, 7),
+        "diffuse doubling wd_edges [1/100, 1/7]",
+    )
+    return wd_edges
+
+
 def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     """Recomputes all 4 continuum certificates in 1088-bit zero-float interval arithmetic."""
     # Precompute Jet1 grid on [0, 14.50] with spacing dz_main = 1/100 (1451 nodes),
     # plus fine grid on [0, 2/5] with spacing dz_fine = 1/1000 (401 nodes):
     n_fine = 400
-    dz_fine = Q(2, 5) / n_fine
+    dz_fine, rng_env_fine, dz_main, rng_env_main, env_cells_plan = build_compact_envelope_plan()
+    require(dz_fine == Q(2, 5) / n_fine, "dz_fine grid spacing mismatch")
     tab_fine = [eng.eval_psi_and_delta_jet1(i * dz_fine) for i in range(n_fine + 1)]
 
     n_main = 1450
-    dz_main = Q(1, 100)
     tab_main = [eng.eval_psi_and_delta_jet1(i * dz_main) for i in range(n_main + 1)]
 
     # (A) Certify |psi_Wick(zeta)| <= (1 + (19/5)*zeta)^{-1/5} on [1/50, 19/2]:
-    # Fine cells [z0 - 1/2000, z0 + 1/2000] for i = 20..400 cover [39/2000, 801/2000] supset [1/50, 2/5];
-    # Main cells [z0 - 1/200, z0 + 1/200] for i = 40..950 cover [79/200, 1901/200] supset [2/5, 19/2].
     max_env_ratio_q = Q(0)
-    for tab_cur, dz_cur, rng_cur in [(tab_fine, dz_fine, range(20, 401)), (tab_main, dz_main, range(40, 951))]:
+    env_cells: list[tuple[Q, Q]] = []
+    for tab_cur, dz_cur, rng_cur in [(tab_fine, dz_fine, rng_env_fine), (tab_main, dz_main, rng_env_main)]:
         for i in rng_cur:
             z0 = i * dz_cur
             za = z0 - dz_cur / 2
@@ -1046,9 +1090,13 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
             rhs_lo = iv_div_pos((ONE, ONE), iv_nth_root_pos(q_to_iv(1 + C1_ENV * zb), 5))[0]
             require(abs_hi < rhs_lo, f"algebraic envelope failed on cell [{za}, {zb}]")
             max_env_ratio_q = max(max_env_ratio_q, Q(abs_hi, rhs_lo))
+            env_cells.append((za, zb))
+    require(env_cells == env_cells_plan, "envelope cell list mismatch")
+    verify_interval_cover(env_cells, Q(1, 50), ZETA_CROSS, "algebraic_envelope [1/50, 19/2]")
 
     # Also certify Delta_Wick(zeta) >= c_pos * min(zeta^2, 1) > 0 on (0, 4]:
     min_pos_sc = eng.pos_small_z2_coef
+    pos_cells: list[tuple[Q, Q]] = []
     for i in range(20, n_fine + 1):
         z0 = i * dz_fine
         za, zb = z0 - dz_fine / 2, z0 + dz_fine / 2
@@ -1056,6 +1104,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         d_cell = enclose_jet1_on_interval(d_iv, dd_iv, z0, za, zb, taylor_curv_delta(z0, za, zb))
         require(d_cell[0] > 0, f"Delta_Wick positivity failed on fine cell {i}")
         min_pos_sc = min(min_pos_sc, d_cell[0])
+        pos_cells.append((za, zb))
     for i in range(40, 401):
         z0 = i * dz_main
         za, zb = z0 - dz_main / 2, z0 + dz_main / 2
@@ -1063,6 +1112,8 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         d_cell = enclose_jet1_on_interval(d_iv, dd_iv, z0, za, zb, taylor_curv_delta(z0, za, zb))
         require(d_cell[0] > 0, f"Delta_Wick positivity failed on main cell {i}")
         min_pos_sc = min(min_pos_sc, d_cell[0])
+        pos_cells.append((za, zb))
+    verify_interval_cover(pos_cells, Q(1, 50), Q(4), "Delta_Wick positivity [1/50, 4]")
 
     # (B) Certify F_pos(w) / w^2 >= 19/50 on w in [1/50, 1] and T_PVD(M) / M^2 <= 7/25 on M in [1/5, 1]:
     def delta_lb_on_panel(za: Q, zb: Q) -> int:
@@ -1080,14 +1131,12 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         p_lb = iv_mul((brk, brk), q_to_iv(za * za))[0] if brk > 0 else 0
         return max(0, j_lb, p_lb)
 
-    # Piecewise-uniform small-denominator rational w-grid on [1/50, 1] (155 slabs):
-    w_edges = [Q(k, 500) for k in range(10, 50)]
-    w_edges += [Q(k, 200) for k in range(20, 80)]
-    w_edges += [Q(k, 100) for k in range(40, 101)]
-    require(w_edges[0] == Q(1, 50) and w_edges[-1] == Q(1), "w_edges endpoints")
+    # Piecewise-uniform small-denominator rational w-grid on [1/50, 1] and M-grid on [1/5, 1]:
+    w_edges, m_edges = build_pvd_slab_edges()
     n_tau_pvd = 200
     dtau_pvd = Q(2, n_tau_pvd)  # tau = sqrt(xi) in [0, 2], (1/2) xi^{-3/2} dxi = tau^{-2} dtau
     min_fpos_over_w2 = Q(100)
+    w_slabs_proved: list[tuple[Q, Q]] = []
     for s_idx in range(len(w_edges) - 1):
         wlo, whi = w_edges[s_idx], w_edges[s_idx + 1]
         acc_f = 0
@@ -1108,9 +1157,10 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         ratio_f = Q(acc_f, ONE) / (whi * whi)
         require(ratio_f > Q(19, 50), f"F_pos/w^2 <= 19/50 on slab [{wlo}, {whi}]: {fmt_dec_floor(ratio_f)}")
         min_fpos_over_w2 = min(min_fpos_over_w2, ratio_f)
+        w_slabs_proved.append((wlo, whi))
+    verify_interval_cover(w_slabs_proved, Q(1, 50), Q(1), "PVD w_slabs proved [1/50, 1]")
 
-    # T_PVD(M) / M^2 <= 7/25 on M in [1/5, 1] (320 uniform slabs of width 1/400):
-    m_edges = [Q(k, 400) for k in range(80, 401)]
+    # T_PVD(M) / M^2 <= 7/25 on M in [1/5, 1]:
     # Octave-uniform dyadic zeta-grid on [4, 4096] (10 octaves * 50 panels = 500 panels, max denom 25):
     z_tail_grid = []
     for b_oct in range(2, 12):
@@ -1124,6 +1174,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     z_panel_wt_hi = [2 * (z_inv_sqrt[k][1] - z_inv_sqrt[k + 1][0]) for k in range(len(z_tail_grid) - 1)]
 
     max_tpvd_over_m2 = Q(0)
+    m_slabs_proved: list[tuple[Q, Q]] = []
     for s_idx in range(len(m_edges) - 1):
         mlo, mhi = m_edges[s_idx], m_edges[s_idx + 1]
         exp_q = q_to_iv(ALPHA_ENV / mhi)
@@ -1138,6 +1189,8 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         ratio_t = Q(tpvd_hi, ONE) / (mlo * mlo)
         require(ratio_t < Q(7, 25), f"T_PVD/M^2 >= 7/25 on [{mlo}, {mhi}]: {fmt_dec_ceil(ratio_t)}")
         max_tpvd_over_m2 = max(max_tpvd_over_m2, ratio_t)
+        m_slabs_proved.append((mlo, mhi))
+    verify_interval_cover(m_slabs_proved, Q(1, 5), Q(1), "PVD M_slabs proved [1/5, 1]")
 
     # (C) Certify log-slope increase g'(zeta) >= 3/2 on [1/200, 1/12] and g'(zeta) > 0 on [1/12, 6/5]:
     min_gp_low_q = Q(2307, 400)
@@ -1175,13 +1228,16 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
             require(gp_lo_q > 0, f"g'(z) <= 0 on [{za}, {zb}]: {fmt_dec_floor(gp_lo_q)}")
             min_gp_mid_q = min(min_gp_mid_q, gp_lo_q)
 
+    gp_cells: list[tuple[Q, Q]] = []
     # Fine centered cells [i/1000 - 1/2000, i/1000 + 1/2000] for i = 5..400 cover [9/2000, 801/2000] supset [1/200, 2/5]:
     for i_f in range(5, 401):
         z_node = i_f * dz_fine
         z_left = z_node - Q(1, 2000)
         psi_iv, dpsi_iv, _, _ = tab_fine[i_f]
         for sub in range(4):
-            check_gp_subcell(z_node, psi_iv, dpsi_iv, z_left + Q(sub, 4000), z_left + Q(sub + 1, 4000))
+            za_s, zb_s = z_left + Q(sub, 4000), z_left + Q(sub + 1, 4000)
+            check_gp_subcell(z_node, psi_iv, dpsi_iv, za_s, zb_s)
+            gp_cells.append((za_s, zb_s))
 
     # Main centered cells [i/100 - 1/200, i/100 + 1/200] for i = 40..120 cover [79/200, 241/200] supset [2/5, 6/5]:
     for i in range(40, 121):
@@ -1189,7 +1245,10 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         z_left = z_node - Q(1, 200)
         psi_iv, dpsi_iv, _, _ = tab_main[i]
         for sub in range(20):
-            check_gp_subcell(z_node, psi_iv, dpsi_iv, z_left + Q(sub, 2000), z_left + Q(sub + 1, 2000))
+            za_s, zb_s = z_left + Q(sub, 2000), z_left + Q(sub + 1, 2000)
+            check_gp_subcell(z_node, psi_iv, dpsi_iv, za_s, zb_s)
+            gp_cells.append((za_s, zb_s))
+    verify_interval_cover(gp_cells, Q(1, 200), Q(6, 5), "log_slope g' [1/200, 6/5]")
 
     # Certify step-by-step CLT gains E|q_{m+1}| - E|q_m| > 0 for m = 1..12:
     clt_steps = {}
@@ -1301,11 +1360,13 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         lip_hi = max(abs(dd_deriv[0]), abs(dd_deriv[1]))
         return dd_mid_lo - iv_mul((0, lip_hi), q_to_iv(rz))[1]
 
+    ddoub_cells: list[tuple[Q, Q]] = []
     # Fine centered cells [i/1000 - 1/2000, i/1000 + 1/2000] for i = 10..400 cover [19/2000, 801/2000] supset [1/100, 2/5]:
     for i_f in range(10, 401):
         z_node = i_f * dz_fine
         za, zb = z_node - Q(1, 2000), z_node + Q(1, 2000)
         require(eval_ddoub_lb(za, zb) > 0, f"D_doub <= 0 on fine [{za}, {zb}]")
+        ddoub_cells.append((za, zb))
 
     # Main centered cells [i/100 - 1/200, i/100 + 1/200] for i = 40..169 cover [79/200, 339/200] supset [2/5, 169/100]:
     for i in range(40, 170):
@@ -1315,6 +1376,8 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
             za = z_left + Q(sub, 1000)
             zb = z_left + Q(sub + 1, 1000)
             require(eval_ddoub_lb(za, zb) > 0, f"D_doub <= 0 on [{za}, {zb}]")
+            ddoub_cells.append((za, zb))
+    verify_interval_cover(ddoub_cells, Q(1, 100), Q(169, 100), "D_doub positivity [1/100, 169/100]")
 
     # 2. Certify F_doub(w) >= (173/1000) w^2 on w in (0, 1/7] and T_doub(M) <= (147/1000) M^2 on M in (0, 1/7]:
     #    On w in (0, 1/100], integrating on xi = tau^2 in [0, 1] (where w*xi <= 1/100 so D_doub(w*xi) >= 2 w^2 xi^2)
@@ -1328,7 +1391,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     fdoub_small_q = Q(int_sq_1_lo, ONE)
     require(fdoub_small_q > Q(173, 1000), f"small-w F_doub/w^2 > 173/1000 ({fmt_dec_floor(fdoub_small_q)})")
 
-    wd_edges = [Q(k, 1400) for k in range(14, 70)] + [Q(k, 700) for k in range(35, 101)]
+    wd_edges = build_diffuse_doubling_slab_edges()
     require(wd_edges[0] == Q(1, 100) and wd_edges[-1] == m_doub_cap, "wd_edges endpoints")
     # Fixed tau_d_max = 17/5: for every M <= 1/7 and tau <= 17/5, M * tau^2 <= (1/7)*(289/25) = 289/175 < 169/100!
     tau_d_max = Q(17, 5)
@@ -1336,6 +1399,7 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
     n_td = 340
     dtau_d = tau_d_max / n_td  # exact 1/100
     min_fdoub_over_w2 = fdoub_small_q
+    wd_slabs_proved: list[tuple[Q, Q]] = []
     for s_idx in range(len(wd_edges) - 1):
         wlo, whi = wd_edges[s_idx], wd_edges[s_idx + 1]
         acc_fd = 0
@@ -1358,6 +1422,8 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
         rf = Q(acc_fd, ONE) / (whi * whi)
         require(rf > Q(173, 1000), f"F_doub/w^2 <= 173/1000 on [{wlo}, {whi}]: {fmt_dec_floor(rf)}")
         min_fdoub_over_w2 = min(min_fdoub_over_w2, rf)
+        wd_slabs_proved.append((wlo, whi))
+    verify_interval_cover(wd_slabs_proved, Q(1, 100), m_doub_cap, "diffuse doubling w_slabs proved [1/100, 1/7]")
 
     zd_cut = Q(169, 100)
     # On ALL M in (0, 1/7], d/dM [M^{-3/2} (1 + c*z)^{-a/M}] > 0 since a*ln(1 + c*zd_cut) > (3/2)*(1/7) = 3/14:
@@ -1400,13 +1466,13 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
             "alpha": q_str(ALPHA_ENV),
             "c1": q_str(C1_ENV),
             "compact_zeta_cap": q_str(ZETA_CROSS),
-            "num_compact_cells": 1292,
+            "num_compact_cells": len(env_cells),
             "max_compact_ratio_upper": q_str(env_ratio_ceil),
             "psi_wick_minus_exp_scaled_lb_min_zeta2_1_on_0_4": q_str(pos_scaled_floor),
         },
         "buffered_pvd": {
-            "w_slab_count": len(w_edges) - 1,
-            "M_slab_count": len(m_edges) - 1,
+            "w_slab_count": len(w_slabs_proved),
+            "M_slab_count": len(m_slabs_proved),
             "F_pos_over_w2_lower": q_str(fpos_floor),
             "T_PVD_over_M2_upper": q_str(tpvd_ceil),
             "certified_net_gap_coef": "1/20",
@@ -1424,8 +1490,25 @@ def recompute_full(eng: WickEngine, c14_iv, pi_iv, eh_iv):
 
 
 # ---------------------------------------------------------------------------
-# 6. Audit of saved result.json & 19 built-in adversarial controls
+# 6. Audit of saved result.json & 22 built-in adversarial controls
 # ---------------------------------------------------------------------------
+
+def canonical_receipt_bytes(payload: dict) -> bytes:
+    return (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8")
+
+
+def verify_canonical_receipt_bytes(raw_bytes: bytes, expected: dict) -> dict:
+    try:
+        parsed = json.loads(raw_bytes.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"CERTIFICATION FAILURE: invalid UTF-8/JSON in result.json: {exc}") from exc
+    require(parsed == expected, "recomputed certificate differs from committed result.json")
+    require(
+        raw_bytes == canonical_receipt_bytes(expected),
+        "committed result.json bytes differ from canonical --write-result output",
+    )
+    return parsed
+
 
 def audit_result_dict(res: dict, sw_real: dict, fast_lem: dict, pi_iv=None, eh_iv=None, c14_iv=None, spot_eng=None) -> None:
     require(res.get("schema") == "wick-pvd-doubling-v1", "unexpected schema")
@@ -1435,16 +1518,24 @@ def audit_result_dict(res: dict, sw_real: dict, fast_lem: dict, pi_iv=None, eh_i
     require(res.get("schlaefli_watson_and_real_he3") == sw_real, "Schlaefli-Watson / real He_3 mismatch vs live recomputation")
     require(res.get("analytic_lemmas") == fast_lem, "analytic lemmas mismatch vs live recomputation")
 
+    _, _, _, _, env_cells_expected = build_compact_envelope_plan()
+    w_edges_exp, m_edges_exp = build_pvd_slab_edges()
+    wd_edges_exp = build_diffuse_doubling_slab_edges()
+    require(len(wd_edges_exp) - 1 == 121, "diffuse doubling slab count mismatch")
+
     ct = res.get("continuum_certificates", {})
     ae = ct.get("algebraic_envelope", {})
     require(Q(ae.get("alpha", "0")) == ALPHA_ENV and Q(ae.get("c1", "0")) == C1_ENV, "envelope parameter mismatch")
     require(Q(ae.get("compact_zeta_cap", "0")) == ZETA_CROSS, "compact_zeta_cap mismatch")
-    require(ae.get("num_compact_cells") == 1292, "num_compact_cells must equal 1292")
+    require(ae.get("num_compact_cells") == len(env_cells_expected), "num_compact_cells mismatch vs verified cover")
     require(0 < Q(ae.get("max_compact_ratio_upper", "1")) < 1, "max_compact_ratio_upper must be < 1")
     require(Q(ae.get("psi_wick_minus_exp_scaled_lb_min_zeta2_1_on_0_4", "0")) >= Q(2509689, 10 ** 9), "positivity floor mismatch")
 
     bp = ct.get("buffered_pvd", {})
-    require(bp.get("w_slab_count") == 160 and bp.get("M_slab_count") == 320, "PVD slab counts must equal (160, 320)")
+    require(
+        bp.get("w_slab_count") == len(w_edges_exp) - 1 and bp.get("M_slab_count") == len(m_edges_exp) - 1,
+        "PVD slab counts mismatch vs verified slab partitions",
+    )
     fpos_lb = Q(bp.get("F_pos_over_w2_lower", "0"))
     tpvd_ub = Q(bp.get("T_PVD_over_M2_upper", "1"))
     net_pvd = Q(bp.get("certified_net_gap_coef", "0"))
@@ -1658,7 +1749,41 @@ def run_adversarial_controls(res: dict, sw_real: dict, fast_lem: dict, eng: Wick
             "ctrl19_disjoint_m5_step",
         )
 
-    return 19
+    # 20. Gap or truncated endpoint in interval cover rejected by verify_interval_cover:
+    expect_failure(
+        lambda: verify_interval_cover([(Q(0), Q(1, 2)), (Q(3, 5), Q(1))], Q(0), Q(1), "ctrl20_gap"),
+        "ctrl20_interval_gap",
+    )
+    expect_failure(
+        lambda: verify_interval_cover([(Q(0), Q(9, 10))], Q(0), Q(1), "ctrl20_short"),
+        "ctrl20_interval_short",
+    )
+
+    # 21. Omitted parameter slab in diffuse-doubling / PVD loops rejected by verify_interval_cover:
+    wd_ctrl = build_diffuse_doubling_slab_edges()
+    w_ctrl, m_ctrl = build_pvd_slab_edges()
+    expect_failure(
+        lambda: verify_interval_cover(list(zip(wd_ctrl, wd_ctrl[1:]))[1:], Q(1, 100), Q(1, 7), "ctrl21_wd_skip0"),
+        "ctrl21_wd_omitted_first_slab",
+    )
+    expect_failure(
+        lambda: verify_interval_cover(list(zip(w_ctrl, w_ctrl[1:]))[1:], Q(1, 50), Q(1), "ctrl21_w_skip0"),
+        "ctrl21_pvd_w_omitted_first_slab",
+    )
+    expect_failure(
+        lambda: verify_interval_cover(list(zip(m_ctrl, m_ctrl[1:]))[:-1], Q(1, 5), Q(1), "ctrl21_m_skiplast"),
+        "ctrl21_pvd_m_omitted_last_slab",
+    )
+
+    # 22. Non-canonical receipt bytes (e.g. extra trailing newline) rejected even when parsed JSON matches:
+    canon_res = canonical_receipt_bytes(res)
+    require(verify_canonical_receipt_bytes(canon_res, res) == res, "ctrl22: canonical bytes must pass")
+    expect_failure(
+        lambda: verify_canonical_receipt_bytes(canon_res + b"\n", res),
+        "ctrl22_extra_trailing_newline",
+    )
+
+    return 22
 
 
 def main(argv: list[str]) -> int:
@@ -1689,18 +1814,18 @@ def main(argv: list[str]) -> int:
             "continuum_certificates": cont,
         }
         if write_result:
-            RESULT_JSON.write_text(json.dumps(fresh, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+            RESULT_JSON.write_bytes(canonical_receipt_bytes(fresh))
             print(f"[write] Wrote {RESULT_JSON} ({RESULT_JSON.stat().st_size} bytes)")
         require(RESULT_JSON.is_file(), f"missing {RESULT_JSON}")
-        saved = json.loads(RESULT_JSON.read_text(encoding="utf-8"))
-        require(saved == fresh, "recomputed certificate differs from committed result.json")
+        saved = verify_canonical_receipt_bytes(RESULT_JSON.read_bytes(), fresh)
         audit_result_dict(saved, sw_real, fast_lem, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv, spot_eng=eng)
         n_ctrl = run_adversarial_controls(saved, sw_real, fast_lem, eng, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv)
         mode_lbl = "FULL 1088-BIT RECOMPUTE FROM SCRATCH (saved == fresh)"
         src_tag = "[recomputed]"
     else:
         require(RESULT_JSON.is_file(), f"missing {RESULT_JSON}; run with --recompute --write-result first")
-        saved = json.loads(RESULT_JSON.read_text(encoding="utf-8"))
+        raw_saved = RESULT_JSON.read_bytes()
+        saved = verify_canonical_receipt_bytes(raw_saved, json.loads(raw_saved.decode("utf-8")))
         audit_result_dict(saved, sw_real, fast_lem, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv, spot_eng=eng)
         n_ctrl = run_adversarial_controls(saved, sw_real, fast_lem, eng, pi_iv=pi_iv, eh_iv=eh_iv, c14_iv=c14_iv)
         mode_lbl = "DEFAULT AUDIT (live analytic/m=1..12 checks + saved slab bounds)"
