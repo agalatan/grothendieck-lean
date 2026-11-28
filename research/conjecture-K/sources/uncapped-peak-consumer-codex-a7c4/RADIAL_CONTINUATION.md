@@ -102,6 +102,8 @@ Fix $\varepsilon=.752$, $p_0=2500/1891$, $\mu=\varepsilon p_0$, and $\theta=1$. 
 \]
 Here $A$ is the radial cell price, and $G$ is the original square-completion upper bound from the projected scores with $k_0=\min(4h,h(1+\sqrt{3y/4}))/2-.0926$. Both cells below lie within the calibrated score interval $[.0463,.051]$. Convexity in $t$ covers every intermediate amplitude. The pointwise odd-sector inequality absorbs the three odd energies for this trial, including shared remote drivers, in every finite dimension. [Physical normalization and square completion](PROOF.md)
 
+The physical outer comparison, square completion and cancellation of the shared odd sectors inherit the **author-only** inputs of [8.13d](PROOF.md). Its stated amplitude interval is $[.8297,.8393]$. In the derivation $t$ enters only in the explicit quadratic above and the geometric cutoff $H(t)=(\pi/4-t^2)/p_0^2$, applicable for $t\ge\sqrt{3\pi/14}$. Throughout our interval $.824^2>3(22/7)/14>3\pi/14$. Both boxes fit even the smallest cutoff, since $H(.8255)>(3.14/4-.8255^2)/p_0^2>.059>.05062$ and $3(.05062)/4+.004081=.042046<3(.059)/2$. The pointwise trial and its score bounds on $[.0463,.051]$ therefore apply unchanged. Maximizing the quadratic at the two new endpoints gives the displayed physical comparison.
+
 The table encloses the **certified clearance** $.713245$ minus the displayed upper estimate, multiplied by $10^{12}$. Both columns use the same score bounds, the same node prices and the same physical trial. The smaller cell is the one on which the earlier subdivision stopped.
 
 | $u$ | $\chi$ | $V$ | Previous clearance, in units of $10^{-12}$ | New clearance, in units of $10^{-12}$ |
