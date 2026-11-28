@@ -382,7 +382,7 @@ from `tools/` by commit `d84c3fdfc` (`git show 8115260f8:tools/<name>`); and the
 
 ## Certified continuous-law first-chaos content bounds per (u, χ) cell (gemini-c1de, 26 November 2026, #623; STATUS 4.56, tag CONTCELL)
 
-The [piece-15 extension](sources/piece15-content-codex-062a/PROOF.md) uses the same profiles and certifier. Its two new [dual witnesses and replay](code/piece15-content-codex-062a/) and the reused χ = 20 multipliers cover ten additional funded bins at 0.78 u_cap (4.56a). Four further witnesses cover [all fifteen bins at each of the first two energies](sources/piece15-content-codex-062a/FIRST_ENERGIES.md), including seventeen bins with an active allowance.
+The [piece-15 extension](sources/piece15-content-codex-062a/PROOF.md) uses the same profiles and certifier. Its two new [dual witnesses and replay](code/piece15-content-codex-062a/) and the reused χ = 20 multipliers cover ten additional funded bins at 0.78 u_cap (4.56a). Four further witnesses cover [all fifteen bins at each of the first two energies](sources/piece15-content-codex-062a/FIRST_ENERGIES.md), including seventeen bins with an active allowance. On the [whole closed interval between those energies](sources/piece15-content-codex-062a/ENERGY_BAND.md), 34 pairs of witnesses certify the affine allowances on all fifteen bins for both profiles under (R1). The [replay](code/piece15-content-codex-062a/energy_band.py) verifies all 136 rectangles and can regenerate the multipliers.
 
 All files of `CONTCELL` are committed in the repository (< 220 KB per file), with zero external working-folder artefacts:
 - [`sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md`](sources/degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md): proofs of the minimax linearized joint-Kantorovich bound (`JM1`), exponential Kantorovich duality (including piecewise-linear prefix-intercept accounting), Cone-𝒦 + Coupled-Gram rational Stein + Kummer/Cauchy–Schwarz Rice continuous-law duality, outward-rounded 2D Gaussian polar + centered vortex row profile enclosures with rounded-center Taylor radii, guaranteed moving-vortex overlap start, closed singleton mesh seams, quantitative `Ival` Gaussian/moving-vortex tail bounds, exact rational tilts, and dependency-free backward `k_X'` contraction recurrence, verification summary across Pieces 1–17 of `fin_table_fundFull.json`, non-divergent shifted-vortex proof of the `256/63` low-energy Wick junta limit with certified `h_X'(0) > 0`, enclosed `u = 1/10^6` (`ε₁ = 39/50`) and own-row `0.70` negative controls, and `K`-cluster `2 + 6/K` identity and structural plateau analysis.
@@ -559,9 +559,9 @@ All files of `S0RG` are committed in the repository (< 80 KB per file), with zer
 
 | file | size | SHA-256 |
 |---|---:|---|
-| `sources/stage0-retained-gram-gemini-4c4c/PROOF.md` | 68,515 B | `0644d6714a18b48d3d6c59e7d2e0cc26c369a5c1eb2fc641fae7c0a7d081ceea` |
+| `sources/stage0-retained-gram-gemini-4c4c/PROOF.md` | 70,111 B | `593534a33e83c09ecb0d8ceb79bab4ada02f95af711a9fff767b7c3181ffd7a8` |
 | `code/stage0-retained-gram-gemini-4c4c/README.md` | 4,479 B | `8f0478fd1dee576c8c527ae761728f03b3b10f19d579deb770577692f7bd9749` |
-| `code/stage0-retained-gram-gemini-4c4c/verify.py` | 79,002 B | `96d11d5c137faa3da8942301e7ec38120f29e1ac53171721654572f66c5b51be` |
-| `code/stage0-retained-gram-gemini-4c4c/test_controls.py` | 11,762 B | `bd9f84a2ca1bb9ceb349e1b2971f223bcb87e1c6b841d80534e92a351b698297` |
-| `code/stage0-retained-gram-gemini-4c4c/make_cert.py` | 6,658 B | `b2db7bb4ebf1ae4b3f50156def0e854bcd5ecf3923dfb4d6f0c65b9d36706439` |
+| `code/stage0-retained-gram-gemini-4c4c/verify.py` | 79,108 B | `deb9a1a486471fbfe9e2cd08279a40e94cddbbf2b785050b1cb85e47b635b920` |
+| `code/stage0-retained-gram-gemini-4c4c/test_controls.py` | 12,200 B | `6d78e7c159daf8a57fe473a03f1cb12b2119fa0485fe71ec6173aa80be1b0aed` |
+| `code/stage0-retained-gram-gemini-4c4c/make_cert.py` | 6,542 B | `147dd4ce44b7e7291987de1e3d2ce377ae291ea7dd88f4230ccef45a4a2435b1` |
 | `code/stage0-retained-gram-gemini-4c4c/cert_stage0_gram.json` | 14,532 B | `43629bc0fb30ea5c445318d70f5d4edeb27c9696f6b203c4b44620c9282f877c` |

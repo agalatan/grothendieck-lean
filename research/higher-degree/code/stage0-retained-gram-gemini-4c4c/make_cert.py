@@ -150,9 +150,9 @@ def main():
             }
             print(
                 f"Generated {spec['id']:10s} ({res['elapsed_ms']:5d} ms): "
-                f"plain=[{V.fmt_dec(res['plain_e21'][0], 4)},{V.fmt_dec(res['plain_e21'][1], 4)}] "
-                f"no_cmm=[{V.fmt_dec(res['no_cmm_5sc'][0], 4)},{V.fmt_dec(res['no_cmm_5sc'][1], 4)}] "
-                f"ret=[{V.fmt_dec(res['retained_all_dim'][0], 5)},{V.fmt_dec(res['retained_all_dim'][1], 5)}]"
+                f"plain={V.fmt_interval(res['plain_e21'], 4)} "
+                f"no_cmm={V.fmt_interval(res['no_cmm_5sc'], 4)} "
+                f"ret={V.fmt_interval(res['retained_all_dim'], 5)}"
             )
         else:
             V.check(spec["id"] in existing_by_id, f"Missing existing certified data for {spec['id']}")

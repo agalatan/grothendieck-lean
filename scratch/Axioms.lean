@@ -13,6 +13,8 @@ import Grothe
 #print axioms Grothe.Haag.norm_phaseLaplaceKernel_le
 #print axioms Grothe.Haag.ph_eq_phaseLaplace
 #print axioms Grothe.Haag.phaseMoment_weighted
+#print axioms Grothe.Lower.FirstChaos.endpoint_eq
+#print axioms Grothe.Lower.FirstChaos.rounded_lt
 #print axioms Grothe.Lower.ResponsePenalty.a_block
 #print axioms Grothe.Lower.ResponsePenalty.complete_square
 #print axioms Grothe.Lower.ResponsePenalty.h_block
@@ -26,6 +28,7 @@ import Grothe
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.Strong.twoScale_chord
 #print axioms Grothe.Lower.SharedGate.WeightedSchur.weighted_surplus_nonneg_weights
 #print axioms Grothe.Lower.SparseEnvelope.endpoint_eq
+#print axioms Grothe.Lower.SparseEnvelope.mixed_profile_bound
 #print axioms Grothe.Lower.SparseEnvelope.profile_bound
 #print axioms Grothe.Lower.SparseEnvelope.rounded_lt
 #print axioms Grothe.Lower.SparseOuter.actual_deductions
@@ -104,6 +107,9 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Circular.tensorFacts
 #print axioms Grothe.LowerAnalytic.CircularCellNodeBounds.chord
 #print axioms Grothe.LowerAnalytic.CoupledStein.Grid.worst_le
+#print axioms Grothe.LowerAnalytic.FirstChaosProfile.payoff_split
+#print axioms Grothe.LowerAnalytic.FirstChaosProfile.phase_budget
+#print axioms Grothe.LowerAnalytic.FirstChaosProfile.scalar_cap
 #print axioms Grothe.LowerAnalytic.Jpot_le_of_nodeOKcNu
 #print axioms Grothe.LowerAnalytic.Jpot_le_qfNu
 #print axioms Grothe.LowerAnalytic.N_eq
@@ -248,8 +254,9 @@ import Grothe
 #print axioms Grothe.Statement.bounds_bddBelow
 #print axioms Grothe.Statement.constant_lt_of_upperBelow
 #print axioms Grothe.Statement.constant_lt_tight_upper
+#print axioms Grothe.Statement.firstChaosEndpoint_le_of_tailNodeCaps
+#print axioms Grothe.Statement.first_chaos_endpoint
 #print axioms Grothe.Statement.main_bounds
-#print axioms Grothe.Statement.sparse_stein_endpoint
 #print axioms Grothe.Statement.upperBelow_of_bound
 #print axioms Grothe.Statement.upper_below_tight
 #print axioms Grothe.Statement.upper_bound_tight

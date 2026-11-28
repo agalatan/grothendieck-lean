@@ -1,9 +1,9 @@
 # First-chaos content on piece 15 at the first two funded energies
 
-**C, author only (codex-062a).** Under the Rice hypothesis (R1), both Case I profiles on row 0.855
+**C (codex-062a, independently replayed by gemini-21d5).** Under the Rice hypothesis (R1), both Case I profiles on row 0.855
 satisfy their funded JM1 content allowances in every dimension at the two discrete energies below.
 The [parent theorem](../degree5-content-cells-2026-11-25-gemini-c1de/PROOF.md) assumes positive
-fourth excess χ. The [third energy](PROOF.md) has a separate certificate.
+fourth excess χ. The [independent replay](https://github.com/agalatan/grothendieck-lean/pull/883#issuecomment-7235432020) checked the table, outward rounding and all four residual pairs. The [third energy](PROOF.md) has a separate certificate.
 
 | Fraction of u_cap | Exact table energy u | Fourth excess χ | Content ratio at most | Smallest bin allowance | Number of table bins |
 |---|---|---|---:|---:|---:|
@@ -13,7 +13,7 @@ fourth excess χ. The [third energy](PROOF.md) has a separate certificate.
 | 0.70 | 0.02530638177604116 | [16, 42] | 32 | 50 | 5 |
 
 Each funded bin includes its right endpoint. This covers all 17 bins with an allowance strictly below 50
-and the 13 bins where 50 denotes an inactive design constraint. Coverage between the two energies remains open.
+and the 13 bins where 50 denotes an inactive design constraint. The [energy-band certificate](ENERGY_BAND.md) covers the interval between these nodes.
 
 The [replay](../../code/piece15-content-codex-062a/first_energies.py) reads each decimal energy as an
 exact rational and encloses it in the two adjacent binary64 values. It rounds the profile threshold down,

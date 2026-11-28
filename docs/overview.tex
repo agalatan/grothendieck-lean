@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.4020221627\;<\;\KG\;\le\;1.404554025$\\[6pt]
+\Large $1.4020238808\;<\;\KG\;\le\;1.404554025$\\[6pt]
 \normalsize The Lean~4/Mathlib theorem
 \lean{Grothe.Statement.main\_bounds} proves these bounds without hypotheses.
 Section~\ref{sec:trust} lists the native finite checks.\\[4pt]
-The exact transported Stein lower endpoint is rounded down to $14020221627/10000000000$.
+The exact first-chaos-retuned lower endpoint is rounded down to $14020238808/10000000000$.
 The multi-channel bivariate Gaussian roundings give the upper bound rounded up to $1404554025/1000000000$.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -53,7 +53,7 @@ compares the infimum with the reciprocal phase integral.
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
-first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0025318623$, and verify
+first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0025303146$, and verify
 the arguments in Lean. This note explains the problem, the two constructions, exactly what the computer checks, the new inequalities and
 obstructions found along the way, and why the remaining gap is hard: the two sides are dual optimisation problems, and the obstruction on both is the nonlinear (cubic and
 higher) structure of bounded functions of Gaussian vectors.
@@ -94,7 +94,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020221627}$ & $\mathbf{1.404554025}$\\\bottomrule
+Oct--Nov 2026 & \textbf{this work} & $\mathbf{1.4020238808}$ & $\mathbf{1.404554025}$\\\bottomrule
 \end{tabular}
 \end{center}
 The upper bound is $1404554025/1000000000$ (the multi-channel bivariate transfer factor $1/(c-\delta)$ rounded up).
@@ -706,18 +706,14 @@ resulting ceiling $2\sqrt{\E\varphi^6/1225}$ on outward radial changes of disk
 responses are archived.
 
 \subsection{Lower bounds: Hermite projection games}
-A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ while its \emph{scalar} value is small. We use
+Let $P_1$ and $P_3$ denote the charge-one projections $P_{1,0}$ and $P_{2,1}$ respectively. The witness is
 \[
- T=P_{1,0}-e\,P_{2,1}+\nu\,(\mathrm{Id}-P_{1,0}-P_{2,1}),\qquad (e,\nu)=\bigl(\tfrac{191}{250},\tfrac{47}{2000}\bigr),
+ T=(1-w)T_0+wP_1,\quad T_0=P_1-eP_3+\nu(I-P_1-P_3),
 \]
-the projection onto linear functions minus a multiple of the projection onto the cubic chaos, plus a small multiple of
-the identity on all the other chaoses (an \emph{identity tail}).
-\begin{itemize}
-\item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+e)/(n+1)\to1$.
-\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=(1-\nu)\hat B+\nu$, with
- $\hat B=8829435313/12500000000$.
-\end{itemize}
-The finite-partition transfer gives $\KG\ge 1/B=25000000000000/17831387166289$.
+where $(e,\nu)=(191/250,47/2000)$ and $w=358503031/5000000000000$.
+For $u_\ell=z_\ell/\|z\|$, the real vector payoff of $T$ is at least $1-2/(n+1)$ and tends to one.
+On unimodular scalar functions the absolute payoff is at most $B=713254612582/10^{12}$.
+The finite-partition transfer gives $\KG\ge1/B=1000000000000/713254612582$.
 The lower half of \lean{main\_bounds} rounds this exact value strictly down.
 The two central rows use the same circular cubic, fourth excess and residual scale.
 Dilating eleven plain Stein polynomials to four target scales gives fourteen new
@@ -730,11 +726,12 @@ The 38 amplitude intervals then cover the full range of the witness.
 
 The scalar cap is the hard part. For unimodular $f,g$ write $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$ and $t=\|P_{1,0}h\|$.
 The tail acts pointwise, $\Re\langle f,g\rangle=1-2\|k\|^2$, so in the \emph{hat units} $\hat\epsilon=(e+\nu)/(1-\nu)=25/31$
-and $\hat\nu=\nu/(1-\nu)=47/1953$ one has $\Re\langle f,Tg\rangle=(1-\nu)\hat V+\nu$ with
+and $\hat\nu=\nu/(1-\nu)=47/1953$ one has $\Re\langle f,T_0g\rangle=(1-\nu)\hat V+\nu$ with
 \[
  \hat V=t^2-\hat\epsilon\|P_{2,1}h\|^2-\|P_{1,0}k\|^2+\hat\epsilon\|P_{2,1}k\|^2-2\hat\nu\|k\|^2,
 \]
-and it suffices to show $\hat V\le\hat B$.
+The physical payoff of $T$ is at most
+$(1-w)(1-\nu)\hat V+wt^2+(1-w)\nu$.
 Only the term $\hat\epsilon\|P_{2,1}k\|^2$ is positive: we must show that a \emph{bounded} function cannot have too large a
 cubic part without paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, the cubic part of $k$ splits into pieces that
 involve $z_1$ (\emph{visible} sectors) and a \emph{remote} residual $q\in H_{2,1}$ in the other coordinates. The proof then
@@ -779,12 +776,12 @@ has four layers.
  argument: a cover of the parameter space by pieces cut out by one to three linear constraints, up to two symmetries of
  the potential, with one S-lemma certificate per piece.
 \end{enumerate}
-\lean{SparseStein.profile} combines the rows and the mass bound for $0\le t\le9/10$.
+\lean{FirstChaosProfile.phase\_budget} combines the mass bound and the row estimates for $0\le t\le9/10$.
+On each closed segment, it maximizes the weighted sum of the row quadratic and the additional $t^2$ term.
 The cubic first-moment inequality bounds the residual scale $\tau$ by $93/100$.
 Rows $0.835$ and $0.845$ share that scale, their fourth excess and the Gaussian gate.
-The resulting cap passes through \lean{witnessCap\_of\_circular\_profile} to the matrix transfer
-\lean{SparseStein.lower\_of\_nodeCaps}. The certified node caps \lean{tailNodeCaps\_cert}
-then give $25000000000000/17831387166289\le\KG$ independently of Conjecture~K.
+The certified node caps \lean{tailNodeCaps\_cert} and the mixed transfer give
+$1000000000000/713254612582\le\KG$ independently of Conjecture~K.
 
 \subsection{The primal/dual viewpoint}
 For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
@@ -847,9 +844,9 @@ lower certificates.
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean, checked by the kernel} & \textbf{Finite computations (\lean{native\_decide})}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{main\_bounds}, first part: the lower bound for $\KG$, hence for every Grothendieck bound, without hypotheses. The intermediate theorem \lean{SparseStein.lower\_of\_nodeCaps} ($K\ge1/((1-\nu)\hat B+\nu)$ for every Grothendieck bound $K$) keeps the node caps \lean{TailNodeCaps (nuHat (47/2000))} as a hypothesis, which \lean{tailNodeCaps\_cert} discharges.}\\[2pt]
-the witness $T$ with its identity tail on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices;
-the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{main\_bounds}, first part: the lower bound for $\KG$, hence for every Grothendieck bound, without hypotheses. The amplitude theorem \lean{FirstChaosProfile.phase\_budget} and \lean{tailNodeCaps\_cert} give the scalar cap of the retuned witness. The vector test and \lean{transferInputs\_of\_witnessCap} give finite-matrix transfer inputs.}\\[2pt]
+the retuned identity-tail witness on Gaussian $L^2$ and its vector value; the transfer to matrices;
+the polarisation identity in hat units; the per-row Gaussian reduction of $\langle f,T_0g\rangle$ for every unimodular pair
 (frames, fibre decomposition, Parseval, gates); the three facts of the mass row; all moment, Stein, spectral and
 contraction-Gram inequalities for every circular cubic, including the sixth-cumulant Wick identity; the soundness of the
 row checkers (Stein and spectral nodes), the envelope mixture argument and the kernel check of its intervals;
