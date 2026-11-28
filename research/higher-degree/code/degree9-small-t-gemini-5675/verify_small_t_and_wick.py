@@ -13,8 +13,8 @@ Certifies (C) via pure Python stdlib (`python3 -I`, `fractions.Fraction` + `math
      - Two-chaos sharp benchmark at c_9 = 5867/23400:
          rho_* <= sqrt((pi/4 - c_9*pi/32 + c_9) / (1 + c_9)) in [0.89929843, 0.89929844] < 0.899299.
      - Standard dual row at t = 0 with B < 250/351:
-         Degree 7: rho_* <= sqrt((250/351) / 0.906596) <= 0.88635877 < 0.886359 (gap 1.32e-4 to sqrt(pi)/2).
-         Degree 9: 2-chaos <= 31250/41067 = 0.76095162 => rho_* <= 0.89937332 < 0.899374 < 2289/2500.
+         Degree 7: rho_* <= sqrt((250/351) / 0.906596) < 0.886359 (gap 1.32e-4 to sqrt(pi)/2).
+         Degree 9: 2-chaos <= 31250/41067 ≈ 0.76095162 => rho_* < 0.899374 < 2289/2500.
      - Unconditional primal Parseval at t = 0 ((1 + a_1) rho_*^2 - 1 <= 250/351):
          Degree 7: rho_* <= 0.94766391 < 0.94767; Degree 9: rho_* <= 0.94043981 < 0.94044.
   3. Multi-chaos gate-free dual bound V <= t^2 + B^* in the diffuse Gaussian ideal:
@@ -25,7 +25,7 @@ Certifies (C) via pure Python stdlib (`python3 -I`, `fractions.Fraction` + `math
        by certifying:
          (i)  sup_{x > 0} sqrt(2*pi*x) e^{-x} I_0(x) < 6/5 = 1.20, sup_{x >= 3} < 27/25 = 1.08,
               and sup_{x >= 8} < 104/100 = 1.04 (800 rational panels on (0, 16] + analytic tail on [16, inf)),
-         (ii) sup_{v > 0} dPsi/dv < 1/a_2 = 1.38779 whenever sigma_3 >= (95/100) sigma_3^*,
+         (ii) sup_{v > 0} d(2 E|m+sqrt(v) Z|)/dv < 1/a_2 = 1.38779 whenever sigma_3 >= (95/100) sigma_3^*,
          (iii) beta = 0 Gaussian domination on sigma_3 <= (82/100) sigma_3^* (all v >= 0) and on
               sigma_3 in [0.82, 0.95]*sigma_3^* for v >= 9/100, plus a 65-slice rational cover on
               [0.82, 0.95]*sigma_3^* x [0, 9/100],
@@ -199,7 +199,7 @@ def certify_parseval_obstruction(piv):
     check(d7_val_lo > Fraction(75146, 100000) > target, "Degree-7 SMALL_T obstruction >= 0.75146")
     print(
         f"[PASS] Degree-7 SMALL_T Parseval obstruction: at sigma = 3/4, exact Gaussian t=0 value\n"
-        f"       >= {float(d7_val_lo):.10f} >= 0.75146 > 250/351 = {float(target):.10f} (margin +{float(d7_val_lo - target):.5e})."
+        f"       > 0.75146 > 250/351 = {float(target):.10f} (margin +{float(d7_val_lo - target):.5e})."
     )
 
 
@@ -242,12 +242,30 @@ def certify_radius_necessity(piv):
     check(rho9_prim_hi < Fraction(94044, 100000), "Degree-9 primal Parseval cap < 0.94044")
 
     print(
-        f"[PASS] Necessary radius caps certified:\n"
-        f"       Two-chaos at c_9 = 5867/23400 (<= pi/4 - c_9*pi/32): rho_* <= {float(rho9_tc_iv[1]):.8f} < 0.899299\n"
-        f"       Degree 7 dual (B < 250/351): rho_* <= {float(rho7_cap_hi):.8f} (gap to sqrt(pi)/2: {float(rho7_cap_hi - sqrt_pi_half_lo):.3e})\n"
-        f"       Degree 9 dual (B < 250/351): 2-chaos <= {tc9_cap} = {float(tc9_cap):.8f} => rho_* <= {float(rho9_cap_hi):.8f} < 0.899374\n"
-        f"       Primal Parseval ((1+a_1)rho_*^2 - 1 <= 250/351): D7 <= {float(rho7_prim_hi):.8f}, D9 <= {float(rho9_prim_hi):.8f}."
+        "[PASS] Necessary radius caps certified:\n"
+        "       Two-chaos at c_9 = 5867/23400 (<= pi/4 - c_9*pi/32): rho_* < 0.899299\n"
+        f"       Degree 7 dual (B < 250/351): rho_* < 0.886359 (gap to sqrt(pi)/2: {float(rho7_cap_hi - sqrt_pi_half_lo):.3e})\n"
+        f"       Degree 9 dual (B < 250/351): 2-chaos <= {tc9_cap} => rho_* < 0.899374\n"
+        "       Primal Parseval ((1+a_1)rho_*^2 - 1 <= 250/351): D7 < 0.94767, D9 < 0.94044."
     )
+
+
+def certify_phase_leakage(piv):
+    """Two physical t=0 inputs of Proposition 3.2, with R exponential."""
+    norm_squared = (math.factorial(3) - 4 * math.factorial(2) + 4) / Fraction(2)
+    check(norm_squared == 1, "Normalized one-variable Wick cubic")
+    # Gamma(3/2) and Gamma(5/2), expressed in units of sqrt(pi).
+    g32 = Fraction(1, 2)
+    g52 = Fraction(3, 2) * g32
+    quintic_coefficient = (g52 - 2 * g32) * g32**2
+    # The remaining factor is pi^(3/2)/sqrt(2).
+    check(quintic_coefficient == -Fraction(1, 16), "Mixed cubic phase against H_{3,2}")
+    check(quintic_coefficient**2 / 2 == Fraction(1, 512), "Quintic squared coefficient in units of pi^3")
+    # Cauchy-Schwarz on R>2: tail mass e^-2, tail first moment 3e^-2.
+    upper_tail = rat_sqrt_bounds(Fraction(3))[1] * exp_neg_rat_iv(Fraction(2))[1]
+    upper_linear = 2 * upper_tail - iv_sqrt(piv)[0] / 2
+    check(upper_linear < -Fraction(2, 5), "Nonzero first-chaos leakage of one-variable cubic phase")
+    print("[PASS] Physical phases: quintic squared coefficient pi^3/512; linear coefficient < -2/5.")
 
 
 def certify_multichaos_gaussian_ideal(piv):
@@ -266,7 +284,26 @@ def certify_multichaos_gaussian_ideal(piv):
     # 2. Degree 9 global proof over (sigma_3, v) in [0, inf)^2:
     a1, a2, a3, a4 = Fraction(936, 1000), Fraction(72057, 100000), Fraction(59202, 100000), Fraction(23468, 100000)
     check(a2 > a3 > a4 > 0, "Degree-9 higher weights strictly decreasing")
-    b9_iv = (Fraction(181333, 800000) * piv[0], Fraction(181333, 800000) * piv[1])
+    # gamma = beta/(sqrt(2)*sigma_3), shared with every radial slope panel.
+    gamma = a4 / (4 * a1)
+    check(0 < gamma < Fraction(1, 2), "The radial factor stays positive")
+    ideal = a1 / 4 - a4 / 32
+    check(ideal == Fraction(181333, 800000), "Diffuse ideal from the game weights")
+
+    def zero_variance_coefficients(radial_gamma):
+        # Psi/pi = linear*lambda - quadratic*lambda^2, lambda = sigma_3/sigma_*.
+        linear = (a1 / 2) * (1 - radial_gamma / 2)
+        quadratic = a1 / 4 - a1**2 * radial_gamma**2 / (2 * a4)
+        return linear, quadratic
+
+    check(zero_variance_coefficients(gamma) == (2 * ideal, ideal),
+          "Multiplier must reproduce B*lambda*(2-lambda) at v=0")
+    half_linear, half_quadratic = zero_variance_coefficients(gamma / 2)
+    half_peak = half_linear - half_quadratic
+    check(half_peak - ideal == a4 / 128 and half_peak == Fraction(731199, 3200000)
+          and half_peak * piv[0] > target,
+          "Half of the multiplier misses 250/351 at the peak")
+    b9_iv = (ideal * piv[0], ideal * piv[1])
     sqrt_pi = iv_sqrt(piv, 25)
     sqrt_2pi = iv_sqrt((2 * piv[0], 2 * piv[1]), 25)
 
@@ -311,7 +348,6 @@ def certify_multichaos_gaussian_ideal(piv):
     slope_v_top = iv_mul(sqrt_pi, (Fraction(1), Fraction(1) / rat_sqrt_bounds(v_top, 18)[0]))[1] / 2
     check(slope_v_top < Fraction(1) / a2, "v >= 9/20 slope < 1/a_2")
 
-    gamma = a4 / (4 * a1)
     c0_m = 1 - 2 * gamma
     sig3_star_lo = a1 * sqrt_pi[0] / 2
     lam_hi_cut = Fraction(95, 100)
@@ -365,6 +401,7 @@ def certify_multichaos_gaussian_ideal(piv):
 
     slope_v_star_hi = (int_0_sp + int_sp_3 + tail_r3) / sig3_star_lo
     slope_at_95 = max(max_slope_mid_v, slope_v_top)
+    check(slope_at_95 < Fraction(13762, 10000), "Published heat-slope bound < 1.3762")
 
     # Step (iii): Cover 0 <= lambda <= 95/100.
     # Subcase A: 0 <= lambda <= 82/100 (all v >= 0) with beta = 0:
@@ -379,7 +416,7 @@ def certify_multichaos_gaussian_ideal(piv):
     # Subcase B: lambda in [82/100, 95/100] covered by 65 slices [la, lb] of width 0.002:
     #   - For v >= v_cut = 9/100: set beta = 0; since sigma_3 >= 0.82*sigma_3^* > (sqrt(pi)/2)*a2, the beta=0 objective
     #     is strictly decreasing in v >= v_cut, so its maximum on [la, lb] x [v_cut, inf) occurs at v = v_cut.
-    #   - For 0 <= v <= v_cut = 9/100: set beta = (a4 / (4*sqrt(2)*a1))*sigma_3; rescaling v' = (lam_hi_cut / la)^2 * v
+    #   - For 0 <= v <= v_cut = 9/100: set beta = (a4 / (2*sqrt(2)*a1))*sigma_3; rescaling v' = (lam_hi_cut / la)^2 * v
     #     maps (0, 9/100] into (0, 9/20] (since (0.95/0.82)^2 * 0.09 < 0.121 <= 0.45), so
     #     sup_{0 < v <= v_cut} d/dv[2 E|m + sqrt(v) Z|] <= (lam_hi_cut / la) * max_slope_mid_v.
     v_cut = Fraction(9, 100)
@@ -402,9 +439,10 @@ def certify_multichaos_gaussian_ideal(piv):
     check(t0_b0_lo > Fraction(9524, 1000000), "t_0 at B_0=0.71216 > 0.009524")
     print(
         f"[PASS] Degree-9 multi-chaos Gaussian ideal B_9^{{*,Gauss}} = (181333/800000)*pi = {float(b9_iv[1]):.10f}\n"
+        f"       v=0 profile B*lambda*(2-lambda); half-multiplier excess (a4/128)*pi at lambda=1.\n"
         f"       certified globally over ALL (sigma_3, v) in [0, inf)^2:\n"
         f"         sup_{{x>0}} sqrt(2*pi*x) e^{{-x}} I_0(x) <= {float(max_bess_all):.6f} < 1.20 (for x>=3: <= {float(max_bess_ge3):.6f} < 1.08),\n"
-        f"         E[1/(2|m^*|)] <= {float(slope_v_star_hi):.6f}, sup_{{v>0, lambda>=0.95}} dPsi/dv <= {float(slope_at_95):.6f} < 1/a_2 = {float(1/a2):.6f},\n"
+        f"         E[1/(2|m^*|)] bound approx. {float(slope_v_star_hi):.6f}; heat derivative < 1.3762 < 1/a_2 for lambda >= 0.95,\n"
         f"         conditional reach at B_9^{{*,Gauss}}: t_0 >= {float(t0_d9_lo):.6f} (and at B_0 = 0.71216: t_0 >= {float(t0_b0_lo):.6f})."
     )
 
@@ -559,6 +597,7 @@ def main():
     piv = pi_iv()
     certify_parseval_obstruction(piv)
     certify_radius_necessity(piv)
+    certify_phase_leakage(piv)
     certify_multichaos_gaussian_ideal(piv)
     certify_wick_and_bargmann_sos()
     print("ALL CHECKS IN verify_small_t_and_wick.py PASSED.")
