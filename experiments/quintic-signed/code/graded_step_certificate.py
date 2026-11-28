@@ -182,9 +182,10 @@ def verify(n,nt,steps):
     guaranteed=Q((payoff[0]*10**10).__floor__(),10**10)
     print(f"cells={n} x {n} x {nt} on the half circle, payoff ≥ {float(guaranteed):.10f}",flush=True)
     require(guaranteed>Q(10000,14023), "graded pair must exceed the 1.4023 payoff cap")
-    first,_,fifth,base=affine_terms(bounds,square)
+    first,cubic,fifth,base=affine_terms(bounds,square)
     c,d = first[0]-base[1], -fifth[1]
     require(d>0,"stress pair gets worse with the debit")
+    require(-cubic[0]+2*fifth[1]<Q("-.0025"), "central pair gains from the coupled direction")
     upper_debit=(Q(10000,14023)-base[0])/d
     require(upper_debit<Q(".0235"),"nonempty excluded debit interval at w=0")
     scale=(1-NU)-(E+NU)/8
@@ -209,10 +210,11 @@ def verify(n,nt,steps):
 
 def verify_small_debit_seed(n,nt,steps):
     bounds,square=moment_bounds(n,nt,steps,[82766,20271,21330,-81,-42,-90])
-    first,_,fifth,base=affine_terms(bounds,square)
+    first,cubic,fifth,base=affine_terms(bounds,square)
     c=first[0]-base[1]
     d=-fifth[1]
     require(c>0 and d>0, "physical pair payoff increases in BOTH free parameters")
+    require(-cubic[0]+2*fifth[1]<Q("-.008"), "second pair gains from the coupled direction")
     visible_base=NU+(1-NU-(E+NU)/8)*PI_LO/4
     visible_d=-3*PI_HI/256
     weight=d/(d-visible_d)

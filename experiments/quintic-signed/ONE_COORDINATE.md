@@ -10,6 +10,8 @@ In any finite dimension, suppose one response is a measurable disk-valued functi
 * For $d=47/2000$ it is below $0.712263509683805$, with reciprocal above $1.40397477394838$. The [300,001-coordinate stress pair](FINITE_GRADED_LIFT.md) exceeds the $1.4023$ target at this very debit.
 * Every $d\ge.000394$ in the stated interval passes the $1.4023$ test on this response class. At $d=.00039399$ the visible phase already exceeds the target payoff. The [radial flip](VISIBLE_PAIR_BUDGET.md) gives strictly more than $B_d$ on a diagonal pair for every $d>0$.
 
+The [fresh-coordinate extension](REMOTE_CUBIC_MULTIPLIER.md) bounds arbitrary pairs by retaining just the purely remote cubic contribution.
+
 ## Both signs of the witness in one coordinate
 
 For $Z$ standard proper complex Gaussian, put $T=|Z|^2\sim\mathrm{Exp}(1)$. In one complex coordinate the three ranges are lines spanned by the unit vectors

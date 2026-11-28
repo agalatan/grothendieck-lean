@@ -20,7 +20,9 @@ import QuinticResearch.QuinticVisibleReduction
 import QuinticResearch.QuinticWitness
 import QuinticResearch.RadialClip
 import QuinticResearch.RadialTail
+import QuinticResearch.ResidualPair
 import QuinticResearch.SignedBand
+import QuinticResearch.SignedCubicDebit
 import QuinticResearch.SignedFifth
 import QuinticResearch.SignedRadial
 import QuinticResearch.SignedRowProfile
