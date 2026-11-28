@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Zero-float, zero-assert Python 3 stdlib verifier for S0RG (#849, refs #751):
-antisymmetric slice-Gram inequality C_-- >= 0, retained-defender dual rows, and
+antisymmetric slice-Gram inequality n + b - 3y + z >= 0, retained-defender dual rows, and
 c -> 0+ quadratic/local diffuse-spike saddle bounds at 9 Stage 0 sample rows.
 
 Verifies from scratch:
@@ -9,7 +9,7 @@ Verifies from scratch:
        - 4-channel Pythagorean slice-Gram decomposition of ctC in Grothe/LowerAnalytic/GramTensor.lean,
          including the antisymmetric involution inequality 4 ||C_--||_HS^2 = n + b - (3y - z) >= 0;
        - All three sharp dimension-free spectral chaos bounds (25 u_2 >= 9 u_4, 8 u_2 >= 3 v_4, 14 u_2 >= 3 chi),
-         equality at unit e_{2,1}(y_1), and exact rational 5-scalar counterexamples showing C_-- >= 0 is strictly
+         equality at unit e_{2,1}(y_1), and exact rational 5-scalar counterexamples showing n + b - 3y + z >= 0 is strictly
          stronger than the 5-scalar Gram.lean cone.
   3. Exact symbolic verification of Theorem 2 & Theorem 3:
        - Bargmann-Laguerre expectation identities and vanishing O(c^2) visible quintic scalar shift gradient;
@@ -440,7 +440,7 @@ def verify_gram_and_sos_identities(gram_cone_flags=None):
     rhs_chi = lc([(96, n_minus_b), (288, z_minus_y), (32, nh_diff_sq)])
     check(lhs_chi == rhs_chi, "Identity 14*u_2 - 3*chi SOS decomposition failed")
 
-    # 3) Exact rational 5-scalar counterexamples when C_-- >= 0 is omitted:
+    # 3) Exact rational 5-scalar counterexamples when n + b - 3y + z >= 0 is omitted:
     def eval_5sc(pt, form):
         return sum(pt[idx] * form[idx] for idx in range(5))
 
@@ -466,7 +466,7 @@ def verify_gram_and_sos_identities(gram_cone_flags=None):
         eval_5sc(ce1, u4) / eval_5sc(ce1, u2) == Fraction(14, 5) > Fraction(25, 9),
         "Counterexample 1 ratio u_4/u_2 != 14/5",
     )
-    check(not satisfies_old_gram_cone(ce1), "Full cone with C_-- >= 0 must exclude Counterexample 1")
+    check(not satisfies_old_gram_cone(ce1), "Full cone with n + b - 3y + z >= 0 must exclude Counterexample 1")
 
     # Counterexample 2: (n, h, b, y, z) = (1/4, 1, 1/4, 1/2, 1/2) gives v_4/u_2 = 3 > 8/3!
     ce2 = (Fraction(1, 4), Fraction(1, 1), Fraction(1, 4), Fraction(1, 2), Fraction(1, 2))
@@ -478,7 +478,7 @@ def verify_gram_and_sos_identities(gram_cone_flags=None):
         eval_5sc(ce2, v4) / eval_5sc(ce2, u2) == Fraction(3, 1) > Fraction(8, 3),
         "Counterexample 2 ratio v_4/u_2 != 3",
     )
-    check(not satisfies_old_gram_cone(ce2), "Full cone with C_-- >= 0 must exclude Counterexample 2")
+    check(not satisfies_old_gram_cone(ce2), "Full cone with n + b - 3y + z >= 0 must exclude Counterexample 2")
 
     # 4) Explicit complex Q[i] tensor verification on 4 concrete tensors t_{ijk} = t_{jik} in C^3:
     zero_qi = (Fraction(0), Fraction(0))
@@ -643,6 +643,7 @@ def verify_gram_and_sos_identities(gram_cone_flags=None):
         )
         gy = (gz + 2 * gt0) / 3
 
+        wedge = {(0, 1): 1, (1, 0): -1}
         c_mm_norm2 = Fraction(0)
         c_pp_norm2 = Fraction(0)
         for i in range(dim):
@@ -657,6 +658,10 @@ def verify_gram_and_sos_identities(gram_cone_flags=None):
                             qi_add(ct_c[i][j][k][l], ct_c[j][i][k][l]),
                             qi_add(ct_c[i][j][l][k], ct_c[j][i][l][k]),
                         )
+                        if name == "y1sq_ybar2":
+                            # v_mm represents 4*C_--. On this tensor it is -w w*, with ||w||^2 = 2.
+                            expected = -wedge.get((i, j), 0) * wedge.get((k, l), 0)
+                            check(v_mm == (expected, 0), "antisymmetric rank-one matrix mismatch")
                         c_mm_norm2 += qi_norm_sq(v_mm) / 16
                         c_pp_norm2 += qi_norm_sq(v_pp) / 16
 
@@ -1696,6 +1701,7 @@ def verify_certificate(cert_data, repo_root, only_row=None, jobs=0, quiet=False,
             by_t[t_key] = obj
         raw_rows_by_game[gname] = by_t
 
+    check(cert_data.get("scale_S") == S, "receipt interval scale differs from verifier scale")
     all_rows = cert_data["rows"]
     check(isinstance(all_rows, list) and len(all_rows) == 9, f"Expected 9 benchmark rows, got {len(all_rows) if isinstance(all_rows, list) else 'non-list'}")
     seen_triples = [(r.get("id"), r.get("game"), r.get("t_key")) for r in all_rows]
@@ -1734,6 +1740,10 @@ def verify_certificate(cert_data, repo_root, only_row=None, jobs=0, quiet=False,
         for field in ("kappa_D", "plain_e21", "no_cmm_5sc", "retained_all_dim"):
             st = cert_blk.get(field)
             check(isinstance(st, list) and len(st) == 2 and all(isinstance(x, int) for x in st) and st[0] <= st[1], f"{rid}.{field}: invalid stored interval {st!r}")
+        # Fresh intervals must nest inside these stored endpoints on replay.
+        if rid == "gA_0.85":
+            check(20 * cert_blk["retained_all_dim"][0] > 7 * S,
+                  "gA_0.85: retained lower endpoint must exceed 7/20")
         check(cert_blk["kappa_D"][0] > 0, f"{rid}: stored kappa_D lower bound <= 0")
         st_mc = cert_blk.get("min_concav_lo")
         check(isinstance(st_mc, int) and st_mc > 0, f"{rid}: stored min_concav_lo <= 0 ({st_mc!r})")
@@ -1800,7 +1810,7 @@ def verify_certificate(cert_data, repo_root, only_row=None, jobs=0, quiet=False,
                 f"{rid}: plain_e21 lower bound did not exceed {pl_f}",
             )
 
-        # Verify 5-scalar cone without C_-- >= 0 exceeds 7/20 = 0.35 where claimed (proving C_-- >= 0 is necessary):
+        # Verify 5-scalar cone without n + b - 3y + z >= 0 exceeds 7/20 = 0.35 where claimed (proving n + b - 3y + z >= 0 is necessary):
         if "no_cmm_lower_exceeds" in rspec:
             nc_f = parse_frac(rspec["no_cmm_lower_exceeds"])
             check(
